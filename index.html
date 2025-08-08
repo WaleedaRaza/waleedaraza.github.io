@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Waleed Raza Portfolio</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: iPortfolio
+  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header dark-background d-flex flex-column">
+    <i class="header-toggle d-xl-none bi bi-list"></i>
+
+
+
+    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <!-- <img src="assets/img/logo.png" alt=""> -->
+      <h1 class="sitename">Waleed Raza</h1>
+    </a>
+
+    <div class="social-links text-center">
+      <a href="https://www.instagram.com/wwwaleedraza/" class="instagram"><i class="bi bi-instagram"></i></a>
+      <a href="https://www.linkedin.com/in/waleedaraza/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+    </div>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
+        <li><a href="#projects"><i class="bi bi-code-slash navicon"></i> Projects</a></li>
+        <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
+        <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
+        <li><a href="#skills"><i class="bi bi-gear navicon"></i> Skills</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="hero-title">Waleed Raza</h2>
+        <p class="hero-subtitle">development portfolio</p>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Featured Projects</h2>
+        <p>Complex technical solutions demonstrating expertise in distributed systems, ML/AI, and full-stack development</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- MMAmania Project -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-lg-6">
+            <div class="project-card">
+              <h3>MMAmania – iOS App</h3>
+              <h5 style="color: #dd5414;">The Ultimate AI-Powered MMA Platform</h5>
+              <p><strong>Built with:</strong> Dart, Flutter, Swift, Firebase, Supabase, Python (spaCy, NLTK, PyTorch, Pyro, TensorFlow), AWS EKS, PostgreSQL, FastAPI, Apache Spark, Ray</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('mmamania-preview')">
+                <i class="bi bi-chevron-down" id="mmamania-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="mmamania-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🚀 Core Features</h6>
+                <ul>
+                  <li><strong>Real-Time Fight Data:</strong> Live fight cards, fighter profiles, rankings system, event information, and fight results with WebSocket connections</li>
+                  <li><strong>AI-Powered Predictions:</strong> ELO rating system with 78% accuracy across 7,500+ fights, crowd wisdom, win streak analytics, and seasonal competitions</li>
+                  <li><strong>Advanced Content Aggregation:</strong> Multi-source data from Reddit, Twitter, ESPN, UFC APIs with sentiment analysis and stance detection</li>
+                  <li><strong>Live Debate & Watch Party System:</strong> WebRTC-powered real-time audio/video communication with screen sharing and AI-powered content moderation</li>
+                  <li><strong>Speech-to-Text Pipeline:</strong> Whisper model processes fight interviews and press conferences with PyTorch-based real-time transcription</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🔧 Technical Architecture</h6>
+                <ul>
+                  <li><strong>Distributed Data Processing:</strong> Apache Spark on Ray cluster processing 10GB+ datasets nightly with Scrapy distributed scraping</li>
+                  <li><strong>AI/ML Pipeline:</strong> spaCy & NLTK for advanced NLP, fine-tuned DistilBERT for sentiment analysis, custom entity recognition</li>
+                  <li><strong>Real-Time Infrastructure:</strong> Supabase PostgreSQL with real-time subscriptions, Redis caching with 99.9% hit rate</li>
+                  <li><strong>Frontend Stack:</strong> Flutter 3.16.0 with WebRTC, WebSocket connections, Provider pattern state management</li>
+                  <li><strong>Backend Services:</strong> FastAPI high-performance REST API, WebSocket server, JWT authentication with refresh mechanisms</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">📊 Data Coverage & Impact</h6>
+                <ul>
+                  <li><strong>Comprehensive Database:</strong> 654 UFC events, 7,533 fights, 200+ ranked fighters with real-time updates</li>
+                  <li><strong>User Base:</strong> 266+ active users including UFC fighter Carlos Prates</li>
+                  <li><strong>Performance:</strong> 10,000+ data points processed nightly, 78% prediction accuracy</li>
+                  <li><strong>Status:</strong> Scheduled for App Store release September 1st</li>
+                </ul>
+              </div>
+              
+                           <div class="project-links">
+               <a href="mmamania.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+               <a href="https://github.com/WaleedaRaza/mmamania" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+               <a href="https://youtu.be/gAbsRRHLnkE" class="btn btn-outline-secondary">Demo</a>
+             </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="project-card">
+              <h3>Pokerswound</h3>
+              <h5 style="color: #dd5414;">Production-Ready Poker with Real Entropy</h5>
+              <p><strong>Built with:</strong> TypeScript, Node.js, PyTorch, TensorFlow, React, Firebase, Supabase, PostgreSQL, Redis, Docker, AWS EKS</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('pokerswound-preview')">
+                <i class="bi bi-chevron-down" id="pokerswound-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="pokerswound-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🎯 Production-Ready Features</h6>
+                <ul>
+                  <li><strong>Real-time Multiplayer Poker:</strong> WebSocket communication with live game state updates, player actions, and chat system</li>
+                  <li><strong>Cryptographic Entropy Engine:</strong> SHA-256 hashes from Twitch/YouTube trending metadata for provably fair shuffling</li>
+                  <li><strong>Advanced Game Engine:</strong> Texas Hold'em with full betting rounds, hand evaluation, and AI opponents with different personalities</li>
+                  <li><strong>Cross-Platform Support:</strong> Web and mobile (iOS/Android) with React Native and Expo</li>
+                  <li><strong>Token Economy System:</strong> Virtual currency with secure transactions and balance management</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🔧 Technical Architecture</h6>
+                <ul>
+                  <li><strong>Backend Services:</strong> Node.js with TypeScript, Express.js REST API, Socket.IO for real-time communication</li>
+                  <li><strong>Database Layer:</strong> PostgreSQL with Prisma ORM, Redis for caching and session storage</li>
+                  <li><strong>Frontend Stack:</strong> React with TypeScript (Web), React Native with Expo (Mobile), Tailwind CSS, Framer Motion</li>
+                  <li><strong>Infrastructure:</strong> Docker and Docker Compose, Nginx reverse proxy, Prometheus/Grafana monitoring</li>
+                  <li><strong>Security:</strong> JWT authentication, rate limiting, DDoS protection, encrypted data transmission</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🎮 Game Features & Innovation</h6>
+                <ul>
+                  <li><strong>Provably Fair Shuffling:</strong> Fisher-Yates algorithm with cryptographic proof, entropy demo with real-time verification</li>
+                  <li><strong>AI Opponents:</strong> Alice (aggressive 70%), Bob (tight 40%), Charlie (loose 60%) with realistic decision delays</li>
+                  <li><strong>Entropy Demo:</strong> Real-time entropy collection from live sources, cryptographic shuffling with fairness verification</li>
+                  <li><strong>Advanced Analytics:</strong> Dashboard for entropy source verification, shuffle trace visualization, and game statistics</li>
+                  <li><strong>Acquisition Impact:</strong> Acquired by PokerNow.club (500k+ users) as core backend for 2025, serving as backend lead and system admin</li>
+                </ul>
+              </div>
+              
+              <div class="project-links">
+                                 <a href="pokerswound.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+                                                                     <a href="https://github.com/WaleedaRaza/pokerswound" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- StockSurveyor & AgentYeager -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="300">
+              <div class="col-lg-6">
+            <div class="project-card">
+              <h3>StockSurveyor</h3>
+              <h5 style="color: #dd5414;">Enterprise-Grade AI-Powered Trading Intelligence Platform</h5>
+              <p><strong>Built with:</strong> MongoDB, Express, React, Node.js, Python, Golang, TensorFlow, scikit-learn, LangChain, Redis, Supabase, Firebase, Flutter (in progress)</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('stocksurveyor-preview')">
+                <i class="bi bi-chevron-down" id="stocksurveyor-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="stocksurveyor-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🎯 Revolutionary Trading Intelligence</h6>
+                <ul>
+                  <li><strong>Advanced AI/ML Pipeline:</strong> LSTM neural networks, LightGBM models, and GPT-4 integration for comprehensive trading insights</li>
+                  <li><strong>Institutional-Grade Technical Analysis:</strong> Elliott Wave, Fibonacci, Harmonic patterns with 25+ professional indicators</li>
+                  <li><strong>Real-Time Multi-Source Data:</strong> 15+ data sources including Alpha Vantage, Yahoo Finance, Reddit, Twitter, Google News</li>
+                  <li><strong>Advanced Sentiment Intelligence:</strong> NLP-powered news, social media, and earnings analysis with bias modulation system</li>
+                  <li><strong>Supply/Demand Zone Analytics:</strong> Institutional-level zone identification and scoring with options flow intelligence</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🏗️ Enterprise Architecture</h6>
+                <ul>
+                  <li><strong>Multi-Stack Technology:</strong> React web app + Flutter mobile, Node.js/Express API gateway, Python ML services, Golang high-performance services</li>
+                  <li><strong>Data Layer:</strong> MongoDB for document storage, Redis for caching, Supabase for authentication, Firebase for push notifications</li>
+                  <li><strong>AI/ML Infrastructure:</strong> LSTM price prediction (85%+ accuracy), LightGBM risk scoring, CNN-based pattern detection (90%+ accuracy)</li>
+                  <li><strong>Real-Time Processing:</strong> WebSocket integration with <50ms latency, Apache Kafka for event streaming, Redis-powered caching</li>
+                  <li><strong>Professional Interface:</strong> TradingView integration, custom indicators, multi-timeframe charts, dark/light themes</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🔧 Advanced Features</h6>
+                <ul>
+                  <li><strong>Bias Modulation System:</strong> Dynamic GPT-4 prompting with bullish/neutral/bearish tones for user-controlled narrative shaping</li>
+                  <li><strong>Elliott Wave Analysis:</strong> AI-powered 5-wave impulse and ABC correction identification with ML-powered forecasting</li>
+                  <li><strong>Fibonacci & Harmonic Analysis:</strong> Advanced retracement levels, extension projections, golden ratio analysis</li>
+                  <li><strong>Cross-Platform Architecture:</strong> React web app + Flutter mobile with real-time sync and offline capabilities</li>
+                  <li><strong>Professional Trading Interface:</strong> Interactive candlestick charts, custom indicators, chart annotations, real-time updates</li>
+                </ul>
+              </div>
+              
+              <div class="project-links">
+                                 <a href="stocksurveyor.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+                                                                     <a href="https://github.com/WaleedaRaza/StockScouter" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+              </div>
+            </div>
+              </div>
+              <div class="col-lg-6">
+            <div class="project-card">
+              <h3>AgentYeager</h3>
+              <h5 style="color: #dd5414;">Local-First Framework for Building LLM-Powered Agent Swarms</h5>
+              <p><strong>Built with:</strong> Python, SQLite, Ollama, PyYAML, asyncio, FastAPI, Redis, Docker, LangChain, PyObjC (for macOS native UI integration)</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('agentyeager-preview')">
+                <i class="bi bi-chevron-down" id="agentyeager-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="agentyeager-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🎯 Enterprise-Grade Agent Framework</h6>
+                <ul>
+                  <li><strong>100% Local-First Design:</strong> Complete privacy with no cloud dependencies, all processing on local infrastructure</li>
+                  <li><strong>Multi-Agent Swarms:</strong> Coordinate autonomous agents with shared state management and load balancing</li>
+                  <li><strong>Advanced Memory System:</strong> SQLite-backed persistent memory with reflection capabilities and task chaining</li>
+                  <li><strong>Modular Skill System:</strong> Pluggable skills for any automation task with marketplace distribution</li>
+                  <li><strong>RAG Pipelines:</strong> Local embedding lookup and retrieval-augmented generation with hybrid retrieval strategies</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🏗️ Architecture & Components</h6>
+                <ul>
+                  <li><strong>Agent Configuration:</strong> YAML-based declarative agent definitions with hierarchical settings and dynamic skill loading</li>
+                  <li><strong>Ollama Integration:</strong> LLaMA3/Mistral models for streaming multi-turn reasoning and local LLM inference</li>
+                  <li><strong>Task Coordination:</strong> Async task queue with Redis state management, fault tolerance, and auto-scaling</li>
+                  <li><strong>CLI Interface:</strong> `agentflow run`, `agentflow create-agent` commands for seamless local-first agent control</li>
+                  <li><strong>Native UI Integration:</strong> macOS native interface via PyObjC with real-time dashboards and task monitoring</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🔧 Advanced Features</h6>
+                <ul>
+                  <li><strong>Live Commands:</strong> Real-time agent execution like `agentflow run my_agent_config.yaml 'Summarize today's Reddit top NVIDIA news'`</li>
+                  <li><strong>Skill Development Framework:</strong> Custom automation capabilities with rate limiting, validation, and versioning</li>
+                  <li><strong>Task-Aware Execution:</strong> Real-time monitoring, intelligent scheduling, and performance optimization</li>
+                  <li><strong>Memory Management:</strong> Encrypted storage with intelligent context retrieval, compression, and automatic backup</li>
+                  <li><strong>Security & Privacy:</strong> Encrypted SQLite databases, secure token management, comprehensive security auditing</li>
+                </ul>
+              </div>
+              
+              <div class="project-links">
+                                 <a href="agentyeager.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+                                                                     <a href="https://github.com/WaleedaRaza/agentyeager" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hand Recognition & Petform -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="400">
+          <div class="col-lg-6">
+            <div class="project-card">
+              <h3>Hand-Recognition Shortcuts Application</h3>
+              <h5 style="color: #dd5414;">Advanced Hand Gesture Recognition System</h5>
+              <p><strong>Built with:</strong> Python, OpenCV, MediaPipe, PyTorch, TensorFlow, Tkinter, scikit-learn</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('handcuts-preview')">
+                <i class="bi bi-chevron-down" id="handcuts-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="handcuts-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🎯 Revolutionary Hand Gesture Recognition</h6>
+                <ul>
+                  <li><strong>Real-time Hand Tracking:</strong> Advanced MediaPipe integration for precise 21-point hand landmark detection at 30fps</li>
+                  <li><strong>Machine Learning Pipeline:</strong> Custom CNN-LSTM hybrid model for improved gesture recognition accuracy with 94% precision</li>
+                  <li><strong>Adaptive Learning System:</strong> Self-improving system that learns from user interaction patterns and personalizes recognition</li>
+                  <li><strong>Multi-Modal Input:</strong> Hand gestures with optional Whisper speech command fallback for enhanced accessibility</li>
+                  <li><strong>Intelligent Fallback System:</strong> Ensemble methods using scikit-learn SGD classifier and XGBoost for robust performance</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🏗️ Technical Architecture</h6>
+                <ul>
+                  <li><strong>Computer Vision Pipeline:</strong> OpenCV processing with advanced image preprocessing, landmark analysis, and multi-resolution processing</li>
+                  <li><strong>ML Engine:</strong> CNN-LSTM hybrid with transfer learning, attention mechanisms, and adversarial training for robust recognition</li>
+                  <li><strong>User Interface:</strong> Tkinter-based real-time feedback with gesture overlay, calibration interface, and performance metrics</li>
+                  <li><strong>System Integration:</strong> Flask server with SocketIO, pyautogui for desktop automation, pygetwindow for advanced window management</li>
+                  <li><strong>Research-Grade Implementation:</strong> Novel algorithms for temporal gesture recognition with comprehensive analytics</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🎮 Gesture Library & Features</h6>
+                <ul>
+                  <li><strong>Core Gestures:</strong> Index finger (copy), three fingers (select all), pinky finger (paste), thumb directions (desktop switching)</li>
+                  <li><strong>Advanced Gestures:</strong> Multi-finger combinations, dynamic gestures, custom mappings, context-aware actions</li>
+                  <li><strong>User Calibration:</strong> Automatic personalization based on individual gesture patterns with real-time feedback</li>
+                  <li><strong>Performance Monitoring:</strong> Live accuracy and latency monitoring with comprehensive analytics dashboard</li>
+                  <li><strong>Educational Impact:</strong> Downloaded by 267+ students in the George Mason CS department, used in CV lab demos</li>
+                </ul>
+              </div>
+              
+              <div class="project-links">
+                                 <a href="handcuts.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+                                                                     <a href="https://github.com/WaleedaRaza/handcuts" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+          </div>
+        </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="project-card">
+              <h3>Petform</h3>
+              <h5 style="color: #dd5414;">All-in-One Pet Management App</h5>
+              <p><strong>Built with:</strong> Dart, Flutter, Firebase, Firestore, Supabase (legacy), Auth0, PostgreSQL, and Google Cloud Functions</p>
+              
+              <div class="preview-toggle" onclick="togglePreview('petform-preview')">
+                <i class="bi bi-chevron-down" id="petform-chevron"></i>
+                <span>Click to preview</span>
+              </div>
+              
+              <!-- Preview Content -->
+              <div id="petform-preview" class="preview-content" style="display: none;">
+                <h6 style="color: #dd5414; margin-top: 20px;">🤖 AI-Powered Pet Assistant</h6>
+                <ul>
+                  <li><strong>GPT-4 Integration:</strong> Natural language processing for personalized pet advice with context-aware responses</li>
+                  <li><strong>Health & Behavior Advice:</strong> AI considers pet breed, age, and health history for tailored recommendations</li>
+                  <li><strong>Nutrition Guidance:</strong> Diet recommendations and feeding schedules based on pet-specific needs</li>
+                  <li><strong>Emergency Advice:</strong> Quick responses for urgent pet care situations with multi-turn conversations</li>
+                  <li><strong>Personalized Insights:</strong> GPT-4-powered insights that adapt to individual pet characteristics</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">📊 Comprehensive Health Tracking</h6>
+                <ul>
+                  <li><strong>Multi-Category Tracking:</strong> Weight, feeding, exercise, grooming, medication schedules with custom metrics</li>
+                  <li><strong>Progress Monitoring:</strong> Visual charts and graphs for tracking trends and setting goals</li>
+                  <li><strong>Smart Reminders:</strong> Frequency-based schedule generation with automatic notifications</li>
+                  <li><strong>Data Persistence:</strong> Supabase backend with real-time synchronization and offline support</li>
+                  <li><strong>Pet Profiles:</strong> Multiple pets with individual tracking, photos, and health records</li>
+                </ul>
+                
+                <h6 style="color: #dd5414;">🌐 Community & Shopping Features</h6>
+                <ul>
+                  <li><strong>Community Feed:</strong> Reddit API integration with curated posts, smart filtering, and pet-specific content</li>
+                  <li><strong>Real-Time Features:</strong> Comment threads, post voting, pet-specific filters using Firebase Realtime</li>
+                  <li><strong>Shopping Lists:</strong> AI-driven product recommendations based on breed and lifecycle with smart suggestions</li>
+                  <li><strong>Secure Authentication:</strong> Auth0 with social login (Apple, Google) and token validation middleware</li>
+                  <li><strong>Cross-Platform:</strong> Native iOS and Android apps with responsive design and dark theme</li>
+                </ul>
+              </div>
+              
+              <div class="project-links">
+                                 <a href="petform.html" class="btn btn-primary glowing-btn" style="background-color: rgb(255, 94, 0); border-color: orange; padding: 10px 20px; font-size: 1rem;">View Project</a>
+                                                                     <a href="https://github.com/WaleedaRaza/petform" class="btn btn-primary" style="background-color: #008c98; border-color: #008c98; color: white;">GitHub</a>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      </div>
+
+    </section><!-- /Projects Section -->
+    
+
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>About</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4 justify-content-center">
+          <div class="col-lg-12 content">
+            <h2>Software Engineer & ML/AI Enthusiast</h2>
+            <p class="fst-italic py-3">
+              Passionate about building scalable systems, machine learning solutions, and innovative applications. 
+              Currently working on distributed systems, computer vision, and full-stack development.
+            </p>
+            <div class="row">
+
+              <div class="col-lg-6">
+                <ul>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Role:</strong> <span>Software Engineer Intern @ Freddie Mac.</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Education:</strong> <span>Computer Science BS</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Focuses:</strong> <span>Machine Learning & AI, Natural Language Processing, Computer Vision, Distributed Systems & Cloud Architecture, Full-Stack Development, Data Engineering & Analytics</span></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="row mt-4">
+              <div class="col-lg-12">
+                <h5 style="color: #dd5414; margin-bottom: 20px;">Let's Connect</h5>
+                <p>Interested in collaborating on interesting projects or discussing opportunities? I'm always open to:</p>
+                <ul>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Technical Collaborations:</strong> Open source projects, hackathons, research</li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Career Opportunities:</strong> Full-time roles, internships, freelance work</li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Networking:</strong> Coffee chats, tech discussions, mentorship</li>
+                </ul>
+                
+                <div class="contact-buttons-grid">
+                  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=waleedraza1211@gmail.com&su=Collaboration%20Opportunity" target="_blank" class="contact-btn teal-btn">
+                    <i class="bi bi-envelope"></i>
+                    <span>Email via Gmail</span>
+                  </a>
+                  <a href="https://www.linkedin.com/in/waleedaraza/" target="_blank" class="contact-btn orange-btn">
+                    <i class="bi bi-linkedin"></i>
+                    <span>LinkedIn</span>
+                  </a>
+                  <a href="https://github.com/WaleedaRaza" target="_blank" class="contact-btn teal-btn">
+                    <i class="bi bi-github"></i>
+                    <span>GitHub</span>
+                  </a>
+                  <a href="https://forms.gle/xTfFt4CSmrEVijEC9" target="_blank" class="contact-btn orange-btn">
+                    <i class="bi bi-handshake"></i>
+                    <span>Collaboration Form</span>
+                  </a>
+                  <a href="#" class="contact-btn teal-btn" onclick="alert('Resume link coming soon!')">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Resume</span>
+                  </a>
+                  <a href="#projects" class="contact-btn orange-btn">
+                    <i class="bi bi-code-square"></i>
+                    <span>Portfolio</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+    
+    <!-- Stats Section 
+    <section id="stats" class="stats section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-emoji-smile"></i>
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Happy Clients</strong> <span>consequuntur quae</span></p>
+            </div>
+          </div><!-- End Stats Item 
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-journal-richtext"></i>
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Projects</strong> <span>adipisci atque cum quia aut</span></p>
+            </div>
+          </div><!-- End Stats Item 
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-headset"></i>
+              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Hours Of Support</strong> <span>aut commodi quaerat</span></p>
+            </div>
+          </div><!-- End Stats Item 
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item">
+              <i class="bi bi-people"></i>
+              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Hard Workers</strong> <span>rerum asperiores dolor</span></p>
+            </div>
+          </div><!-- End Stats Item 
+
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section --> 
+    <!-- Skills Section -
+    <section id="skills" class="skills section light-background">
+
+      <!-- Section Title -
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Skills</h2>
+        <p></p>
+      </div><!-- End Section Title -
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row skills-content skills-animation">
+
+          <div class="col-lg-6">
+
+            <div class="progress">
+              <span class="skill"><span>Back-End Development</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item --
+
+            <div class="progress">
+              <span class="skill"><span>AWS Cloud Usage</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item -
+
+            <div class="progress">
+              <span class="skill"><span>Leadership and Communication</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item --
+
+          </div>
+
+          <div class="col-lg-6">
+
+            <div class="progress">
+              <span class="skill"><span>Data Structures and Algorithms</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item --
+
+            <div class="progress">
+              <span class="skill"><span>Data Science and Machine Learning</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item --
+
+            <div class="progress">
+              <span class="skill"><span>HTML CSS JS</span> <i class="val"></i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div><!-- End Skills Item -->
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    
+      <!-- Section Title 
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Resume</h2>
+        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+      </div><!-- End Section Title 
+
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="resume-title">Sumary</h3>
+
+            <div class="resume-item pb-0">
+              <h4>Brandon Johnson</h4>
+              <p><em>Innovative and deadline-driven Graphic Designer with 3+ years of experience designing and developing user-centered digital/print marketing material from initial concept to final, polished deliverable.</em></p>
+              <ul>
+                <li>Portland par 127,Orlando, FL</li>
+                <li>(123) 456-7891</li>
+                <li>alice.barkley@example.com</li>
+              </ul>
+            </div><!-- Edn Resume Item 
+
+            <h3 class="resume-title">Education</h3>
+            <div class="resume-item">
+              <h4>Master of Fine Arts &amp; Graphic Design</h4>
+              <h5>2015 - 2016</h5>
+              <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
+              <p>Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend</p>
+            </div><!-- Edn Resume Item 
+
+            <div class="resume-item">
+              <h4>Bachelor of Fine Arts &amp; Graphic Design</h4>
+              <h5>2010 - 2014</h5>
+              <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
+              <p>Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila</p>
+            </div><!-- Edn Resume Item 
+
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="resume-title">Professional Experience</h3>
+            <div class="resume-item">
+              <h4>Senior graphic design specialist</h4>
+              <h5>2019 - Present</h5>
+              <p><em>Experion, New York, NY </em></p>
+              <ul>
+                <li>Lead in the design, development, and implementation of the graphic, layout, and production communication materials</li>
+                <li>Delegate tasks to the 7 members of the design team and provide counsel on all aspects of the project. </li>
+                <li>Supervise the assessment of all graphic materials in order to ensure quality and accuracy of the design</li>
+                <li>Oversee the efficient use of production project budgets ranging from $2,000 - $25,000</li>
+              </ul>
+            </div><!-- Edn Resume Item 
+
+            <div class="resume-item">
+              <h4>Graphic design specialist</h4>
+              <h5>2017 - 2018</h5>
+              <p><em>Stepping Stone Advertising, New York, NY</em></p>
+              <ul>
+                <li>Developed numerous marketing programs (logos, brochures,infographics, presentations, and advertisements).</li>
+                <li>Managed up to 5 projects or tasks at a given time while under pressure</li>
+                <li>Recommended and consulted with clients on the most appropriate graphic design</li>
+                <li>Created 4+ design presentations and proposals a month for clients and account managers</li>
+              </ul>
+            </div><!-- Edn Resume Item -->
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Resume Section -->
+
+
+
+    <!-- Services Section 
+    <section id="services" class="services section">
+
+      <!-- Section Title 
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+      </div><!-- End Section Title 
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+            <div>
+              <h4 class="title"><a href="service-details.html" class="stretched-link">Lorem Ipsum</a></h4>
+              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+            </div>
+          </div>
+          <!-- End Service Item -->
+
+        </section><!-- /Services Section -->
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials section light-background">
+    
+          <!-- Section Title 
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Testimonials</h2>
+            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+          </div><!-- End Section Title -->
+    
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+    
+            <div class="swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 5000
+                  },
+                  "slidesPerView": "auto",
+                  "pagination": {
+                    "el": ".swiper-pagination",
+                    "type": "bullets",
+                    "clickable": true
+                  },
+                  "breakpoints": {
+                    "320": {
+                      "slidesPerView": 1,
+                      "spaceBetween": 40
+                    },
+                    "1200": {
+                      "slidesPerView": 3,
+                      "spaceBetween": 1
+                    }
+                  }
+                }
+              </script>
+              <!----
+              <div class="swiper-wrapper">
+    
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <p>
+                      <i class="bi bi-quote quote-icon-left"></i>
+                      <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                      <i class="bi bi-quote quote-icon-right"></i>
+                    </p>
+                    <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                    <h3>Saul Goodman</h3>
+                    <h4>Ceo &amp; Founder</h4>
+                  </div>
+                </div><!-- End testimonial item 
+    
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <p>
+                      <i class="bi bi-quote quote-icon-left"></i>
+                      <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                      <i class="bi bi-quote quote-icon-right"></i>
+                    </p>
+                    <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                    <h3>Sara Wilsson</h3>
+                    <h4>Designer</h4>
+                  </div>
+                </div><!-- End testimonial item 
+    
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <p>
+                      <i class="bi bi-quote quote-icon-left"></i>
+                      <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                      <i class="bi bi-quote quote-icon-right"></i>
+                    </p>
+                    <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                    <h3>Jena Karlis</h3>
+                    <h4>Store Owner</h4>
+                  </div>
+                </div><!-- End testimonial item 
+    
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <p>
+                      <i class="bi bi-quote quote-icon-left"></i>
+                      <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                      <i class="bi bi-quote quote-icon-right"></i>
+                    </p>
+                    <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                    <h3>Matt Brandon</h3>
+                    <h4>Freelancer</h4>
+                  </div>
+                </div><!-- End testimonial item 
+    
+                <div class="swiper-slide">
+                  <div class="testimonial-item">
+                    <p>
+                      <i class="bi bi-quote quote-icon-left"></i>
+                      <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                      <i class="bi bi-quote quote-icon-right"></i>
+                    </p>
+                    <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                    <h3>John Larson</h3>
+                    <h4>Entrepreneur</h4>
+                  </div>
+                </div><!-- End testimonial item -->
+    
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+    
+          </div>
+    
+        </section><!-- /Testimonials Section 
+    
+        <!-- Skills Section -->
+        <section id="skills" class="skills section light-background">
+    
+          <!-- Section Title -->
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Technical Skills</h2>
+            <p>Technologies and frameworks I work with</p>
+          </div><!-- End Section Title -->
+    
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="skills-container">
+              <!-- Tooltip display area -->
+              <div class="tooltip-display" id="tooltipDisplay">
+                <span class="tooltip-text"></span>
+              </div>
+              
+              <!-- Skills Grid -->
+              <div class="skills-grid">
+                <!-- Alphabetical order -->
+                <img src="icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" class="skill-icon" title="AWS" data-tech="AWS">
+                <img src="icons/apache/apache-original.svg" alt="Apache" class="skill-icon" title="Apache" data-tech="Apache">
+                <img src="icons/apachespark/apachespark-original.svg" alt="Apache Spark" class="skill-icon" title="Apache Spark" data-tech="Apache Spark">
+                <img src="icons/azure/azure-original.svg" alt="Azure" class="skill-icon" title="Azure" data-tech="Azure">
+                <img src="icons/c/c-original.svg" alt="C" class="skill-icon" title="C" data-tech="C">
+                <img src="icons/dart/dart-original.svg" alt="Dart" class="skill-icon" title="Dart" data-tech="Dart">
+                <img src="icons/docker/docker-original.svg" alt="Docker" class="skill-icon" title="Docker" data-tech="Docker">
+                <img src="icons/fastapi/fastapi-original.svg" alt="FastAPI" class="skill-icon" title="FastAPI" data-tech="FastAPI">
+                <img src="icons/firebase/firebase-original.svg" alt="Firebase" class="skill-icon" title="Firebase" data-tech="Firebase">
+                <img src="icons/flask/flask-original.svg" alt="Flask" class="skill-icon" title="Flask" data-tech="Flask">
+                <img src="icons/flutter/flutter-original.svg" alt="Flutter" class="skill-icon" title="Flutter" data-tech="Flutter">
+                <img src="icons/github/github-original.svg" alt="Git" class="skill-icon" title="Git" data-tech="Git">
+                <img src="icons/java/java-original.svg" alt="Java" class="skill-icon" title="Java" data-tech="Java">
+                <img src="icons/javascript/javascript-original.svg" alt="JavaScript" class="skill-icon" title="JavaScript" data-tech="JavaScript">
+                <img src="icons/keras/keras-original.svg" alt="Keras" class="skill-icon" title="Keras" data-tech="Keras">
+                <img src="icons/kubeflow/kubeflow-original.svg" alt="Kubeflow" class="skill-icon" title="Kubeflow" data-tech="Kubeflow">
+                <img src="icons/kubernetes/kubernetes-original.svg" alt="Kubernetes" class="skill-icon" title="Kubernetes" data-tech="Kubernetes">
+                <img src="icons/matplotlib/matplotlib-original.svg" alt="Matplotlib" class="skill-icon" title="Matplotlib" data-tech="Matplotlib">
+                <img src="icons/mongodb/mongodb-original.svg" alt="MongoDB" class="skill-icon" title="MongoDB" data-tech="MongoDB">
+                <img src="icons/nodejs/nodejs-original.svg" alt="Node.js" class="skill-icon" title="Node.js" data-tech="Node.js">
+                <img src="icons/numpy/numpy-original.svg" alt="NumPy" class="skill-icon" title="NumPy" data-tech="NumPy">
+                <img src="icons/opencv/opencv-original.svg" alt="OpenCV" class="skill-icon" title="OpenCV" data-tech="OpenCV">
+                <img src="icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="skill-icon" title="PostgreSQL" data-tech="PostgreSQL">
+                <img src="icons/prometheus/prometheus-original.svg" alt="Prometheus" class="skill-icon" title="Prometheus" data-tech="Prometheus">
+                <img src="icons/python/python-original.svg" alt="Python" class="skill-icon" title="Python" data-tech="Python">
+                <img src="icons/pytorch/pytorch-original.svg" alt="PyTorch" class="skill-icon" title="PyTorch" data-tech="PyTorch">
+                <img src="icons/react/react-original.svg" alt="React" class="skill-icon" title="React" data-tech="React">
+                <img src="icons/redis/redis-original.svg" alt="Redis" class="skill-icon" title="Redis" data-tech="Redis">
+                <img src="icons/scikitlearn/scikitlearn-original.svg" alt="scikit-learn" class="skill-icon" title="scikit-learn" data-tech="scikit-learn">
+                <img src="icons/supabase/supabase-original.svg" alt="Supabase" class="skill-icon" title="Supabase" data-tech="Supabase">
+                <img src="icons/swift/swift-original.svg" alt="Swift" class="skill-icon" title="Swift" data-tech="Swift">
+                <img src="icons/tensorflow/tensorflow-original.svg" alt="TensorFlow" class="skill-icon" title="TensorFlow" data-tech="TensorFlow">
+                <img src="icons/typescript/typescript-original.svg" alt="TypeScript" class="skill-icon" title="TypeScript" data-tech="TypeScript">
+                <img src="icons/unix/unix-original.svg" alt="Unix" class="skill-icon" title="Unix" data-tech="Unix">
+                <img src="icons/vscode/vscode-original.svg" alt="VS Code" class="skill-icon" title="VS Code" data-tech="VS Code">
+                    </div>
+            </div>
+    
+                    </div>
+
+        </section><!-- /Skills Section -->
+
+
+
+    
+            <div class="row mt-5">
+              <div class="col-lg-12">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d24192.97847212389!2d-77.036871!3d38.89511!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b7bfe12dc91b%3A0x80b82b570f3f9e3e!2sWashington%2C%20DC!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  </div>
+            </div>
+    
+          </div>
+    
+        </section><!-- /Contact Section -->
+    
+      </main>
+    
+      <footer id="footer" class="footer position-relative light-background">
+    
+        <div class="container">
+          <div class="copyright text-center ">
+            <p> <span></span> <strong class="px-1 sitename">Waleed Raza</strong> <span>2024</span></p>
+          </div>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+          </div>
+        </div>
+    
+      </footer>
+    
+      <!-- Scroll Top -->
+      <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    
+      <!-- Preloader -->
+      <div id="preloader"></div>
+    
+      <!-- Vendor JS Files -->
+      <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script src="assets/vendor/php-email-form/validate.js"></script>
+      <script src="assets/vendor/aos/aos.js"></script>
+      <script src="assets/vendor/typed.js/typed.umd.js"></script>
+      <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+      <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+      <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+      <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+      <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+      <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    
+      <!-- Main JS File -->
+      <script src="assets/js/main.js"></script>
+    
+  <!-- Working tooltip script -->
+  <script>
+    console.log('🔥 Setting up working tooltip system...');
+    
+    function setupTooltips() {
+      const tooltipDisplay = document.getElementById('tooltipDisplay');
+      const skillIcons = document.querySelectorAll('.skill-icon');
+      
+      console.log('Found tooltip display:', !!tooltipDisplay);
+      console.log('Found skill icons:', skillIcons.length);
+      
+      if (!tooltipDisplay || skillIcons.length === 0) {
+        console.log('Missing elements, retrying...');
+        setTimeout(setupTooltips, 100);
+        return;
+      }
+      
+      const tooltipText = tooltipDisplay.querySelector('.tooltip-text');
+      if (!tooltipText) {
+        console.log('Tooltip text element not found');
+        return;
+      }
+      
+      console.log('Setting up hover events for', skillIcons.length, 'icons...');
+      
+      // Add hover events to each icon
+      skillIcons.forEach((icon, index) => {
+        const techName = icon.getAttribute('data-tech');
+        const description = icon.getAttribute('title'); // Still using title for description, but only techName is displayed
+        
+        console.log(`Setting up icon ${index}: ${techName}`);
+        
+        icon.addEventListener('mouseenter', function() {
+          console.log('Hovering over:', techName);
+          tooltipText.textContent = techName; // Just the name, no dash
+          tooltipDisplay.style.transform = 'scale(1.05)';
+          tooltipDisplay.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.5)';
+        });
+        
+        icon.addEventListener('mouseleave', function() {
+          console.log('Mouse left:', techName);
+          tooltipText.textContent = '';
+          tooltipDisplay.style.transform = 'scale(1)';
+          tooltipDisplay.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
+        });
+      });
+      
+      console.log('✅ Tooltip system setup complete!');
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupTooltips);
+    } else {
+      setupTooltips();
+    }
+    
+    // Also initialize after a delay as backup
+    setTimeout(setupTooltips, 1000);
+  </script>
+
+  <!-- Project Preview Toggle System -->
+  <script>
+    console.log('📋 Setting up project preview toggle system...');
+    
+    function togglePreview(previewId) {
+      const preview = document.getElementById(previewId);
+      const chevron = document.getElementById(previewId.replace('-preview', '-chevron'));
+      
+      if (!preview || !chevron) {
+        console.error('❌ Preview or chevron element not found:', previewId);
+        return;
+      }
+      
+      const isVisible = preview.style.display !== 'none';
+      
+      if (isVisible) {
+        // Hide preview
+        preview.style.display = 'none';
+        chevron.className = 'bi bi-chevron-down';
+        console.log('📋 Hiding preview:', previewId);
+      } else {
+        // Show preview
+        preview.style.display = 'block';
+        chevron.className = 'bi bi-chevron-up';
+        console.log('📋 Showing preview:', previewId);
+      }
+    }
+    
+    console.log('✅ Project preview toggle system setup complete!');
+  </script>
+
+  <!-- CSS for Preview System -->
+  <style>
+    .preview-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(221, 84, 20, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .preview-toggle:hover {
+      background: rgba(221, 84, 20, 0.2);
+    }
+    
+    .preview-toggle i {
+      color: #dd5414;
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .preview-toggle span {
+      color: #dd5414;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .preview-content {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(221, 84, 20, 0.2);
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .project-card {
+      transition: all 0.3s ease;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .preview-content ul {
+      margin-bottom: 20px;
+    }
+    
+    .preview-content li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    
+    /* Enhanced glowing button effect */
+    .glowing-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 25px rgba(255, 94, 0, 0.5), 0 0 50px rgba(255, 94, 0, 0.3);
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 2px solid rgba(255, 94, 0, 0.8);
+      animation: pulse-glow 2s infinite;
+    }
+    
+    .glowing-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 40px rgba(255, 94, 0, 0.8), 0 0 80px rgba(255, 94, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #ff6a00, #dd5414, #ff6a00);
+      background-size: 200% 200%;
+      animation: gradient-shift 0.8s ease, pulse-glow 1.5s infinite;
+    }
+    
+    .glowing-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.6s;
+    }
+    
+    .glowing-btn:hover::before {
+      left: 100%;
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 25px rgba(255, 94, 0, 0.5), 0 0 50px rgba(255, 94, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(255, 94, 0, 0.7), 0 0 70px rgba(255, 94, 0, 0.4);
+      }
+    }
+    
+    @keyframes gradient-shift {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+  </style>
+    </body>
+    
+    </html>
+    
