@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WARVIS — WaleedOS</title>
+  <meta name="description" content="Privacy-first local AI assistant with system control, automation, and voice interface.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/tokens.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: var(--void-base);
+      color: var(--text-primary);
+      line-height: var(--leading-normal);
+      min-height: 100vh;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .back-link {
+      position: fixed;
+      top: var(--space-6);
+      left: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: var(--space-3) var(--space-4);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-full);
+      z-index: 100;
+      transition: all var(--duration-fast);
+    }
+    
+    .back-link:hover {
+      color: var(--text-accent);
+      border-color: var(--accent-primary);
+    }
+    
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-24) var(--space-8);
+    }
+    
+    .product-hero {
+      margin-bottom: var(--space-12);
+      padding-left: var(--space-6);
+      border-left: 4px solid #ffb300;
+    }
+    
+    .product-category {
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: #ffb300;
+      margin-bottom: var(--space-2);
+    }
+    
+    .product-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-hero);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-4);
+    }
+    
+    .product-status {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-6);
+    }
+    
+    .product-status.shipping { color: var(--status-shipping); background: var(--status-shipping-dim); }
+    .product-status.in-dev { color: var(--status-indev); background: var(--status-indev-dim); }
+    .product-status.prototype { color: #7e57c2; background: rgba(126, 87, 194, 0.15); }
+    .product-status.archived { color: var(--text-muted); background: var(--glass-bg); }
+    
+    .product-tagline {
+      font-size: var(--text-h2);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .section {
+      margin-bottom: var(--space-12);
+    }
+    
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-muted);
+      margin-bottom: var(--space-4);
+    }
+    
+    .section-content {
+      font-size: var(--text-body);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .feature-list {
+      list-style: none;
+    }
+    
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      font-size: var(--text-body);
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--void-border);
+    }
+    
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .feature-list li::before {
+      content: '→';
+      color: #ffb300;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+    }
+    
+    .mvp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+    }
+    
+    .mvp-column h4 {
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .mvp-list {
+      list-style: none;
+    }
+    
+    .mvp-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      font-size: var(--text-small);
+      color: var(--text-secondary);
+    }
+    
+    .mvp-check {
+      width: 18px;
+      height: 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--void-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    
+    .mvp-check.done {
+      background: var(--status-shipping-dim);
+      border-color: var(--status-shipping);
+      color: var(--status-shipping);
+    }
+    
+    .proof-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    
+    .proof-link {
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
+      color: var(--text-accent);
+      text-decoration: none;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--accent-primary-dim);
+      border-radius: var(--radius-md);
+      transition: all var(--duration-fast);
+    }
+    
+    .proof-link:hover {
+      background: var(--accent-primary-dim);
+    }
+    
+    .proof-link.disabled {
+      color: var(--text-muted);
+      border-color: var(--void-border);
+    }
+    
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--space-4);
+    }
+    
+    .meta-item {
+      padding: var(--space-4);
+      background: var(--void-surface);
+      border: 1px solid var(--void-border);
+      border-radius: var(--radius-md);
+    }
+    
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-muted);
+      margin-bottom: var(--space-2);
+    }
+    
+    .meta-value {
+      font-size: var(--text-body);
+      color: var(--text-primary);
+    }
+    
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      color: var(--text-secondary);
+      padding: var(--space-2) var(--space-3);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+    }
+    
+    .final-scope {
+      background: var(--void-surface);
+      border: 1px solid var(--void-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    
+    .final-scope h4 {
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    footer {
+      text-align: center;
+      padding: var(--space-8);
+      border-top: 1px solid var(--void-border);
+    }
+    
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: var(--text-micro);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <a href="../" class="back-link">← Back to Graph</a>
+  
+  <main>
+    <header class="product-hero">
+      <p class="product-category">Research</p>
+      <h1 class="product-name">WARVIS</h1>
+      <span class="product-status prototype">Prototype</span>
+      <p class="product-tagline">Privacy-first local AI assistant with system control, automation, and voice interface.</p>
+    </header>
+    
+    <section class="section">
+      <p class="section-label">Problem</p>
+      <p class="section-content">Cloud AI assistants sacrifice privacy and require connectivity. Power users want local control.</p>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Solution</p>
+      <p class="section-content">WARVIS is a local-first AI assistant that runs on your machine — system control, automation, and voice interface with complete privacy.</p>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Unique Value Proposition</p>
+      <ul class="feature-list">
+        <li>Fully local execution (no cloud required)</li>
+        <li>System control and automation</li>
+        <li>Voice interface with wake word</li>
+        <li>Extensible plugin architecture</li>
+        <li>Privacy-first design</li>
+        <li>Open source core</li>
+      </ul>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Progress</p>
+      <div class="mvp-grid">
+        <div class="mvp-column">
+          <h4>MVP Now (Done)</h4>
+          <ul class="mvp-list">
+            
+            <li class="mvp-item">
+              <span class="mvp-check done">✓</span>
+              <span>Local LLM integration working</span>
+            </li>
+            <li class="mvp-item">
+              <span class="mvp-check done">✓</span>
+              <span>Basic voice recognition</span>
+            </li>
+            <li class="mvp-item">
+              <span class="mvp-check done">✓</span>
+              <span>System command execution</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mvp-column">
+          <h4>MVP Next (Planned)</h4>
+          <ul class="mvp-list">
+            
+            <li class="mvp-item">
+              <span class="mvp-check"></span>
+              <span>Plugin system</span>
+            </li>
+            <li class="mvp-item">
+              <span class="mvp-check"></span>
+              <span>Improved voice accuracy</span>
+            </li>
+            <li class="mvp-item">
+              <span class="mvp-check"></span>
+              <span>More system integrations</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Proof Links</p>
+      <div class="proof-links">
+        <a href="https://github.com/WaleedaRaza/WARVIS" class="proof-link" target="_blank" rel="noopener">GitHub Repository</a>
+        <span class="proof-link disabled">Demo coming soon</span>
+        
+      </div>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Details</p>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <p class="meta-label">Category</p>
+          <p class="meta-value">Research</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">User Type</p>
+          <p class="meta-value">Developer</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Monetization</p>
+          <p class="meta-value">OSS</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Timeline</p>
+          <p class="meta-value">3-12 months</p>
+        </div>
+        <div class="meta-item">
+          <p class="meta-label">Focus Weight</p>
+          <p class="meta-value">4/10</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Ollama</span>
+        <span class="tech-tag">Whisper</span>
+        <span class="tech-tag">System APIs</span>
+      </div>
+    </section>
+    
+    <section class="section">
+      <div class="final-scope">
+        <h4>🚀 Final Scope (Earth → Moon)</h4>
+        <ul class="feature-list">
+          <li>Full home automation integration</li>
+          <li>Multi-device sync</li>
+          <li>Custom wake word training</li>
+          <li>Enterprise deployment</li>
+          <li>Mobile companion</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <p class="footer-text">
+      WARVIS — Part of the WaleedOS product suite
+    </p>
+  </footer>
+</body>
+</html>

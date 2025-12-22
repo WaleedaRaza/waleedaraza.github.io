@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="marble">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Waleed Raza — Products</title>
+  <meta name="description" content="Product studio: real-time systems, knowledge engines, and calm proof." />
+  <meta name="keywords" content="software engineer, products, poker, knowledge vault, productivity OS" />
+  <meta name="theme-color" content="#0b0b0f" />
+
+  <!-- Open Graph (optional but recommended) -->
+  <meta property="og:title" content="Waleed Raza — Products" />
+  <meta property="og:description" content="Competitive systems. Knowledge engines. Calm proof." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    /* ============================
+       ORACLE OS — Marble Noir
+       ============================ */
+
+    :root {
+      --bg: #f5f1e8;         /* marble base */
+      --bg2: #efe8da;        /* subtle depth */
+      --ink: #0b0b0f;        /* near-black */
+      --muted: rgba(11,11,15,.72);
+      --faint: rgba(11,11,15,.12);
+      --hair: rgba(11,11,15,.10);
+
+      --card: rgba(255,255,255,.56);
+      --card2: rgba(255,255,255,.38);
+
+      --gold: rgba(200,160,80,.85);  /* restrained accent */
+      --shadow: 0 12px 40px rgba(0,0,0,.10);
+      --shadow2: 0 18px 60px rgba(0,0,0,.16);
+
+      --r: 18px;
+      --r2: 26px;
+
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 14px;
+      --space-4: 18px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 72px;
+
+      --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Garamond", Georgia, serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+      --max: 1160px;
+    }
+
+    html[data-theme="noir"] {
+      --bg: #0b0b0f;
+      --bg2: #12121a;
+      --ink: rgba(245,241,232,.96);
+      --muted: rgba(245,241,232,.72);
+      --faint: rgba(245,241,232,.12);
+      --hair: rgba(245,241,232,.10);
+
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
+
+      --shadow: 0 12px 40px rgba(0,0,0,.38);
+      --shadow2: 0 18px 60px rgba(0,0,0,.50);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% 10%, var(--bg2), transparent 55%),
+                  radial-gradient(900px 700px at 80% 30%, rgba(200,160,80,.10), transparent 55%),
+                  var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay (subtle) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .06;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--gold); }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: var(--space-6) var(--space-5);
+    }
+
+    /* Top bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.18));
+      border-bottom: 1px solid var(--hair);
+    }
+    html[data-theme="noir"] header {
+      background: linear-gradient(to bottom, rgba(18,18,26,.72), rgba(18,18,26,.34));
+    }
+
+    .topbar {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: var(--space-3) var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 220px;
+    }
+    .sigil {
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--hair);
+      background: radial-gradient(circle at 30% 30%, rgba(200,160,80,.25), transparent 55%),
+                  linear-gradient(135deg, var(--card), var(--card2));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .sigil::after {
+      content: "";
+      position: absolute; inset: -40%;
+      background: radial-gradient(circle at 30% 40%, rgba(200,160,80,.22), transparent 48%),
+                  radial-gradient(circle at 65% 55%, rgba(255,255,255,.22), transparent 52%);
+      transform: rotate(12deg);
+      opacity: .9;
+    }
+    .brand strong {
+      font-family: var(--serif);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .brand span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: .02em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: var(--space-4);
+      padding: 0;
+      margin: 0;
+      align-items: center;
+    }
+    nav a {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      color: var(--ink);
+      border-color: var(--hair);
+      background: rgba(255,255,255,.18);
+    }
+    html[data-theme="noir"] nav a:hover { background: rgba(255,255,255,.06); }
+
+    .top-actions {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+    .btn {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--hair);
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      color: var(--ink);
+      box-shadow: none;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(200,160,80,.35);
+      box-shadow: var(--shadow);
+    }
+    .btn.primary {
+      border-color: rgba(200,160,80,.40);
+      box-shadow: var(--shadow);
+    }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      padding: 3px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--hair);
+      color: var(--muted);
+      margin-left: 8px;
+    }
+
+    /* Gate */
+    .gate {
+      padding: var(--space-8) 0 var(--space-7);
+      position: relative;
+    }
+    .gate-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .gate-grid { grid-template-columns: 1fr; }
+    }
+
+    .gate h1 {
+      font-family: var(--serif);
+      font-weight: 650;
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 1.02;
+      margin: 0 0 var(--space-3);
+      letter-spacing: -0.03em;
+    }
+    .gate p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 var(--space-4);
+      max-width: 58ch;
+    }
+    .gate .mission {
+      color: var(--ink);
+      font-size: 18px;
+      margin-top: var(--space-3);
+      opacity: .92;
+    }
+
+    .glass-panel {
+      border-radius: var(--r2);
+      border: 1px solid var(--hair);
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      box-shadow: var(--shadow2);
+      padding: var(--space-5);
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(200,160,80,.16), transparent 60%),
+        radial-gradient(circle at 70% 65%, rgba(255,255,255,.14), transparent 62%);
+      transform: rotate(14deg);
+      opacity: .9;
+    }
+    .glass-panel > * { position: relative; }
+
+    .meta {
+      display: grid;
+      gap: var(--space-3);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--hair);
+      border-radius: 999px;
+      padding: 8px 10px;
+      width: fit-content;
+      background: rgba(255,255,255,.14);
+    }
+    html[data-theme="noir"] .pill { background: rgba(255,255,255,.04); }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: 0 0 0 4px rgba(200,160,80,.14);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    /* Section */
+    .section {
+      padding: var(--space-7) 0;
+      border-top: 1px solid var(--hair);
+    }
+    .section h2 {
+      font-family: var(--serif);
+      font-weight: 620;
+      font-size: 30px;
+      margin: 0 0 var(--space-2);
+      letter-spacing: -0.02em;
+    }
+    .section .sub {
+      margin: 0 0 var(--space-5);
+      color: var(--muted);
+      max-width: 70ch;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* Bento altar */
+    .altar {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-4);
+    }
+    .card {
+      border-radius: var(--r2);
+      border: 1px solid var(--hair);
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      box-shadow: none;
+      padding: var(--space-5);
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(200,160,80,.32);
+      box-shadow: var(--shadow);
+    }
+
+    .card .label {
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .status {
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--hair);
+      color: var(--muted);
+      background: rgba(255,255,255,.14);
+      white-space: nowrap;
+    }
+    html[data-theme="noir"] .status { background: rgba(255,255,255,.04); }
+    .status.shipping { border-color: rgba(80,200,140,.35); }
+    .status.dev { border-color: rgba(200,160,80,.35); }
+    .status.beta { border-color: rgba(120,160,255,.35); }
+
+    .card h3 {
+      margin: 0 0 var(--space-2);
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+    .card p {
+      margin: 0 0 var(--space-4);
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 62ch;
+    }
+    .card .actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    .link {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.12);
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    html[data-theme="noir"] .link { background: rgba(255,255,255,.04); }
+    .link:hover { transform: translateY(-1px); border-color: rgba(200,160,80,.32); }
+
+    /* Bento layout placements */
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    @media (max-width: 980px) {
+      .span-7, .span-5, .span-6, .span-4, .span-8 { grid-column: span 12; }
+    }
+
+    /* Proof rail */
+    .rail {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-4);
+    }
+    .rail .chip {
+      grid-column: span 4;
+      border-radius: var(--r2);
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.10);
+      padding: var(--space-4);
+    }
+    html[data-theme="noir"] .rail .chip { background: rgba(255,255,255,.04); }
+    .rail .chip strong {
+      display: block;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--space-2);
+    }
+    .rail .chip div {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    @media (max-width: 980px) {
+      .rail .chip { grid-column: span 12; }
+    }
+
+    /* Signals + Writings */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    @media (max-width: 980px) { .grid2 { grid-template-columns: 1fr; } }
+
+    .tile {
+      border-radius: var(--r2);
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.10);
+      padding: var(--space-5);
+    }
+    html[data-theme="noir"] .tile { background: rgba(255,255,255,.04); }
+
+    .tile .kicker {
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--space-3);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .tile .body {
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.35;
+      margin: 0 0 var(--space-3);
+      letter-spacing: -0.01em;
+    }
+    .tile .note {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 72ch;
+    }
+
+    /* Codex */
+    .codex {
+      border-radius: var(--r2);
+      border: 1px solid var(--hair);
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      padding: var(--space-6);
+    }
+    .codex ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 15px;
+    }
+    .codex li { margin: 6px 0; }
+    .codex li strong { color: var(--ink); font-weight: 600; }
+
+    /* Footer */
+    footer {
+      padding: var(--space-7) 0;
+      border-top: 1px solid var(--hair);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    /* Command palette (dialog) */
+    dialog {
+      width: min(720px, calc(100% - 36px));
+      border: 1px solid var(--hair);
+      border-radius: var(--r2);
+      padding: 0;
+      background: linear-gradient(135deg, var(--card), var(--card2));
+      color: var(--ink);
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+    }
+    dialog::backdrop {
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+    }
+    .cmd-head {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--hair);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .cmd-head input {
+      width: 100%;
+      font-size: 14px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--hair);
+      outline: none;
+      background: rgba(255,255,255,.10);
+      color: var(--ink);
+    }
+    html[data-theme="noir"] .cmd-head input { background: rgba(255,255,255,.04); }
+    .cmd-list {
+      padding: var(--space-2);
+      max-height: 360px;
+      overflow: auto;
+    }
+    .cmd-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .cmd-item:hover {
+      border-color: rgba(200,160,80,.28);
+      background: rgba(255,255,255,.12);
+      color: var(--ink);
+    }
+    html[data-theme="noir"] .cmd-item:hover { background: rgba(255,255,255,.04); }
+    .cmd-item small { color: var(--muted); }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="sigil" aria-hidden="true"></div>
+        <div>
+          <strong>Waleed Raza</strong>
+          <span>Products • Systems • Calm proof</span>
+        </div>
+      </div>
+
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#temple">Temple</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#signals">Signals</a></li>
+          <li><a href="#codex">Codex</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="top-actions">
+        <button class="btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+        <button class="btn primary" id="cmdBtn" type="button">
+          Invoke <span class="kbd">⌘K</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="temple">
+    <!-- GATE -->
+    <section class="gate" id="hero">
+      <div class="gate-grid">
+        <div>
+          <h1>Competitive systems.<br/>Knowledge engines.</h1>
+          <p class="mission">PokerGeek is escape velocity. Everything else compounds it.</p>
+          <p>
+            I build real-time, data-intensive consumer products that turn play into progress and information into leverage.
+          </p>
+          <div class="links">
+            <a class="btn primary" href="#products">Enter Products</a>
+            <a class="btn" href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <aside class="glass-panel" aria-label="Now">
+          <div class="meta">
+            <div class="pill"><span class="dot"></span> Now building: PokerGeek + Alexandria Vault</div>
+            <div class="pill"><span class="dot"></span> Operating principle: proof outranks persuasion</div>
+            <div class="pill"><span class="dot"></span> Invoke navigation: press <span class="kbd">⌘K</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PRODUCTS (ALTAR) -->
+    <section class="section" id="products">
+      <h2>Products</h2>
+      <p class="sub">A small shelf. Each item is a system with momentum.</p>
+
+      <div class="altar">
+        <!-- PokerGeek (hero tile) -->
+        <article class="card span-7">
+          <div class="label">
+            <span>North Star</span>
+            <span class="status dev">In Dev</span>
+          </div>
+          <h3>PokerGeek</h3>
+          <p>Chess.com for poker: play, improve, and verify fairness — every hand becomes data.</p>
+          <div class="actions">
+            <a class="link" href="pokerswound.html">View</a>
+            <a class="link" href="https://github.com/WaleedaRaza/pokerswound" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="link" href="#proof">Proof</a>
+          </div>
+        </article>
+
+        <!-- Alexandria -->
+        <article class="card span-5">
+          <div class="label">
+            <span>Knowledge Engine</span>
+            <span class="status dev">In Dev</span>
+          </div>
+          <h3>Alexandria Vault</h3>
+          <p>Personal PDF library + lawful discovery: searchable collections, metadata, and clean organization.</p>
+          <div class="actions">
+            <a class="link" href="#" aria-disabled="true">Coming Soon</a>
+            <a class="link" href="https://github.com/WaleedaRaza/alexandria-vault" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+
+        <!-- ClipVault -->
+        <article class="card span-6">
+          <div class="label">
+            <span>Passive Engine</span>
+            <span class="status shipping">Shipping</span>
+          </div>
+          <h3>ClipVault</h3>
+          <p>Save videos into a searchable library: transcripts, tags, collections. Built for learning capture.</p>
+          <div class="actions">
+            <a class="link" href="#" aria-disabled="true">Coming Soon</a>
+            <a class="link" href="https://github.com/WaleedaRaza/clipvault" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+
+        <!-- Lifeline OS -->
+        <article class="card span-6">
+          <div class="label">
+            <span>OS Layer</span>
+            <span class="status dev">In Dev</span>
+          </div>
+          <h3>Lifeline OS</h3>
+          <p>Planning, execution, reflection — one loop. Local-first agent-backed structure for daily inevitability.</p>
+          <div class="actions">
+            <a class="link" href="https://github.com/WaleedaRaza/paths" target="_blank" rel="noreferrer">View</a>
+            <a class="link" href="https://github.com/WaleedaRaza/paths" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+
+        <!-- Petform -->
+        <article class="card span-12">
+          <div class="label">
+            <span>Consumer Platform</span>
+            <span class="status dev">In Dev</span>
+          </div>
+          <h3>Petform</h3>
+          <p>One home for pet life: profiles, records, reminders, shared access — structured care without chaos.</p>
+          <div class="actions">
+            <a class="link" href="petform.html">View</a>
+            <a class="link" href="https://github.com/WaleedaRaza/petform" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROOF WALL -->
+    <section class="section" id="proof">
+      <h2>Proof</h2>
+      <p class="sub">Receipts. Calm, current, unforced.</p>
+
+      <div class="rail">
+        <div class="chip">
+          <strong>Latest Drop</strong>
+          <div>Update this with your latest release/build note.</div>
+        </div>
+        <div class="chip">
+          <strong>Demo</strong>
+          <div>Link a 20–60s screen recording for PokerGeek here.</div>
+        </div>
+        <div class="chip">
+          <strong>Now Building</strong>
+          <div>PokerGeek stability + Alexandria v0 ingestion/search.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNALS + WRITINGS -->
+    <section class="section" id="signals">
+      <h2>Signals</h2>
+      <p class="sub">Fragments of the system: music, politics, design, writing — curated, not broadcast.</p>
+
+      <div class="grid2">
+        <div class="tile">
+          <div class="kicker"><span>Scripture</span><span>Writing</span></div>
+          <p class="body">“Proof outranks persuasion.”</p>
+          <p class="note">Short essays, notes, poems. Dated. Minimal. Each one is an inscription — not a diary.</p>
+        </div>
+
+        <div class="tile">
+          <div class="kicker"><span>Signals</span><span>Music • Design • Politics</span></div>
+          <p class="body">A controlled feed of fragments.</p>
+          <p class="note">Lyric → insight. System → implication. Design → principle. Always 1–2 lines. Never a rant.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CODEX -->
+    <section class="section" id="codex">
+      <h2>Codex</h2>
+      <p class="sub">A short code. Not a manifesto.</p>
+
+      <div class="codex">
+        <ul>
+          <li><strong>Proof</strong> outranks persuasion.</li>
+          <li><strong>Systems</strong> beat moods.</li>
+          <li><strong>Restraint</strong> is the loudest status signal.</li>
+          <li><strong>Design</strong> is strategy made visible.</li>
+          <li><strong>Shipping</strong> is truth in public.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <h2>Contact</h2>
+      <p class="sub">If you build the future, we speak.</p>
+      <div class="links">
+        <a class="btn primary" href="https://mail.google.com/mail/?view=cm&fs=1&to=waleedraza1211@gmail.com&su=Collaboration%20Opportunity" target="_blank" rel="noreferrer">Email</a>
+        <a class="btn" href="https://www.linkedin.com/in/waleedaraza/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="btn" href="https://github.com/WaleedaRaza" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="https://www.instagram.com/wwwaleedraza/" target="_blank" rel="noreferrer">Instagram</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-row">
+        <div>© <span id="year"></span> Waleed Raza</div>
+        <div>Temple build: Marble Noir Oracle OS</div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Command Palette -->
+  <dialog id="cmd">
+    <div class="cmd-head">
+      <input id="cmdInput" type="text" placeholder="Invoke… (products, signals, codex, contact)" autocomplete="off" />
+      <button class="btn" id="cmdClose" type="button">Close</button>
+    </div>
+    <div class="cmd-list" id="cmdList" role="listbox" aria-label="Commands"></div>
+  </dialog>
+
+  <script>
+    // ====== Minimal JS: Theme, Cmd Palette, Year ======
+    const html = document.documentElement;
+
+    // Persist theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "noir" || savedTheme === "marble") html.dataset.theme = savedTheme;
+
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      const next = (html.dataset.theme === "noir") ? "marble" : "noir";
+      html.dataset.theme = next;
+      localStorage.setItem("theme", next);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ====== Command Palette ======
+    const cmd = document.getElementById("cmd");
+    const cmdBtn = document.getElementById("cmdBtn");
+    const cmdClose = document.getElementById("cmdClose");
+    const cmdInput = document.getElementById("cmdInput");
+    const cmdList = document.getElementById("cmdList");
+
+    // Commands: keep it small, lethal, navigational
+    const commands = [
+      { name: "Temple", hint: "Home", action: () => jump("#temple") },
+      { name: "Products", hint: "Enter the altar", action: () => jump("#products") },
+      { name: "Proof", hint: "Receipts", action: () => jump("#proof") },
+      { name: "Signals", hint: "Fragments", action: () => jump("#signals") },
+      { name: "Codex", hint: "Principles", action: () => jump("#codex") },
+      { name: "Contact", hint: "Reach me", action: () => jump("#contact") },
+      { name: "PokerGeek (GitHub)", hint: "Repo", action: () => window.open("https://github.com/WaleedaRaza/pokerswound", "_blank") },
+      { name: "Lifeline OS (GitHub)", hint: "Repo", action: () => window.open("https://github.com/WaleedaRaza/paths", "_blank") },
+      { name: "Petform (GitHub)", hint: "Repo", action: () => window.open("https://github.com/WaleedaRaza/petform", "_blank") },
+    ];
+
+    function jump(hash) {
+      cmd.close();
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function openCmd() {
+      cmd.showModal();
+      cmdInput.value = "";
+      renderCommands(commands);
+      setTimeout(() => cmdInput.focus(), 60);
+    }
+    function closeCmd() { cmd.close(); }
+
+    cmdBtn.addEventListener("click", openCmd);
+    cmdClose.addEventListener("click", closeCmd);
+
+    window.addEventListener("keydown", (e) => {
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      const k = e.key.toLowerCase();
+      if ((isMac ? e.metaKey : e.ctrlKey) && k === "k") {
+        e.preventDefault();
+        openCmd();
+      }
+      if (e.key === "Escape" && cmd.open) closeCmd();
+    });
+
+    cmdInput.addEventListener("input", () => {
+      const q = cmdInput.value.trim().toLowerCase();
+      const filtered = commands.filter(c => c.name.toLowerCase().includes(q) || c.hint.toLowerCase().includes(q));
+      renderCommands(filtered.length ? filtered : [{ name: "No results", hint: "Try another query", action: () => {} }]);
+    });
+
+    function renderCommands(list) {
+      cmdList.innerHTML = "";
+      list.forEach((c) => {
+        const row = document.createElement("div");
+        row.className = "cmd-item";
+        row.tabIndex = 0;
+        row.innerHTML = `<span>${escapeHtml(c.name)}</span><small>${escapeHtml(c.hint)}</small>`;
+        row.addEventListener("click", () => c.action());
+        row.addEventListener("keydown", (e) => { if (e.key === "Enter") c.action(); });
+        cmdList.appendChild(row);
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m]));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+/* ============================================
+   WaleedOS Design Tokens
+   Version: 1.0
+   ============================================ */
+
+:root {
+  /* ========== VOID (Background) ========== */
+  --void-base: #08080c;
+  --void-surface: #0f0f14;
+  --void-elevated: #16161e;
+  --void-border: rgba(255, 255, 255, 0.06);
+
+  /* ========== TEXT ========== */
+  --text-primary: #e8e8ec;
+  --text-secondary: #8888a0;
+  --text-muted: #4a4a5c;
+  --text-accent: #00d4aa;
+
+  /* ========== SYSTEM ACCENT ========== */
+  --accent-primary: #00d4aa;
+  --accent-primary-dim: rgba(0, 212, 170, 0.2);
+  --accent-primary-glow: rgba(0, 212, 170, 0.4);
+  --accent-secondary: #00a8ff;
+  --accent-secondary-dim: rgba(0, 168, 255, 0.2);
+
+  /* ========== PRODUCT ACCENTS ========== */
+  --accent-pokergeek: #e53935;
+  --accent-pokergeek-dim: rgba(229, 57, 53, 0.2);
+  --accent-alexandria: #7e57c2;
+  --accent-alexandria-dim: rgba(126, 87, 194, 0.2);
+  --accent-clipvault: #00bcd4;
+  --accent-clipvault-dim: rgba(0, 188, 212, 0.2);
+  --accent-lifeline: #00c853;
+  --accent-lifeline-dim: rgba(0, 200, 83, 0.2);
+  --accent-petform: #ffb300;
+  --accent-petform-dim: rgba(255, 179, 0, 0.2);
+
+  /* ========== STATUS ========== */
+  --status-shipping: #00c853;
+  --status-shipping-dim: rgba(0, 200, 83, 0.15);
+  --status-indev: #ffb300;
+  --status-indev-dim: rgba(255, 179, 0, 0.15);
+  --status-paused: #78909c;
+  --status-paused-dim: rgba(120, 144, 156, 0.15);
+
+  /* ========== GLASS ========== */
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.04);
+  --glass-blur: 12px;
+
+  /* ========== TYPOGRAPHY ========== */
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Font Sizes */
+  --text-hero: clamp(2.5rem, 6vw, 4rem);
+  --text-h1: clamp(1.75rem, 4vw, 2.5rem);
+  --text-h2: clamp(1.25rem, 3vw, 1.75rem);
+  --text-h3: clamp(1rem, 2.5vw, 1.25rem);
+  --text-body: clamp(0.875rem, 1.5vw, 1rem);
+  --text-small: clamp(0.75rem, 1.25vw, 0.875rem);
+  --text-micro: 0.6875rem;
+
+  /* Font Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.15em;
+
+  /* ========== SPACING ========== */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ========== RADII ========== */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ========== SHADOWS ========== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 20px var(--accent-primary-dim);
+
+  /* ========== TRANSITIONS ========== */
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* ========== Z-INDEX ========== */
+  --z-base: 1;
+  --z-elevated: 10;
+  --z-panel: 100;
+  --z-nav: 200;
+  --z-modal: 300;
+  --z-tooltip: 400;
+}
+
+/* ========== REDUCED MOTION ========== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+
+/* ========== DARK MODE (default) ========== */
+/* Already dark by default, this is a placeholder for potential light mode */
+
+
+

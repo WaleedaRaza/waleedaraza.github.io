@@ -1,0 +1,351 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WALEEDOS MODE STYLES
+   8-BIT / INNER MODE overlays and effects
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   8-BIT INNER MODE - Activated via .inner-mode on body
+   ───────────────────────────────────────────────────────────────────────── */
+
+.inner-mode {
+  /* Override font to pixel/retro feel */
+  --font-display: 'Press Start 2P', var(--font-mono);
+}
+
+/* Scanlines effect */
+.inner-mode::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-top);
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0px,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.3;
+}
+
+/* CRT glow effect */
+.inner-mode .site-header {
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+}
+
+/* Retro text glow */
+.inner-mode .hero-title {
+  text-shadow: 
+    0 0 5px var(--retro-green),
+    0 0 10px var(--retro-green);
+  -webkit-text-fill-color: var(--retro-green);
+}
+
+/* Pixel borders on cards */
+.inner-mode .artifact-card {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+  box-shadow: 
+    4px 4px 0 var(--retro-green),
+    inset 0 0 20px rgba(0, 255, 0, 0.05);
+}
+
+.inner-mode .artifact-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 
+    6px 6px 0 var(--retro-green),
+    inset 0 0 30px rgba(0, 255, 0, 0.1);
+}
+
+.inner-mode .artifact-card::before {
+  display: none;
+}
+
+/* Retro buttons */
+.inner-mode .btn {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.inner-mode .btn-primary {
+  background: var(--retro-green);
+  color: var(--retro-black);
+  border: 2px solid var(--retro-green);
+  box-shadow: 3px 3px 0 rgba(0, 255, 0, 0.5);
+}
+
+.inner-mode .btn-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--retro-green);
+}
+
+.inner-mode .btn-secondary {
+  border: 2px solid var(--retro-green);
+  color: var(--retro-green);
+}
+
+/* Retro status badges */
+.inner-mode .card-status {
+  border-radius: 0;
+  border: 1px solid currentColor;
+  text-transform: uppercase;
+}
+
+/* Retro filter pills */
+.inner-mode .filter-pill {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+}
+
+.inner-mode .filter-pill.active {
+  background: var(--retro-green);
+  color: var(--retro-black);
+}
+
+/* Retro tooltip */
+.inner-mode .tooltip {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+  background: var(--retro-black);
+}
+
+/* Retro mode toggle */
+.inner-mode .mode-toggle {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+  background: var(--retro-black);
+}
+
+.inner-mode .mode-toggle-label {
+  color: var(--retro-green);
+}
+
+/* Graph container in inner mode */
+.inner-mode .graph-container {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+  box-shadow: 4px 4px 0 var(--retro-green);
+}
+
+/* View toggle retro */
+.inner-mode .view-toggle {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+}
+
+.inner-mode .view-toggle-btn {
+  border-radius: 0;
+}
+
+.inner-mode .view-toggle-btn.active {
+  background: var(--retro-green);
+  color: var(--retro-black);
+}
+
+/* Section titles retro */
+.inner-mode .section-title {
+  color: var(--retro-green);
+  text-shadow: 0 0 5px var(--retro-green);
+}
+
+/* Footer retro */
+.inner-mode .site-footer {
+  border-top: 2px solid var(--retro-green);
+}
+
+.inner-mode .footer-text {
+  color: var(--retro-green);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SANDBOX-SPECIFIC 8-BIT OVERRIDES
+   More intense retro feel for the sandbox page
+   ───────────────────────────────────────────────────────────────────────── */
+
+.page-sandbox .inner-mode {
+  background: var(--retro-black);
+}
+
+.page-sandbox .inner-mode .hero::before {
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 60%);
+}
+
+/* Terminal-style cards in sandbox */
+.page-sandbox .inner-mode .content-card {
+  border-radius: 0;
+  border: 2px solid var(--retro-green);
+  background: var(--retro-black);
+}
+
+.page-sandbox .inner-mode .content-card::before {
+  content: '> ';
+  color: var(--retro-green);
+}
+
+/* Blinking cursor effect */
+.page-sandbox .inner-mode .hero-tagline::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--retro-green);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ANIMATIONS & EFFECTS
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Fade in on load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s var(--ease-out-expo) forwards;
+}
+
+/* Staggered animation delays */
+.artifact-card:nth-child(1) { animation-delay: 0ms; }
+.artifact-card:nth-child(2) { animation-delay: 50ms; }
+.artifact-card:nth-child(3) { animation-delay: 100ms; }
+.artifact-card:nth-child(4) { animation-delay: 150ms; }
+.artifact-card:nth-child(5) { animation-delay: 200ms; }
+.artifact-card:nth-child(6) { animation-delay: 250ms; }
+.artifact-card:nth-child(7) { animation-delay: 300ms; }
+.artifact-card:nth-child(8) { animation-delay: 350ms; }
+
+/* Pulse glow on escape velocity tier */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 0 rgba(255, 215, 0, 0.2);
+  }
+}
+
+.artifact-card[data-tier="escape_velocity"] {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.artifact-card[data-tier="escape_velocity"]:hover {
+  animation: none;
+  box-shadow: var(--shadow-glow-gold);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LIQUID GLASS EFFECTS (Void Glass mode)
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Hero orb ambient */
+.hero-orb {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(0, 212, 170, 0.15) 0%, 
+    rgba(126, 87, 194, 0.05) 50%, 
+    transparent 70%);
+  filter: blur(60px);
+  animation: orbFloat 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  33% {
+    transform: translate(-45%, -55%) scale(1.1);
+  }
+  66% {
+    transform: translate(-55%, -45%) scale(0.95);
+  }
+}
+
+/* Glass card shine sweep on hover */
+.artifact-card .shine-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.artifact-card:hover .shine-sweep {
+  left: 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RESPONSIVE ADJUSTMENTS
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* Disable heavy effects on mobile */
+  .hero-orb {
+    display: none;
+  }
+  
+  .inner-mode::after {
+    display: none;
+  }
+  
+  .mode-toggle {
+    bottom: var(--space-4);
+    right: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .mode-toggle-label {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PRINT STYLES
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media print {
+  .inner-mode::after,
+  .hero-orb,
+  .mode-toggle,
+  .noise-overlay::before {
+    display: none;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .artifact-card {
+    border: 1px solid #ccc;
+    background: white;
+    page-break-inside: avoid;
+  }
+}
+

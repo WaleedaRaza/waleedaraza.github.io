@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading / Music / Arts | Waleed Raza</title>
+  <meta name="description" content="Reading system, piano learning arc, film and aesthetic references.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/modes.css">
+  
+  <style>
+    .page-content {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-16);
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      margin-bottom: var(--space-12);
+    }
+    
+    .page-title {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .page-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    
+    .content-block {
+      margin-bottom: var(--space-12);
+    }
+    
+    .content-block-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .reading-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+    
+    .reading-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: all var(--transition-base);
+    }
+    
+    .reading-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+    }
+    
+    .reading-card-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .reading-card-author {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-3);
+    }
+    
+    .reading-card-note {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .reading-card-wave {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-secondary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .prose-block {
+      max-width: var(--max-width-prose);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .prose-block p {
+      margin-bottom: var(--space-4);
+    }
+    
+    .music-timeline {
+      border-left: 2px solid var(--glass-border);
+      padding-left: var(--space-6);
+      margin-left: var(--space-2);
+    }
+    
+    .music-milestone {
+      position: relative;
+      margin-bottom: var(--space-6);
+    }
+    
+    .music-milestone::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-6) - 6px);
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+    }
+    
+    .music-milestone-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .music-milestone-title {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .music-milestone-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    
+    .film-card {
+      padding: var(--space-4);
+      background: var(--void-surface);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    
+    .film-title {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .film-note {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+  </style>
+</head>
+<body class="noise-overlay">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">Waleed Raza</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="site-nav" id="site-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#products" class="nav-link">Products</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="reading.html" class="nav-link active">Reading</a>
+        <a href="writing.html" class="nav-link">Writing</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="sandbox.html" class="nav-link">Sandbox</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="page-content">
+    <header class="page-header">
+      <h1 class="page-title">Reading / Music / Arts</h1>
+      <p class="page-subtitle">
+        Taste as signal. Learning as system. The pursuit of depth over breadth.
+      </p>
+    </header>
+    
+    <!-- READING SYSTEM -->
+    <section class="content-block">
+      <h2 class="content-block-title">Reading System</h2>
+      <div class="prose-block">
+        <p>
+          I read in waves—immersive periods of deep focus on interconnected themes. 
+          This isn't about volume; it's about synthesis. Each wave leaves behind 
+          frameworks that compound.
+        </p>
+        <p>
+          Current wave: <strong>Systems thinking and incentive design.</strong> 
+          How structures shape behavior, why institutions fail, and what makes 
+          systems antifragile.
+        </p>
+      </div>
+      
+      <div class="reading-grid" style="margin-top: var(--space-6);">
+        <article class="reading-card">
+          <div class="reading-card-wave">Current Wave</div>
+          <h3 class="reading-card-title">Thinking in Systems</h3>
+          <p class="reading-card-author">Donella Meadows</p>
+          <p class="reading-card-note">
+            The primer on system dynamics. Leverage points, feedback loops, 
+            and why good intentions create unintended consequences.
+          </p>
+        </article>
+        
+        <article class="reading-card">
+          <div class="reading-card-wave">Current Wave</div>
+          <h3 class="reading-card-title">Antifragile</h3>
+          <p class="reading-card-author">Nassim Nicholas Taleb</p>
+          <p class="reading-card-note">
+            Beyond resilience. Systems that gain from disorder. 
+            The barbell strategy applied to everything.
+          </p>
+        </article>
+        
+        <article class="reading-card">
+          <div class="reading-card-wave">Previous Wave</div>
+          <h3 class="reading-card-title">The Master and His Emissary</h3>
+          <p class="reading-card-author">Iain McGilchrist</p>
+          <p class="reading-card-note">
+            Hemispheric asymmetry and the making of the Western world. 
+            Why the left brain's dominance is both triumph and tragedy.
+          </p>
+        </article>
+        
+        <article class="reading-card">
+          <div class="reading-card-wave">Evergreen</div>
+          <h3 class="reading-card-title">Gödel, Escher, Bach</h3>
+          <p class="reading-card-author">Douglas Hofstadter</p>
+          <p class="reading-card-note">
+            Strange loops and self-reference. The book that shaped 
+            how I think about recursion, consciousness, and meaning.
+          </p>
+        </article>
+      </div>
+    </section>
+    
+    <!-- MUSIC / PIANO -->
+    <section class="content-block">
+      <h2 class="content-block-title">Piano Learning Arc</h2>
+      <div class="prose-block">
+        <p>
+          Started piano as an adult. The goal isn't virtuosity—it's developing 
+          a relationship with music that compounds. Daily practice as meditation. 
+          Technique as freedom.
+        </p>
+      </div>
+      
+      <div class="music-timeline" style="margin-top: var(--space-6);">
+        <div class="music-milestone">
+          <div class="music-milestone-date">2025 Goal</div>
+          <div class="music-milestone-title">Chopin Waltz Op. 64 No. 2</div>
+          <div class="music-milestone-desc">
+            First "real" classical piece. Working on phrasing and tempo rubato.
+          </div>
+        </div>
+        
+        <div class="music-milestone">
+          <div class="music-milestone-date">In Progress</div>
+          <div class="music-milestone-title">Jazz Voicings</div>
+          <div class="music-milestone-desc">
+            Shell voicings, tritone substitutions, ii-V-I progressions in all keys.
+          </div>
+        </div>
+        
+        <div class="music-milestone">
+          <div class="music-milestone-date">Foundation</div>
+          <div class="music-milestone-title">Hanon Exercises</div>
+          <div class="music-milestone-desc">
+            Daily finger independence and strength building. The boring work that enables everything else.
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- FILM & AESTHETIC REFERENCES -->
+    <section class="content-block">
+      <h2 class="content-block-title">Film & Aesthetic References</h2>
+      <div class="prose-block">
+        <p>
+          Films that shaped how I see interfaces, pacing, and atmosphere. 
+          Not favorites—references. These inform the design language I reach for.
+        </p>
+      </div>
+      
+      <div class="film-grid" style="margin-top: var(--space-6);">
+        <div class="film-card">
+          <div class="film-title">Blade Runner 2049</div>
+          <div class="film-note">Color, scale, silence</div>
+        </div>
+        
+        <div class="film-card">
+          <div class="film-title">Ghost in the Shell (1995)</div>
+          <div class="film-note">Liminal tech, identity</div>
+        </div>
+        
+        <div class="film-card">
+          <div class="film-title">Her</div>
+          <div class="film-note">Soft interfaces, intimacy</div>
+        </div>
+        
+        <div class="film-card">
+          <div class="film-title">Tron: Legacy</div>
+          <div class="film-note">The grid aesthetic</div>
+        </div>
+        
+        <div class="film-card">
+          <div class="film-title">The Social Network</div>
+          <div class="film-note">Speed, obsession</div>
+        </div>
+        
+        <div class="film-card">
+          <div class="film-title">Ex Machina</div>
+          <div class="film-note">Minimalist tension</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2025 Waleed Raza</p>
+    <div class="footer-links">
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/waleedaraza" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- MODE TOGGLE -->
+  <button class="mode-toggle" onclick="toggleInnerMode()" aria-label="Toggle inner mode">
+    <span class="mode-toggle-label">Inner Mode</span>
+    <span class="mode-toggle-switch"></span>
+  </button>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('site-nav').classList.toggle('open');
+    }
+    
+    let innerModeEnabled = localStorage.getItem('innerMode') === 'true';
+    if (innerModeEnabled) document.body.classList.add('inner-mode');
+    
+    function toggleInnerMode() {
+      innerModeEnabled = !innerModeEnabled;
+      document.body.classList.toggle('inner-mode', innerModeEnabled);
+      localStorage.setItem('innerMode', innerModeEnabled);
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,944 @@
+{
+  "artifacts": [
+    {
+      "id": "pokergeek",
+      "name": "PokerGeek",
+      "type": "product",
+      "tier": "escape_velocity",
+      "focus_weight": 100,
+      "status": "active",
+      "tagline": "Chess.com for poker: play, improve, prove fairness",
+      "domain_tags": ["realtime", "gaming", "cryptography", "analytics"],
+      "stack": ["TypeScript", "WebSockets", "Node.js", "PostgreSQL", "Flutter"],
+      "problem": [
+        "Online poker feels untrustworthy—players can't verify shuffle fairness",
+        "Learning tools are disconnected from actual gameplay",
+        "No unified platform for play + analytics + improvement"
+      ],
+      "uvp": [
+        "Cryptographically provable fair shuffling",
+        "Analytics-native progression tracking",
+        "Real-time multiplayer with hand history"
+      ],
+      "desired_state": [
+        "Clubs with private tables and invite links",
+        "Ladder rankings and seasonal tournaments",
+        "Coaching integration and replay analysis",
+        "Deep hand analytics dashboard",
+        "Mobile apps (iOS + Android)"
+      ],
+      "current_state": [
+        {"done": true, "text": "Real-time multiplayer Texas Hold'em tables"},
+        {"done": true, "text": "Private rooms with invite links"},
+        {"done": true, "text": "Hand history logging"},
+        {"done": true, "text": "Provably fair shuffling algorithm"},
+        {"done": false, "text": "Analytics dashboard"},
+        {"done": false, "text": "Rankings and achievements"},
+        {"done": false, "text": "Mobile app wrapper"}
+      ],
+      "next_step": {
+        "date": "2025-01-01",
+        "text": "Playable public slice: 2 users end-to-end game flow"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/pokerswound",
+        "site": null,
+        "demo": null,
+        "landing": "https://github.com/WaleedaRaza/pokergeek-landing"
+      },
+      "relationships": [
+        {"type": "shared_stack", "target": "paths"},
+        {"type": "feeds", "target": "agentyeager"},
+        {"type": "adjacent", "target": "datadepth"}
+      ]
+    },
+    {
+      "id": "alexandria",
+      "name": "Alexandria Vault",
+      "type": "product",
+      "tier": "wow_factor",
+      "focus_weight": 80,
+      "status": "active",
+      "tagline": "Knowledge ownership: your PDFs become a searchable vault",
+      "domain_tags": ["data", "search", "knowledge-management"],
+      "stack": ["Python", "SQLite", "Full-text Search", "Metadata Extraction"],
+      "problem": [
+        "PDFs scattered across devices with no unified access",
+        "No way to search content, only filenames",
+        "Metadata lost, organization impossible"
+      ],
+      "uvp": [
+        "Personal library with full-text search",
+        "Automatic metadata extraction",
+        "Collections and smart organization",
+        "Open-access discovery for public domain"
+      ],
+      "desired_state": [
+        "Drag-drop import with auto-metadata",
+        "Full-text search across entire library",
+        "Collections, tags, and smart folders",
+        "Reference sharing and citation export",
+        "Open-access discovery integration"
+      ],
+      "current_state": [
+        {"done": true, "text": "Pipeline tooling scaffolded"},
+        {"done": true, "text": "Personal corpus collection (1400+ PDFs)"},
+        {"done": false, "text": "Local import flow"},
+        {"done": false, "text": "Metadata extraction pipeline"},
+        {"done": false, "text": "Vault UI"}
+      ],
+      "next_step": {
+        "date": "2025-01-30",
+        "text": "Local import + metadata extraction + basic search"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/alexandria-vault",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "clipvault"},
+        {"type": "shared_stack", "target": "newsnet"},
+        {"type": "adjacent", "target": "datadepth"}
+      ]
+    },
+    {
+      "id": "clipvault",
+      "name": "ClipVault",
+      "type": "product",
+      "tier": "rocket_stage",
+      "focus_weight": 55,
+      "status": "active",
+      "tagline": "Paste link → durable saved library with transcript + search",
+      "domain_tags": ["utilities", "media", "archival"],
+      "stack": ["Python", "yt-dlp", "FFmpeg", "Whisper", "SQLite"],
+      "problem": [
+        "Links die, bookmarks become unusable",
+        "No transcript search across saved videos",
+        "Quality and format selection is confusing"
+      ],
+      "uvp": [
+        "One-click save from any platform",
+        "Automatic transcript generation",
+        "Searchable video library",
+        "Playlist and batch support"
+      ],
+      "desired_state": [
+        "Paste link → auto-download with metadata",
+        "Transcript search across library",
+        "Tagging, playlists, and export",
+        "Batch processing for channels",
+        "Knowledge clips extraction"
+      ],
+      "current_state": [
+        {"done": true, "text": "Core download path prototyped"},
+        {"done": false, "text": "Format and quality selection"},
+        {"done": false, "text": "Library view UI"},
+        {"done": false, "text": "Transcript integration"}
+      ],
+      "next_step": {
+        "date": "2025-01-20",
+        "text": "MVP flow + UX + ads-friendly landing"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/clipvault",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "alexandria"},
+        {"type": "adjacent", "target": "newsnet"}
+      ]
+    },
+    {
+      "id": "datadepth",
+      "name": "DataDepth",
+      "type": "product",
+      "tier": "moonshot",
+      "focus_weight": 45,
+      "status": "research",
+      "tagline": "Data infrastructure & brokerage for teams that need real intel",
+      "domain_tags": ["data", "infrastructure", "marketplace"],
+      "stack": ["Python", "PostgreSQL", "APIs", "Data Pipelines"],
+      "problem": [
+        "Quality data is hard to find and verify",
+        "Building pipelines from scratch is expensive",
+        "No trusted marketplace for niche datasets"
+      ],
+      "uvp": [
+        "Curated data pipelines as a service",
+        "Compliance-aware data brokerage",
+        "Analytics products from aggregated intel"
+      ],
+      "desired_state": [
+        "Marketplace for vetted datasets",
+        "Pipeline-as-a-service for custom needs",
+        "Compliance layer for sensitive data",
+        "Analytics products built on top"
+      ],
+      "current_state": [
+        {"done": true, "text": "Concept and early scaffolding"},
+        {"done": false, "text": "Starting wedge definition"},
+        {"done": false, "text": "Pipeline tooling"},
+        {"done": false, "text": "Marketplace MVP"}
+      ],
+      "next_step": {
+        "date": "2025-02-15",
+        "text": "Define starting wedge: shovel in gold rush product"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/datadepth",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "stockscouter"},
+        {"type": "adjacent", "target": "newsnet"}
+      ]
+    },
+    {
+      "id": "paths",
+      "name": "Paths",
+      "type": "product",
+      "tier": "rocket_stage",
+      "focus_weight": 60,
+      "status": "active",
+      "tagline": "Local-first agent hub: planning → execution → reflection",
+      "domain_tags": ["agents", "productivity", "local-first"],
+      "stack": ["TypeScript", "Ollama", "Local LLMs", "Electron"],
+      "problem": [
+        "Tools are fragmented across apps",
+        "No unified system for daily execution",
+        "Planning disconnected from doing"
+      ],
+      "uvp": [
+        "Agent swarm layer for task automation",
+        "Tool integrations (calendar, notes, todos)",
+        "Persistent memory across sessions",
+        "Local-first, privacy-preserving"
+      ],
+      "desired_state": [
+        "Agent personas with specialized skills",
+        "Orchestrator for multi-agent coordination",
+        "Deep integrations (calendar, email, docs)",
+        "Reflection and learning loop"
+      ],
+      "current_state": [
+        {"done": true, "text": "Multi-agent persona system"},
+        {"done": true, "text": "Local LLM integration (Ollama)"},
+        {"done": true, "text": "Doc generator pipeline foundations"},
+        {"done": false, "text": "Today dashboard"},
+        {"done": false, "text": "Calendar integration"}
+      ],
+      "next_step": {
+        "date": "2025-01-25",
+        "text": "Productize ONE wedge: executive dysfunction planner"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/paths",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "shared_stack", "target": "pokergeek"},
+        {"type": "feeds", "target": "agentyeager"},
+        {"type": "adjacent", "target": "warvis"}
+      ]
+    },
+    {
+      "id": "pointer",
+      "name": "Pointer",
+      "type": "product",
+      "tier": "rocket_stage",
+      "focus_weight": 50,
+      "status": "active",
+      "tagline": "Context engine: conversations → durable, structured direction",
+      "domain_tags": ["agents", "documentation", "context"],
+      "stack": ["TypeScript", "Cursor", "Markdown", "LLMs"],
+      "problem": [
+        "Context lost between coding sessions",
+        "Specs and docs become stale quickly",
+        "No iteration memory across conversations"
+      ],
+      "uvp": [
+        "Universal project director",
+        "Specs and docs from conversations",
+        "Persistent context retention",
+        "Cursor integration"
+      ],
+      "desired_state": [
+        "Auto-generated specs from chat",
+        "Living documentation system",
+        "Checklist and milestone tracking",
+        "Cross-session memory"
+      ],
+      "current_state": [
+        {"done": true, "text": "Cursor rules integration"},
+        {"done": true, "text": "Basic context extraction"},
+        {"done": false, "text": "Standalone module"},
+        {"done": false, "text": "Doc generation pipeline"}
+      ],
+      "next_step": {
+        "date": "2025-02-01",
+        "text": "Extract as standalone or define as Paths subproduct"
+      },
+      "links": {
+        "repo": null,
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "paths"},
+        {"type": "adjacent", "target": "agentyeager"}
+      ]
+    },
+    {
+      "id": "agentyeager",
+      "name": "AgentYeager",
+      "type": "product",
+      "tier": "rocket_stage",
+      "focus_weight": 65,
+      "status": "active",
+      "tagline": "Deploy local Ollama agents in coordinated swarms",
+      "domain_tags": ["agents", "local-first", "orchestration"],
+      "stack": ["Python", "Ollama", "FastAPI", "Docker"],
+      "problem": [
+        "Running local agents requires complex setup",
+        "No coordination between multiple agents",
+        "Cloud APIs are expensive and privacy-invasive"
+      ],
+      "uvp": [
+        "One-command local agent deployment",
+        "Swarm coordination for multi-agent tasks",
+        "Privacy-first, runs entirely local"
+      ],
+      "desired_state": [
+        "Agent templates for common tasks",
+        "Swarm orchestration layer",
+        "Tool and API integrations",
+        "Memory persistence across runs"
+      ],
+      "current_state": [
+        {"done": true, "text": "Basic agent deployment"},
+        {"done": true, "text": "Ollama integration"},
+        {"done": false, "text": "Swarm coordination"},
+        {"done": false, "text": "Template library"}
+      ],
+      "next_step": {
+        "date": "2025-01-15",
+        "text": "Multi-agent swarm demo"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/agentyeager",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "paths"},
+        {"type": "shared_stack", "target": "warvis"}
+      ]
+    },
+    {
+      "id": "petform",
+      "name": "Petform",
+      "type": "product",
+      "tier": "paused",
+      "focus_weight": 35,
+      "status": "paused",
+      "tagline": "All-in-one pet management: profiles, scheduling, AI insights",
+      "domain_tags": ["mobile", "consumer", "health"],
+      "stack": ["Flutter", "Firebase", "Dart"],
+      "problem": [
+        "Pet care scattered across apps and notes",
+        "Medications missed, appointments forgotten",
+        "No unified pet health record"
+      ],
+      "uvp": [
+        "Pet profiles with health history",
+        "Medication and feeding schedules",
+        "AI-powered care insights",
+        "Vet appointment reminders"
+      ],
+      "desired_state": [
+        "Complete pet health dashboard",
+        "Community features and sharing",
+        "Vet integration for records sync",
+        "AI health recommendations"
+      ],
+      "current_state": [
+        {"done": true, "text": "Flutter app scaffolding"},
+        {"done": true, "text": "Pet profile creation UI"},
+        {"done": false, "text": "Scheduling system"},
+        {"done": false, "text": "Notifications"},
+        {"done": false, "text": "AI insights"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Paused—will resume after core products ship"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/petform",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "inspired_by", "target": "petai"}
+      ]
+    },
+    {
+      "id": "mmamania",
+      "name": "MMAmania",
+      "type": "project",
+      "tier": "paused",
+      "focus_weight": 30,
+      "status": "paused",
+      "tagline": "Fight analytics: stats, ELO rankings, debate rooms",
+      "domain_tags": ["sports", "analytics", "community"],
+      "stack": ["React", "Node.js", "MongoDB"],
+      "problem": [
+        "MMA stats scattered and unreliable",
+        "No ELO-style objective rankings",
+        "Debate is unstructured on social media"
+      ],
+      "uvp": [
+        "Aggregated fighter statistics",
+        "ELO-based ranking system",
+        "Structured debate rooms"
+      ],
+      "desired_state": [
+        "Comprehensive fighter database",
+        "Live event tracking",
+        "Community prediction markets",
+        "Debate rooms with voting"
+      ],
+      "current_state": [
+        {"done": true, "text": "Fighter database structure"},
+        {"done": true, "text": "Basic stats display"},
+        {"done": false, "text": "ELO algorithm"},
+        {"done": false, "text": "Community features"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Paused—may revisit as data product"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/mmamania",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "adjacent", "target": "datadepth"}
+      ]
+    },
+    {
+      "id": "newsnet",
+      "name": "NewsNet",
+      "type": "project",
+      "tier": "paused",
+      "focus_weight": 28,
+      "status": "paused",
+      "tagline": "Bias-aware news analysis with stance and sentiment detection",
+      "domain_tags": ["data", "nlp", "media"],
+      "stack": ["Python", "NLP", "React", "FastAPI"],
+      "problem": [
+        "News sources have hidden biases",
+        "Hard to compare coverage across outlets",
+        "Sentiment manipulation goes undetected"
+      ],
+      "uvp": [
+        "Multi-source news aggregation",
+        "Bias and stance detection",
+        "Sentiment analysis per topic"
+      ],
+      "desired_state": [
+        "Real-time news pipeline",
+        "Bias dashboard per outlet",
+        "Topic clustering and trends",
+        "Alert system for manipulation"
+      ],
+      "current_state": [
+        {"done": true, "text": "News scraping pipeline"},
+        {"done": true, "text": "Basic NLP analysis"},
+        {"done": false, "text": "Bias detection model"},
+        {"done": false, "text": "Frontend dashboard"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Paused—may integrate with DataDepth"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/newsnet",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "datadepth"},
+        {"type": "adjacent", "target": "stockscouter"}
+      ]
+    },
+    {
+      "id": "stockscouter",
+      "name": "StockScouter",
+      "type": "project",
+      "tier": "research",
+      "focus_weight": 25,
+      "status": "prototype",
+      "tagline": "Options and stock intelligence with scraping and graphs",
+      "domain_tags": ["finance", "data", "analytics"],
+      "stack": ["Python", "Pandas", "Plotly", "APIs"],
+      "problem": [
+        "Options data is expensive and fragmented",
+        "No unified view of unusual activity",
+        "Retail traders lack institutional tools"
+      ],
+      "uvp": [
+        "Aggregated options flow data",
+        "Unusual activity detection",
+        "Visual analysis tools"
+      ],
+      "desired_state": [
+        "Real-time options flow dashboard",
+        "Alert system for unusual activity",
+        "Backtesting integration",
+        "Mobile companion app"
+      ],
+      "current_state": [
+        {"done": true, "text": "Data scraping pipelines"},
+        {"done": true, "text": "Basic visualization"},
+        {"done": false, "text": "Alert system"},
+        {"done": false, "text": "Real-time updates"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Research phase—needs data source validation"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/StockScouter",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "datadepth"}
+      ]
+    },
+    {
+      "id": "gpuzap",
+      "name": "GPUZap",
+      "type": "project",
+      "tier": "utility",
+      "focus_weight": 40,
+      "status": "active",
+      "tagline": "GPU provisioning and ops automation CLI",
+      "domain_tags": ["devops", "infrastructure", "utilities"],
+      "stack": ["Python", "Bash", "Docker", "Cloud APIs"],
+      "problem": [
+        "GPU provisioning is manual and slow",
+        "Cloud GPU costs are unpredictable",
+        "No unified tool for multi-cloud GPU ops"
+      ],
+      "uvp": [
+        "One-command GPU provisioning",
+        "Multi-cloud support",
+        "Cost optimization"
+      ],
+      "desired_state": [
+        "CLI for all major GPU clouds",
+        "Spot instance automation",
+        "Cost tracking and alerts",
+        "Template-based deployments"
+      ],
+      "current_state": [
+        {"done": true, "text": "Core CLI structure"},
+        {"done": true, "text": "Single-cloud provisioning"},
+        {"done": false, "text": "Multi-cloud support"},
+        {"done": false, "text": "Cost optimization"}
+      ],
+      "next_step": {
+        "date": "2025-02-01",
+        "text": "Add second cloud provider support"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/gpuzap",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "adjacent", "target": "agentyeager"}
+      ]
+    },
+    {
+      "id": "handcuts",
+      "name": "HandCuts",
+      "type": "project",
+      "tier": "utility",
+      "focus_weight": 22,
+      "status": "active",
+      "tagline": "Hand gesture shortcut utility for desktop",
+      "domain_tags": ["utilities", "computer-vision", "accessibility"],
+      "stack": ["Python", "OpenCV", "MediaPipe"],
+      "problem": [
+        "Keyboard shortcuts require hands on keyboard",
+        "Accessibility tools are limited",
+        "No gesture control for desktop"
+      ],
+      "uvp": [
+        "Camera-based gesture recognition",
+        "Custom gesture-to-action mapping",
+        "Works with any application"
+      ],
+      "desired_state": [
+        "Robust gesture library",
+        "Custom gesture training",
+        "System-wide integration",
+        "Low-latency recognition"
+      ],
+      "current_state": [
+        {"done": true, "text": "Basic gesture recognition"},
+        {"done": true, "text": "Webcam integration"},
+        {"done": false, "text": "Custom gesture mapping"},
+        {"done": false, "text": "System integration"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Active utility—improving as needed"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/handcuts",
+        "site": null,
+        "demo": null
+      },
+      "relationships": []
+    },
+    {
+      "id": "warvis",
+      "name": "WARVIS",
+      "type": "project",
+      "tier": "research",
+      "focus_weight": 35,
+      "status": "prototype",
+      "tagline": "Local Jarvis foundation with AI personalities",
+      "domain_tags": ["agents", "local-first", "voice"],
+      "stack": ["Python", "Ollama", "TTS", "STT"],
+      "problem": [
+        "Voice assistants require cloud and sacrifice privacy",
+        "No local alternative with personality",
+        "Integration with local tools is missing"
+      ],
+      "uvp": [
+        "Fully local voice assistant",
+        "Customizable AI personalities",
+        "Privacy-first architecture"
+      ],
+      "desired_state": [
+        "Natural voice interaction",
+        "Multiple personality modes",
+        "Deep system integration",
+        "Offline-capable"
+      ],
+      "current_state": [
+        {"done": true, "text": "Local LLM voice integration"},
+        {"done": true, "text": "Basic personality system"},
+        {"done": false, "text": "System automation"},
+        {"done": false, "text": "Continuous listening mode"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Research phase—feeding into AgentYeager"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/WARVIS",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "feeds", "target": "agentyeager"},
+        {"type": "shared_stack", "target": "paths"}
+      ]
+    },
+    {
+      "id": "terminaltool",
+      "name": "TerminalTool",
+      "type": "project",
+      "tier": "utility",
+      "focus_weight": 20,
+      "status": "prototype",
+      "tagline": "LLM-assisted security tooling for defensive research",
+      "domain_tags": ["security", "utilities", "education"],
+      "stack": ["Python", "Bash", "LLMs"],
+      "problem": [
+        "Security workflows require deep expertise",
+        "Tool discovery is fragmented",
+        "Learning curve is steep"
+      ],
+      "uvp": [
+        "LLM-guided security workflows",
+        "Educational tool discovery",
+        "Defensive research focus"
+      ],
+      "desired_state": [
+        "Guided security audits",
+        "Tool recommendation engine",
+        "Learning path integration"
+      ],
+      "current_state": [
+        {"done": true, "text": "Basic CLI framework"},
+        {"done": false, "text": "LLM integration"},
+        {"done": false, "text": "Workflow templates"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Prototype—educational framing"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/terminaltool",
+        "site": null,
+        "demo": null
+      },
+      "relationships": []
+    },
+    {
+      "id": "envdetect",
+      "name": "EnvDetect",
+      "type": "project",
+      "tier": "utility",
+      "focus_weight": 15,
+      "status": "active",
+      "tagline": "Environment detection and setup automation",
+      "domain_tags": ["devops", "utilities"],
+      "stack": ["Python", "Bash"],
+      "problem": [
+        "Dev environment setup is repetitive",
+        "Dotfiles management is fragmented"
+      ],
+      "uvp": [
+        "Auto-detect development environment",
+        "Streamlined setup scripts"
+      ],
+      "desired_state": [
+        "One-command environment bootstrap",
+        "Cross-platform support"
+      ],
+      "current_state": [
+        {"done": true, "text": "Basic detection logic"},
+        {"done": false, "text": "Full automation"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Active utility"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/envdetect",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "adjacent", "target": "gpuzap"}
+      ]
+    },
+    {
+      "id": "petai",
+      "name": "PetAI",
+      "type": "project",
+      "tier": "retired",
+      "focus_weight": 5,
+      "status": "retired",
+      "tagline": "Legacy pet AI project → evolved into Petform",
+      "domain_tags": ["mobile", "archive"],
+      "stack": ["Python", "TensorFlow"],
+      "problem": ["Original pet AI experiments"],
+      "uvp": ["Research that led to Petform"],
+      "desired_state": ["Archived—see Petform"],
+      "current_state": [
+        {"done": true, "text": "Archived"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Retired—superseded by Petform"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/PetAI-project",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "inspired_by", "target": "petform"}
+      ]
+    },
+    {
+      "id": "hackfaxsite",
+      "name": "HackFax Site",
+      "type": "project",
+      "tier": "archive",
+      "focus_weight": 8,
+      "status": "retired",
+      "tagline": "Hackathon platform and landing page",
+      "domain_tags": ["web", "archive"],
+      "stack": ["HTML", "CSS", "JavaScript"],
+      "problem": ["Hackathon event page"],
+      "uvp": ["Event landing page"],
+      "desired_state": ["Archived"],
+      "current_state": [
+        {"done": true, "text": "Archived"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Archived"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/hackfaxsite",
+        "site": null,
+        "demo": null
+      },
+      "relationships": []
+    },
+    {
+      "id": "patriothacks",
+      "name": "PatriotHacks Sites",
+      "type": "project",
+      "tier": "archive",
+      "focus_weight": 8,
+      "status": "retired",
+      "tagline": "PatriotHacks hackathon event pages",
+      "domain_tags": ["web", "archive"],
+      "stack": ["HTML", "CSS", "JavaScript"],
+      "problem": ["Hackathon event pages"],
+      "uvp": ["Event landing pages"],
+      "desired_state": ["Archived"],
+      "current_state": [
+        {"done": true, "text": "Archived"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Archived"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/patriothacks-sites",
+        "site": null,
+        "demo": null
+      },
+      "relationships": []
+    },
+    {
+      "id": "stock-surveyor",
+      "name": "Stock Surveyor",
+      "type": "project",
+      "tier": "retired",
+      "focus_weight": 5,
+      "status": "retired",
+      "tagline": "Legacy stock analysis → merged into StockScouter",
+      "domain_tags": ["finance", "archive"],
+      "stack": ["Python"],
+      "problem": ["Original stock analysis experiments"],
+      "uvp": ["Research that led to StockScouter"],
+      "desired_state": ["Archived—see StockScouter"],
+      "current_state": [
+        {"done": true, "text": "Archived"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Retired—superseded by StockScouter"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/stock-surveyor",
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "inspired_by", "target": "stockscouter"}
+      ]
+    },
+    {
+      "id": "portfolio",
+      "name": "WaleedOS Portfolio",
+      "type": "project",
+      "tier": "utility",
+      "focus_weight": 12,
+      "status": "active",
+      "tagline": "This site—personal product interface",
+      "domain_tags": ["web", "personal"],
+      "stack": ["HTML", "CSS", "JavaScript"],
+      "problem": ["Need a controlled public interface"],
+      "uvp": ["Oracle-style portfolio"],
+      "desired_state": ["Living, updateable product hub"],
+      "current_state": [
+        {"done": true, "text": "Basic structure"},
+        {"done": false, "text": "Full redesign"}
+      ],
+      "next_step": {
+        "date": "2025-01-01",
+        "text": "Complete WaleedOS redesign"
+      },
+      "links": {
+        "repo": "https://github.com/WaleedaRaza/waleedaraza.github.io",
+        "site": "https://waleedaraza.github.io",
+        "demo": null
+      },
+      "relationships": []
+    },
+    {
+      "id": "music",
+      "name": "Music System",
+      "type": "product",
+      "tier": "incubation",
+      "focus_weight": 35,
+      "status": "concept",
+      "tagline": "Music as a system: learn faster, hear deeper, track growth",
+      "domain_tags": ["music", "learning", "analytics"],
+      "stack": ["TBD"],
+      "problem": [
+        "Piano learning is unstructured",
+        "No connection between songs and technique",
+        "Progress tracking is manual"
+      ],
+      "uvp": [
+        "Song → practice plan generator",
+        "Technique mapping",
+        "Progress analytics"
+      ],
+      "desired_state": [
+        "Piano agent for practice planning",
+        "Song-to-technique breakdown",
+        "Daily micro-improvement tracking",
+        "Taste analytics"
+      ],
+      "current_state": [
+        {"done": true, "text": "Personal usage arc established"},
+        {"done": false, "text": "Product definition"},
+        {"done": false, "text": "MVP scope"}
+      ],
+      "next_step": {
+        "date": null,
+        "text": "Define 1 wedge: song → practice plan generator"
+      },
+      "links": {
+        "repo": null,
+        "site": null,
+        "demo": null
+      },
+      "relationships": [
+        {"type": "adjacent", "target": "paths"}
+      ]
+    }
+  ],
+  "tier_colors": {
+    "escape_velocity": "#ffd700",
+    "wow_factor": "#00d4aa",
+    "rocket_stage": "#7e57c2",
+    "moonshot": "#00bcd4",
+    "utility": "#4caf50",
+    "paused": "#757575",
+    "research": "#ff9800",
+    "incubation": "#e91e63",
+    "archive": "#424242",
+    "retired": "#424242"
+  },
+  "status_labels": {
+    "active": "Active",
+    "paused": "Paused",
+    "prototype": "Prototype",
+    "research": "Research",
+    "concept": "Concept",
+    "retired": "Archived"
+  }
+}
+

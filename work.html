@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work With / For Me | Waleed Raza</title>
+  <meta name="description" content="Collaboration types, what I'm open to, and how to reach me.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/modes.css">
+  
+  <style>
+    .page-content {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-16);
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      margin-bottom: var(--space-12);
+    }
+    
+    .page-title {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .page-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    
+    .content-block {
+      margin-bottom: var(--space-12);
+    }
+    
+    .content-block-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .collab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+    
+    .collab-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: all var(--transition-base);
+    }
+    
+    .collab-card:hover {
+      border-color: var(--glass-border-hover);
+    }
+    
+    .collab-card.highlight {
+      border-color: var(--accent-primary);
+    }
+    
+    .collab-card.highlight::before {
+      content: 'Most Interested';
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    
+    .collab-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .collab-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .prose-block {
+      max-width: var(--max-width-prose);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .prose-block p {
+      margin-bottom: var(--space-4);
+    }
+    
+    .prose-block ul {
+      margin-bottom: var(--space-4);
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-6);
+      background: var(--void-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+    
+    .contact-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    
+    .contact-icon {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .contact-value {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+    
+    .availability-banner {
+      background: rgba(0, 212, 170, 0.1);
+      border: 1px solid var(--accent-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-8);
+    }
+    
+    .availability-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .availability-text {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    
+    .resume-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--accent-primary);
+    }
+    
+    .resume-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="noise-overlay">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">Waleed Raza</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="site-nav" id="site-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#products" class="nav-link">Products</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="reading.html" class="nav-link">Reading</a>
+        <a href="writing.html" class="nav-link">Writing</a>
+        <a href="work.html" class="nav-link active">Work</a>
+        <a href="sandbox.html" class="nav-link">Sandbox</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="page-content">
+    <header class="page-header">
+      <h1 class="page-title">Work With / For Me</h1>
+      <p class="page-subtitle">
+        Open to the right collaborations. Here's what I'm looking for 
+        and how to reach me.
+      </p>
+    </header>
+    
+    <!-- AVAILABILITY -->
+    <div class="availability-banner">
+      <div class="availability-title">Current Availability</div>
+      <div class="availability-text">
+        Focused on shipping PokerGeek (Jan 2025 MVP). Open to conversations 
+        about high-signal opportunities in realtime systems, AI infrastructure, 
+        or consumer products.
+      </div>
+    </div>
+    
+    <!-- COLLABORATION TYPES -->
+    <section class="content-block">
+      <h2 class="content-block-title">Collaboration Types</h2>
+      
+      <div class="collab-grid">
+        <article class="collab-card highlight">
+          <h3 class="collab-title">Technical Co-founder</h3>
+          <p class="collab-desc">
+            If you're building something ambitious in realtime systems, 
+            AI agents, or data-intensive consumer products—let's talk. 
+            I'm most excited about problems that require depth.
+          </p>
+        </article>
+        
+        <article class="collab-card">
+          <h3 class="collab-title">Contract Engineering</h3>
+          <p class="collab-desc">
+            For defined projects in TypeScript, Python, or Flutter. 
+            Particularly interested in realtime infrastructure, 
+            agent systems, or complex frontend architectures.
+          </p>
+        </article>
+        
+        <article class="collab-card">
+          <h3 class="collab-title">Research Partnership</h3>
+          <p class="collab-desc">
+            Academic or industry research in agentic systems, 
+            human-computer interaction, or game theory applications. 
+            Especially interested in publishing or open-source collaboration.
+          </p>
+        </article>
+        
+        <article class="collab-card">
+          <h3 class="collab-title">Advisory / Consulting</h3>
+          <p class="collab-desc">
+            Technical strategy for early-stage startups. 
+            Architecture reviews, technology selection, 
+            or product direction for realtime or AI-native products.
+          </p>
+        </article>
+      </div>
+    </section>
+    
+    <!-- WHAT I BRING -->
+    <section class="content-block">
+      <h2 class="content-block-title">What I Bring</h2>
+      <div class="prose-block">
+        <ul>
+          <li><strong>Realtime systems:</strong> WebSockets, game state synchronization, low-latency architectures</li>
+          <li><strong>AI/Agent systems:</strong> Local LLM integration, multi-agent orchestration, context management</li>
+          <li><strong>Full-stack product:</strong> TypeScript, Python, Flutter, PostgreSQL, modern frontend</li>
+          <li><strong>Systems thinking:</strong> Architecture that scales, designs that compound, code that lasts</li>
+          <li><strong>Execution speed:</strong> Shipping bias with quality standards</li>
+        </ul>
+        
+        <a href="assets/WaleedRaza_Resume2025.pdf" class="resume-link" target="_blank">
+          View Resume (PDF) →
+        </a>
+      </div>
+    </section>
+    
+    <!-- WHAT I'M NOT LOOKING FOR -->
+    <section class="content-block">
+      <h2 class="content-block-title">What I'm Not Looking For</h2>
+      <div class="prose-block">
+        <ul>
+          <li>Generic agency work or one-off WordPress sites</li>
+          <li>Equity-only compensation without clear milestones</li>
+          <li>Roles that don't involve building something tangible</li>
+          <li>"Pick your brain" calls without a specific proposal</li>
+        </ul>
+        <p>
+          I respect your time if you respect mine. 
+          If you have a clear ask, I'll give you a clear answer.
+        </p>
+      </div>
+    </section>
+    
+    <!-- CONTACT -->
+    <section class="content-block">
+      <h2 class="content-block-title">Contact</h2>
+      
+      <div class="contact-grid">
+        <a href="mailto:waleedraza1211@gmail.com" class="contact-card">
+          <span class="contact-icon">✉</span>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">waleedraza1211@gmail.com</span>
+        </a>
+        
+        <a href="https://github.com/WaleedaRaza" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">⌨</span>
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">@WaleedaRaza</span>
+        </a>
+        
+        <a href="https://linkedin.com/in/waleedaraza" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">🔗</span>
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">/in/waleedaraza</span>
+        </a>
+        
+        <a href="https://twitter.com/waleedaraza" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">𝕏</span>
+          <span class="contact-label">Twitter/X</span>
+          <span class="contact-value">@waleedaraza</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2025 Waleed Raza</p>
+    <div class="footer-links">
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/waleedaraza" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- MODE TOGGLE -->
+  <button class="mode-toggle" onclick="toggleInnerMode()" aria-label="Toggle inner mode">
+    <span class="mode-toggle-label">Inner Mode</span>
+    <span class="mode-toggle-switch"></span>
+  </button>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('site-nav').classList.toggle('open');
+    }
+    
+    let innerModeEnabled = localStorage.getItem('innerMode') === 'true';
+    if (innerModeEnabled) document.body.classList.add('inner-mode');
+    
+    function toggleInnerMode() {
+      innerModeEnabled = !innerModeEnabled;
+      document.body.classList.toggle('inner-mode', innerModeEnabled);
+      localStorage.setItem('innerMode', innerModeEnabled);
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artifact | Waleed Raza</title>
+  <meta name="description" content="Artifact detail page">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/modes.css">
+  
+  <style>
+    /* ─────────────────────────────────────────────────────────────────────────
+       ARTIFACT DETAIL STYLES
+       ───────────────────────────────────────────────────────────────────────── */
+    
+    .artifact-detail {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-16);
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-6);
+      transition: color var(--transition-fast);
+    }
+    
+    .back-link:hover {
+      color: var(--accent-primary);
+    }
+    
+    .back-link::before {
+      content: '←';
+    }
+    
+    .artifact-header {
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-6);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .artifact-meta {
+      display: flex;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+    
+    .artifact-tier {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 215, 0, 0.1);
+      color: var(--tier-escape-velocity);
+    }
+    
+    .artifact-tier[data-tier="escape_velocity"] { 
+      background: rgba(255, 215, 0, 0.1); 
+      color: var(--tier-escape-velocity); 
+    }
+    .artifact-tier[data-tier="wow_factor"] { 
+      background: rgba(0, 212, 170, 0.1); 
+      color: var(--tier-wow-factor); 
+    }
+    .artifact-tier[data-tier="rocket_stage"] { 
+      background: rgba(126, 87, 194, 0.1); 
+      color: var(--tier-rocket-stage); 
+    }
+    .artifact-tier[data-tier="moonshot"] { 
+      background: rgba(0, 188, 212, 0.1); 
+      color: var(--tier-moonshot); 
+    }
+    .artifact-tier[data-tier="utility"] { 
+      background: rgba(76, 175, 80, 0.1); 
+      color: var(--tier-utility); 
+    }
+    .artifact-tier[data-tier="paused"],
+    .artifact-tier[data-tier="archive"],
+    .artifact-tier[data-tier="retired"] { 
+      background: rgba(117, 117, 117, 0.1); 
+      color: var(--tier-paused); 
+    }
+    .artifact-tier[data-tier="research"] { 
+      background: rgba(255, 152, 0, 0.1); 
+      color: var(--tier-research); 
+    }
+    .artifact-tier[data-tier="incubation"] { 
+      background: rgba(233, 30, 99, 0.1); 
+      color: var(--tier-incubation); 
+    }
+    
+    .artifact-status {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      background: var(--void-elevated);
+      color: var(--text-tertiary);
+    }
+    
+    .artifact-status[data-status="active"] {
+      background: rgba(0, 212, 170, 0.15);
+      color: var(--status-active);
+    }
+    
+    .artifact-title {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .artifact-tagline {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+    }
+    
+    .artifact-section {
+      margin-bottom: var(--space-8);
+    }
+    
+    .artifact-section-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .artifact-section-content {
+      color: var(--text-secondary);
+    }
+    
+    .artifact-section-content ul {
+      padding-left: var(--space-5);
+    }
+    
+    .artifact-section-content li {
+      margin-bottom: var(--space-2);
+    }
+    
+    .current-state-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .current-state-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      padding: var(--space-3);
+      background: var(--void-surface);
+      border-radius: var(--radius-md);
+    }
+    
+    .state-icon {
+      font-size: var(--text-lg);
+      line-height: 1;
+    }
+    
+    .state-icon.done { color: var(--status-active); }
+    .state-icon.pending { color: var(--text-tertiary); }
+    
+    .state-text {
+      flex: 1;
+    }
+    
+    .state-text.done {
+      color: var(--text-primary);
+    }
+    
+    .state-text.pending {
+      color: var(--text-tertiary);
+    }
+    
+    .next-step-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--accent-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+    }
+    
+    .next-step-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .next-step-text {
+      font-size: var(--text-lg);
+      color: var(--text-primary);
+    }
+    
+    .artifact-links {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+    
+    .artifact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      padding: var(--space-3) var(--space-4);
+      background: var(--void-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      transition: all var(--transition-fast);
+    }
+    
+    .artifact-link:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    
+    .artifact-link.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .stack-tags {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    
+    .stack-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-1) var(--space-2);
+      background: var(--void-surface);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+    }
+    
+    .related-artifacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    
+    .related-card {
+      padding: var(--space-4);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .related-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+    }
+    
+    .related-type {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .related-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+    }
+    
+    /* Loading state */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      color: var(--text-tertiary);
+      font-family: var(--font-mono);
+    }
+    
+    /* Not found state */
+    .not-found {
+      text-align: center;
+      padding: var(--space-16);
+    }
+    
+    .not-found h2 {
+      margin-bottom: var(--space-4);
+    }
+  </style>
+</head>
+<body class="noise-overlay">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">Waleed Raza</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="site-nav" id="site-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#products" class="nav-link">Products</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="reading.html" class="nav-link">Reading</a>
+        <a href="writing.html" class="nav-link">Writing</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="sandbox.html" class="nav-link">Sandbox</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="artifact-detail" id="artifact-content">
+    <div class="loading">Loading artifact...</div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2025 Waleed Raza</p>
+    <div class="footer-links">
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/waleedaraza" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- MODE TOGGLE -->
+  <button class="mode-toggle" onclick="toggleInnerMode()" aria-label="Toggle inner mode">
+    <span class="mode-toggle-label">Inner Mode</span>
+    <span class="mode-toggle-switch"></span>
+  </button>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════════════
+       ARTIFACT DETAIL PAGE
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    let artifacts = [];
+    let currentArtifact = null;
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadArtifacts();
+      renderArtifact();
+      
+      // Check for saved inner mode preference
+      if (localStorage.getItem('innerMode') === 'true') {
+        toggleInnerMode(true);
+      }
+    });
+    
+    async function loadArtifacts() {
+      try {
+        const response = await fetch('assets/data/artifacts.json');
+        const data = await response.json();
+        artifacts = data.artifacts || [];
+      } catch (error) {
+        console.error('Failed to load artifacts:', error);
+        artifacts = [];
+      }
+    }
+    
+    function getArtifactId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+    
+    function renderArtifact() {
+      const container = document.getElementById('artifact-content');
+      const id = getArtifactId();
+      
+      if (!id) {
+        container.innerHTML = renderNotFound();
+        return;
+      }
+      
+      currentArtifact = artifacts.find(a => a.id === id);
+      
+      if (!currentArtifact) {
+        container.innerHTML = renderNotFound();
+        return;
+      }
+      
+      // Update page title
+      document.title = `${currentArtifact.name} | Waleed Raza`;
+      
+      container.innerHTML = renderArtifactDetail(currentArtifact);
+      
+      // Add click handlers for related artifacts
+      container.querySelectorAll('.related-card').forEach(card => {
+        card.addEventListener('click', () => {
+          window.location.href = `artifact.html?id=${card.dataset.id}`;
+        });
+      });
+    }
+    
+    function renderArtifactDetail(a) {
+      const tierLabel = formatTier(a.tier);
+      const statusLabel = formatStatus(a.status);
+      
+      return `
+        <a href="/" class="back-link">Back to all artifacts</a>
+        
+        <header class="artifact-header">
+          <div class="artifact-meta">
+            <span class="artifact-tier" data-tier="${a.tier}">${tierLabel}</span>
+            <span class="artifact-status" data-status="${a.status}">${statusLabel}</span>
+          </div>
+          <h1 class="artifact-title">${escapeHtml(a.name)}</h1>
+          <p class="artifact-tagline">${escapeHtml(a.tagline)}</p>
+        </header>
+        
+        ${a.problem && a.problem.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Problem</h2>
+          <div class="artifact-section-content">
+            <ul>
+              ${a.problem.map(p => `<li>${escapeHtml(p)}</li>`).join('')}
+            </ul>
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.uvp && a.uvp.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Unique Value Proposition</h2>
+          <div class="artifact-section-content">
+            <ul>
+              ${a.uvp.map(u => `<li>${escapeHtml(u)}</li>`).join('')}
+            </ul>
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.desired_state && a.desired_state.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Desired State</h2>
+          <div class="artifact-section-content">
+            <ul>
+              ${a.desired_state.map(d => `<li>${escapeHtml(d)}</li>`).join('')}
+            </ul>
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.current_state && a.current_state.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Current State</h2>
+          <ul class="current-state-list">
+            ${a.current_state.map(s => `
+              <li class="current-state-item">
+                <span class="state-icon ${s.done ? 'done' : 'pending'}">${s.done ? '●' : '○'}</span>
+                <span class="state-text ${s.done ? 'done' : 'pending'}">${escapeHtml(s.text)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </section>
+        ` : ''}
+        
+        ${a.next_step && a.next_step.text ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Next Step</h2>
+          <div class="next-step-card">
+            ${a.next_step.date ? `<div class="next-step-date">Target: ${a.next_step.date}</div>` : ''}
+            <div class="next-step-text">${escapeHtml(a.next_step.text)}</div>
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.stack && a.stack.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Stack</h2>
+          <div class="stack-tags">
+            ${a.stack.map(s => `<span class="stack-tag">${escapeHtml(s)}</span>`).join('')}
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.links && Object.keys(a.links).some(k => a.links[k]) ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Links</h2>
+          <div class="artifact-links">
+            ${a.links.repo ? `<a href="${a.links.repo}" class="artifact-link" target="_blank" rel="noopener">Repository</a>` : ''}
+            ${a.links.site ? `<a href="${a.links.site}" class="artifact-link" target="_blank" rel="noopener">Website</a>` : ''}
+            ${a.links.demo ? `<a href="${a.links.demo}" class="artifact-link" target="_blank" rel="noopener">Demo</a>` : ''}
+            ${a.links.landing ? `<a href="${a.links.landing}" class="artifact-link" target="_blank" rel="noopener">Landing Page</a>` : ''}
+            ${!a.links.repo && !a.links.site && !a.links.demo ? `<span class="artifact-link disabled">Links coming soon</span>` : ''}
+          </div>
+        </section>
+        ` : ''}
+        
+        ${a.relationships && a.relationships.length ? `
+        <section class="artifact-section">
+          <h2 class="artifact-section-title">Related Artifacts</h2>
+          <div class="related-artifacts">
+            ${a.relationships.map(rel => {
+              const related = artifacts.find(ar => ar.id === rel.target);
+              if (!related) return '';
+              return `
+                <div class="related-card" data-id="${rel.target}">
+                  <div class="related-type">${formatRelationType(rel.type)}</div>
+                  <div class="related-name">${escapeHtml(related.name)}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>
+        ` : ''}
+      `;
+    }
+    
+    function renderNotFound() {
+      return `
+        <div class="not-found">
+          <h2>Artifact Not Found</h2>
+          <p>The requested artifact does not exist.</p>
+          <a href="/" class="btn btn-primary">Back to Home</a>
+        </div>
+      `;
+    }
+    
+    function formatTier(tier) {
+      const labels = {
+        'escape_velocity': 'Escape Velocity',
+        'wow_factor': 'Wow Factor',
+        'rocket_stage': 'Rocket Stage',
+        'moonshot': 'Moonshot',
+        'utility': 'Utility',
+        'paused': 'Paused',
+        'research': 'Research',
+        'incubation': 'Incubation',
+        'archive': 'Archive',
+        'retired': 'Archived'
+      };
+      return labels[tier] || tier;
+    }
+    
+    function formatStatus(status) {
+      const labels = {
+        'active': 'Active',
+        'paused': 'Paused',
+        'prototype': 'Prototype',
+        'research': 'Research',
+        'concept': 'Concept',
+        'retired': 'Archived'
+      };
+      return labels[status] || status;
+    }
+    
+    function formatRelationType(type) {
+      const labels = {
+        'shared_stack': 'Shared Stack',
+        'feeds': 'Feeds Into',
+        'adjacent': 'Adjacent To',
+        'inspired_by': 'Inspired By'
+      };
+      return labels[type] || type;
+    }
+    
+    function escapeHtml(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+    
+    // Navigation
+    function toggleNav() {
+      const nav = document.getElementById('site-nav');
+      nav.classList.toggle('open');
+    }
+    
+    // Inner mode
+    let innerModeEnabled = false;
+    
+    function toggleInnerMode(forceState) {
+      innerModeEnabled = forceState !== undefined ? forceState : !innerModeEnabled;
+      document.body.classList.toggle('inner-mode', innerModeEnabled);
+      localStorage.setItem('innerMode', innerModeEnabled);
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+{
+  "artifacts": [
+    {
+      "id": "pokergeek",
+      "name": "PokerGeek",
+      "tagline": "Chess.com for poker: play + improve + prove fairness",
+      "status": "in_dev",
+      "statusDate": "2025-12-20",
+      "accentColor": "pokergeek",
+      "problem": "Players can't verify game fairness because existing platforms don't expose their shuffle algorithms.",
+      "solution": "PokerGeek lets you play and improve with cryptographic proofs for every shuffle.",
+      "mvp": [
+        { "text": "Real-time multiplayer Texas Hold'em tables", "done": true },
+        { "text": "Private rooms with invite links", "done": true },
+        { "text": "Hand history logging", "done": true },
+        { "text": "Provably fair shuffling", "done": true },
+        { "text": "Analytics dashboard", "done": false },
+        { "text": "Rankings and achievements", "done": false }
+      ],
+      "proofLinks": {
+        "repo": "https://github.com/WaleedaRaza/pokerswound",
+        "demo": null,
+        "docs": null
+      },
+      "nextMilestone": {
+        "description": "Analytics dashboard MVP",
+        "date": "2025-01-15"
+      },
+      "priority": 1,
+      "position": { "x": 50, "y": 30 }
+    },
+    {
+      "id": "alexandria",
+      "name": "Alexandria Vault",
+      "tagline": "Personal PDF library + open-access discovery",
+      "status": "in_dev",
+      "statusDate": "2025-12-20",
+      "accentColor": "alexandria",
+      "problem": "PDFs are scattered across devices with no way to search, organize, or discover related works.",
+      "solution": "Alexandria Vault turns your PDF collection into a searchable, organized knowledge system.",
+      "mvp": [
+        { "text": "Local PDF library import", "done": false },
+        { "text": "Auto metadata extraction", "done": false },
+        { "text": "Full-text search", "done": false },
+        { "text": "Open-access discovery", "done": false }
+      ],
+      "proofLinks": {
+        "repo": "https://github.com/WaleedaRaza/alexandria-vault",
+        "demo": null,
+        "docs": null
+      },
+      "nextMilestone": {
+        "description": "PDF upload and metadata extraction",
+        "date": "2025-01-30"
+      },
+      "priority": 2,
+      "position": { "x": 25, "y": 55 }
+    },
+    {
+      "id": "clipvault",
+      "name": "ClipVault",
+      "tagline": "Save videos into a searchable library",
+      "status": "in_dev",
+      "statusDate": "2025-12-20",
+      "accentColor": "clipvault",
+      "problem": "Saving videos is messy—links die, bookmarks are unusable, quality options are confusing.",
+      "solution": "ClipVault: paste link → organized download with transcripts and search.",
+      "mvp": [
+        { "text": "Paste link → download MP4/MP3", "done": false },
+        { "text": "Format and quality selection", "done": false },
+        { "text": "Auto-title and thumbnail extraction", "done": false },
+        { "text": "Basic library view", "done": false }
+      ],
+      "proofLinks": {
+        "repo": "https://github.com/WaleedaRaza/clipvault",
+        "demo": null,
+        "docs": null
+      },
+      "nextMilestone": {
+        "description": "Core download functionality",
+        "date": "2025-01-20"
+      },
+      "priority": 3,
+      "position": { "x": 75, "y": 55 }
+    },
+    {
+      "id": "lifeline",
+      "name": "Lifeline OS",
+      "tagline": "Personal operating system for planning and execution",
+      "status": "in_dev",
+      "statusDate": "2025-12-20",
+      "accentColor": "lifeline",
+      "problem": "Tools are fragmented and routines are inconsistent—no unified system turns intention into daily action.",
+      "solution": "Lifeline OS: planning, execution, and reflection in one loop with local AI agents.",
+      "mvp": [
+        { "text": "Local LLM agent integration", "done": true },
+        { "text": "Goal and task planning", "done": true },
+        { "text": "AI coaching personas", "done": true },
+        { "text": "Today dashboard", "done": false },
+        { "text": "Habit tracking", "done": false }
+      ],
+      "proofLinks": {
+        "repo": "https://github.com/WaleedaRaza/paths",
+        "demo": null,
+        "docs": null
+      },
+      "nextMilestone": {
+        "description": "Today dashboard with must-wins",
+        "date": "2025-01-25"
+      },
+      "priority": 4,
+      "position": { "x": 20, "y": 80 }
+    },
+    {
+      "id": "petform",
+      "name": "Petform",
+      "tagline": "All-in-one pet management platform",
+      "status": "in_dev",
+      "statusDate": "2025-12-20",
+      "accentColor": "petform",
+      "problem": "Pet care is fragmented—health records scattered, medications missed, appointments forgotten.",
+      "solution": "Petform: one home for pet profiles, reminders, health logs, and AI-powered care insights.",
+      "mvp": [
+        { "text": "Pet profiles with photos", "done": false },
+        { "text": "Medication and feeding schedules", "done": false },
+        { "text": "Reminder notifications", "done": false },
+        { "text": "Health event logging", "done": false }
+      ],
+      "proofLinks": {
+        "repo": "https://github.com/WaleedaRaza/petform",
+        "demo": null,
+        "docs": null
+      },
+      "nextMilestone": {
+        "description": "Core pet profile system",
+        "date": "2025-02-01"
+      },
+      "priority": 5,
+      "position": { "x": 80, "y": 80 }
+    }
+  ],
+  "proofLedger": [
+    {
+      "id": "1",
+      "product": "pokergeek",
+      "action": "Multiplayer tables working",
+      "date": "2025-12-15",
+      "link": "https://github.com/WaleedaRaza/pokerswound"
+    },
+    {
+      "id": "2",
+      "product": "lifeline",
+      "action": "Local LLM integration complete",
+      "date": "2025-12-10",
+      "link": "https://github.com/WaleedaRaza/paths"
+    },
+    {
+      "id": "3",
+      "product": "pokergeek",
+      "action": "Provably fair shuffling implemented",
+      "date": "2025-12-05",
+      "link": "https://github.com/WaleedaRaza/pokerswound"
+    }
+  ],
+  "now": {
+    "focus": "PokerGeek analytics dashboard + ClipVault core download",
+    "updatedAt": "2025-12-20"
+  }
+}
+
+
+

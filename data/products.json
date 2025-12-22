@@ -1,0 +1,1087 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-12-20",
+    "totalProducts": 20
+  },
+  "products": [
+    {
+      "id": "pokergeek",
+      "name": "PokerGeek",
+      "shortTagline": "Chess.com for poker",
+      "longTagline": "Provably fair poker with analytics-native progression — play, improve, prove.",
+      "category": "Moonshot",
+      "status": "In Dev",
+      "focusWeight": 10,
+      "timeHorizon": "Now",
+      "monetization": "Subscription",
+      "userType": "Consumer",
+      "problem": "Online poker feels untrustworthy. Players can't verify fairness, training is disconnected from play, and there's no unified place to compete and improve.",
+      "solution": "PokerGeek combines provably fair gameplay with analytics-native progression. Every hand becomes data for improvement, with cryptographic proofs ensuring trust.",
+      "UVP": [
+        "Cryptographic shuffle proofs visible to players",
+        "Analytics dashboard for every session",
+        "Private rooms with invite links",
+        "Progression system with ranks and achievements",
+        "Hand history with replay and annotation",
+        "Fair matchmaking based on skill"
+      ],
+      "MVPNow": [
+        "Real-time multiplayer Texas Hold'em tables",
+        "Private rooms with invite links",
+        "Hand history logging",
+        "Provably fair shuffling algorithm",
+        "Basic player accounts"
+      ],
+      "MVPNext": [
+        "Analytics dashboard MVP",
+        "Friend system and invites",
+        "Basic progression (ranks/badges)",
+        "Fairness proof page UI"
+      ],
+      "FinalScope": [
+        "Tournament system with brackets",
+        "Coaching mode with AI analysis",
+        "Mobile apps (iOS/Android)",
+        "Real-money integration (licensed markets)",
+        "Pro circuit and streaming integration",
+        "API for third-party tools"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/pokerswound",
+        "landing": "https://github.com/WaleedaRaza/pokergeek-landing",
+        "demo": null,
+        "screenshots": "assets/img/portfolio/pokergeek/",
+        "docs": null
+      },
+      "tech": ["React", "Next.js", "Node.js", "WebSockets", "PostgreSQL", "Cryptography"],
+      "connections": [
+        {"toId": "lifeline-os", "reason": "Shared analytics infrastructure", "strength": 3, "type": "tech"},
+        {"toId": "agentyeager", "reason": "Agent-assisted coaching planned", "strength": 2, "type": "tech"},
+        {"toId": "stockscouter", "reason": "Shared real-time data patterns", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Play fair. Prove it. Improve.",
+        "Poker, verified.",
+        "The thinking player's platform."
+      ],
+      "jobsStatement": "PokerGeek is where serious players go to compete, improve, and prove their game is fair.",
+      "ICP": "Competitive poker players who want transparency and data-driven improvement",
+      "distributionWedge": "Private room sharing → friend invites → community growth",
+      "monetizationPath": "Freemium with premium analytics subscription ($9.99/mo), tournament entry fees (rake)"
+    },
+    {
+      "id": "alexandria-vault",
+      "name": "Alexandria Vault",
+      "shortTagline": "Your personal PDF knowledge system",
+      "longTagline": "Turn your PDF collection into a searchable, organized knowledge vault with open-access discovery.",
+      "category": "Platform",
+      "status": "In Dev",
+      "focusWeight": 8,
+      "timeHorizon": "1-3 months",
+      "monetization": "Subscription",
+      "userType": "Prosumer",
+      "problem": "PDFs are scattered across devices, impossible to search, and metadata is lost. Knowledge workers drown in documents they can't find or organize.",
+      "solution": "Alexandria Vault transforms your PDF collection into a searchable knowledge system with auto-metadata extraction, full-text search, and discovery of open-access resources.",
+      "UVP": [
+        "Full-text search across your entire library",
+        "Auto-extract metadata (title, author, date, topics)",
+        "Organize with collections, tags, and smart folders",
+        "Discover related open-access resources",
+        "Sync across devices (local-first, privacy-respecting)",
+        "Export citations and references"
+      ],
+      "MVPNow": [
+        "Concept validated",
+        "Architecture designed",
+        "Tech stack selected"
+      ],
+      "MVPNext": [
+        "PDF upload and storage",
+        "Auto metadata extraction",
+        "Basic full-text search",
+        "Collection management"
+      ],
+      "FinalScope": [
+        "1M+ PDF library support",
+        "AI-powered summarization",
+        "Citation graph visualization",
+        "Team/shared libraries",
+        "API for integrations",
+        "Browser extension for one-click save"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/alexandria-vault",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "FastAPI", "PostgreSQL", "Elasticsearch", "React", "Local-first"],
+      "connections": [
+        {"toId": "clipvault", "reason": "Shared media library patterns", "strength": 4, "type": "tech"},
+        {"toId": "newsnet", "reason": "Shared NLP/extraction pipeline", "strength": 3, "type": "tech"},
+        {"toId": "lifeline-os", "reason": "Knowledge feeds execution", "strength": 2, "type": "audience"}
+      ],
+      "taglineOptions": [
+        "Your library, finally searchable.",
+        "Knowledge, organized.",
+        "The PDF system you deserve."
+      ],
+      "jobsStatement": "Alexandria Vault is where your documents become searchable knowledge.",
+      "ICP": "Researchers, students, knowledge workers with large PDF collections",
+      "distributionWedge": "Personal use → team sharing → academic institutions",
+      "monetizationPath": "Freemium (100 PDFs free), Pro ($7.99/mo unlimited), Team ($15/user/mo)"
+    },
+    {
+      "id": "clipvault",
+      "name": "ClipVault",
+      "shortTagline": "Save videos into a searchable library",
+      "longTagline": "Paste a link, get an organized download with transcripts and search across your entire collection.",
+      "category": "Utility",
+      "status": "In Dev",
+      "focusWeight": 6,
+      "timeHorizon": "1-3 months",
+      "monetization": "Ads",
+      "userType": "Consumer",
+      "problem": "Saving videos is messy. Links die, bookmarks are unusable, quality options are confusing, and there's no way to search what you've saved.",
+      "solution": "ClipVault: paste a link, get an organized download with auto-generated transcripts and full-text search across your collection.",
+      "UVP": [
+        "One-click download from supported platforms",
+        "Auto-generated transcripts and summaries",
+        "Full-text search across video content",
+        "Organize with folders, tags, playlists",
+        "Batch download support",
+        "Format and quality selection"
+      ],
+      "MVPNow": [
+        "Concept validated",
+        "Architecture designed"
+      ],
+      "MVPNext": [
+        "Paste link → download MP4/MP3",
+        "Format and quality selection",
+        "Auto-title and thumbnail extraction",
+        "Basic library view"
+      ],
+      "FinalScope": [
+        "AI-powered content tagging",
+        "Transcript-based navigation",
+        "Cross-platform sync",
+        "Browser extension",
+        "API for automation",
+        "Team libraries for educators"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/clipvault",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "yt-dlp", "React", "SQLite", "Whisper"],
+      "connections": [
+        {"toId": "alexandria-vault", "reason": "Shared media library patterns", "strength": 4, "type": "tech"},
+        {"toId": "newsnet", "reason": "Video content analysis", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Your videos, organized.",
+        "Never lose a video again.",
+        "Paste. Save. Search."
+      ],
+      "jobsStatement": "ClipVault is where videos become a searchable personal library.",
+      "ICP": "Content consumers, educators, researchers who save videos for later",
+      "distributionWedge": "SEO + utility virality → browser extension → premium features",
+      "monetizationPath": "Ad-supported free tier, Pro removes ads ($4.99/mo)"
+    },
+    {
+      "id": "lifeline-os",
+      "name": "Lifeline OS",
+      "shortTagline": "Personal operating system for execution",
+      "longTagline": "Planning, execution, and reflection in one loop — powered by local AI agents.",
+      "category": "Platform",
+      "status": "In Dev",
+      "focusWeight": 8,
+      "timeHorizon": "Now",
+      "monetization": "Subscription",
+      "userType": "Prosumer",
+      "problem": "Tools are fragmented, routines are inconsistent, and emotional state swings break follow-through. There's no unified system that turns intention into reliable daily execution.",
+      "solution": "Lifeline OS is your personal operating system — one place where planning, execution, and reflection form a complete loop, powered by local AI agents.",
+      "UVP": [
+        "Daily must-wins and priority planning",
+        "Goal and project tracking with roadmaps",
+        "AI coaching personas (local LLM, privacy-first)",
+        "Habit tracking with streaks",
+        "Journaling with prompts",
+        "Weekly review templates"
+      ],
+      "MVPNow": [
+        "Local LLM agent integration (Ollama)",
+        "Goal and task planning",
+        "AI coaching personas working"
+      ],
+      "MVPNext": [
+        "Today dashboard with must-wins",
+        "Weekly review templates",
+        "Habit tracking and streaks",
+        "Progress metrics"
+      ],
+      "FinalScope": [
+        "Agent swarm with specialized personas",
+        "Mobile companion app",
+        "Calendar/email/task manager integrations",
+        "Community templates marketplace",
+        "Advanced analytics and insights",
+        "API for custom agents"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/paths",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Electron", "Node.js", "Ollama", "SQLite", "React", "Redux"],
+      "connections": [
+        {"toId": "agentyeager", "reason": "Agent framework foundation", "strength": 5, "type": "tech"},
+        {"toId": "pokergeek", "reason": "Shared analytics patterns", "strength": 2, "type": "tech"},
+        {"toId": "warvis", "reason": "Local AI assistant patterns", "strength": 4, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Turn intention into action.",
+        "Your personal execution OS.",
+        "Plan. Execute. Reflect. Repeat."
+      ],
+      "jobsStatement": "Lifeline OS is where high-agency people run their lives.",
+      "ICP": "Ambitious individuals who want systematic personal execution",
+      "distributionWedge": "Template sharing → community → team version",
+      "monetizationPath": "Free personal use, Pro templates/sync ($9.99/mo), Team ($19/user/mo)"
+    },
+    {
+      "id": "petform",
+      "name": "Petform",
+      "shortTagline": "All-in-one pet management platform",
+      "longTagline": "One home for pet profiles, reminders, health logs, and AI-powered care insights.",
+      "category": "Platform",
+      "status": "In Dev",
+      "focusWeight": 5,
+      "timeHorizon": "1-3 months",
+      "monetization": "Ads",
+      "userType": "Consumer",
+      "problem": "Pet care is fragmented. Owners track health in notes, texts, and scattered vet PDFs. They miss medications, forget appointments, and can't share access with family.",
+      "solution": "Petform is one home for pet life — profiles, reminders, records, AI insights, and shared access all in one place.",
+      "UVP": [
+        "Detailed pet profiles with photos and history",
+        "Medication, feeding, and appointment reminders",
+        "Health event logging with symptoms",
+        "AI-powered care Q&A",
+        "Shared access with family and sitters",
+        "Vet record storage"
+      ],
+      "MVPNow": [
+        "Concept validated",
+        "UI/UX designed"
+      ],
+      "MVPNext": [
+        "Pet profiles with photos",
+        "Medication and feeding schedules",
+        "Reminder notifications",
+        "Health event logging"
+      ],
+      "FinalScope": [
+        "Multi-pet household support",
+        "Vet appointment booking integration",
+        "Pet community and adoption",
+        "Insurance integration",
+        "Wearable/IoT sync",
+        "Breeder tools"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/petform",
+        "demo": null,
+        "screenshots": "assets/petform_pics/",
+        "docs": null
+      },
+      "tech": ["Flutter", "Firebase", "Dart", "Cloud Functions"],
+      "connections": [
+        {"toId": "lifeline-os", "reason": "Shared reminder/tracking patterns", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Your pet's life, organized.",
+        "Never miss a vet appointment.",
+        "Pet care, simplified."
+      ],
+      "jobsStatement": "Petform is where pet owners manage their pet's entire life.",
+      "ICP": "Pet owners who want organized, proactive pet care",
+      "distributionWedge": "Social sharing (pet profiles) → family invites → vet partnerships",
+      "monetizationPath": "Ad-supported free tier, Premium removes ads + adds AI ($4.99/mo)"
+    },
+    {
+      "id": "datadepth",
+      "name": "DataDepth",
+      "shortTagline": "Enterprise data intelligence platform",
+      "longTagline": "Data brokerage and analytics platform for enterprise data buyers and sellers.",
+      "category": "Platform",
+      "status": "Prototype",
+      "focusWeight": 6,
+      "timeHorizon": "3-12 months",
+      "monetization": "Enterprise",
+      "userType": "Enterprise",
+      "problem": "Enterprise data buying is opaque. Buyers can't evaluate quality before purchase, and sellers lack distribution channels.",
+      "solution": "DataDepth is a marketplace and analytics layer for enterprise data — browse, sample, and purchase datasets with quality guarantees.",
+      "UVP": [
+        "Dataset discovery and preview",
+        "Quality scoring and validation",
+        "Secure data exchange",
+        "Usage analytics for sellers",
+        "API access for programmatic buying",
+        "Compliance and audit trails"
+      ],
+      "MVPNow": [
+        "Concept designed",
+        "Market research complete"
+      ],
+      "MVPNext": [
+        "Dataset listing platform",
+        "Preview and sampling",
+        "Basic transaction flow"
+      ],
+      "FinalScope": [
+        "Enterprise SSO and compliance",
+        "Real-time data feeds",
+        "Custom data enrichment",
+        "White-label for data vendors",
+        "AI-powered data matching"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/datadepth",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "FastAPI", "PostgreSQL", "React", "AWS"],
+      "connections": [
+        {"toId": "stockscouter", "reason": "Financial data patterns", "strength": 3, "type": "tech"},
+        {"toId": "newsnet", "reason": "Data ingestion patterns", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Data you can trust.",
+        "The enterprise data marketplace.",
+        "Buy data with confidence."
+      ],
+      "jobsStatement": "DataDepth is where enterprises buy and sell data with transparency.",
+      "ICP": "Data analysts, hedge funds, enterprises needing alternative data",
+      "distributionWedge": "Direct sales → API integrations → marketplace network effects",
+      "monetizationPath": "Transaction fees (15-25%), Enterprise contracts"
+    },
+    {
+      "id": "stockscouter",
+      "name": "StockScouter",
+      "shortTagline": "Options analytics and trading intelligence",
+      "longTagline": "Real-time options flow analysis and trading signals for retail and pro traders.",
+      "category": "Platform",
+      "status": "Prototype",
+      "focusWeight": 5,
+      "timeHorizon": "3-12 months",
+      "monetization": "Subscription",
+      "userType": "Prosumer",
+      "problem": "Retail traders lack access to institutional-grade options flow data and analytics tools.",
+      "solution": "StockScouter brings institutional-level options analytics to retail traders — unusual activity alerts, flow analysis, and trading signals.",
+      "UVP": [
+        "Real-time unusual options activity",
+        "Flow analysis and whale tracking",
+        "Custom alerts and filters",
+        "Historical pattern analysis",
+        "Trading signal generation",
+        "Portfolio risk analysis"
+      ],
+      "MVPNow": [
+        "Data pipeline designed",
+        "Core analytics algorithms"
+      ],
+      "MVPNext": [
+        "Real-time options flow dashboard",
+        "Unusual activity alerts",
+        "Basic backtesting"
+      ],
+      "FinalScope": [
+        "AI-powered signal generation",
+        "Broker integrations for one-click trading",
+        "Social trading and copy-trading",
+        "Hedge fund tier features",
+        "API for algo traders"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/StockScouter",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "FastAPI", "React", "PostgreSQL", "Redis", "WebSockets"],
+      "connections": [
+        {"toId": "datadepth", "reason": "Financial data platform", "strength": 3, "type": "audience"},
+        {"toId": "newsnet", "reason": "Market sentiment analysis", "strength": 3, "type": "tech"},
+        {"toId": "pokergeek", "reason": "Real-time data patterns", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Trade smarter.",
+        "Institutional analytics, retail access.",
+        "See what the whales see."
+      ],
+      "jobsStatement": "StockScouter is where traders get institutional-grade options intelligence.",
+      "ICP": "Active options traders who want data edge",
+      "distributionWedge": "Trading communities → influencer partnerships → API customers",
+      "monetizationPath": "Free tier (delayed), Pro ($29.99/mo), Institutional (custom)"
+    },
+    {
+      "id": "newsnet",
+      "name": "NewsNet",
+      "shortTagline": "AI-powered news analysis platform",
+      "longTagline": "Real-time news aggregation with NLP-powered sentiment, stance, and topic analysis.",
+      "category": "Platform",
+      "status": "Prototype",
+      "focusWeight": 4,
+      "timeHorizon": "3-12 months",
+      "monetization": "Subscription",
+      "userType": "Prosumer",
+      "problem": "News is overwhelming. Readers can't track sentiment across sources, detect bias, or understand how narratives evolve.",
+      "solution": "NewsNet aggregates news and applies NLP to surface sentiment, stance, and topic evolution — making news consumption intelligent.",
+      "UVP": [
+        "Real-time news aggregation across sources",
+        "Sentiment and stance analysis per article",
+        "Topic clustering and narrative tracking",
+        "Source bias scoring",
+        "Custom alert pipelines",
+        "API for integration"
+      ],
+      "MVPNow": [
+        "Flutter app shell built",
+        "FastAPI backend started",
+        "NLP models selected"
+      ],
+      "MVPNext": [
+        "News ingestion pipeline",
+        "Basic sentiment analysis",
+        "Topic clustering"
+      ],
+      "FinalScope": [
+        "Real-time narrative tracking",
+        "Trading signal generation from news",
+        "Custom LLM fine-tuning",
+        "Enterprise media monitoring",
+        "API marketplace"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/newsnet-app",
+        "altRepo": "https://github.com/WaleedaRaza/newsnet",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Flutter", "FastAPI", "Python", "NLP", "Transformers", "PostgreSQL"],
+      "connections": [
+        {"toId": "stockscouter", "reason": "Market sentiment for trading", "strength": 4, "type": "audience"},
+        {"toId": "alexandria-vault", "reason": "Document analysis patterns", "strength": 2, "type": "tech"},
+        {"toId": "datadepth", "reason": "News data as product", "strength": 2, "type": "audience"}
+      ],
+      "taglineOptions": [
+        "News with intelligence.",
+        "See the signal in the noise.",
+        "AI-powered news analysis."
+      ],
+      "jobsStatement": "NewsNet is where serious readers understand news, not just consume it.",
+      "ICP": "Traders, researchers, analysts who need news intelligence",
+      "distributionWedge": "Free consumer app → pro features → enterprise API",
+      "monetizationPath": "Free tier, Pro ($14.99/mo), Enterprise API (usage-based)"
+    },
+    {
+      "id": "warvis",
+      "name": "WARVIS",
+      "shortTagline": "Local Jarvis-like AI assistant",
+      "longTagline": "Privacy-first local AI assistant with system control, automation, and voice interface.",
+      "category": "Research",
+      "status": "Prototype",
+      "focusWeight": 4,
+      "timeHorizon": "3-12 months",
+      "monetization": "OSS",
+      "userType": "Developer",
+      "problem": "Cloud AI assistants sacrifice privacy and require connectivity. Power users want local control.",
+      "solution": "WARVIS is a local-first AI assistant that runs on your machine — system control, automation, and voice interface with complete privacy.",
+      "UVP": [
+        "Fully local execution (no cloud required)",
+        "System control and automation",
+        "Voice interface with wake word",
+        "Extensible plugin architecture",
+        "Privacy-first design",
+        "Open source core"
+      ],
+      "MVPNow": [
+        "Local LLM integration working",
+        "Basic voice recognition",
+        "System command execution"
+      ],
+      "MVPNext": [
+        "Plugin system",
+        "Improved voice accuracy",
+        "More system integrations"
+      ],
+      "FinalScope": [
+        "Full home automation integration",
+        "Multi-device sync",
+        "Custom wake word training",
+        "Enterprise deployment",
+        "Mobile companion"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/WARVIS",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "Ollama", "Whisper", "System APIs"],
+      "connections": [
+        {"toId": "lifeline-os", "reason": "Shared local LLM patterns", "strength": 5, "type": "tech"},
+        {"toId": "agentyeager", "reason": "Agent execution patterns", "strength": 4, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Your AI, your machine.",
+        "Jarvis, but private.",
+        "Local intelligence."
+      ],
+      "jobsStatement": "WARVIS is where power users run AI without the cloud.",
+      "ICP": "Privacy-conscious developers and power users",
+      "distributionWedge": "Open source → plugin ecosystem → enterprise version",
+      "monetizationPath": "OSS core, Premium plugins, Enterprise support"
+    },
+    {
+      "id": "agentyeager",
+      "name": "AgentYeager",
+      "shortTagline": "Agent orchestration framework",
+      "longTagline": "Framework for building and orchestrating multi-agent AI systems with local LLM support.",
+      "category": "Tooling",
+      "status": "Prototype",
+      "focusWeight": 5,
+      "timeHorizon": "Now",
+      "monetization": "OSS",
+      "userType": "Developer",
+      "problem": "Building multi-agent AI systems requires significant boilerplate. Developers need a framework for agent orchestration.",
+      "solution": "AgentYeager provides primitives for building, orchestrating, and managing multi-agent systems — local-first with LLM flexibility.",
+      "UVP": [
+        "Multi-agent orchestration primitives",
+        "Local LLM support (Ollama, llama.cpp)",
+        "Agent-to-agent communication",
+        "Tool/function calling framework",
+        "State management across agents",
+        "Observability and debugging"
+      ],
+      "MVPNow": [
+        "Core agent primitives",
+        "Ollama integration",
+        "Basic orchestration"
+      ],
+      "MVPNext": [
+        "Tool calling framework",
+        "Agent swarm patterns",
+        "Documentation"
+      ],
+      "FinalScope": [
+        "Visual agent builder",
+        "Agent marketplace",
+        "Enterprise deployment tools",
+        "Fine-tuning pipeline",
+        "Production monitoring"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/agentyeager",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "Ollama", "LangChain", "FastAPI"],
+      "connections": [
+        {"toId": "lifeline-os", "reason": "Powers the agent swarm", "strength": 5, "type": "tech"},
+        {"toId": "warvis", "reason": "Agent patterns", "strength": 4, "type": "tech"},
+        {"toId": "newsnet", "reason": "NLP agent patterns", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Build agent swarms.",
+        "Multi-agent, made simple.",
+        "Orchestrate intelligence."
+      ],
+      "jobsStatement": "AgentYeager is where developers build multi-agent AI systems.",
+      "ICP": "AI developers building agent-based applications",
+      "distributionWedge": "Open source → tutorials → enterprise support",
+      "monetizationPath": "OSS, Enterprise support contracts, Hosted version"
+    },
+    {
+      "id": "gpuzap",
+      "name": "GPUZap",
+      "shortTagline": "GPU provisioning CLI",
+      "longTagline": "Command-line tool for finding, comparing, and provisioning cloud GPUs across providers.",
+      "category": "Tooling",
+      "status": "Prototype",
+      "focusWeight": 3,
+      "timeHorizon": "3-12 months",
+      "monetization": "Usage-based API",
+      "userType": "Developer",
+      "problem": "ML engineers waste time comparing GPU prices and availability across cloud providers manually.",
+      "solution": "GPUZap is a CLI that finds the best GPU prices across providers and provisions instances with one command.",
+      "UVP": [
+        "Real-time GPU availability across providers",
+        "Price comparison with spot pricing",
+        "One-command provisioning",
+        "SSH key and config management",
+        "Cost tracking and alerts",
+        "Provider-agnostic interface"
+      ],
+      "MVPNow": [
+        "CLI framework",
+        "Basic provider integrations"
+      ],
+      "MVPNext": [
+        "Multi-provider price comparison",
+        "One-command provisioning",
+        "Spot instance support"
+      ],
+      "FinalScope": [
+        "Auto-scaling orchestration",
+        "Cost optimization AI",
+        "Team management",
+        "Enterprise SSO",
+        "API for programmatic access"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/gpuzap",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "Click", "Cloud APIs"],
+      "connections": [
+        {"toId": "agentyeager", "reason": "GPU for agent training", "strength": 2, "type": "audience"}
+      ],
+      "taglineOptions": [
+        "GPU shopping, simplified.",
+        "One command, best GPU.",
+        "Provision GPUs in seconds."
+      ],
+      "jobsStatement": "GPUZap is where ML engineers get GPUs without the hassle.",
+      "ICP": "ML engineers and researchers needing cloud GPUs",
+      "distributionWedge": "CLI adoption → team features → enterprise contracts",
+      "monetizationPath": "Free tier, Pro ($19/mo), Enterprise (custom)"
+    },
+    {
+      "id": "terminaltool",
+      "name": "TerminalTool",
+      "shortTagline": "LLM-assisted security workflows",
+      "longTagline": "AI-powered terminal tool for authorized security testing and defensive workflows.",
+      "category": "Tooling",
+      "status": "Prototype",
+      "focusWeight": 3,
+      "timeHorizon": "3-12 months",
+      "monetization": "Subscription",
+      "userType": "Developer",
+      "problem": "Security testing requires context-switching between tools and documentation. AI can accelerate authorized testing workflows.",
+      "solution": "TerminalTool brings LLM assistance to security workflows — contextual suggestions, documentation lookup, and workflow automation for authorized testing.",
+      "UVP": [
+        "LLM-powered command suggestions",
+        "Context-aware security documentation",
+        "Workflow automation scripts",
+        "Authorized testing focus",
+        "Audit logging for compliance",
+        "Integration with security tools"
+      ],
+      "MVPNow": [
+        "Basic terminal integration",
+        "LLM query interface"
+      ],
+      "MVPNext": [
+        "Security tool integrations",
+        "Workflow templates",
+        "Audit logging"
+      ],
+      "FinalScope": [
+        "Enterprise compliance features",
+        "Team collaboration",
+        "Custom model fine-tuning",
+        "CI/CD integration"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/terminaltool",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "LLM", "Terminal APIs"],
+      "connections": [
+        {"toId": "agentyeager", "reason": "Agent-based workflows", "strength": 2, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "AI-powered security workflows.",
+        "Test smarter, not harder.",
+        "Security with intelligence."
+      ],
+      "jobsStatement": "TerminalTool is where security professionals work with AI assistance.",
+      "ICP": "Security professionals doing authorized testing",
+      "distributionWedge": "Open source → pro features → enterprise",
+      "monetizationPath": "Free tier, Pro ($19/mo), Enterprise (custom)",
+      "legalNote": "For authorized testing and defensive security only. No exploit payloads."
+    },
+    {
+      "id": "handcuts",
+      "name": "HandCuts",
+      "shortTagline": "Gesture-based shortcuts",
+      "longTagline": "Computer vision-powered hand gesture recognition for triggering system shortcuts and commands.",
+      "category": "Research",
+      "status": "Prototype",
+      "focusWeight": 3,
+      "timeHorizon": "3-12 months",
+      "monetization": "OSS",
+      "userType": "Consumer",
+      "problem": "Keyboard shortcuts require memorization. Gestures are more natural but lack system integration.",
+      "solution": "HandCuts uses computer vision to recognize hand gestures and map them to system shortcuts and commands.",
+      "UVP": [
+        "Real-time hand gesture recognition",
+        "Customizable gesture-to-action mapping",
+        "Works with any webcam",
+        "Low latency recognition",
+        "Privacy-first (local processing)",
+        "Accessibility applications"
+      ],
+      "MVPNow": [
+        "MediaPipe integration",
+        "Basic gesture recognition",
+        "Proof of concept working"
+      ],
+      "MVPNext": [
+        "Custom gesture training",
+        "System shortcut integration",
+        "Cross-platform support"
+      ],
+      "FinalScope": [
+        "Sign language recognition",
+        "Accessibility suite",
+        "Smart home integration",
+        "VR/AR applications"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/handcuts",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python", "MediaPipe", "OpenCV", "Computer Vision"],
+      "connections": [
+        {"toId": "warvis", "reason": "Alternative input for assistant", "strength": 3, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Control with gestures.",
+        "Your hands are the interface.",
+        "Shortcuts, reimagined."
+      ],
+      "jobsStatement": "HandCuts is where gestures become commands.",
+      "ICP": "Accessibility users, power users wanting hands-free control",
+      "distributionWedge": "Open source → accessibility community → enterprise licenses",
+      "monetizationPath": "OSS core, Enterprise accessibility suite"
+    },
+    {
+      "id": "mmamania",
+      "name": "MMAmania",
+      "shortTagline": "MMA analytics and predictions",
+      "longTagline": "Data-driven MMA fight analysis, predictions, and betting insights.",
+      "category": "Platform",
+      "status": "Prototype",
+      "focusWeight": 3,
+      "timeHorizon": "3-12 months",
+      "monetization": "Subscription",
+      "userType": "Consumer",
+      "problem": "MMA fans lack data-driven insights. Fight predictions are often based on hype, not analysis.",
+      "solution": "MMAmania brings data science to fight sports — fighter analytics, prediction models, and betting insights.",
+      "UVP": [
+        "Fighter stats and analytics",
+        "ML-powered fight predictions",
+        "Historical fight database",
+        "Betting value analysis",
+        "Matchup comparisons",
+        "Event calendars and alerts"
+      ],
+      "MVPNow": [
+        "Data collection pipeline",
+        "Basic prediction model"
+      ],
+      "MVPNext": [
+        "Fighter profiles",
+        "Prediction dashboard",
+        "Event coverage"
+      ],
+      "FinalScope": [
+        "Live fight analytics",
+        "Social features",
+        "Fantasy MMA",
+        "Betting integration"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/mmamania",
+        "demo": null,
+        "screenshots": "assets/mmamania_pics/",
+        "docs": null
+      },
+      "tech": ["Python", "React", "ML", "PostgreSQL"],
+      "connections": [
+        {"toId": "stockscouter", "reason": "Prediction/analytics patterns", "strength": 2, "type": "tech"},
+        {"toId": "pokergeek", "reason": "Competitive analytics", "strength": 2, "type": "audience"}
+      ],
+      "taglineOptions": [
+        "Fight smarter.",
+        "Data-driven MMA.",
+        "Analytics for fight fans."
+      ],
+      "jobsStatement": "MMAmania is where fans get data-driven fight insights.",
+      "ICP": "MMA fans who want analytical edge",
+      "distributionWedge": "Free predictions → community → premium features",
+      "monetizationPath": "Free tier, Pro ($9.99/mo)"
+    },
+    {
+      "id": "hackfaxsite",
+      "name": "HackFax",
+      "shortTagline": "Hackathon management platform",
+      "longTagline": "Platform for organizing, managing, and participating in hackathons.",
+      "category": "Platform",
+      "status": "Archived",
+      "focusWeight": 2,
+      "timeHorizon": "1-3 years",
+      "monetization": "TBD",
+      "userType": "Developer",
+      "problem": "Hackathon organizers lack dedicated tooling for registration, team formation, and judging.",
+      "solution": "HackFax provides end-to-end hackathon management — registration, teams, submissions, and judging.",
+      "UVP": [
+        "Event registration and management",
+        "Team formation tools",
+        "Project submission system",
+        "Judging workflow",
+        "Sponsor management"
+      ],
+      "MVPNow": [
+        "Site built",
+        "Basic registration"
+      ],
+      "MVPNext": [
+        "TBD - currently archived"
+      ],
+      "FinalScope": [
+        "Full hackathon platform"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/hackfaxsite",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["JavaScript", "HTML", "CSS"],
+      "connections": [],
+      "taglineOptions": [
+        "Hackathons, organized.",
+        "Run better hackathons.",
+        "The hackathon platform."
+      ],
+      "jobsStatement": "HackFax is where hackathon organizers manage events.",
+      "ICP": "Hackathon organizers",
+      "distributionWedge": "Direct outreach to organizers",
+      "monetizationPath": "Freemium, Enterprise events"
+    },
+    {
+      "id": "waleedaraza-portfolio",
+      "name": "WaleedOS Portfolio",
+      "shortTagline": "Personal product portfolio",
+      "longTagline": "Interactive product graph and living wiki for the WaleedOS product suite.",
+      "category": "Tooling",
+      "status": "Shipping",
+      "focusWeight": 4,
+      "timeHorizon": "Now",
+      "monetization": "OSS",
+      "userType": "Consumer",
+      "problem": "Traditional portfolios are static lists. They don't show product connections or system thinking.",
+      "solution": "WaleedOS Portfolio is an interactive graph showing how products connect — a living wiki of the product suite.",
+      "UVP": [
+        "Interactive product graph",
+        "Dynamic content from products.json",
+        "Proof ledger for activity",
+        "Clean museum aesthetic",
+        "Mobile-responsive"
+      ],
+      "MVPNow": [
+        "Homepage with graph",
+        "Product panels",
+        "Proof ledger"
+      ],
+      "MVPNext": [
+        "Full bubble graph with D3.js",
+        "Search and filters",
+        "Individual product pages"
+      ],
+      "FinalScope": [
+        "Inner mode (deeper content)",
+        "Writing/essays section",
+        "Community contributions"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/waleedaraza.github.io",
+        "demo": "https://waleedaraza.github.io",
+        "screenshots": null,
+        "docs": "docs/"
+      },
+      "tech": ["HTML", "CSS", "JavaScript", "D3.js"],
+      "connections": [],
+      "taglineOptions": [
+        "Products, connected.",
+        "A living product portfolio.",
+        "The system view."
+      ],
+      "jobsStatement": "WaleedOS Portfolio shows how products form a system.",
+      "ICP": "Recruiters, collaborators, curious visitors",
+      "distributionWedge": "Direct traffic → social sharing",
+      "monetizationPath": "Not applicable (personal brand)"
+    },
+    {
+      "id": "pokergeek-landing",
+      "name": "PokerGeek Landing",
+      "shortTagline": "PokerGeek marketing site",
+      "longTagline": "Landing page and waitlist for PokerGeek product.",
+      "category": "Tooling",
+      "status": "In Dev",
+      "focusWeight": 2,
+      "timeHorizon": "Now",
+      "monetization": "TBD",
+      "userType": "Consumer",
+      "problem": "PokerGeek needs a marketing presence before product launch.",
+      "solution": "Landing page with waitlist, product vision, and early access signup.",
+      "UVP": [
+        "Clear product pitch",
+        "Email waitlist",
+        "Early access signup"
+      ],
+      "MVPNow": [
+        "Basic landing page"
+      ],
+      "MVPNext": [
+        "Waitlist with email capture",
+        "Social proof",
+        "Demo video"
+      ],
+      "FinalScope": [
+        "Full marketing site",
+        "Blog",
+        "Documentation"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/pokergeek-landing",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["HTML", "CSS", "JavaScript"],
+      "connections": [
+        {"toId": "pokergeek", "reason": "Marketing for core product", "strength": 5, "type": "audience"}
+      ],
+      "taglineOptions": [
+        "Join the waitlist.",
+        "Poker, reimagined.",
+        "Coming soon."
+      ],
+      "jobsStatement": "PokerGeek Landing captures early interest.",
+      "ICP": "Potential PokerGeek users",
+      "distributionWedge": "SEO, poker communities",
+      "monetizationPath": "Leads for PokerGeek"
+    },
+    {
+      "id": "stock-surveyor",
+      "name": "Stock Surveyor",
+      "shortTagline": "Stock market analysis tool",
+      "longTagline": "Historical stock data analysis and pattern detection for traders.",
+      "category": "Platform",
+      "status": "Archived",
+      "focusWeight": 2,
+      "timeHorizon": "1-3 years",
+      "monetization": "TBD",
+      "userType": "Prosumer",
+      "problem": "Related to StockScouter — stock analysis tooling.",
+      "solution": "Pattern detection and historical analysis for stocks.",
+      "UVP": [
+        "Historical data analysis",
+        "Pattern detection",
+        "Visualization"
+      ],
+      "MVPNow": [
+        "Basic implementation"
+      ],
+      "MVPNext": [
+        "Consolidated with StockScouter"
+      ],
+      "FinalScope": [
+        "Merged into StockScouter"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/stock-surveyor",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python"],
+      "connections": [
+        {"toId": "stockscouter", "reason": "Related product (consolidate)", "strength": 5, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Stock analysis.",
+        "Pattern detection.",
+        "Historical insights."
+      ],
+      "jobsStatement": "Stock Surveyor analyzes historical stock patterns.",
+      "ICP": "Traders",
+      "distributionWedge": "N/A - being consolidated",
+      "monetizationPath": "Merged into StockScouter"
+    },
+    {
+      "id": "petai-project",
+      "name": "PetAI (Legacy)",
+      "shortTagline": "Pet AI assistant prototype",
+      "longTagline": "Early prototype of AI-powered pet care — superseded by Petform.",
+      "category": "Research",
+      "status": "Archived",
+      "focusWeight": 1,
+      "timeHorizon": "1-3 years",
+      "monetization": "TBD",
+      "userType": "Consumer",
+      "problem": "Early pet care AI exploration.",
+      "solution": "Prototype that evolved into Petform.",
+      "UVP": [
+        "Early pet AI exploration"
+      ],
+      "MVPNow": [
+        "Archived - see Petform"
+      ],
+      "MVPNext": [
+        "N/A - superseded"
+      ],
+      "FinalScope": [
+        "Merged into Petform"
+      ],
+      "proof": {
+        "repo": "https://github.com/WaleedaRaza/PetAI-project",
+        "demo": null,
+        "screenshots": null,
+        "docs": null
+      },
+      "tech": ["Python"],
+      "connections": [
+        {"toId": "petform", "reason": "Evolved into Petform", "strength": 5, "type": "tech"}
+      ],
+      "taglineOptions": [
+        "Legacy project."
+      ],
+      "jobsStatement": "PetAI was the prototype that became Petform.",
+      "ICP": "N/A",
+      "distributionWedge": "N/A",
+      "monetizationPath": "N/A - archived"
+    }
+  ]
+}
+
+
+

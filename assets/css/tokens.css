@@ -1,0 +1,237 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WALEEDOS DESIGN TOKENS
+   8-BIT BASE + AERO GLASS SURFACE
+   Oregon Trail meets Frutiger Aero
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─────────────────────────────────────────────────────────────────────────
+     CORE PALETTE
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Deep void backgrounds */
+  --void-abyss: #020204;
+  --void-deep: #050508;
+  --void-base: #08080c;
+  --void-surface: #0c0c12;
+  --void-elevated: #101018;
+  --void-overlay: #16161f;
+  
+  /* 8-BIT ACCENT COLORS - Primary palette */
+  --bit-green: #39ff14;
+  --bit-cyan: #00fff7;
+  --bit-amber: #ffb800;
+  --bit-magenta: #ff00ff;
+  --bit-red: #ff3131;
+  --bit-blue: #3d5afe;
+  --bit-white: #f0f0f0;
+  --bit-gray: #888899;
+  
+  /* AERO GLASS TOKENS */
+  --glass-bg: rgba(12, 12, 18, 0.75);
+  --glass-bg-solid: rgba(16, 16, 24, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(255, 255, 255, 0.12);
+  --glass-border-active: rgba(57, 255, 20, 0.3);
+  --glass-blur: 16px;
+  --glass-blur-heavy: 24px;
+  
+  /* Specular highlights for Aero effect */
+  --glass-specular: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 100%
+  );
+  --glass-specular-edge: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent
+  );
+  --glass-shine: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  --glass-inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  
+  /* Text hierarchy */
+  --text-primary: #e8e8f0;
+  --text-secondary: #9898a8;
+  --text-tertiary: #585868;
+  --text-muted: #383848;
+  --text-terminal: var(--bit-green);
+  
+  /* Tier accent colors */
+  --tier-escape-velocity: #ffd700;
+  --tier-wow-factor: #00ffaa;
+  --tier-rocket-stage: #a855f7;
+  --tier-moonshot: #00d4ff;
+  --tier-utility: #22c55e;
+  --tier-paused: #6b7280;
+  --tier-research: #f59e0b;
+  --tier-incubation: #ec4899;
+  --tier-archive: #374151;
+  
+  /* Status */
+  --status-active: var(--bit-green);
+  --status-prototype: var(--bit-amber);
+  --status-paused: var(--bit-gray);
+  --status-research: var(--tier-rocket-stage);
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Font stacks */
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-pixel: 'Press Start 2P', monospace;
+  
+  /* Type scale */
+  --text-2xs: 0.625rem;   /* 10px - pixel labels */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.5rem;     /* 40px */
+  --text-5xl: 3rem;       /* 48px */
+  
+  /* Line heights */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  
+  /* Letter spacing */
+  --tracking-tighter: -0.03em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  --tracking-pixel: 0.15em;
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     SPACING
+     ───────────────────────────────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     LAYOUT
+     ───────────────────────────────────────────────────────────────────────── */
+  --max-width-prose: 65ch;
+  --max-width-content: 900px;
+  --max-width-wide: 1200px;
+  --max-width-full: 1400px;
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     8-BIT BORDERS & STYLING
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Pixel-perfect borders */
+  --pixel-border: 2px solid var(--bit-green);
+  --pixel-border-dim: 2px solid var(--bit-gray);
+  --pixel-border-glow: 2px solid var(--bit-green);
+  
+  /* 8-bit box shadows (no blur - hard edges) */
+  --pixel-shadow: 
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    4px 4px 0 var(--bit-green);
+  --pixel-shadow-hover:
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    5px 5px 0 var(--bit-green);
+  --pixel-shadow-inset:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.3),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05);
+  
+  /* Radii */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     AERO SHADOWS & EFFECTS
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+  
+  /* Aero window shadow */
+  --shadow-aero: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Glow effects */
+  --glow-green: 0 0 20px rgba(57, 255, 20, 0.3);
+  --glow-cyan: 0 0 20px rgba(0, 255, 247, 0.3);
+  --glow-amber: 0 0 20px rgba(255, 184, 0, 0.3);
+  --glow-section: 0 0 0 2px var(--bit-green), 0 0 30px rgba(57, 255, 20, 0.15);
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     MOTION - OS-LIKE, NOT BOUNCY
+     ───────────────────────────────────────────────────────────────────────── */
+  
+  /* Durations */
+  --duration-instant: 50ms;
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 280ms;
+  --duration-modal: 350ms;
+  
+  /* Easing - clean OS curves, no bounce */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in: cubic-bezier(0.32, 0, 0.67, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-modal: cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Transition presets */
+  --transition-fast: var(--duration-fast) var(--ease-out);
+  --transition-base: var(--duration-base) var(--ease-out);
+  --transition-slow: var(--duration-slow) var(--ease-out);
+  --transition-modal: var(--duration-modal) var(--ease-modal);
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     Z-INDEX SCALE
+     ───────────────────────────────────────────────────────────────────────── */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-modal-backdrop: 800;
+  --z-modal: 900;
+  --z-terminal: 950;
+  --z-system: 1000;
+  --z-tooltip: 1100;
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     GRID BACKGROUND
+     ───────────────────────────────────────────────────────────────────────── */
+  --grid-color: rgba(57, 255, 20, 0.03);
+  --grid-size: 40px;
+  --grid-line: 1px;
+}

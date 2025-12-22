@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candid Sandbox | Waleed Raza</title>
+  <meta name="description" content="Experiments, UI tests, agent prompts, and raw notes. All framed as experiments.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/modes.css">
+  
+  <style>
+    .page-sandbox {
+      /* Page-specific class for sandbox overrides */
+    }
+    
+    .page-content {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-16);
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      margin-bottom: var(--space-12);
+    }
+    
+    .page-title {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .page-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    
+    .disclaimer {
+      background: rgba(255, 152, 0, 0.1);
+      border: 1px solid var(--status-prototype);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-8);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    
+    .disclaimer strong {
+      color: var(--status-prototype);
+    }
+    
+    .content-block {
+      margin-bottom: var(--space-12);
+    }
+    
+    .content-block-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+    
+    .experiment-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: all var(--transition-base);
+    }
+    
+    .experiment-card:hover {
+      border-color: var(--glass-border-hover);
+    }
+    
+    .experiment-status {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--status-prototype);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      margin-bottom: var(--space-2);
+    }
+    
+    .experiment-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .experiment-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .notes-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .note-item {
+      padding: var(--space-4);
+      background: var(--void-surface);
+      border-left: 3px solid var(--tier-research);
+      margin-bottom: var(--space-3);
+    }
+    
+    .note-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    
+    .note-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .note-excerpt {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    
+    .prose-block {
+      max-width: var(--max-width-prose);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .prose-block p {
+      margin-bottom: var(--space-4);
+    }
+    
+    .code-snippet {
+      background: var(--void-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-bottom: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--accent-primary);
+      overflow-x: auto;
+    }
+    
+    .prompt-card {
+      background: var(--void-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-4);
+    }
+    
+    .prompt-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .prompt-content {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body class="noise-overlay page-sandbox">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">Waleed Raza</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="site-nav" id="site-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#products" class="nav-link">Products</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="reading.html" class="nav-link">Reading</a>
+        <a href="writing.html" class="nav-link">Writing</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="sandbox.html" class="nav-link active">Sandbox</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="page-content">
+    <header class="page-header">
+      <h1 class="page-title">Candid Sandbox</h1>
+      <p class="page-subtitle">
+        Experiments, UI tests, agent prompts, and raw notes. 
+        Everything here is explicitly framed as "in progress"—not claims.
+      </p>
+    </header>
+    
+    <div class="disclaimer">
+      <strong>⚠ Experimental Content:</strong> 
+      This section contains unfinished work, rough ideas, and failed experiments. 
+      Nothing here represents a finished product or final position. 
+      It exists because transparency > polish for certain types of work.
+    </div>
+    
+    <!-- EXPERIMENTS -->
+    <section class="content-block">
+      <h2 class="content-block-title">Active Experiments</h2>
+      
+      <div class="experiment-grid">
+        <article class="experiment-card">
+          <div class="experiment-status">In Progress</div>
+          <h3 class="experiment-title">Cursor Director Pattern</h3>
+          <p class="experiment-desc">
+            Testing a prompt architecture for maintaining persistent context 
+            across long AI-assisted coding sessions. Early results suggest 
+            structured "director prompts" reduce context drift.
+          </p>
+        </article>
+        
+        <article class="experiment-card">
+          <div class="experiment-status">In Progress</div>
+          <h3 class="experiment-title">Liquid Glass CSS</h3>
+          <p class="experiment-desc">
+            Exploring Frutiger Aero / iOS-style glassmorphism without 
+            heavy libraries. Current approach: layered gradients, 
+            subtle noise, and carefully tuned blur values.
+          </p>
+        </article>
+        
+        <article class="experiment-card">
+          <div class="experiment-status">Paused</div>
+          <h3 class="experiment-title">Force-Graph Relationship Viz</h3>
+          <p class="experiment-desc">
+            Attempting to visualize product/project relationships as 
+            an interactive node graph. Works on desktop; mobile UX unsolved.
+          </p>
+        </article>
+        
+        <article class="experiment-card">
+          <div class="experiment-status">Early</div>
+          <h3 class="experiment-title">Local Agent Orchestration</h3>
+          <p class="experiment-desc">
+            Testing multi-agent coordination using Ollama models. 
+            Can local LLMs effectively delegate subtasks to each other? 
+            Results: promising but latency-bound.
+          </p>
+        </article>
+      </div>
+    </section>
+    
+    <!-- AGENT PROMPTS -->
+    <section class="content-block">
+      <h2 class="content-block-title">Agent Prompts (Working)</h2>
+      <div class="prose-block">
+        <p>
+          Sample prompts I'm iterating on for various AI-assisted workflows. 
+          These are not optimized—they're snapshots of current thinking.
+        </p>
+      </div>
+      
+      <div class="prompt-card" style="margin-top: var(--space-6);">
+        <div class="prompt-title">Context Retention Prompt</div>
+        <div class="prompt-content">You are a persistent context keeper for a software project.
+Your job is to:
+1. Extract key decisions, constraints, and architectural patterns from conversations
+2. Maintain a structured "project state" document
+3. Flag when new information contradicts existing state
+4. Never invent details—only record what was explicitly stated
+
+Output format: YAML with sections for [decisions], [constraints], [patterns], [open_questions]</div>
+      </div>
+      
+      <div class="prompt-card">
+        <div class="prompt-title">Code Review Agent</div>
+        <div class="prompt-content">Review the following code change with these priorities:
+1. Does it break existing invariants?
+2. Does it introduce hidden state or side effects?
+3. Is the abstraction level appropriate?
+4. Are edge cases handled?
+
+Do NOT comment on style, naming, or formatting unless it obscures logic.
+Do NOT suggest "improvements" beyond the scope of the change.
+Be direct. One sentence per issue. No preamble.</div>
+      </div>
+    </section>
+    
+    <!-- RAW NOTES -->
+    <section class="content-block">
+      <h2 class="content-block-title">Raw Notes</h2>
+      <div class="prose-block">
+        <p>
+          Unedited working notes. These may be incomplete, wrong, or abandoned.
+        </p>
+      </div>
+      
+      <ul class="notes-list" style="margin-top: var(--space-6);">
+        <li class="note-item">
+          <div class="note-title">On "Escape Velocity" Products</div>
+          <div class="note-date">Dec 2024</div>
+          <div class="note-excerpt">
+            An escape velocity product is one that, if it works, changes the trajectory 
+            of everything else. PokerGeek is this for me right now—not because it's the 
+            most interesting technically, but because shipping it proves I can ship...
+          </div>
+        </li>
+        
+        <li class="note-item">
+          <div class="note-title">Agent Memory Architecture Notes</div>
+          <div class="note-date">Dec 2024</div>
+          <div class="note-excerpt">
+            The problem with agent memory isn't storage—it's retrieval. What triggers 
+            recall? Current approaches (embedding similarity) are too blunt. Need something 
+            more like human associative memory: activated by context, not just keywords...
+          </div>
+        </li>
+        
+        <li class="note-item">
+          <div class="note-title">Why Consumer > B2B (For Me)</div>
+          <div class="note-date">Nov 2024</div>
+          <div class="note-excerpt">
+            B2B is easier to monetize but harder to love. Consumer products force you 
+            to care about UX in a way that enterprise software rarely does. The feedback 
+            loop is tighter: users leave if it sucks...
+          </div>
+        </li>
+      </ul>
+    </section>
+    
+    <!-- FAILED EXPERIMENTS -->
+    <section class="content-block">
+      <h2 class="content-block-title">Failed Experiments</h2>
+      <div class="prose-block">
+        <p>
+          Things I tried that didn't work. Listed here because failures are 
+          information, and hiding them creates a false narrative of linear progress.
+        </p>
+      </div>
+      
+      <div class="experiment-grid" style="margin-top: var(--space-6);">
+        <article class="experiment-card" style="border-color: var(--tier-paused); opacity: 0.8;">
+          <div class="experiment-status" style="color: var(--tier-paused);">Failed</div>
+          <h3 class="experiment-title">Electron + Local LLM</h3>
+          <p class="experiment-desc">
+            Tried bundling Ollama inside an Electron app for zero-config local AI. 
+            Binary size was 2GB+, startup time was 30s+. Abandoned in favor of 
+            requiring Ollama as a system dependency.
+          </p>
+        </article>
+        
+        <article class="experiment-card" style="border-color: var(--tier-paused); opacity: 0.8;">
+          <div class="experiment-status" style="color: var(--tier-paused);">Failed</div>
+          <h3 class="experiment-title">Graph-First Portfolio</h3>
+          <p class="experiment-desc">
+            Original portfolio design was graph-only with no tile fallback. 
+            Tested poorly—users wanted quick scanning, not exploration. 
+            Reverted to tiles-primary with graph as optional.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2025 Waleed Raza</p>
+    <div class="footer-links">
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/waleedaraza" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- MODE TOGGLE -->
+  <button class="mode-toggle" onclick="toggleInnerMode()" aria-label="Toggle inner mode">
+    <span class="mode-toggle-label">Inner Mode</span>
+    <span class="mode-toggle-switch"></span>
+  </button>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('site-nav').classList.toggle('open');
+    }
+    
+    let innerModeEnabled = localStorage.getItem('innerMode') === 'true';
+    if (innerModeEnabled) document.body.classList.add('inner-mode');
+    
+    function toggleInnerMode() {
+      innerModeEnabled = !innerModeEnabled;
+      document.body.classList.toggle('inner-mode', innerModeEnabled);
+      localStorage.setItem('innerMode', innerModeEnabled);
+    }
+  </script>
+</body>
+</html>
+

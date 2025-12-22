@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing | Waleed Raza</title>
+  <meta name="description" content="Politics, philosophy, and poetry. Systems thinking in prose.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/modes.css">
+  
+  <style>
+    .page-content {
+      padding: calc(var(--space-24) + 60px) var(--space-6) var(--space-16);
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      margin-bottom: var(--space-12);
+    }
+    
+    .page-title {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+    
+    .page-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    
+    .content-block {
+      margin-bottom: var(--space-12);
+    }
+    
+    .content-block-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .writing-grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+    
+    .writing-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: all var(--transition-base);
+    }
+    
+    .writing-card:hover {
+      border-color: var(--glass-border-hover);
+    }
+    
+    .writing-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-3);
+    }
+    
+    .writing-card-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+    
+    .writing-card-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+    
+    .writing-card-excerpt {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-3);
+    }
+    
+    .writing-card-tags {
+      display: flex;
+      gap: var(--space-2);
+    }
+    
+    .writing-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-1) var(--space-2);
+      background: var(--void-surface);
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+    }
+    
+    .prose-block {
+      max-width: var(--max-width-prose);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .prose-block p {
+      margin-bottom: var(--space-4);
+    }
+    
+    .poetry-card {
+      background: var(--void-surface);
+      border-left: 3px solid var(--accent-secondary);
+      padding: var(--space-5);
+      margin-bottom: var(--space-4);
+    }
+    
+    .poetry-text {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: 1.8;
+      white-space: pre-line;
+      font-style: italic;
+    }
+    
+    .poetry-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      margin-top: var(--space-4);
+    }
+    
+    .coming-soon {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      padding: var(--space-6);
+      text-align: center;
+      border: 1px dashed var(--glass-border);
+      border-radius: var(--radius-lg);
+    }
+  </style>
+</head>
+<body class="noise-overlay">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">Waleed Raza</a>
+      
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="site-nav" id="site-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#products" class="nav-link">Products</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="reading.html" class="nav-link">Reading</a>
+        <a href="writing.html" class="nav-link active">Writing</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="sandbox.html" class="nav-link">Sandbox</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="page-content">
+    <header class="page-header">
+      <h1 class="page-title">Writing</h1>
+      <p class="page-subtitle">
+        Politics, philosophy, and poetry. Systems thinking in prose. 
+        Selected pieces, not a complete archive.
+      </p>
+    </header>
+    
+    <!-- POLITICS -->
+    <section class="content-block">
+      <h2 class="content-block-title">Politics</h2>
+      <div class="prose-block">
+        <p>
+          Not partisan commentary—structural analysis. How incentives shape institutions, 
+          why systems resist reform, and what leverage points actually exist. 
+          The goal is clarity, not persuasion.
+        </p>
+      </div>
+      
+      <div class="writing-grid" style="margin-top: var(--space-6);">
+        <article class="writing-card">
+          <header class="writing-card-header">
+            <h3 class="writing-card-title">The Attention Extraction Machine</h3>
+            <span class="writing-card-date">Draft</span>
+          </header>
+          <p class="writing-card-excerpt">
+            Social media as an economic system, not a technology. 
+            Why content moderation misses the point. What genuine reform 
+            would require—and why it won't happen.
+          </p>
+          <div class="writing-card-tags">
+            <span class="writing-tag">systems</span>
+            <span class="writing-tag">media</span>
+            <span class="writing-tag">incentives</span>
+          </div>
+        </article>
+        
+        <article class="writing-card">
+          <header class="writing-card-header">
+            <h3 class="writing-card-title">Credentialing as Gatekeeping</h3>
+            <span class="writing-card-date">Draft</span>
+          </header>
+          <p class="writing-card-excerpt">
+            The economic function of professional licensing. 
+            Who benefits from artificial scarcity. 
+            Alternative models for signaling competence.
+          </p>
+          <div class="writing-card-tags">
+            <span class="writing-tag">institutions</span>
+            <span class="writing-tag">economics</span>
+          </div>
+        </article>
+      </div>
+    </section>
+    
+    <!-- PHILOSOPHY -->
+    <section class="content-block">
+      <h2 class="content-block-title">Philosophy</h2>
+      <div class="prose-block">
+        <p>
+          Adjustment, agency, and truth. How to live with uncertainty. 
+          What it means to build in an age of simulation. 
+          These are working notes, not finished positions.
+        </p>
+      </div>
+      
+      <div class="writing-grid" style="margin-top: var(--space-6);">
+        <article class="writing-card">
+          <header class="writing-card-header">
+            <h3 class="writing-card-title">On Adjustment</h3>
+            <span class="writing-card-date">In Progress</span>
+          </header>
+          <p class="writing-card-excerpt">
+            The virtue of changing your mind. Why consistency is overrated. 
+            How to update beliefs without losing coherence. 
+            Notes toward a practice of intellectual honesty.
+          </p>
+          <div class="writing-card-tags">
+            <span class="writing-tag">epistemology</span>
+            <span class="writing-tag">practice</span>
+          </div>
+        </article>
+        
+        <article class="writing-card">
+          <header class="writing-card-header">
+            <h3 class="writing-card-title">Building as Meaning-Making</h3>
+            <span class="writing-card-date">Draft</span>
+          </header>
+          <p class="writing-card-excerpt">
+            Why creation matters in a world of infinite content. 
+            The difference between making and consuming. 
+            Software as a form of philosophy in practice.
+          </p>
+          <div class="writing-card-tags">
+            <span class="writing-tag">meaning</span>
+            <span class="writing-tag">craft</span>
+          </div>
+        </article>
+      </div>
+    </section>
+    
+    <!-- POETRY -->
+    <section class="content-block">
+      <h2 class="content-block-title">Poetry</h2>
+      <div class="prose-block">
+        <p>
+          Selected, minimal. These exist because prose couldn't hold them.
+        </p>
+      </div>
+      
+      <div style="margin-top: var(--space-6);">
+        <div class="poetry-card">
+          <div class="poetry-text">The machine learns patience
+before it learns anything else—
+waiting for the gradient to descend,
+for the loss to find its floor.
+
+I am still learning impatience,
+still pushing against the clock,
+as if time were the enemy
+and not the medium.</div>
+          <div class="poetry-title">— Gradient Descent</div>
+        </div>
+        
+        <div class="poetry-card">
+          <div class="poetry-text">Build the thing that builds the thing.
+Write the doc that writes the doc.
+Meta all the way up, they say,
+until you forget what was concrete,
+what was the first nail driven,
+what was the wood before the abstraction.
+
+I want to remember the wood.</div>
+          <div class="poetry-title">— On Abstraction</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2025 Waleed Raza</p>
+    <div class="footer-links">
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/waleedaraza" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- MODE TOGGLE -->
+  <button class="mode-toggle" onclick="toggleInnerMode()" aria-label="Toggle inner mode">
+    <span class="mode-toggle-label">Inner Mode</span>
+    <span class="mode-toggle-switch"></span>
+  </button>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('site-nav').classList.toggle('open');
+    }
+    
+    let innerModeEnabled = localStorage.getItem('innerMode') === 'true';
+    if (innerModeEnabled) document.body.classList.add('inner-mode');
+    
+    function toggleInnerMode() {
+      innerModeEnabled = !innerModeEnabled;
+      document.body.classList.toggle('inner-mode', innerModeEnabled);
+      localStorage.setItem('innerMode', innerModeEnabled);
+    }
+  </script>
+</body>
+</html>
+

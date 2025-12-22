@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "description": "Products with missing critical information that needs owner input",
+    "lastUpdated": "2025-12-20"
+  },
+  "items": [
+    {
+      "productId": "alexandria-vault",
+      "missingFields": ["MVPNow details", "actual repo existence"],
+      "bestGuess": "Repo may not be created yet. Architecture from chat context suggests Python/FastAPI stack.",
+      "blockerLevel": "Medium",
+      "notes": "Need to create repo if not exists. Core concept is clear from chat."
+    },
+    {
+      "productId": "clipvault",
+      "missingFields": ["MVPNow details", "actual repo existence"],
+      "bestGuess": "Repo may not be created yet. yt-dlp based architecture assumed.",
+      "blockerLevel": "Medium",
+      "notes": "Need to create repo if not exists. Core concept is clear from chat."
+    },
+    {
+      "productId": "datadepth",
+      "missingFields": ["repo content", "actual status", "tech stack confirmation"],
+      "bestGuess": "Appears to be early concept stage. Enterprise data marketplace.",
+      "blockerLevel": "High",
+      "notes": "Need to verify repo exists and has content, or clarify if this is purely conceptual."
+    },
+    {
+      "productId": "stockscouter",
+      "missingFields": ["demo status", "actual MVP features"],
+      "bestGuess": "Options analytics platform. May have working prototype.",
+      "blockerLevel": "Medium",
+      "notes": "Need screenshots or demo to confirm MVP status."
+    },
+    {
+      "productId": "newsnet",
+      "missingFields": ["which repo is primary (newsnet vs newsnet-app)", "demo status"],
+      "bestGuess": "newsnet-app is likely the primary Flutter+FastAPI version.",
+      "blockerLevel": "Low",
+      "notes": "May need to consolidate repos or clarify relationship."
+    },
+    {
+      "productId": "warvis",
+      "missingFields": ["demo status", "feature completeness"],
+      "bestGuess": "Local Jarvis-like assistant with Ollama. Research/prototype stage.",
+      "blockerLevel": "Low",
+      "notes": "Good for lab/research section."
+    },
+    {
+      "productId": "terminaltool",
+      "missingFields": ["actual features", "demo"],
+      "bestGuess": "LLM-assisted security workflow tool.",
+      "blockerLevel": "Low",
+      "notes": "Ensure legal framing is correct in README."
+    },
+    {
+      "productId": "handcuts",
+      "missingFields": ["demo video/gif"],
+      "bestGuess": "Gesture recognition proof of concept exists.",
+      "blockerLevel": "Low",
+      "notes": "Would benefit from demo media."
+    },
+    {
+      "productId": "mmamania",
+      "missingFields": ["prediction model accuracy", "demo status"],
+      "bestGuess": "Has screenshots in assets/mmamania_pics/.",
+      "blockerLevel": "Low",
+      "notes": "Screenshots suggest working prototype."
+    },
+    {
+      "productId": "gpuzap",
+      "missingFields": ["supported providers", "actual CLI commands"],
+      "bestGuess": "GPU provisioning CLI, likely early stage.",
+      "blockerLevel": "Low",
+      "notes": "Developer tool, good for labs section."
+    }
+  ],
+  "summary": {
+    "highBlockers": 1,
+    "mediumBlockers": 3,
+    "lowBlockers": 6,
+    "totalItems": 10
+  }
+}
+
+
+
