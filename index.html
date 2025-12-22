@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.1, maximum-scale=3.0, user-scalable=yes">
   <title>WaleedOS</title>
   <meta name="description" content="Terminal canvas interface">
   
@@ -54,6 +54,9 @@
       color: var(--text);
       font-family: 'IBM Plex Mono', monospace;
       cursor: grab;
+      touch-action: none; /* Let JS handle all touch gestures */
+      -webkit-touch-callout: none; /* Disable iOS callout */
+      -webkit-user-select: none; /* Disable text selection on touch */
     }
     
     body:active { cursor: grabbing; }
@@ -162,6 +165,7 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     #boot {
+      display: none; /* Boot screen disabled - go straight to canvas */
       position: fixed;
       inset: 0;
       z-index: 9000;
@@ -177,144 +181,6 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE MODE - Simple vertical scroll layout
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .mobile-mode #viewport {
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      height: auto !important;
-      min-height: 100vh;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .mobile-mode #canvas {
-      transform: none !important;
-      position: relative !important;
-      width: 100% !important;
-      height: auto !important;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    
-    .mobile-mode .page {
-      position: relative !important;
-      transform: none !important;
-      left: 0 !important;
-      top: 0 !important;
-      width: 100% !important;
-      height: auto !important;
-      min-height: auto !important;
-      display: block !important;
-      border-bottom: 2px solid var(--border);
-    }
-    
-    .mobile-mode .page-inner {
-      padding: 20px 16px;
-      max-width: 100%;
-    }
-    
-    .mobile-mode .page-edge {
-      display: none !important;
-    }
-    
-    .mobile-mode #minimap,
-    .mobile-mode #drag-hint {
-      display: none !important;
-    }
-    
-    .mobile-mode #nav-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 8px;
-      display: flex;
-      justify-content: space-around;
-      gap: 4px;
-    }
-    
-    .mobile-mode .nav-btn {
-      flex: 1;
-      padding: 8px 4px;
-      font-size: 10px;
-      text-align: center;
-    }
-    
-    .mobile-mode .nav-btn-key {
-      display: none;
-    }
-    
-    .mobile-mode #top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .mobile-mode .home-name {
-      font-size: 8px !important;
-      gap: 4px !important;
-    }
-    
-    .mobile-mode .hero-animation-controls {
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    
-    .mobile-mode .hero-anim-btn {
-      font-size: 9px;
-      padding: 6px 10px;
-    }
-    
-    .mobile-mode .hero-color-picker {
-      flex-wrap: wrap;
-      padding: 8px 12px;
-    }
-    
-    .mobile-mode .dev-showcase {
-      flex-direction: column;
-    }
-    
-    .mobile-mode .dev-section {
-      width: 100%;
-    }
-    
-    .mobile-mode .essays-container {
-      flex-direction: column;
-    }
-    
-    .mobile-mode .essays-column {
-      width: 100%;
-    }
-    
-    .mobile-mode .arts-newsletter {
-      grid-template-columns: 1fr;
-    }
-    
-    .mobile-mode .arts-entry.span-2 {
-      grid-column: 1;
-    }
-    
-    .mobile-mode .creative-tiles {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    /* Add padding at bottom for fixed nav */
-    .mobile-mode #canvas::after {
-      content: '';
-      display: block;
-      height: 80px;
     }
     
     .boot-box {
@@ -3601,9 +3467,9 @@
     const zoomIndicator = document.getElementById('zoom-indicator');
     const layoutToggle = document.getElementById('layout-toggle');
     
-    // Detect mobile and set appropriate initial scale
+    // Detect mobile and set appropriate initial scale - start zoomed out to see full canvas
     const isMobile = window.innerWidth <= 768;
-    let canvasX = 0, canvasY = 0, scale = isMobile ? 0.35 : 1;
+    let canvasX = 0, canvasY = 0, scale = isMobile ? 0.25 : 0.5;
     let isDragging = false;
     let dragStartX = 0, dragStartY = 0;
     let canvasStartX = 0, canvasStartY = 0;
@@ -3645,33 +3511,8 @@
     let countdownInterval = null;
     
     function initBoot() {
-      if (localStorage.getItem('waleedos_boot_v3')) {
-        skipBoot();
-        return;
-      }
-      
-      const timerFill = document.getElementById('timer-fill');
-      const timerCount = document.getElementById('timer-count');
-      
-      countdownInterval = setInterval(() => {
-        countdown -= 0.1;
-        timerCount.textContent = Math.ceil(countdown);
-        timerFill.style.width = (countdown / 5 * 100) + '%';
-        
-        if (countdown <= 0) {
-          clearInterval(countdownInterval);
-          completeBoot({ x: 0, y: 0 });
-        }
-      }, 100);
-      
-      document.querySelectorAll('.boot-dest').forEach(el => {
-        el.addEventListener('click', () => {
-          const pos = el.dataset.pos.split(',').map(Number);
-          completeBoot({ x: pos[0], y: pos[1] });
-        });
-      });
-      
-      document.addEventListener('keydown', handleBootKey);
+      // Skip boot screen entirely - go straight to canvas
+      skipBoot();
     }
     
     function handleBootKey(e) {
@@ -3704,15 +3545,22 @@
     }
     
     // CANVAS
+    let lastPinchDist = 0;
+    let isPinching = false;
+    
     function initCanvas() {
-      // Restore drag functionality
+      // Mouse events
       viewport.addEventListener('mousedown', startDrag);
       viewport.addEventListener('mousemove', onDrag);
       viewport.addEventListener('mouseup', endDrag);
       viewport.addEventListener('mouseleave', endDrag);
-      viewport.addEventListener('touchstart', (e) => startDrag(e.touches[0]), { passive: false });
-      viewport.addEventListener('touchmove', (e) => { e.preventDefault(); onDrag(e.touches[0]); }, { passive: false });
-      viewport.addEventListener('touchend', endDrag);
+      
+      // Touch events - handle both drag and pinch zoom
+      viewport.addEventListener('touchstart', handleTouchStart, { passive: false });
+      viewport.addEventListener('touchmove', handleTouchMove, { passive: false });
+      viewport.addEventListener('touchend', handleTouchEnd, { passive: false });
+      
+      // Wheel for desktop zoom
       viewport.addEventListener('wheel', onWheel, { passive: false });
       document.addEventListener('keydown', handleCanvasKey);
       
@@ -3863,6 +3711,69 @@
       
       updateCanvas();
       zoomIndicator.textContent = Math.round(scale * 100) + '%';
+    }
+    
+    // Touch handlers for mobile - supports both drag and pinch zoom
+    function handleTouchStart(e) {
+      if (e.touches.length === 2) {
+        // Pinch start
+        isPinching = true;
+        lastPinchDist = getPinchDistance(e.touches);
+        e.preventDefault();
+      } else if (e.touches.length === 1) {
+        // Single finger drag
+        isPinching = false;
+        startDrag(e.touches[0]);
+      }
+    }
+    
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (e.touches.length === 2 && isPinching) {
+        // Pinch zoom
+        const dist = getPinchDistance(e.touches);
+        const delta = dist - lastPinchDist;
+        const zoomSpeed = 0.005;
+        const newScale = Math.max(0.2, Math.min(2.0, scale + delta * zoomSpeed));
+        
+        // Zoom towards center of pinch
+        const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        const rect = viewport.getBoundingClientRect();
+        const pinchX = centerX - rect.left;
+        const pinchY = centerY - rect.top;
+        
+        const zoomPointX = (pinchX - canvasX) / scale;
+        const zoomPointY = (pinchY - canvasY) / scale;
+        
+        scale = newScale;
+        canvasX = pinchX - zoomPointX * scale;
+        canvasY = pinchY - zoomPointY * scale;
+        
+        lastPinchDist = dist;
+        updateCanvas();
+        zoomIndicator.textContent = Math.round(scale * 100) + '%';
+      } else if (e.touches.length === 1 && !isPinching) {
+        // Single finger drag
+        onDrag(e.touches[0]);
+      }
+    }
+    
+    function handleTouchEnd(e) {
+      if (e.touches.length === 0) {
+        isPinching = false;
+        endDrag();
+      } else if (e.touches.length === 1) {
+        // Switched from pinch to single finger
+        isPinching = false;
+        startDrag(e.touches[0]);
+      }
+    }
+    
+    function getPinchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
     }
     
     function handleCanvasKey(e) {
@@ -4450,85 +4361,14 @@
     document.addEventListener('DOMContentLoaded', () => {
       pageW = window.innerWidth;
       pageH = window.innerHeight;
-      
-      // Detect mobile - skip boot and use simple navigation
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-      
-      if (isMobile) {
-        // Mobile: Skip boot, enable mobile mode
-        document.body.classList.add('mobile-mode');
-        document.getElementById('boot').classList.add('hidden');
-        initMobileMode();
-      } else {
-        // Desktop: Skip boot too (removed per user request)
-        document.getElementById('boot').classList.add('hidden');
-        pagePositions = loadPagePositions();
-        applyPagePositions();
-        goToPage(0, 0, true);
-        initCanvas();
-      }
-      
       initHeroName();
-      setupAnimationControls();
+      setupAnimationControls(); // Setup buttons immediately
+      // Initialize header emojis after a short delay to ensure DOM is ready
       setTimeout(() => {
         initHeaderEmojis();
       }, 500);
-    });
-    
-    // Mobile mode - simple vertical scroll layout
-    function initMobileMode() {
-      // Show all pages stacked vertically
-      const pages = document.querySelectorAll('.page');
-      const canvas = document.getElementById('canvas');
-      const viewport = document.getElementById('viewport');
-      
-      // Reset canvas transforms
-      if (canvas) {
-        canvas.style.transform = 'none';
-        canvas.style.position = 'relative';
-        canvas.style.width = '100%';
-        canvas.style.height = 'auto';
-      }
-      
-      if (viewport) {
-        viewport.style.overflow = 'auto';
-        viewport.style.height = 'auto';
-      }
-      
-      // Make pages visible and stacked
-      pages.forEach((page, idx) => {
-        page.style.position = 'relative';
-        page.style.transform = 'none';
-        page.style.left = '0';
-        page.style.top = '0';
-        page.style.width = '100%';
-        page.style.height = 'auto';
-        page.style.minHeight = 'auto';
-        page.style.display = 'block';
-        page.style.marginBottom = '20px';
-      });
-      
-      // Hide desktop-only elements
-      const hideOnMobile = document.querySelectorAll('#minimap, #drag-hint, .page-edge');
-      hideOnMobile.forEach(el => el.style.display = 'none');
-      
-      // Setup simple nav
-      document.querySelectorAll('[data-goto]').forEach(el => {
-        el.addEventListener('click', (e) => {
-          e.preventDefault();
-          const pos = el.dataset.goto;
-          const targetPage = document.querySelector(`.page[data-pos="${pos}"]`);
-          if (targetPage) {
-            targetPage.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
-      });
-      
-      // Render products and projects
-      renderProducts();
-      renderProjects();
-      randomizeSpotlight();
-    }
+      initBoot();
+});
   </script>
   
   <!-- POPUP DRAWER -->
