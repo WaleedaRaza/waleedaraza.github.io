@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   
+  <!-- Panzoom - handles Safari touch events properly -->
+  <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+  
   <style>
     :root {
       --void: #020204;
@@ -57,6 +60,7 @@
       touch-action: none; /* Let JS handle all touch gestures */
       -webkit-touch-callout: none; /* Disable iOS callout */
       -webkit-user-select: none; /* Disable text selection on touch */
+      user-select: none;
     }
     
     body:active { cursor: grabbing; }
@@ -161,159 +165,6 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       BOOT SCREEN
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    #boot {
-      display: none; /* Boot screen disabled - go straight to canvas */
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: var(--void);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    
-    #boot.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    
-    .boot-box {
-      width: 90%;
-      max-width: 800px;
-      background: var(--surface);
-      border: 2px solid var(--orange);
-      box-shadow: 0 0 80px var(--orange-glow), inset 0 0 40px rgba(255, 107, 53, 0.03);
-    }
-    
-    .boot-header {
-      background: var(--orange);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .boot-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      color: var(--void);
-    }
-    
-    .boot-body {
-      padding: 24px;
-    }
-    
-    .boot-ascii {
-      font-size: 10px;
-      color: var(--orange);
-      text-align: center;
-      margin-bottom: 24px;
-      line-height: 1.2;
-      text-shadow: 0 0 20px var(--orange-glow);
-    }
-    
-    .boot-status {
-      font-size: 13px;
-      color: var(--teal);
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .boot-status .blink {
-      animation: blink 0.5s infinite;
-    }
-    
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-    
-    .boot-destinations {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    
-    .boot-dest {
-      background: var(--elevated);
-      border: 1px solid var(--border);
-      padding: 12px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    
-    .boot-dest:hover {
-      border-color: var(--orange);
-      background: rgba(255, 107, 53, 0.1);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
-    }
-    
-    .boot-dest-key {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 14px;
-      color: var(--orange);
-      margin-bottom: 8px;
-      text-shadow: 0 0 10px var(--orange-glow);
-    }
-    
-    .boot-dest-name {
-      font-size: 8px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .boot-timer-wrap {
-      margin-top: 16px;
-    }
-    
-    .boot-timer-label {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .boot-timer-bar {
-      height: 10px;
-      background: var(--elevated);
-      border: 1px solid var(--orange-dim);
-      overflow: hidden;
-    }
-    
-    .boot-timer-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--orange) 0%, var(--teal) 50%, var(--cyan) 100%);
-      width: 100%;
-      transition: width 0.1s linear;
-      box-shadow: 0 0 15px var(--orange-glow), 0 0 30px var(--teal-glow);
-    }
-    
-    .boot-hint {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--text-dim);
-    }
-    
-    .boot-hint kbd {
-      color: var(--teal);
-      background: var(--elevated);
-      padding: 3px 8px;
-      border: 1px solid var(--teal-dim);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
        CANVAS SYSTEM
        ═══════════════════════════════════════════════════════════════════════ */
     
@@ -341,12 +192,8 @@
       height: auto;
       padding: 60px 200px 120px;
       transform-origin: 0 0;
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      /* Panzoom handles transforms - no CSS transition needed */
       will-change: transform;
-    }
-    
-    #canvas.dragging {
-      transition: none;
     }
     
     /* Row 1 (TOP): NOTES, CONTACT, SPOTLIGHT - content above, headers below */
@@ -2696,77 +2543,6 @@
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════════════════
-       BOOT SCREEN
-       ═══════════════════════════════════════════════════════════════════════ -->
-  <div id="boot">
-    <div class="boot-box">
-      <div class="boot-header">
-        <span class="boot-title">█ WALEEDOS v3.0 █</span>
-      </div>
-      <div class="boot-body">
-        <pre class="boot-ascii">
-██╗    ██╗ █████╗ ██╗     ███████╗███████╗██████╗ 
-██║    ██║██╔══██╗██║     ██╔════╝██╔════╝██╔══██╗
-██║ █╗ ██║███████║██║     █████╗  █████╗  ██║  ██║
-██║███╗██║██╔══██║██║     ██╔══╝  ██╔══╝  ██║  ██║
-╚███╔███╔╝██║  ██║███████╗███████╗███████╗██████╔╝
- ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═════╝</pre>
-        
-        <div class="boot-status">
-          <span style="color: var(--green);">►</span> SYSTEM READY 
-          <span style="color: var(--amber);">●</span> SELECT DESTINATION
-          <span class="blink">_</span>
-        </div>
-        
-        <div class="boot-destinations">
-          <div class="boot-dest" data-key="0" data-pos="0,0">
-            <div class="boot-dest-key">[0]</div>
-            <div class="boot-dest-name">HOME</div>
-          </div>
-          <div class="boot-dest" data-key="1" data-pos="1,-1">
-            <div class="boot-dest-key">[1]</div>
-            <div class="boot-dest-name">DEVELOPMENT</div>
-          </div>
-          <div class="boot-dest" data-key="2" data-pos="-1,-1">
-            <div class="boot-dest-key">[2]</div>
-            <div class="boot-dest-name">READING</div>
-          </div>
-          <div class="boot-dest" data-key="3" data-pos="-1,0">
-            <div class="boot-dest-key">[3]</div>
-            <div class="boot-dest-name">WRITING</div>
-          </div>
-          <div class="boot-dest" data-key="4" data-pos="-1,1">
-            <div class="boot-dest-key">[4]</div>
-            <div class="boot-dest-name">SANDBOX</div>
-          </div>
-          <div class="boot-dest" data-key="5" data-pos="1,0">
-            <div class="boot-dest-key">[5]</div>
-            <div class="boot-dest-name">SPOTLIGHT</div>
-          </div>
-          <div class="boot-dest" data-key="6" data-pos="1,1">
-            <div class="boot-dest-key">[6]</div>
-            <div class="boot-dest-name">WORK</div>
-          </div>
-        </div>
-        
-        <div class="boot-timer-wrap">
-          <div class="boot-timer-label">
-            <span>AUTO-ENTER IN</span>
-            <span id="timer-count">5</span>
-              </div>
-          <div class="boot-timer-bar">
-            <div class="boot-timer-fill" id="timer-fill"></div>
-            </div>
-          </div>
-    
-        <div class="boot-hint">
-          <kbd>0-6</kbd> jump · <kbd>ESC</kbd> skip · <kbd>DRAG</kbd> explore
-      </div>
-      </div>
-              </div>
-              </div>
-              
-  <!-- ═══════════════════════════════════════════════════════════════════════
        CANVAS
        ═══════════════════════════════════════════════════════════════════════ -->
   <div id="canvas-viewport">
@@ -3458,7 +3234,8 @@
     ];
     
     /* ═══════════════════════════════════════════════════════════════════════
-       CANVAS CONTROLLER
+       CANVAS CONTROLLER - PANZOOM EDITION
+       Uses @panzoom/panzoom for reliable cross-browser touch/mouse handling
        ═══════════════════════════════════════════════════════════════════════ */
     
     const canvas = document.getElementById('canvas');
@@ -3467,23 +3244,15 @@
     const zoomIndicator = document.getElementById('zoom-indicator');
     const layoutToggle = document.getElementById('layout-toggle');
     
-    // Detect mobile and set appropriate initial scale - start zoomed out to see full canvas
+    // Panzoom instance
+    let panzoomInstance = null;
+    
+    // Detect mobile and set appropriate initial scale
     const isMobile = window.innerWidth <= 768;
-    let canvasX = 0, canvasY = 0, scale = isMobile ? 0.25 : 0.5;
-    let isDragging = false;
-    let dragStartX = 0, dragStartY = 0;
-    let canvasStartX = 0, canvasStartY = 0;
-    let velocityX = 0, velocityY = 0;
-    let lastDragX = 0, lastDragY = 0, lastDragTime = 0;
-    let momentumFrame = null;
+    const initialScale = isMobile ? 0.25 : 0.5;
     let currentPos = { x: 0, y: 0 };
     let pageW = window.innerWidth;
     let pageH = window.innerHeight;
-    let isDraggingPage = false;
-    let pageDragTarget = null;
-    let pageDragOffset = { x: 0, y: 0 };
-    let layoutEditMode = false;
-    const PAGE_POS_KEY = 'waleedos_page_positions_v1';
     
     const keyToPos = {
       '0': { x: 0, y: 0 },
@@ -3505,66 +3274,76 @@
       '1,1': 'CONTACT'
     };
     
-    // BOOT
-    let bootComplete = false;
-    let countdown = 5;
-    let countdownInterval = null;
-    
-    function initBoot() {
-      // Skip boot screen entirely - go straight to canvas
-      skipBoot();
-    }
-    
-    function handleBootKey(e) {
-      if (bootComplete) return;
-      if (e.key === 'Escape') { completeBoot({ x: 0, y: 0 }); return; }
-      if (keyToPos[e.key]) completeBoot(keyToPos[e.key]);
-    }
-    
-    function completeBoot(targetPos) {
-      if (bootComplete) return;
-      bootComplete = true;
-      clearInterval(countdownInterval);
-      document.removeEventListener('keydown', handleBootKey);
-      localStorage.setItem('waleedos_boot_v3', 'true');
-      document.getElementById('boot').classList.add('hidden');
-      setTimeout(() => {
-        pagePositions = loadPagePositions();
-        applyPagePositions();
-        goToPage(targetPos.x, targetPos.y, true);
-        initCanvas();
-      }, 400);
-    }
-    
-    function skipBoot() {
-      document.getElementById('boot').classList.add('hidden');
-      pagePositions = loadPagePositions();
-      applyPagePositions();
-      goToPage(0, 0, true);
+    // Direct canvas init - no boot screen
+    function initApp() {
       initCanvas();
+      goToPage(0, 0, true);
     }
-    
-    // CANVAS
-    let lastPinchDist = 0;
-    let isPinching = false;
     
     function initCanvas() {
-      // Mouse events
-      viewport.addEventListener('mousedown', startDrag);
-      viewport.addEventListener('mousemove', onDrag);
-      viewport.addEventListener('mouseup', endDrag);
-      viewport.addEventListener('mouseleave', endDrag);
+      // Initialize Panzoom with Safari-friendly options
+      panzoomInstance = Panzoom(canvas, {
+        minScale: 0.15,
+        maxScale: 2.5,
+        startScale: initialScale,
+        startX: 0,
+        startY: 0,
+        step: 0.1,
+        animate: true,
+        duration: 300,
+        easing: 'ease-out',
+        // Critical for Safari - handle touch properly
+        handleStartEvent: (e) => {
+          // Don't prevent on interactive elements
+          const target = e.target;
+          const interactiveSelectors = 'button, a[href], input, textarea, select, [data-goto], .home-nav-item, .nav-btn, .minimap-cell, .boot-dest, .product-tile, .project-tile, .content-card, .popup-close';
+          if (target.closest(interactiveSelectors)) {
+            return false; // Let the element handle it
+          }
+          return true; // Panzoom handles it
+        },
+        // Exclude interactive elements from panning
+        exclude: ['button', 'a', 'input', 'textarea', 'select'],
+        excludeClass: 'no-panzoom',
+        // Canvas mode for better performance
+        canvas: true,
+        // Contain to none - allow free panning
+        contain: false,
+        // Cursor
+        cursor: 'grab',
+        // Touch action handled by Panzoom
+        touchAction: 'none'
+      });
       
-      // Touch events - handle both drag and pinch zoom
-      viewport.addEventListener('touchstart', handleTouchStart, { passive: false });
-      viewport.addEventListener('touchmove', handleTouchMove, { passive: false });
-      viewport.addEventListener('touchend', handleTouchEnd, { passive: false });
+      // Enable wheel zoom on viewport
+      viewport.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        panzoomInstance.zoomWithWheel(e);
+        updateZoomIndicator();
+      }, { passive: false });
       
-      // Wheel for desktop zoom
-      viewport.addEventListener('wheel', onWheel, { passive: false });
+      // Update zoom indicator on panzoom events
+      canvas.addEventListener('panzoomchange', (e) => {
+        updateZoomIndicator();
+        updatePositionIndicator();
+      });
+      
+      canvas.addEventListener('panzoomstart', () => {
+        canvas.classList.add('dragging');
+        viewport.classList.add('dragging');
+        document.body.classList.add('dragging');
+      });
+      
+      canvas.addEventListener('panzoomend', () => {
+        canvas.classList.remove('dragging');
+        viewport.classList.remove('dragging');
+        document.body.classList.remove('dragging');
+      });
+      
+      // Keyboard navigation
       document.addEventListener('keydown', handleCanvasKey);
       
-      setupLayoutToggle();
+      // Setup nav button clicks
       document.querySelectorAll('[data-goto]').forEach(el => {
         el.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -3574,291 +3353,110 @@
         });
       });
       
-      // Prevent drag from starting on clickable elements
-      document.querySelectorAll('button, a, [data-goto]').forEach(el => {
-        el.addEventListener('mousedown', (e) => {
-          e.stopPropagation(); // Prevent drag from starting
-        });
-        el.addEventListener('touchstart', (e) => {
-          e.stopPropagation(); // Prevent drag from starting
-        });
-      });
       renderProducts();
       renderProjects();
       randomizeSpotlight();
       updatePositionIndicator();
+      updateZoomIndicator();
     }
     
-    function startDrag(e) {
-      const target = e.target;
-      
-      // Only prevent dragging if clicking directly on truly interactive elements
-      // Allow dragging from text, empty spaces, page backgrounds, etc.
-      const interactiveSelectors = 'button, a[href], input, textarea, select, [data-goto], .home-nav-item, .nav-btn, .minimap-cell, .boot-dest, .product-tile, .project-tile, .content-card';
-      const isClickable = target.closest(interactiveSelectors);
-      
-      // If clicking on a clickable element, don't start drag
-      if (isClickable) {
-        // Special case: if it's a navigation element, let it handle the click
-        if (target.closest('[data-goto], .home-nav-item, .nav-btn, .minimap-cell')) {
-          return;
-        }
-        // For buttons and links, don't drag
-        if (target.tagName === 'BUTTON' || (target.tagName === 'A' && target.hasAttribute('href'))) {
-          return;
-        }
-        // For inputs, don't drag
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
-          return;
-        }
-      }
-      
-      if (momentumFrame) { cancelAnimationFrame(momentumFrame); momentumFrame = null; }
-      isDragging = true;
-      dragStartX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
-      dragStartY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
-      canvasStartX = canvasX;
-      canvasStartY = canvasY;
-      velocityX = 0;
-      velocityY = 0;
-      lastDragX = dragStartX;
-      lastDragY = dragStartY;
-      lastDragTime = Date.now();
-      canvas.classList.add('dragging');
-      viewport.classList.add('dragging');
-      document.body.classList.add('dragging');
-      e.preventDefault(); // Prevent text selection during drag
-    }
-    
-    function onDrag(e) {
-      if (!isDragging) return;
-      e.preventDefault(); // Prevent scrolling and text selection
-      const now = Date.now();
-      const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : dragStartX);
-      const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : dragStartY);
-      const dx = clientX - dragStartX;
-      const dy = clientY - dragStartY;
-      
-      if (lastDragTime > 0) {
-        const dt = now - lastDragTime;
-        if (dt > 0) {
-          velocityX = (clientX - lastDragX) / dt * 16;
-          velocityY = (clientY - lastDragY) / dt * 16;
-        }
-      }
-      
-      lastDragX = clientX;
-      lastDragY = clientY;
-      lastDragTime = now;
-      
-      canvasX = canvasStartX + dx / scale;
-      canvasY = canvasStartY + dy / scale;
-      updateCanvas();
-    }
-    
-    function endDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      canvas.classList.remove('dragging');
-      viewport.classList.remove('dragging');
-      document.body.classList.remove('dragging');
-      applyMomentum();
-    }
-    
-    function applyMomentum() {
-      if (momentumFrame) cancelAnimationFrame(momentumFrame);
-      const friction = 0.92;
-      const minV = 0.5;
-      
-      function tick() {
-        velocityX *= friction;
-        velocityY *= friction;
-        canvasX += velocityX / scale;
-        canvasY += velocityY / scale;
-        updateCanvas();
-        if (Math.abs(velocityX) > minV || Math.abs(velocityY) > minV) {
-          momentumFrame = requestAnimationFrame(tick);
-        } else {
-          momentumFrame = null;
-        }
-      }
-      
-      if (Math.abs(velocityX) > minV || Math.abs(velocityY) > minV) {
-        tick();
-      }
-    }
-    
-    function onWheel(e) {
-      e.preventDefault();
-      // Zoom instead of scroll
-      const zoomSpeed = 0.1;
-      const zoomDelta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
-      const newScale = Math.max(0.2, Math.min(2.0, scale + zoomDelta));
-      
-      // Zoom towards mouse position
-      const rect = viewport.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-      
-      // Calculate zoom point in canvas coordinates
-      const zoomPointX = (mouseX - canvasX) / scale;
-      const zoomPointY = (mouseY - canvasY) / scale;
-      
-      // Adjust canvas position to zoom towards mouse
-      scale = newScale;
-      canvasX = mouseX - zoomPointX * scale;
-      canvasY = mouseY - zoomPointY * scale;
-      
-      updateCanvas();
-      zoomIndicator.textContent = Math.round(scale * 100) + '%';
-    }
-    
-    // Touch handlers for mobile - supports both drag and pinch zoom
-    function handleTouchStart(e) {
-      if (e.touches.length === 2) {
-        // Pinch start
-        isPinching = true;
-        lastPinchDist = getPinchDistance(e.touches);
-        e.preventDefault();
-      } else if (e.touches.length === 1) {
-        // Single finger drag
-        isPinching = false;
-        startDrag(e.touches[0]);
-      }
-    }
-    
-    function handleTouchMove(e) {
-      e.preventDefault();
-      if (e.touches.length === 2 && isPinching) {
-        // Pinch zoom
-        const dist = getPinchDistance(e.touches);
-        const delta = dist - lastPinchDist;
-        const zoomSpeed = 0.005;
-        const newScale = Math.max(0.2, Math.min(2.0, scale + delta * zoomSpeed));
-        
-        // Zoom towards center of pinch
-        const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-        const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        const rect = viewport.getBoundingClientRect();
-        const pinchX = centerX - rect.left;
-        const pinchY = centerY - rect.top;
-        
-        const zoomPointX = (pinchX - canvasX) / scale;
-        const zoomPointY = (pinchY - canvasY) / scale;
-        
-        scale = newScale;
-        canvasX = pinchX - zoomPointX * scale;
-        canvasY = pinchY - zoomPointY * scale;
-        
-        lastPinchDist = dist;
-        updateCanvas();
+    function updateZoomIndicator() {
+      if (panzoomInstance && zoomIndicator) {
+        const scale = panzoomInstance.getScale();
         zoomIndicator.textContent = Math.round(scale * 100) + '%';
-      } else if (e.touches.length === 1 && !isPinching) {
-        // Single finger drag
-        onDrag(e.touches[0]);
       }
-    }
-    
-    function handleTouchEnd(e) {
-      if (e.touches.length === 0) {
-        isPinching = false;
-        endDrag();
-      } else if (e.touches.length === 1) {
-        // Switched from pinch to single finger
-        isPinching = false;
-        startDrag(e.touches[0]);
-      }
-    }
-    
-    function getPinchDistance(touches) {
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
     }
     
     function handleCanvasKey(e) {
-      if (e.target.tagName === 'INPUT') return;
-      if (keyToPos[e.key]) { goToPage(keyToPos[e.key].x, keyToPos[e.key].y); return; }
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (keyToPos[e.key]) { 
+        goToPage(keyToPos[e.key].x, keyToPos[e.key].y); 
+        return; 
+      }
+      if (!panzoomInstance) return;
+      
+      const pan = panzoomInstance.getPan();
       const move = 100;
-      if (e.key === 'ArrowLeft') { canvasX += move; updateCanvas(); }
-      else if (e.key === 'ArrowRight') { canvasX -= move; updateCanvas(); }
-      else if (e.key === 'ArrowUp') { canvasY += move; updateCanvas(); }
-      else if (e.key === 'ArrowDown') { canvasY -= move; updateCanvas(); }
-    }
-    
-    function updateCanvas() {
-      canvas.style.transform = `translate(${canvasX}px, ${canvasY}px) scale(${scale})`;
-      updatePositionIndicator();
-    }
-    
-    // Hexagonal page position mapping (multipliers of pageW/pageH)
-    const PAGE_SPACING = 1.8;
-    const defaultPagePositions = {
-      '0,0':   { x: PAGE_SPACING, y: PAGE_SPACING },                 // HOME - center
-      '-1,-1': { x: 0, y: 0 },                                       // READING - top left
-      '1,-1':  { x: PAGE_SPACING * 2, y: 0 },                        // DEVELOPMENT - top right
-      '-1,0':  { x: 0, y: PAGE_SPACING },                            // WRITING - left
-      '1,0':   { x: PAGE_SPACING * 2, y: PAGE_SPACING },             // SPOTLIGHT - right
-      '-1,1':  { x: 0, y: PAGE_SPACING * 2 },                        // SANDBOX - bottom left
-      '1,1':   { x: PAGE_SPACING * 2, y: PAGE_SPACING * 2 }          // WORK - bottom right
-    };
-    let pagePositions = { ...defaultPagePositions };
-
-    function loadPagePositions() {
-      return { ...defaultPagePositions };
-    }
-
-    function savePagePositions() {}
-
-    function applyPagePositions() {}
-
-    function attachPageDragHandles() {}
-
-    function startPageDrag() {}
-
-    function onPageDrag() {}
-
-    function endPageDrag() {}
-
-    function setupLayoutToggle() {
-      if (layoutToggle) layoutToggle.style.display = 'none';
+      
+      if (e.key === 'ArrowLeft') { 
+        panzoomInstance.pan(pan.x + move, pan.y, { animate: true }); 
+      } else if (e.key === 'ArrowRight') { 
+        panzoomInstance.pan(pan.x - move, pan.y, { animate: true }); 
+      } else if (e.key === 'ArrowUp') { 
+        panzoomInstance.pan(pan.x, pan.y + move, { animate: true }); 
+      } else if (e.key === 'ArrowDown') { 
+        panzoomInstance.pan(pan.x, pan.y - move, { animate: true }); 
+      } else if (e.key === '+' || e.key === '=') {
+        panzoomInstance.zoomIn();
+        updateZoomIndicator();
+      } else if (e.key === '-') {
+        panzoomInstance.zoomOut();
+        updateZoomIndicator();
+      }
     }
     
     function goToPage(px, py, instant = false) {
-      if (momentumFrame) { cancelAnimationFrame(momentumFrame); momentumFrame = null; }
-      velocityX = 0;
-      velocityY = 0;
+      if (!panzoomInstance) return;
+      
       currentPos = { x: px, y: py };
       const target = document.querySelector(`.page[data-pos="${px},${py}"]`);
-      if (target) {
-        const rect = target.getBoundingClientRect();
-        const viewportRect = viewport.getBoundingClientRect();
-        const targetX = -(rect.left - viewportRect.left) + viewportRect.width / 2 - rect.width / 2;
-        const targetY = -(rect.top - viewportRect.top) + viewportRect.height / 2 - rect.height / 2;
-        
-        if (instant) {
-          canvasX = targetX;
-          canvasY = targetY;
-          updateCanvas();
-        } else {
-          canvasX = targetX;
-          canvasY = targetY;
-          updateCanvas();
-        }
+      if (!target) return;
+      
+      // Get current state
+      const scale = panzoomInstance.getScale();
+      const viewportRect = viewport.getBoundingClientRect();
+      
+      // Get target position in canvas coordinates
+      // We need to calculate where to pan so the target is centered
+      const targetRect = target.getBoundingClientRect();
+      const pan = panzoomInstance.getPan();
+      
+      // Calculate offset from current view center to target center
+      const viewCenterX = viewportRect.width / 2;
+      const viewCenterY = viewportRect.height / 2;
+      const targetCenterX = targetRect.left + targetRect.width / 2 - viewportRect.left;
+      const targetCenterY = targetRect.top + targetRect.height / 2 - viewportRect.top;
+      
+      // New pan position
+      const newX = pan.x + (viewCenterX - targetCenterX);
+      const newY = pan.y + (viewCenterY - targetCenterY);
+      
+      if (instant) {
+        panzoomInstance.pan(newX, newY, { animate: false });
+      } else {
+        panzoomInstance.pan(newX, newY, { animate: true, duration: 400, easing: 'ease-out' });
       }
+      
       updatePositionIndicator();
-      zoomIndicator.textContent = Math.round(scale * 100) + '%';
+      updateZoomIndicator();
     }
     
     function updatePositionIndicator() {
       const pages = Array.from(document.querySelectorAll('.page'));
-      let closestKey = '0,0', minDist = Infinity;
+      const viewportRect = viewport.getBoundingClientRect();
+      const viewCenterX = viewportRect.width / 2;
+      const viewCenterY = viewportRect.height / 2;
+      
+      let closestKey = '0,0';
+      let minDist = Infinity;
+      
       pages.forEach(page => {
         const rect = page.getBoundingClientRect();
-        const dist = Math.abs(rect.top - 120);
-        if (dist < minDist) { minDist = dist; closestKey = page.dataset.pos; }
+        const pageCenterX = rect.left + rect.width / 2;
+        const pageCenterY = rect.top + rect.height / 2;
+        const dist = Math.sqrt(
+          Math.pow(pageCenterX - viewCenterX, 2) + 
+          Math.pow(pageCenterY - viewCenterY, 2)
+        );
+        if (dist < minDist) { 
+          minDist = dist; 
+          closestKey = page.dataset.pos; 
+        }
       });
-      posIndicator.textContent = '► ' + (posToName[closestKey] || 'EXPLORING');
+      
+      if (posIndicator) {
+        posIndicator.textContent = '► ' + (posToName[closestKey] || 'EXPLORING');
+      }
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.goto === closestKey));
       document.querySelectorAll('.minimap-cell').forEach(cell => cell.classList.toggle('active', cell.dataset.goto === closestKey));
       document.querySelectorAll('.page').forEach(page => page.classList.toggle('in-view', page.dataset.pos === closestKey));
@@ -4362,13 +3960,12 @@
       pageW = window.innerWidth;
       pageH = window.innerHeight;
       initHeroName();
-      setupAnimationControls(); // Setup buttons immediately
-      // Initialize header emojis after a short delay to ensure DOM is ready
+      setupAnimationControls();
       setTimeout(() => {
         initHeaderEmojis();
       }, 500);
-      initBoot();
-});
+      initApp();
+    });
   </script>
   
   <!-- POPUP DRAWER -->
