@@ -201,21 +201,11 @@
       text-shadow: 0 0 12px rgba(255,255,255,0.4);
     }
     
-    /* MATRIX MODE - FIXED */
+    /* MATRIX MODE - Configurable colors */
     .hero-name.matrix-mode .letter-box.complete .ascii-char {
       animation: matrixDrip 2.5s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.03s);
     }
-    
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(1) { animation-delay: 0s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(2) { animation-delay: 0.05s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(3) { animation-delay: 0.1s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(4) { animation-delay: 0.15s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(5) { animation-delay: 0.2s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(6) { animation-delay: 0.25s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(7) { animation-delay: 0.3s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(8) { animation-delay: 0.35s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(9) { animation-delay: 0.4s; }
-    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(10) { animation-delay: 0.45s; }
     
     @keyframes matrixDrip {
       0%, 100% { 
@@ -225,14 +215,37 @@
       }
       50% { 
         opacity: 0.3; 
-        color: var(--teal);
-        text-shadow: 0 0 20px var(--teal-glow);
+        color: var(--matrix-color, var(--teal));
+        text-shadow: 0 0 20px var(--matrix-glow, var(--teal-glow));
       }
     }
     
-    /* GLITCH MODE - FIXED */
+    /* Matrix color schemes */
+    .hero-name.matrix-mode.matrix-green {
+      --matrix-color: #39ff14;
+      --matrix-glow: rgba(57, 255, 20, 0.6);
+    }
+    .hero-name.matrix-mode.matrix-cyan {
+      --matrix-color: #00ffff;
+      --matrix-glow: rgba(0, 255, 255, 0.6);
+    }
+    .hero-name.matrix-mode.matrix-purple {
+      --matrix-color: #9400d3;
+      --matrix-glow: rgba(148, 0, 211, 0.6);
+    }
+    .hero-name.matrix-mode.matrix-orange {
+      --matrix-color: var(--orange);
+      --matrix-glow: var(--orange-glow);
+    }
+    .hero-name.matrix-mode.matrix-blue {
+      --matrix-color: #0000ff;
+      --matrix-glow: rgba(0, 0, 255, 0.6);
+    }
+    
+    /* GLITCH MODE - Configurable colors */
     .hero-name.glitch-mode .letter-box.complete .ascii-char {
       animation: glitchChar 0.6s steps(2) infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.015s);
     }
     
     @keyframes glitchChar {
@@ -242,21 +255,184 @@
       }
       25% { 
         transform: translate(-2px, 2px);
-        color: var(--orange);
+        color: var(--glitch-color-1, #00ffff);
       }
       50% { 
         transform: translate(2px, -2px);
-        color: var(--teal);
+        color: var(--glitch-color-2, #ff00ff);
       }
       75% { 
         transform: translate(-1px, 1px);
-        color: var(--fuchsia);
+        color: var(--glitch-color-1, #00ffff);
       }
     }
     
-    /* PULSE MODE - FIXED */
+    /* Glitch color schemes */
+    .hero-name.glitch-mode.glitch-cyan-magenta {
+      --glitch-color-1: #00ffff;
+      --glitch-color-2: #ff00ff;
+    }
+    .hero-name.glitch-mode.glitch-red-blue {
+      --glitch-color-1: #ff0000;
+      --glitch-color-2: #0000ff;
+    }
+    .hero-name.glitch-mode.glitch-green-orange {
+      --glitch-color-1: #00ff00;
+      --glitch-color-2: var(--orange);
+    }
+    .hero-name.glitch-mode.glitch-yellow-purple {
+      --glitch-color-1: #ffff00;
+      --glitch-color-2: #9400d3;
+    }
+    
+    /* SCAN MODE - Rainbow scan with configurable colors */
+    .hero-name.rainbow-scan-mode .letter-box.complete .ascii-char {
+      animation: scanLine 3s linear infinite;
+      animation-delay: calc(var(--pixel-y-pos, 0) * 0.03s);
+    }
+    
+    @keyframes scanLine {
+      0% {
+        color: var(--scan-color-1, #ff0000);
+        text-shadow: 0 0 10px var(--scan-color-1, #ff0000);
+      }
+      14% {
+        color: var(--scan-color-2, #ff7f00);
+        text-shadow: 0 0 10px var(--scan-color-2, #ff7f00);
+      }
+      28% {
+        color: var(--scan-color-3, #ffff00);
+        text-shadow: 0 0 10px var(--scan-color-3, #ffff00);
+      }
+      42% {
+        color: var(--scan-color-4, #00ff00);
+        text-shadow: 0 0 10px var(--scan-color-4, #00ff00);
+      }
+      57% {
+        color: var(--scan-color-5, #0000ff);
+        text-shadow: 0 0 10px var(--scan-color-5, #0000ff);
+      }
+      71% {
+        color: var(--scan-color-6, #4b0082);
+        text-shadow: 0 0 10px var(--scan-color-6, #4b0082);
+      }
+      85% {
+        color: var(--scan-color-7, #9400d3);
+        text-shadow: 0 0 10px var(--scan-color-7, #9400d3);
+      }
+      100% {
+        color: var(--ice-white);
+        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      }
+    }
+    
+    /* Scan color schemes */
+    .hero-name.rainbow-scan-mode.scan-rainbow {
+      --scan-color-1: #ff0000; --scan-color-2: #ff7f00; --scan-color-3: #ffff00;
+      --scan-color-4: #00ff00; --scan-color-5: #0000ff; --scan-color-6: #4b0082; --scan-color-7: #9400d3;
+    }
+    .hero-name.rainbow-scan-mode.scan-teal-orange {
+      --scan-color-1: var(--teal); --scan-color-2: var(--orange); --scan-color-3: var(--teal);
+      --scan-color-4: var(--orange); --scan-color-5: var(--teal); --scan-color-6: var(--orange); --scan-color-7: var(--teal);
+    }
+    .hero-name.rainbow-scan-mode.scan-monochrome {
+      --scan-color-1: #ffffff; --scan-color-2: #cccccc; --scan-color-3: #999999;
+      --scan-color-4: #666666; --scan-color-5: #999999; --scan-color-6: #cccccc; --scan-color-7: #ffffff;
+    }
+    
+    /* CLEAR MODE - Fade out effect */
+    .hero-name.clear-mode .letter-box.complete .ascii-char {
+      color: var(--clear-color, var(--ice-white)) !important;
+      animation: clearFade 2s ease-out forwards;
+      animation-delay: calc(var(--pixel-index, 0) * 0.02s);
+    }
+    
+    @keyframes clearFade {
+      0% {
+        opacity: 1;
+        filter: brightness(1) blur(0px);
+        color: var(--clear-color, var(--ice-white));
+      }
+      50% {
+        opacity: 0.5;
+        filter: brightness(0.7) blur(1px);
+        color: var(--clear-color, var(--ice-white));
+      }
+      100% {
+        opacity: 0;
+        filter: brightness(0.3) blur(2px);
+        color: var(--clear-color, var(--ice-white));
+      }
+    }
+    
+    /* Clear color schemes */
+    .hero-name.clear-mode.clear-white {
+      --clear-color: #ffffff;
+    }
+    .hero-name.clear-mode.clear-teal {
+      --clear-color: var(--teal);
+    }
+    .hero-name.clear-mode.clear-orange {
+      --clear-color: var(--orange);
+    }
+    
+    /* PIANO MODE - Piano keyboard with key presses */
+    .hero-name.piano-mode .letter-box.complete .ascii-char {
+      color: var(--ice-white) !important;
+      transition: color 0.1s ease, filter 0.1s ease;
+    }
+    
+    .hero-name.piano-mode .ascii-char[data-piano-key="white"] {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .hero-name.piano-mode .ascii-char[data-piano-key="black"] {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-name.piano-mode .ascii-char[data-piano-pressed="true"] {
+      color: var(--piano-press-color, var(--orange)) !important;
+      filter: brightness(1.5);
+      text-shadow: 0 0 10px var(--piano-press-color, var(--orange));
+      animation: pianoKeyPress 0.3s ease-out;
+    }
+    
+    @keyframes pianoKeyPress {
+      0% {
+        transform: scale(1);
+        filter: brightness(2);
+      }
+      50% {
+        transform: scale(1.1);
+        filter: brightness(1.8);
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(1.5);
+      }
+    }
+    
+    /* Piano color schemes */
+    .hero-name.piano-mode.piano-orange {
+      --piano-press-color: var(--orange);
+    }
+    .hero-name.piano-mode.piano-teal {
+      --piano-press-color: var(--teal);
+    }
+    .hero-name.piano-mode.piano-fuchsia {
+      --piano-press-color: var(--fuchsia);
+    }
+    .hero-name.piano-mode.piano-green {
+      --piano-press-color: var(--green);
+    }
+    .hero-name.piano-mode.piano-rainbow {
+      /* Rainbow handled by JS */
+    }
+    
+    /* PULSE MODE - Keep for compatibility */
     .hero-name.pulse-mode .letter-box.complete .ascii-char {
       animation: pulseChar 1.8s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.02s);
     }
     
     @keyframes pulseChar {
@@ -272,9 +448,10 @@
       }
     }
     
-    /* WAVE MODE - FIXED */
+    /* WAVE MODE - Keep for compatibility */
     .hero-name.wave-mode .letter-box.complete .ascii-char {
       animation: waveChar 2s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.04s);
     }
     
     @keyframes waveChar {
@@ -320,12 +497,19 @@
     /* Animation controls */
     .hero-controls {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 20px;
       position: relative;
       z-index: 2;
+    }
+    
+    .animation-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
     }
     
     .hero-anim-btn {
@@ -351,6 +535,69 @@
       color: var(--void);
       border-color: var(--teal);
       box-shadow: 0 0 20px var(--teal-glow);
+    }
+    
+    /* Color Control Panel */
+    .color-controls {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      max-width: 600px;
+      width: 100%;
+    }
+    
+    .color-controls.active {
+      display: flex;
+    }
+    
+    .color-group {
+      display: none;
+    }
+    
+    .color-group.active {
+      display: block;
+    }
+    
+    .color-group-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--teal);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .color-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+    
+    .color-btn {
+      padding: 6px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      background: var(--elevated);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .color-btn:hover {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+    }
+    
+    .color-btn.active {
+      background: var(--orange);
+      color: var(--void);
+      border-color: var(--orange);
+      box-shadow: 0 0 15px var(--orange-glow);
     }
     
     .hero-tagline {
@@ -1083,10 +1330,71 @@
     <div class="hero-name" id="hero-name"></div>
     
     <div class="hero-controls">
-      <button class="hero-anim-btn active" data-mode="matrix">MATRIX</button>
-      <button class="hero-anim-btn" data-mode="glitch">GLITCH</button>
-      <button class="hero-anim-btn" data-mode="pulse">PULSE</button>
-      <button class="hero-anim-btn" data-mode="wave">WAVE</button>
+      <div class="animation-controls">
+        <button class="hero-anim-btn" data-mode="glitch" id="glitch-btn">⚡ GLITCH</button>
+        <button class="hero-anim-btn active" data-mode="matrix" id="matrix-btn">💚 MATRIX</button>
+        <button class="hero-anim-btn" data-mode="rainbow-scan" id="scan-btn">🌈 SCAN</button>
+        <button class="hero-anim-btn" data-mode="piano" id="piano-btn">🎹 PIANO</button>
+        <button class="hero-anim-btn" data-mode="clear" id="clear-btn">⚪ CLEAR</button>
+      </div>
+      
+      <!-- Color Control Panel -->
+      <div class="color-controls" id="color-controls">
+        <!-- Matrix Colors -->
+        <div class="color-group active" data-mode="matrix">
+          <div class="color-group-label">MATRIX COLORS</div>
+          <div class="color-buttons">
+            <button class="color-btn active" data-color="green" style="background: #39ff14; color: #000;">GREEN</button>
+            <button class="color-btn" data-color="cyan" style="background: #00ffff; color: #000;">CYAN</button>
+            <button class="color-btn" data-color="purple" style="background: #9400d3;">PURPLE</button>
+            <button class="color-btn" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
+            <button class="color-btn" data-color="blue" style="background: #0000ff;">BLUE</button>
+          </div>
+        </div>
+        
+        <!-- Glitch Colors -->
+        <div class="color-group" data-mode="glitch">
+          <div class="color-group-label">GLITCH COLORS</div>
+          <div class="color-buttons">
+            <button class="color-btn active" data-color="cyan-magenta" style="background: linear-gradient(90deg, #00ffff 50%, #ff00ff 50%);">CYAN/MAGENTA</button>
+            <button class="color-btn" data-color="red-blue" style="background: linear-gradient(90deg, #ff0000 50%, #0000ff 50%);">RED/BLUE</button>
+            <button class="color-btn" data-color="green-orange" style="background: linear-gradient(90deg, #00ff00 50%, var(--orange) 50%);">GREEN/ORANGE</button>
+            <button class="color-btn" data-color="yellow-purple" style="background: linear-gradient(90deg, #ffff00 50%, #9400d3 50%);">YELLOW/PURPLE</button>
+          </div>
+        </div>
+        
+        <!-- Scan Colors -->
+        <div class="color-group" data-mode="rainbow-scan">
+          <div class="color-group-label">SCAN COLORS</div>
+          <div class="color-buttons">
+            <button class="color-btn active" data-color="rainbow" style="background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);">RAINBOW</button>
+            <button class="color-btn" data-color="teal-orange" style="background: linear-gradient(90deg, var(--teal), var(--orange));">TEAL/ORANGE</button>
+            <button class="color-btn" data-color="monochrome" style="background: linear-gradient(90deg, #fff, #ccc, #999, #666);">MONOCHROME</button>
+          </div>
+        </div>
+        
+        <!-- Piano Colors -->
+        <div class="color-group" data-mode="piano">
+          <div class="color-group-label">PIANO COLORS</div>
+          <div class="color-buttons">
+            <button class="color-btn active" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
+            <button class="color-btn" data-color="teal" style="background: var(--teal); color: #000;">TEAL</button>
+            <button class="color-btn" data-color="fuchsia" style="background: var(--fuchsia);">FUCHSIA</button>
+            <button class="color-btn" data-color="green" style="background: var(--green); color: #000;">GREEN</button>
+            <button class="color-btn" data-color="rainbow" style="background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);">RAINBOW</button>
+          </div>
+        </div>
+        
+        <!-- Clear Colors -->
+        <div class="color-group" data-mode="clear">
+          <div class="color-group-label">CLEAR COLORS</div>
+          <div class="color-buttons">
+            <button class="color-btn active" data-color="white" style="background: #fff; color: #000;">WHITE</button>
+            <button class="color-btn" data-color="teal" style="background: var(--teal); color: #000;">TEAL</button>
+            <button class="color-btn" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
+          </div>
+        </div>
+      </div>
     </div>
     
     <p class="hero-tagline">▶ BUILDING REAL-TIME, DATA-INTENSIVE CONSUMER PRODUCTS</p>
@@ -1535,13 +1843,29 @@
         // Set pixel index for animation delays (sequential across entire display)
         char.style.setProperty('--pixel-index', pixelIndex);
         
-        // Calculate Y position for wave mode (0-100 based on vertical position in letter)
+        // Calculate Y position for scan mode (0-100 based on vertical position in letter)
         const letterBox = char.closest('.letter-box');
         const lineNum = parseInt(char.dataset.line) || 0;
         const totalLines = letterBox.querySelectorAll('br').length + 1;
         const yPos = totalLines > 1 ? (lineNum / (totalLines - 1)) * 100 : 50;
         
         char.style.setProperty('--pixel-y-pos', yPos);
+        
+        // Assign piano key based on X position (piano keyboard layout)
+        const charIndex = Array.from(letterBox.querySelectorAll('.ascii-char')).indexOf(char);
+        const lineLength = letterBox.querySelectorAll(`.ascii-char[data-line="${lineNum}"]`).length;
+        const xPos = lineLength > 1 ? (charIndex % lineLength) / lineLength : 0;
+        
+        // Map X position to piano keys (white and black keys)
+        const pianoKeyNum = Math.floor(xPos * 52); // 52 keys total (4 octaves)
+        // White keys pattern: C, D, E, F, G, A, B (repeats)
+        const whiteKeyPattern = [0,2,4,5,7,9,11]; // C, D, E, F, G, A, B in one octave
+        const octave = Math.floor(pianoKeyNum / 12);
+        const noteInOctave = pianoKeyNum % 12;
+        const isWhiteKey = whiteKeyPattern.includes(noteInOctave);
+        
+        char.setAttribute('data-piano-key', isWhiteKey ? 'white' : 'black');
+        
         pixelIndex++;
       });
       
@@ -1605,24 +1929,226 @@
       });
     }
     
+    // Color scheme arrays
+    const matrixColors = ['green', 'cyan', 'purple', 'orange', 'blue'];
+    const glitchColors = ['cyan-magenta', 'red-blue', 'green-orange', 'yellow-purple'];
+    const scanColors = ['rainbow', 'teal-orange', 'monochrome'];
+    const pianoColors = ['orange', 'teal', 'fuchsia', 'green', 'rainbow'];
+    const clearColors = ['white', 'teal', 'orange'];
+    
+    let matrixColorIndex = 0;
+    let glitchColorIndex = 0;
+    let scanColorIndex = 0;
+    let pianoColorIndex = 0;
+    let clearColorIndex = 0;
+    let normalizeTimer = null;
+    let pianoInterval = null;
+    
+    // Piano animation
+    function startPianoAnimation(heroNameEl) {
+      if (pianoInterval) clearInterval(pianoInterval);
+      
+      const chars = heroNameEl.querySelectorAll('.ascii-char');
+      const isRainbow = heroNameEl.classList.contains('piano-rainbow');
+      
+      pianoInterval = setInterval(() => {
+        // Reset all presses
+        chars.forEach(c => c.removeAttribute('data-piano-pressed'));
+        
+        // Press 1-3 random keys
+        const numPresses = 1 + Math.floor(Math.random() * 3);
+        const pressedIndices = new Set();
+        
+        while (pressedIndices.size < numPresses) {
+          const idx = Math.floor(Math.random() * chars.length);
+          pressedIndices.add(idx);
+        }
+        
+        pressedIndices.forEach(idx => {
+          const char = chars[idx];
+          char.setAttribute('data-piano-pressed', 'true');
+          
+          if (isRainbow) {
+            const rainbowColors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
+            const color = rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+            char.style.setProperty('--piano-press-color', color);
+          }
+          
+          setTimeout(() => {
+            char.removeAttribute('data-piano-pressed');
+          }, 300);
+        });
+      }, 500);
+    }
+    
+    function stopPianoAnimation() {
+      if (pianoInterval) {
+        clearInterval(pianoInterval);
+        pianoInterval = null;
+      }
+    }
+    
+    // Auto-normalize function
+    function normalizeToTyping() {
+      const heroNameEl = document.getElementById('hero-name');
+      if (!heroNameEl) return;
+      
+      // Remove all animation modes
+      heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'rainbow-scan-mode', 'piano-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
+      heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue');
+      heroNameEl.classList.remove('glitch-cyan-magenta', 'glitch-red-blue', 'glitch-green-orange', 'glitch-yellow-purple');
+      heroNameEl.classList.remove('scan-rainbow', 'scan-teal-orange', 'scan-monochrome');
+      heroNameEl.classList.remove('piano-orange', 'piano-teal', 'piano-fuchsia', 'piano-green', 'piano-rainbow');
+      heroNameEl.classList.remove('clear-white', 'clear-teal', 'clear-orange');
+      
+      // Remove all active states
+      document.querySelectorAll('.hero-anim-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+      
+      // Hide color controls
+      document.getElementById('color-controls').classList.remove('active');
+      document.querySelectorAll('.color-group').forEach(group => group.classList.remove('active'));
+      
+      // Stop piano
+      stopPianoAnimation();
+      
+      // Reset all chars to normal
+      heroNameEl.querySelectorAll('.ascii-char').forEach(char => {
+        char.removeAttribute('data-piano-pressed');
+        char.style.removeProperty('--piano-press-color');
+      });
+    }
+    
+    // Update color controls visibility
+    function updateColorControls(activeMode) {
+      const colorControls = document.getElementById('color-controls');
+      const colorGroups = document.querySelectorAll('.color-group');
+      
+      if (activeMode) {
+        colorControls.classList.add('active');
+        colorGroups.forEach(group => {
+          group.classList.toggle('active', group.dataset.mode === activeMode);
+        });
+      } else {
+        colorControls.classList.remove('active');
+        colorGroups.forEach(group => group.classList.remove('active'));
+      }
+    }
+    
+    // Update active color button
+    function updateActiveColorButton(mode, color) {
+      document.querySelectorAll('.color-btn').forEach(btn => {
+        const group = btn.closest('.color-group');
+        if (group && group.dataset.mode === mode) {
+          btn.classList.toggle('active', btn.dataset.color === color);
+        }
+      });
+    }
+    
     // Animation mode controls
     function setupAnimationControls() {
       const heroNameEl = document.getElementById('hero-name');
       const buttons = document.querySelectorAll('.hero-anim-btn');
+      const colorButtons = document.querySelectorAll('.color-btn');
+      
       if (!heroNameEl || buttons.length === 0) return;
       
-      const modes = ['matrix', 'glitch', 'pulse', 'wave'];
-      
       // Default mode
-      heroNameEl.classList.add('matrix-mode');
+      heroNameEl.classList.add('matrix-mode', 'matrix-green');
+      document.getElementById('matrix-btn').classList.add('active');
+      updateColorControls('matrix');
+      updateActiveColorButton('matrix', 'green');
       
+      // Animation button handlers
       buttons.forEach(btn => {
         btn.addEventListener('click', () => {
           const mode = btn.dataset.mode;
-          modes.forEach(m => heroNameEl.classList.remove(m + '-mode'));
-          heroNameEl.classList.add(mode + '-mode');
+          const isAlreadyActive = btn.classList.contains('active');
+          
+          // Clear normalize timer
+          if (normalizeTimer) {
+            clearTimeout(normalizeTimer);
+            normalizeTimer = null;
+          }
+          
+          // Stop piano if switching away
+          if (mode !== 'piano') {
+            stopPianoAnimation();
+          }
+          
+          // Remove all modes
+          heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'rainbow-scan-mode', 'piano-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
           buttons.forEach(b => b.classList.remove('active'));
+          
+          // Add selected mode
+          heroNameEl.classList.add(mode + '-mode');
           btn.classList.add('active');
+          
+          // Apply color scheme
+          if (mode === 'matrix') {
+            heroNameEl.classList.add('matrix-' + matrixColors[matrixColorIndex]);
+            updateActiveColorButton('matrix', matrixColors[matrixColorIndex]);
+          } else if (mode === 'glitch') {
+            heroNameEl.classList.add('glitch-' + glitchColors[glitchColorIndex]);
+            updateActiveColorButton('glitch', glitchColors[glitchColorIndex]);
+          } else if (mode === 'rainbow-scan') {
+            heroNameEl.classList.add('scan-' + scanColors[scanColorIndex]);
+            updateActiveColorButton('rainbow-scan', scanColors[scanColorIndex]);
+          } else if (mode === 'piano') {
+            heroNameEl.classList.add('piano-' + pianoColors[pianoColorIndex]);
+            updateActiveColorButton('piano', pianoColors[pianoColorIndex]);
+            startPianoAnimation(heroNameEl);
+          } else if (mode === 'clear') {
+            heroNameEl.classList.add('clear-' + clearColors[clearColorIndex]);
+            updateActiveColorButton('clear', clearColors[clearColorIndex]);
+          }
+          
+          // Show color controls
+          updateColorControls(mode);
+          
+          // Auto-normalize after 15 seconds
+          normalizeTimer = setTimeout(() => {
+            normalizeToTyping();
+          }, 15000);
+        });
+      });
+      
+      // Color button handlers
+      colorButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const group = btn.closest('.color-group');
+          const mode = group.dataset.mode;
+          const color = btn.dataset.color;
+          
+          // Update active button
+          group.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Apply color
+          if (mode === 'matrix') {
+            heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue');
+            heroNameEl.classList.add('matrix-' + color);
+            matrixColorIndex = matrixColors.indexOf(color);
+          } else if (mode === 'glitch') {
+            heroNameEl.classList.remove('glitch-cyan-magenta', 'glitch-red-blue', 'glitch-green-orange', 'glitch-yellow-purple');
+            heroNameEl.classList.add('glitch-' + color);
+            glitchColorIndex = glitchColors.indexOf(color);
+          } else if (mode === 'rainbow-scan') {
+            heroNameEl.classList.remove('scan-rainbow', 'scan-teal-orange', 'scan-monochrome');
+            heroNameEl.classList.add('scan-' + color);
+            scanColorIndex = scanColors.indexOf(color);
+          } else if (mode === 'piano') {
+            heroNameEl.classList.remove('piano-orange', 'piano-teal', 'piano-fuchsia', 'piano-green', 'piano-rainbow');
+            heroNameEl.classList.add('piano-' + color);
+            pianoColorIndex = pianoColors.indexOf(color);
+            if (color === 'rainbow') {
+              startPianoAnimation(heroNameEl);
+            }
+          } else if (mode === 'clear') {
+            heroNameEl.classList.remove('clear-white', 'clear-teal', 'clear-orange');
+            heroNameEl.classList.add('clear-' + color);
+            clearColorIndex = clearColors.indexOf(color);
+          }
         });
       });
     }
