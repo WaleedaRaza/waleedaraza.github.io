@@ -295,7 +295,7 @@
       text-shadow: none;
     }
     
-    /* White when complete with glow */
+    /* White when complete with sporadic orange and teal boxes */
     .letter-box.complete .ascii-char {
       color: var(--ice-white) !important;
       -webkit-text-fill-color: var(--ice-white) !important;
@@ -303,6 +303,45 @@
       text-shadow: 0 0 12px rgba(255,255,255,0.4);
       animation: charGlow 2s ease-in-out infinite;
       animation-delay: calc(var(--pixel-index, 0) * 0.01s);
+    }
+    
+    /* Sporadic orange boxes */
+    .letter-box.complete .ascii-char:nth-child(3n) {
+      color: var(--orange) !important;
+      -webkit-text-fill-color: var(--orange) !important;
+      text-shadow: 0 0 12px var(--orange-glow);
+    }
+    
+    /* Sporadic teal boxes */
+    .letter-box.complete .ascii-char:nth-child(7n) {
+      color: var(--teal) !important;
+      -webkit-text-fill-color: var(--teal) !important;
+      text-shadow: 0 0 12px var(--teal-glow);
+    }
+    
+    /* More sporadic patterns */
+    .letter-box.complete .ascii-char:nth-child(11n) {
+      color: var(--orange) !important;
+      -webkit-text-fill-color: var(--orange) !important;
+      text-shadow: 0 0 12px var(--orange-glow);
+    }
+    
+    .letter-box.complete .ascii-char:nth-child(13n) {
+      color: var(--teal) !important;
+      -webkit-text-fill-color: var(--teal) !important;
+      text-shadow: 0 0 12px var(--teal-glow);
+    }
+    
+    .letter-box.complete .ascii-char:nth-child(17n) {
+      color: var(--orange) !important;
+      -webkit-text-fill-color: var(--orange) !important;
+      text-shadow: 0 0 12px var(--orange-glow);
+    }
+    
+    .letter-box.complete .ascii-char:nth-child(19n) {
+      color: var(--teal) !important;
+      -webkit-text-fill-color: var(--teal) !important;
+      text-shadow: 0 0 12px var(--teal-glow);
     }
     
     @keyframes charGlow {
@@ -1235,16 +1274,17 @@
     
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
     }
     
     .product-tile {
       background: var(--card);
       border: 1px solid var(--border);
-      padding: 16px;
+      padding: 0;
       cursor: pointer;
       transition: all 0.2s ease;
+      overflow: hidden;
     }
     
     .product-tile:hover {
@@ -1255,11 +1295,19 @@
     
     .product-image {
       width: 100%;
-      height: 100px;
+      height: 0;
+      padding-bottom: 75%; /* 4:3 aspect ratio - adjust as needed */
       background-size: cover;
       background-position: center;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
+      background-repeat: no-repeat;
+      border: none;
+    }
+    
+    .product-name {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--ice-white);
+      font-weight: 600;
     }
     
     .product-name {
