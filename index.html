@@ -187,11 +187,21 @@
       text-shadow: 0 0 12px rgba(255,255,255,0.4);
     }
     
-    /* MATRIX MODE - WORKING */
+    /* MATRIX MODE - FIXED */
     .hero-name.matrix-mode .letter-box.complete .ascii-char {
-      animation: matrixDrip 3s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index, 0) * 0.03s);
+      animation: matrixDrip 2.5s ease-in-out infinite;
     }
+    
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(1) { animation-delay: 0s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(2) { animation-delay: 0.05s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(3) { animation-delay: 0.1s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(4) { animation-delay: 0.15s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(5) { animation-delay: 0.2s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(6) { animation-delay: 0.25s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(7) { animation-delay: 0.3s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(8) { animation-delay: 0.35s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(9) { animation-delay: 0.4s; }
+    .hero-name.matrix-mode .letter-box.complete .ascii-char:nth-child(10) { animation-delay: 0.45s; }
     
     @keyframes matrixDrip {
       0%, 100% { 
@@ -200,16 +210,15 @@
         text-shadow: 0 0 12px rgba(255,255,255,0.4);
       }
       50% { 
-        opacity: 0.4; 
-        color: var(--hero-color, var(--teal));
+        opacity: 0.3; 
+        color: var(--teal);
         text-shadow: 0 0 20px var(--teal-glow);
       }
     }
     
-    /* GLITCH MODE - WORKING */
+    /* GLITCH MODE - FIXED */
     .hero-name.glitch-mode .letter-box.complete .ascii-char {
-      animation: glitchChar 0.8s steps(2) infinite;
-      animation-delay: calc(var(--pixel-index, 0) * 0.015s);
+      animation: glitchChar 0.6s steps(2) infinite;
     }
     
     @keyframes glitchChar {
@@ -217,28 +226,23 @@
         transform: translate(0);
         color: var(--ice-white);
       }
-      20% { 
+      25% { 
         transform: translate(-2px, 2px);
         color: var(--orange);
       }
-      40% { 
+      50% { 
         transform: translate(2px, -2px);
         color: var(--teal);
       }
-      60% { 
+      75% { 
         transform: translate(-1px, 1px);
         color: var(--fuchsia);
       }
-      80% {
-        transform: translate(1px, -1px);
-        color: var(--ice-white);
-      }
     }
     
-    /* PULSE MODE - WORKING */
+    /* PULSE MODE - FIXED */
     .hero-name.pulse-mode .letter-box.complete .ascii-char {
-      animation: pulseChar 2s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index, 0) * 0.02s);
+      animation: pulseChar 1.8s ease-in-out infinite;
     }
     
     @keyframes pulseChar {
@@ -248,16 +252,15 @@
         text-shadow: 0 0 12px rgba(255,255,255,0.4);
       }
       50% { 
-        transform: scale(1.15); 
-        opacity: 0.7;
-        text-shadow: 0 0 25px var(--teal-glow);
+        transform: scale(1.2); 
+        opacity: 0.6;
+        text-shadow: 0 0 30px var(--teal-glow);
       }
     }
     
-    /* WAVE MODE - WORKING */
+    /* WAVE MODE - FIXED */
     .hero-name.wave-mode .letter-box.complete .ascii-char {
-      animation: waveChar 2.5s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index, 0) * 0.04s);
+      animation: waveChar 2s ease-in-out infinite;
     }
     
     @keyframes waveChar {
@@ -266,20 +269,21 @@
         color: var(--ice-white);
       }
       50% { 
-        transform: translateY(-4px);
+        transform: translateY(-5px);
         color: var(--teal);
-        text-shadow: 0 0 15px var(--teal-glow);
+        text-shadow: 0 0 18px var(--teal-glow);
       }
     }
     
-    /* FLYING EMOJIS */
+    /* FLYING EMOJIS - ENTIRE PAGE */
     .emoji-float {
-      position: absolute;
-      font-size: 20px;
+      position: fixed;
+      font-size: 18px;
       pointer-events: none;
-      opacity: 0.6;
-      z-index: 1;
-      animation: floatEmoji 15s linear infinite;
+      opacity: 0.5;
+      z-index: 9998;
+      animation: floatEmoji linear forwards;
+      will-change: transform;
     }
     
     @keyframes floatEmoji {
@@ -287,11 +291,11 @@
         transform: translateY(100vh) rotate(0deg);
         opacity: 0;
       }
-      10% {
-        opacity: 0.6;
+      5% {
+        opacity: 0.5;
       }
-      90% {
-        opacity: 0.6;
+      95% {
+        opacity: 0.5;
       }
       100% {
         transform: translateY(-100px) rotate(360deg);
@@ -1105,14 +1109,14 @@
     // ASCII LETTER DEFINITIONS
     // ═══════════════════════════════════════════════════════════════════════
     
-    // Bigger ASCII art - full block characters
+    // ASCII art - SINGLE LETTERS ONLY
     const LETTER_W = [
-      '██╗    ██╗ █████╗ ██╗     ███████╗███████╗██████╗ ',
-      '██║    ██║██╔══██╗██║     ██╔════╝██╔════╝██╔══██╗',
-      '██║ █╗ ██║███████║██║     █████╗  █████╗  ██║  ██║',
-      '██║███╗██║██╔══██║██║     ██╔══╝  ██╔══╝  ██║  ██║',
-      '╚███╔███╔╝██║  ██║███████╗███████╗███████╗██████╔╝',
-      ' ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═════╝ '
+      '██╗    ██╗',
+      '██║    ██║',
+      '██║ █╗ ██║',
+      '██║███╗██║',
+      '╚███╔███╔╝',
+      ' ╚══╝╚══╝ '
     ];
     
     const LETTER_A = [
@@ -1169,36 +1173,36 @@
       '╚══════╝'
     ];
     
-    // Emoji pool for flying
-    const EMOJI_POOL = ['⚡', '🔥', '💻', '🚀', '⚙️', '🔧', '💾', '🌐', '📡', '🔌', '💡', '⚡', '🔋', '📊', '🎯', '⚡', '🔥'];
+    // EXACT EMOJI LIST - ONLY THESE
+    const EMOJI_POOL = ['☭', '☠︎', '⚔︎', '∆', '△', '▲', '▼', '▽', '∴', '∵', '∞', '≈', '≠', '≡', '⋆', '✦', '✧', '✺', '✹', '✸', '☼', '☾', '☽', '⟁', '⧍', '⧋', '⧊', '◬', '◭', '◮', '◯', '⛓︎', '⛓️‍💥', '⌘', '🜁', '🜂', '🜃', '🜄', '👁️', '( ͡° ͜ʖ ͡°)', '(¬‿¬)', '(˘⌣˘ )', '(￣ー￣)', '(•‿•)', '(⊙‿⊙)', '(ʘ‿ʘ)', '(≖‿≖)', '(͠≖ ͜ʖ͠≖)', '(¬¬ )', '(ಠ_ಠ)', '(ಠ‿ಠ)', '(ಠ⌣ಠ)', '(ง\'̀-\'́)ง', '(￣ー￣)︻デ═一', '(づ｡◕‿‿◕｡)づ💻', '(╯°□°）╯︵ ┻━┻', '¯_(ツ)/¯', '💾', '⛓️‍💥', '🔦', '🏹', '🐦‍🔥', '❤️‍🔥', '🗣️', '🐉', '👽', '👹', '🫴🏽', '🧟‍♂️', '👑', '🙊', '🙉', '🙈', '🐵', '🐒', '🦆', '🪼', '🦈', '🦦', '🌵', '🪨', '🍄', '🪻', '🪷', '🌙', '🌗', '🌓', '🫧', '🌊', '🏆', '🎯', '🎹', '🎨', '🧊', '🍪', '🧇', '🍇', '🏊‍♂️', '🚞', '✈️', '🚀', '🛰️', '🛸', '🚉', '🚊', '🛺', '🛵', '🚲', '🛞', '⛵️', '🚁', '🗿', '⛴️', '🗼', '🌋', '🏜️', '🏝️', '🏖️', '⛰️', '🏔️', '🗻', '🏕️', '🏠', '🛖', '⛺️', '🏘️', '🏚️', '🏢', '🏛️', '🏫', '🛣️', '🛤️', '🌅', '🏞️', '🌆', '🌉', '🌄', '🗾', '⌚️', '⌨️', '🖥️', '💻', '💽', '💿', '🖱️', '📷', '💎', '💡', '🕰️', '📺', '🛠️', '🔩', '🧿', '🔮', '🪬', '🩻', '🕳️', '💊', '🧬', '🦠', '🩸', '🖼️', '📈', '📙', '📚', '🖇️', '📎', '📌', '🧡', '‼️', '✅', '🔴', '🔵', '🟤', '🟠', '🔺', '⚫️', '🟢', '⚪️', '🐜', '🌇'];
     
     function createFlyingEmoji() {
-      const hero = document.getElementById('hero');
-      if (!hero) return;
+      const body = document.body;
+      if (!body) return;
       
       const emoji = document.createElement('div');
       emoji.className = 'emoji-float';
       emoji.textContent = EMOJI_POOL[Math.floor(Math.random() * EMOJI_POOL.length)];
       emoji.style.left = Math.random() * 100 + '%';
-      emoji.style.animationDuration = (10 + Math.random() * 10) + 's';
-      emoji.style.animationDelay = Math.random() * 2 + 's';
+      emoji.style.animationDuration = (12 + Math.random() * 15) + 's';
+      emoji.style.animationDelay = Math.random() * 1 + 's';
       
-      hero.appendChild(emoji);
+      body.appendChild(emoji);
       
       setTimeout(() => {
-        emoji.remove();
-      }, 20000);
+        if (emoji.parentNode) emoji.remove();
+      }, 30000);
     }
     
     function initFlyingEmojis() {
-      // Create emojis periodically
+      // Create emojis periodically - entire page
       setInterval(() => {
-        if (Math.random() > 0.3) createFlyingEmoji();
-      }, 2000);
+        if (Math.random() > 0.4) createFlyingEmoji();
+      }, 1500);
       
       // Initial burst
-      for (let i = 0; i < 5; i++) {
-        setTimeout(() => createFlyingEmoji(), i * 400);
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => createFlyingEmoji(), i * 300);
       }
     }
     
@@ -1255,41 +1259,46 @@
       const heroNameEl = document.getElementById('hero-name');
       if (!heroNameEl) return;
       
+      // Reset all
+      heroNameEl.querySelectorAll('.letter-box').forEach(box => {
+        box.classList.remove('complete', 'typing');
+        box.querySelectorAll('.ascii-char').forEach(c => c.classList.remove('visible'));
+      });
+      
       const letterBoxes = Array.from(heroNameEl.querySelectorAll('.letter-box')).filter(box => box.dataset.letter && box.dataset.letter !== 'SPACE');
-      const animationDuration = 1500;
+      const animationDuration = 1200;
       let completedLetters = 0;
       const totalLetters = letterBoxes.length;
       
       letterBoxes.forEach((box, boxIdx) => {
-        box.classList.remove('complete');
-        box.classList.add('typing');
-        const chars = box.querySelectorAll('.ascii-char');
-        chars.forEach(c => c.classList.remove('visible'));
-        
-        const charCount = chars.length;
-        const charDelay = animationDuration / charCount;
-        let charIdx = 0;
-        
-        function revealNextChar() {
-          if (charIdx >= charCount) {
-            setTimeout(() => {
-              box.classList.remove('typing');
-              box.classList.add('complete');
-              completedLetters++;
-              
-              if (completedLetters === totalLetters) {
-                setTimeout(() => startLetterAnimation(), 3000);
-              }
-            }, 300);
-            return;
+        setTimeout(() => {
+          box.classList.add('typing');
+          const chars = Array.from(box.querySelectorAll('.ascii-char'));
+          const charCount = chars.length;
+          const charDelay = animationDuration / charCount;
+          let charIdx = 0;
+          
+          function revealNextChar() {
+            if (charIdx >= charCount) {
+              setTimeout(() => {
+                box.classList.remove('typing');
+                box.classList.add('complete');
+                completedLetters++;
+                
+                if (completedLetters === totalLetters) {
+                  setTimeout(() => startLetterAnimation(), 2500);
+                }
+              }, 200);
+              return;
+            }
+            
+            chars[charIdx].classList.add('visible');
+            charIdx++;
+            setTimeout(revealNextChar, charDelay);
           }
           
-          chars[charIdx].classList.add('visible');
-          charIdx++;
-          setTimeout(revealNextChar, charDelay);
-        }
-        
-        setTimeout(() => revealNextChar(), boxIdx * 200);
+          revealNextChar();
+        }, boxIdx * 150);
       });
     }
     
