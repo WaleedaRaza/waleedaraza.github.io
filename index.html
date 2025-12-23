@@ -49,36 +49,15 @@
       position: relative;
     }
     
-    /* MULTI-COLORED GRAINY OVERLAYS - ENTIRE PAGE */
+    /* Black with slight grain */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: 
-        /* Black grain */
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E"),
-        /* Grey grain */
-        radial-gradient(ellipse at 20% 30%, rgba(128, 128, 128, 0.15) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E"),
-        /* Orange grain */
-        radial-gradient(ellipse at 70% 20%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='o'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23o)' opacity='0.06'/%3E%3C/svg%3E"),
-        /* Teal grain */
-        radial-gradient(ellipse at 30% 80%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.05'/%3E%3C/svg%3E"),
-        /* Brown grain */
-        radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.08) 0%, transparent 45%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' opacity='0.04'/%3E%3C/svg%3E"),
-        /* Fuchsia grain */
-        radial-gradient(ellipse at 50% 50%, rgba(255, 0, 255, 0.08) 0%, transparent 40%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='0.04'/%3E%3C/svg%3E"),
-        /* Green grain */
-        radial-gradient(ellipse at 10% 60%, rgba(57, 255, 20, 0.06) 0%, transparent 45%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='gr'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gr)' opacity='0.03'/%3E%3C/svg%3E");
-      background-size: 200px 200px, 100% 100%, 180px 180px, 100% 100%, 150px 150px, 100% 100%, 170px 170px, 100% 100%, 160px 160px, 100% 100%, 190px 190px, 100% 100%, 140px 140px;
-      background-blend-mode: overlay, normal, overlay, normal, overlay, normal, overlay, normal, overlay, normal, overlay, normal, overlay;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
     
     /* Base noise overlay */
@@ -86,10 +65,10 @@
       content: '';
       position: fixed;
       inset: 0;
-      opacity: 0.15;
+      opacity: 0.08;
       pointer-events: none;
       z-index: 2;
-      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='base'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23base)'/%3E%3C/svg%3E");
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='base'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23base)'/%3E%3C/svg%3E");
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
@@ -1531,7 +1510,7 @@
       let html = '';
       letterSequence.forEach((item) => {
         if (item.letter === 'SPACE') {
-          html += '<div style="width: 30px;"></div>';
+          html += '<div style="width: 24px;"></div>';
           return;
         }
         
@@ -1539,7 +1518,7 @@
         item.ascii.forEach((line, lineIdx) => {
           for (let i = 0; i < line.length; i++) {
             const char = line[i];
-            html += `<span class="ascii-char" data-line="${lineIdx}">${char === ' ' ? '\u00A0' : char}</span>`;
+            html += `<span class="ascii-char" data-line="${lineIdx}" data-char="${i}" data-letter="${item.letter}">${char === ' ' ? '\u00A0' : char}</span>`;
           }
           if (lineIdx < item.ascii.length - 1) html += '<br>';
         });
@@ -1548,14 +1527,25 @@
       
       heroNameEl.innerHTML = html;
       
-      // Assign pixel indices properly
+      // Assign pixel indices to each character (treating entire display as TV screen)
       let pixelIndex = 0;
-      heroNameEl.querySelectorAll('.ascii-char').forEach((char) => {
+      const allChars = heroNameEl.querySelectorAll('.ascii-char');
+      
+      allChars.forEach((char) => {
+        // Set pixel index for animation delays (sequential across entire display)
         char.style.setProperty('--pixel-index', pixelIndex);
+        
+        // Calculate Y position for wave mode (0-100 based on vertical position in letter)
+        const letterBox = char.closest('.letter-box');
+        const lineNum = parseInt(char.dataset.line) || 0;
+        const totalLines = letterBox.querySelectorAll('br').length + 1;
+        const yPos = totalLines > 1 ? (lineNum / (totalLines - 1)) * 100 : 50;
+        
+        char.style.setProperty('--pixel-y-pos', yPos);
         pixelIndex++;
       });
       
-      // Start animation
+      // Start the animation loop
       startLetterAnimation();
     }
     
@@ -1563,46 +1553,55 @@
       const heroNameEl = document.getElementById('hero-name');
       if (!heroNameEl) return;
       
-      // Reset all
-      heroNameEl.querySelectorAll('.letter-box').forEach(box => {
-        box.classList.remove('complete', 'typing');
-        box.querySelectorAll('.ascii-char').forEach(c => c.classList.remove('visible'));
-      });
-      
-      const letterBoxes = Array.from(heroNameEl.querySelectorAll('.letter-box')).filter(box => box.dataset.letter && box.dataset.letter !== 'SPACE');
-      const animationDuration = 1200;
+      // Animate all letters simultaneously - each letter builds at same rate
+      const letterBoxes = heroNameEl.querySelectorAll('.letter-box');
+      const animationDuration = 1500; // 1.5 seconds for each letter
       let completedLetters = 0;
-      const totalLetters = letterBoxes.length;
+      const totalLetters = Array.from(letterBoxes).filter(box => box.dataset.letter && box.dataset.letter !== 'SPACE').length;
       
-      letterBoxes.forEach((box, boxIdx) => {
-        setTimeout(() => {
-          box.classList.add('typing');
-          const chars = Array.from(box.querySelectorAll('.ascii-char'));
-          const charCount = chars.length;
-          const charDelay = animationDuration / charCount;
-          let charIdx = 0;
-          
-          function revealNextChar() {
-            if (charIdx >= charCount) {
-              setTimeout(() => {
-                box.classList.remove('typing');
-                box.classList.add('complete');
-                completedLetters++;
-                
-                if (completedLetters === totalLetters) {
-                  setTimeout(() => startLetterAnimation(), 2500);
-                }
-              }, 200);
-              return;
-            }
-            
-            chars[charIdx].classList.add('visible');
-            charIdx++;
-            setTimeout(revealNextChar, charDelay);
+      letterBoxes.forEach((box) => {
+        if (!box.dataset.letter || box.dataset.letter === 'SPACE') return;
+        
+        // Reset state for restart
+        box.classList.remove('complete');
+        box.classList.add('typing');
+        const chars = box.querySelectorAll('.ascii-char');
+        chars.forEach(c => c.classList.remove('visible'));
+        
+        const charCount = chars.length;
+        const charDelay = animationDuration / charCount; // Same rate for all letters
+        
+        let charIdx = 0;
+        
+        function revealNextChar() {
+          if (charIdx >= charCount) {
+            // Letter complete - turn white after brief delay
+            setTimeout(() => {
+              box.classList.remove('typing');
+              box.classList.add('complete');
+              completedLetters++;
+              
+              // After all letters complete, hold white for 2 seconds then restart
+              if (completedLetters === totalLetters) {
+                setupAnimationControls();
+                // Hold white for 2 seconds, then restart the animation
+                setTimeout(() => {
+                  startLetterAnimation();
+                }, 2000);
+              }
+            }, 300);
+            return;
           }
           
-          revealNextChar();
-        }, boxIdx * 150);
+          // Reveal character
+          chars[charIdx].classList.add('visible');
+          charIdx++;
+          
+          setTimeout(revealNextChar, charDelay);
+        }
+        
+        // Start all letters at the same time
+        setTimeout(() => revealNextChar(), 500);
       });
     }
     
