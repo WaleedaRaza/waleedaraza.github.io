@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.1, maximum-scale=3.0, user-scalable=yes">
-  <title>WaleedOS</title>
-  <meta name="description" content="Terminal canvas interface">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waleed Raza</title>
+  <meta name="description" content="Full-Stack Developer, ML/AI Engineer, Distributed Systems">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  
-  <!-- Panzoom - handles Safari touch events properly -->
-  <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
   
   <style>
     :root {
@@ -20,3966 +17,923 @@
       --surface: #080810;
       --elevated: #0f0f18;
       --card: #0a0a12;
-      --border: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
       --border-glow: rgba(255, 120, 50, 0.3);
       
-      /* STRICT COLOR PALETTE - BOLD COLORS */
       --orange: #ff6b35;
       --teal: #00d4aa;
       --green: #39ff14;
       --fuchsia: #ff00ff;
-      --brown: #8b4513;
-      --pink: #ff69b4;
       --ice-white: #ffffff;
       
       --orange-glow: rgba(255, 107, 53, 0.4);
       --teal-glow: rgba(0, 212, 170, 0.4);
-      --green-glow: rgba(57, 255, 20, 0.4);
-      --fuchsia-glow: rgba(255, 0, 255, 0.4);
       
       --text: var(--ice-white);
-      --text-dim: var(--teal);
+      --text-dim: rgba(255,255,255,0.7);
       --text-muted: rgba(255, 255, 255, 0.4);
-      --grid: rgba(128, 128, 128, 0.3);
-      
-      --page-width: 88vw;
-      --page-height: 88vh;
-      --page-spacing: 1.8;
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
       background: var(--void);
       color: var(--text);
       font-family: 'IBM Plex Mono', monospace;
-      cursor: grab;
-      touch-action: none; /* Let JS handle all touch gestures */
-      -webkit-touch-callout: none; /* Disable iOS callout */
-      -webkit-user-select: none; /* Disable text selection on touch */
-      user-select: none;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
     
-    body:active { cursor: grabbing; }
-    body.dragging { cursor: grabbing; }
-    
-    /* GRAINY GRADIENT BLACK BACKGROUND */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(ellipse at 20% 30%, rgba(0, 0, 0, 0.3) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(0, 0, 0, 0.2) 0%, transparent 50%),
-        linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
-      background-size: 100% 100%, 100% 100%, 100% 100%, 200px 200px;
-      background-color: #000000;
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    /* STRUCTURAL LINES OVERLAY - 6 TOTAL */
-    #structure-lines {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      overflow: visible;
-    }
-    
-    #structure-lines svg {
-      width: 300vw;
-      height: 300vh;
-      position: absolute;
-    }
-    
-    .struct-line {
-      stroke-width: 1;
-      fill: none;
-      opacity: 0.15;
-      stroke-dasharray: 12 8;
-      animation: lineFlow 30s linear infinite;
-    }
-    
-    .struct-line.orange { stroke: var(--orange); }
-    .struct-line.teal { stroke: var(--teal); }
-    
-    @keyframes lineFlow {
-      0% { stroke-dashoffset: 0; }
-      100% { stroke-dashoffset: -200; }
-    }
-    
-    /* NOISE */
+    /* Noise overlay */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      opacity: 0.025;
+      opacity: 0.03;
       pointer-events: none;
       z-index: 10000;
       background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     
-    /* EMOJI HEADER DECORATIONS - LEFT AND RIGHT OF SECTION HEADERS */
-    .header-emoji {
-      display: inline-block;
-      font-size: 1.2em;
-      margin: 0 0.5em;
-      transition: opacity 0.3s ease;
-      vertical-align: middle;
-    }
-    
-    .header-emoji-left {
-      margin-right: 0.5em;
-    }
-    
-    .header-emoji-right {
-      margin-left: 0.5em;
-    }
-    
-    .page-title,
-    .content-section-title,
-    .dev-section-title {
-      position: relative;
-      display: inline-block;
-    }
-    
-    .hero-emoji {
-      font-size: 2em;
-      transition: opacity 0.3s ease;
-      display: inline-block;
-      margin: 0 0.5em;
-      vertical-align: middle;
-    }
-    
-    .hero-emoji-left {
-      margin-right: 1em;
-    }
-    
-    .hero-emoji-right {
-      margin-left: 1em;
-    }
-    
     /* ═══════════════════════════════════════════════════════════════════════
-       CANVAS SYSTEM
+       NAVIGATION
        ═══════════════════════════════════════════════════════════════════════ */
     
-    #canvas-viewport {
+    .nav {
       position: fixed;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-      cursor: grab;
-      touch-action: none; /* Prevent default touch behaviors */
-    }
-    
-    #canvas-viewport.dragging {
-      cursor: grabbing;
-    }
-    
-    #canvas {
-      position: absolute;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(2400px, 1fr));
-      grid-auto-rows: auto;
-      gap: 200px;
-      width: calc(100% + 1600px);
-      min-width: 9000px;
-      height: auto;
-      padding: 60px 200px 120px;
-      transform-origin: 0 0;
-      /* Panzoom handles transforms - no CSS transition needed */
-      will-change: transform;
-    }
-    
-    /* Row 1 (TOP): NOTES, CONTACT, SPOTLIGHT - content above, headers below */
-    .page[data-pos="-1,1"] { order: 1; grid-column: 1; }  /* NOTES */
-    .page[data-pos="1,1"] { order: 2; grid-column: 2; }   /* CONTACT/WORK */
-    .page[data-pos="1,0"] { order: 3; grid-column: 3; }   /* SPOTLIGHT */
-    
-    /* Hero section in middle */
-    .page[data-pos="0,0"] {
-      grid-column: 1 / -1;
-      width: 100%;
-      order: 4;
-    }
-    
-    /* Row 2 (BOTTOM): READING, PRODUCTS, WRITING */
-    .page[data-pos="-1,-1"] { order: 5; grid-column: 1; } /* READING */
-    .page[data-pos="1,-1"] { order: 6; grid-column: 2; }  /* PRODUCTS/DEV */
-    .page[data-pos="-1,0"] { order: 7; grid-column: 3; }  /* WRITING */
-    
-    /* Flip content order for top 3 sections - content above, header below */
-    .page[data-pos="-1,1"] .page-inner,
-    .page[data-pos="1,1"] .page-inner,
-    .page[data-pos="1,0"] .page-inner {
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(2, 2, 4, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
       display: flex;
-      flex-direction: column-reverse;
+      justify-content: space-between;
+      align-items: center;
     }
     
-    
-    /* PAGE TILES - FREEDOM FOR WIDTH */
-    .page {
-      position: static;
-      width: 100%;
-      min-height: auto;
-      height: auto;
-      /* Wide padding - USE INFINITE SPACE */
-      padding: 80px 60px 100px;
-      overflow: visible;
-      background: transparent;
-      transition: box-shadow 0.3s ease;
-    }
-    
-    .page::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(57, 255, 20, 0.02) 0%, transparent 70%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    
-    .page.in-view::before {
-      opacity: 1;
-    }
-
-    /* Layout edit mode */
-    body.layout-edit .page {
-      outline: 1px dashed rgba(255,255,255,0.08);
-    }
-
-    .page-drag-handle {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 6px 10px;
+    .nav-brand {
+      font-family: 'Press Start 2P', monospace;
       font-size: 10px;
-      font-family: 'Press Start 2P', monospace;
-      color: var(--void);
-      background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 100%);
-      border: 1px solid var(--orange);
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.25);
-      cursor: grab;
-      display: none;
-      z-index: 5;
-      user-select: none;
-    }
-
-    body.layout-edit .page-drag-handle {
-      display: inline-flex;
-    }
-
-    .page-drag-handle:active {
-      cursor: grabbing;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: 0.05em;
     }
     
-    /* Reading section gets extra width - NO MAX WIDTH CONSTRAINTS */
-    .page[data-pos="-1,-1"] .page-inner {
-      max-width: none;
-      width: 100%;
-      margin: 0;
+    .nav-links {
+      display: flex;
+      gap: 32px;
     }
     
-    .page-inner {
-      max-width: none;
-      width: 100%;
-      margin: 0;
-      min-height: 100%;
-      /* FREEDOM - NO WIDTH RESTRICTIONS - TAKE ALL AVAILABLE SPACE */
-      padding-top: 60px;
-      padding-bottom: 80px;
+    .nav-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s ease;
     }
     
-    /* Top 3 sections: adjust spacing for reversed layout */
-    .page[data-pos="-1,1"] .page-header,
-    .page[data-pos="1,1"] .page-header,
-    .page[data-pos="1,0"] .page-header {
-      margin-top: 40px;
-      margin-bottom: 0;
+    .nav-link:hover {
+      color: var(--orange);
     }
     
-    /* Page positions: grid flow, no absolute placement */
-    .page[data-pos] { left: auto !important; top: auto !important; }
-    
-    .page-edge {
-      position: absolute;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 8px;
-      color: var(--text-muted);
-      opacity: 0.4;
-      pointer-events: none;
+    .nav-link.active {
+      color: var(--teal);
     }
     
-    .page-edge.top { top: 20px; left: 50%; transform: translateX(-50%); }
-    .page-edge.bottom { bottom: 20px; left: 50%; transform: translateX(-50%); }
-    .page-edge.left { left: 20px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
-    .page-edge.right { right: 20px; top: 50%; transform: translateY(-50%) rotate(90deg); }
-    
-    /* PAGE HEADERS */
     /* ═══════════════════════════════════════════════════════════════════════
-       PAGE HEADERS - MA (間) SPACING PRINCIPLES
+       HERO SECTION
        ═══════════════════════════════════════════════════════════════════════ */
     
-    .page-header {
-      margin-bottom: 60px;
-      padding: 40px 60px;
-      border-bottom: 2px solid var(--orange);
-      background: rgba(255, 107, 53, 0.04);
-      margin: -60px -80px 60px;
-      position: relative;
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 120px 40px 80px;
       text-align: center;
+      position: relative;
+      background: 
+        radial-gradient(ellipse at 30% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(0, 212, 170, 0.06) 0%, transparent 50%);
     }
     
-    .page-header::after {
-      content: '';
+    .hero-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(24px, 5vw, 48px);
+      color: var(--orange);
+      margin-bottom: 24px;
+      text-shadow: 0 0 40px var(--orange-glow);
+      letter-spacing: 0.1em;
+    }
+    
+    .hero-name span {
+      color: var(--teal);
+      text-shadow: 0 0 40px var(--teal-glow);
+    }
+    
+    .hero-tagline {
+      font-size: clamp(16px, 2.5vw, 24px);
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+    
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+    
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: var(--orange);
+      color: var(--void);
+      border-color: var(--orange);
+    }
+    
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--orange);
+      box-shadow: 0 0 30px var(--orange-glow);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--teal);
+      border-color: var(--teal);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--teal);
+      color: var(--void);
+      box-shadow: 0 0 30px var(--teal-glow);
+    }
+    
+    .scroll-hint {
       position: absolute;
-      bottom: -2px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      width: 300px;
-      height: 2px;
-      background: var(--teal);
+      color: var(--text-muted);
+      font-size: 12px;
+      animation: bounce 2s infinite;
     }
     
-    .page-tag {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 14px;
-      color: var(--green);
-      margin-bottom: 24px;
-      text-shadow: 0 0 15px var(--green-glow);
-      letter-spacing: 0.15em;
-      text-align: center;
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
     }
     
-    .page-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: clamp(36px, 6vw, 64px);
-      color: var(--orange);
-      text-shadow: 0 0 40px var(--orange-glow);
-      margin-bottom: 32px;
-      line-height: 1.2;
-      text-align: center;
-    }
+    /* ═══════════════════════════════════════════════════════════════════════
+       SECTIONS
+       ═══════════════════════════════════════════════════════════════════════ */
     
-    .page-desc {
-      font-size: 28px;
-      color: var(--ice-white);
-      max-width: 1600px;
-      line-height: 2;
-      letter-spacing: 0.03em;
-      text-align: center;
+    .section {
+      padding: 100px 40px;
+      max-width: 1400px;
       margin: 0 auto;
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       HOME PAGE - CENTER WITH TRIANGLES
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       JAPANESE "MA" SPACING - 間 - BREATHING ROOM
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .home-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      text-align: center;
-      position: relative;
-      padding: 40px;
-    }
-    
-    .home-name {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(16px, 4vw, 32px);
-      line-height: 1.1;
-      margin-bottom: 0;
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .letter-box.emoji-box {
-      opacity: 0.8;
-      transition: opacity 0.3s ease;
-    }
-    
-    .letter-box.emoji-box:hover {
-      opacity: 1;
-    }
-    
-    .emoji-char {
-      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-      white-space: nowrap;
-    }
-    
-    @media (min-width: 768px) {
-      .home-name {
-        font-size: clamp(20px, 5vw, 40px);
-        gap: 12px;
-      }
-      
-      .emoji-char {
-        font-size: clamp(20px, 5vw, 40px) !important;
-      }
-    }
-    
-    @media (min-width: 1200px) {
-      .home-name {
-        font-size: clamp(24px, 6vw, 48px);
-        gap: 16px;
-      }
-      
-      .emoji-char {
-        font-size: clamp(24px, 6vw, 48px) !important;
-      }
-    }
-    
-    .hero-name-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-    }
-    
-    .home-triangles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: visible;
-    }
-    
-    .home-triangles svg {
-      width: 100%;
-      height: 100%;
-    }
-    
-    /* Equilateral triangle proportions:
-       Side = height of 3 sections stacked
-       The triangle apex at name, base spans to corners
-       Using viewBox coordinates where center is at (50, 50) */
-    
-    .triangle-line {
-      stroke-width: 0.3;
-      opacity: 0.12;
-      stroke-dasharray: 20 16;
-      animation: dashMove 60s linear infinite;
-    }
-    
-    .triangle-line.orange { stroke: var(--orange); }
-    .triangle-line.teal { stroke: var(--teal); }
-    
-    @keyframes dashMove {
-      to { stroke-dashoffset: -400; }
-    }
-    
-    .liquid-glass-tile {
-      position: relative;
-      padding: 60px 80px;
+    .section-header {
       margin-bottom: 60px;
-      border-radius: 32px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-        0 32px 64px -16px rgba(0, 0, 0, 0.5),
-        0 -1px 0 rgba(255, 255, 255, 0.15) inset;
-      overflow: hidden;
-      z-index: 10;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--orange);
     }
     
-    /* SPECULAR HIGHLIGHT - TOP EDGE */
-    .liquid-glass-tile::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.5) 20%,
-        rgba(255, 255, 255, 0.8) 50%,
-        rgba(255, 255, 255, 0.5) 80%,
-        transparent 100%
-      );
-    }
-    
-    /* INNER GLOW / REFRACTION */
-    .liquid-glass-tile::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 32px;
-      background: 
-        rgba(255, 107, 53, 0.08);
-      pointer-events: none;
-    }
-    
-    .home-name {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(16px, 4vw, 32px);
-      line-height: 1.1;
-      margin-bottom: 0;
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    @media (min-width: 768px) {
-      .home-name {
-        font-size: clamp(20px, 5vw, 40px);
-        gap: 12px;
-      }
-    }
-    
-    @media (min-width: 1200px) {
-      .home-name {
-        font-size: clamp(24px, 6vw, 48px);
-        gap: 16px;
-      }
-    }
-    
-    .letter-box {
-      display: inline-block;
-      white-space: pre;
-      position: relative;
-    }
-    
-    .letter-box .ascii-char {
-      display: inline-block;
-      opacity: 0;
-      transition: opacity 0.1s ease;
-      position: relative;
-    }
-    
-    .letter-box .ascii-char.visible {
-      opacity: 1;
-    }
-    
-    .letter-box.typing .ascii-char {
-      background: linear-gradient(180deg, var(--color1) 0%, var(--color1) 49%, var(--color2) 51%, var(--color2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .letter-box.complete .ascii-char {
-      color: var(--ice-white) !important;
-      -webkit-text-fill-color: var(--ice-white) !important;
-      background: none !important;
-      animation: charGlow 2s ease-in-out infinite;
-    }
-    
-    @keyframes charGlow {
-      0%, 100% {
-        text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-      }
-      50% {
-        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor, 0 0 40px currentColor;
-      }
-    }
-    
-    /* ANIMATION MODES - Pixel Display Panel Effects */
-    /* Each character is a pixel in the TV screen */
-    
-    /* Hero controls wrapper */
-    .hero-controls-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 24px;
-      align-items: center;
-      z-index: 20;
-      position: relative;
-    }
-    
-    /* Animation control buttons */
-    .hero-animation-controls {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .hero-anim-btn {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      padding: 8px 16px;
-      background: rgba(10, 10, 18, 0.9);
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      backdrop-filter: blur(10px);
-    }
-    
-    .hero-anim-btn:hover {
-      border-color: var(--teal);
-      color: var(--teal);
-      box-shadow: 0 0 12px rgba(0, 212, 170, 0.3);
-    }
-    
-    .hero-anim-btn.active {
-      border-color: var(--orange);
-      color: var(--orange);
-      background: rgba(255, 107, 53, 0.1);
-      box-shadow: 0 0 16px rgba(255, 107, 53, 0.4);
-    }
-    
-    /* Color picker */
-    .hero-color-picker {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      background: rgba(10, 10, 18, 0.9);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      backdrop-filter: blur(10px);
-    }
-    
-    .color-picker-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    
-    .color-options {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .color-option {
-      width: 24px;
-      height: 24px;
-      border: 2px solid var(--border);
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      padding: 0;
-      background: transparent;
-    }
-    
-    .color-option:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 12px currentColor;
-    }
-    
-    .color-option.active {
-      border-color: var(--ice-white);
-      box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
-      transform: scale(1.1);
-    }
-    
-    /* 1. MATRIX MODE - Falling pixels with selected color */
-    .home-name.matrix-mode .ascii-char {
-      color: var(--hero-color, var(--teal)) !important;
-      -webkit-text-fill-color: var(--hero-color, var(--teal)) !important;
-      background: none !important;
-      text-shadow: 
-        0 0 5px var(--hero-color, var(--teal)),
-        0 0 10px var(--hero-color, var(--teal)),
-        0 0 15px var(--hero-color, var(--teal));
-      animation: matrixPixelFall 2s linear infinite;
-      animation-delay: calc(var(--pixel-index) * 0.03s);
-      opacity: 1;
-    }
-    
-    @keyframes matrixPixelFall {
-      0% {
-        opacity: 1;
-        transform: translateY(-30px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: 0 0 8px var(--hero-color, var(--teal)), 0 0 15px var(--hero-color, var(--teal));
-      }
-      30% {
-        color: var(--hero-color, var(--teal));
-        text-shadow: 0 0 8px var(--hero-color, var(--teal)), 0 0 15px var(--hero-color, var(--teal));
-      }
-      60% {
-        opacity: 0.8;
-        color: var(--hero-color, var(--teal));
-        text-shadow: 0 0 6px var(--hero-color, var(--teal));
-      }
-      100% {
-        opacity: 0.3;
-        transform: translateY(30px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: 0 0 4px var(--hero-color, var(--teal));
-      }
-    }
-    
-    /* 2. GLITCH MODE - Glitch effect with selected color */
-    .home-name.glitch-mode .ascii-char {
-      color: var(--hero-color, var(--teal));
-      -webkit-text-fill-color: var(--hero-color, var(--teal));
-      background: none !important;
-      text-shadow: 
-        0 0 5px var(--hero-color, var(--teal)),
-        0 0 10px var(--hero-color, var(--teal));
-      animation: glitchPixel 0.3s infinite;
-      animation-delay: calc(var(--pixel-index) * 0.01s);
-    }
-    
-    @keyframes glitchPixel {
-      0%, 100% {
-        transform: translate(0);
-        color: var(--hero-color, var(--teal));
-        text-shadow: 0 0 5px var(--hero-color, var(--teal)), 0 0 10px var(--hero-color, var(--teal));
-      }
-      20% {
-        transform: translate(-2px, 2px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: 2px 0 5px var(--hero-color, var(--teal)), -2px 0 5px var(--hero-color, var(--teal));
-      }
-      40% {
-        transform: translate(2px, -2px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: -2px 0 5px var(--hero-color, var(--teal)), 2px 0 5px var(--hero-color, var(--teal));
-      }
-      60% {
-        transform: translate(-1px, 1px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: 1px 0 5px var(--hero-color, var(--teal));
-      }
-      80% {
-        transform: translate(1px, -1px);
-        color: var(--hero-color, var(--teal));
-        text-shadow: -1px 0 5px var(--hero-color, var(--teal));
-      }
-    }
-    
-    /* 3. COLLAPSE MODE - Collapse effect with selected color */
-    .home-name.collapse-mode .ascii-char {
-      background: linear-gradient(180deg, var(--hero-color, var(--teal)) 0%, var(--hero-color, var(--teal)) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: collapsePixel 3s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.05s);
-    }
-    
-    @keyframes collapsePixel {
-      0%, 100% {
-        transform: scaleY(1) translateY(0);
-        opacity: 1;
-        filter: brightness(1);
-      }
-      25% {
-        transform: scaleY(0.8) translateY(5px);
-        opacity: 0.9;
-        filter: brightness(1.2);
-      }
-      50% {
-        transform: scaleY(0.3) translateY(15px);
-        opacity: 0.6;
-        filter: brightness(0.8);
-      }
-      75% {
-        transform: scaleY(0.8) translateY(5px);
-        opacity: 0.9;
-        filter: brightness(1.2);
-      }
-    }
-    
-    /* 4. SCAN MODE - Scanner/Typewriter line sweep effect */
-    .home-name.scan-mode .ascii-char {
-      color: var(--hero-color, var(--teal)) !important;
-      -webkit-text-fill-color: var(--hero-color, var(--teal)) !important;
-      background: none !important;
-      animation: scanLine 3s linear infinite;
-      animation-delay: calc(var(--pixel-index) * 0.015s);
-    }
-    
-    @keyframes scanLine {
-      0% {
-        opacity: 0.2;
-        text-shadow: 0 0 2px var(--hero-color, var(--teal));
-        filter: brightness(0.5);
-      }
-      10% {
-        opacity: 1;
-        text-shadow: 
-          0 0 10px var(--hero-color, var(--teal)),
-          0 0 20px var(--hero-color, var(--teal)),
-          0 0 30px var(--hero-color, var(--teal)),
-          0 0 40px var(--hero-color, var(--teal));
-        filter: brightness(1.5);
-      }
-      20% {
-        opacity: 0.9;
-        text-shadow: 
-          0 0 8px var(--hero-color, var(--teal)),
-          0 0 15px var(--hero-color, var(--teal));
-        filter: brightness(1.1);
-      }
-      100% {
-        opacity: 0.7;
-        text-shadow: 0 0 5px var(--hero-color, var(--teal));
-        filter: brightness(1);
-      }
-    }
-    
-    /* 5. PULSE MODE - Heartbeat-like pulse effect */
-    .home-name.pulse-mode .ascii-char {
-      color: var(--hero-color, var(--teal)) !important;
-      -webkit-text-fill-color: var(--hero-color, var(--teal)) !important;
-      background: none !important;
-      animation: heartbeatPulse 1.2s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.008s);
-    }
-    
-    @keyframes heartbeatPulse {
-      0%, 100% {
-        transform: scale(1);
-        text-shadow: 
-          0 0 5px var(--hero-color, var(--teal)),
-          0 0 10px var(--hero-color, var(--teal));
-        opacity: 0.8;
-      }
-      15% {
-        transform: scale(1.15);
-        text-shadow: 
-          0 0 15px var(--hero-color, var(--teal)),
-          0 0 25px var(--hero-color, var(--teal)),
-          0 0 35px var(--hero-color, var(--teal));
-        opacity: 1;
-      }
-      30% {
-        transform: scale(0.95);
-        text-shadow: 
-          0 0 5px var(--hero-color, var(--teal));
-        opacity: 0.7;
-      }
-      45% {
-        transform: scale(1.1);
-        text-shadow: 
-          0 0 12px var(--hero-color, var(--teal)),
-          0 0 20px var(--hero-color, var(--teal));
-        opacity: 0.95;
-      }
-      60% {
-        transform: scale(1);
-        opacity: 0.8;
-      }
-    }
-    
-    /* 6. NEON MODE - Pulsing neon glow effect */
-    .home-name.neon-mode .ascii-char {
-      color: var(--hero-color, var(--teal)) !important;
-      -webkit-text-fill-color: var(--hero-color, var(--teal)) !important;
-      background: none !important;
-      text-shadow: 
-        0 0 5px currentColor,
-        0 0 10px currentColor,
-        0 0 15px currentColor,
-        0 0 20px currentColor;
-      animation: neonPulse 1.5s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.01s);
-    }
-    
-    @keyframes neonPulse {
-      0%, 100% {
-        text-shadow: 
-          0 0 5px currentColor,
-          0 0 10px currentColor,
-          0 0 15px currentColor,
-          0 0 20px currentColor;
-        opacity: 1;
-      }
-      50% {
-        text-shadow: 
-          0 0 10px currentColor,
-          0 0 20px currentColor,
-          0 0 30px currentColor,
-          0 0 40px currentColor,
-          0 0 50px currentColor;
-        opacity: 0.9;
-      }
-    }
-    
-    /* 7. WAVE MODE - Ocean wave effect */
-    .home-name.wave-mode .ascii-char {
-      color: var(--hero-color, var(--teal)) !important;
-      -webkit-text-fill-color: var(--hero-color, var(--teal)) !important;
-      background: none !important;
-      text-shadow: 
-        0 0 8px currentColor,
-        0 0 16px currentColor;
-      animation: waveMotion 3s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-y-pos) * 0.03s + var(--pixel-index) * 0.01s);
-    }
-    
-    @keyframes waveMotion {
-      0%, 100% {
-        transform: translateY(0) scaleY(1);
-        opacity: 1;
-      }
-      25% {
-        transform: translateY(-3px) scaleY(1.05);
-        opacity: 0.9;
-      }
-      50% {
-        transform: translateY(0) scaleY(1);
-        opacity: 1;
-      }
-      75% {
-        transform: translateY(3px) scaleY(0.95);
-        opacity: 0.9;
-      }
-    }
-    
-    .home-tagline {
-      font-size: 16px;
-      color: var(--text-dim);
-      position: relative;
-      z-index: 10;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    
-    .home-tagline span {
-      font-weight: 500;
-    }
-    
-    .home-nav {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-      max-width: none;
-      width: 100%;
-      position: relative;
-      z-index: 10;
-      /* MA: extra spacing from hero tile */
-      margin-top: 40px;
-      padding: 0 60px;
-    }
-    
-    .home-nav-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    
-    .home-nav-group-title {
+    .section-tag {
       font-family: 'Press Start 2P', monospace;
-      font-size: 11px;
+      font-size: 10px;
       color: var(--teal);
-      text-align: center;
       margin-bottom: 12px;
       letter-spacing: 0.1em;
-      text-shadow: 0 0 10px var(--teal-glow);
     }
     
-    .home-nav-item {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      padding: 20px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .home-nav-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 107, 53, 0.05);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    
-    .home-nav-item:hover {
-      border-color: var(--orange);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
-    }
-    
-    .home-nav-item:hover::before {
-      opacity: 1;
-    }
-    
-    .home-nav-key {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 16px;
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
       color: var(--orange);
-      margin-bottom: 8px;
-      text-shadow: 0 0 10px var(--orange-glow);
+      margin-bottom: 12px;
     }
     
-    .home-nav-label {
-      font-size: 11px;
-      color: var(--text);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
+    .section-desc {
+      color: var(--text-dim);
+      font-size: 16px;
+      max-width: 600px;
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       DEVELOPMENT PAGE - THE BIG SHOWCASE
+       DEVELOPMENT SECTION
        ═══════════════════════════════════════════════════════════════════════ */
     
-    .dev-section {
-      margin-bottom: 100px;
-    }
-    
-    .dev-section:last-child {
-      margin-bottom: 60px;
-    }
-    
-    /* Products and Projects side-by-side container */
     .dev-showcase {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 120px;
-      align-items: start;
-      width: 100%;
+      gap: 60px;
+    }
+    
+    @media (max-width: 900px) {
+      .dev-showcase {
+        grid-template-columns: 1fr;
+      }
     }
     
     .dev-section-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 3px solid var(--orange);
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
     
     .dev-section-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 18px;
+      font-size: 16px;
       color: var(--orange);
-      display: flex;
-      align-items: center;
-      gap: 16px;
       text-shadow: 0 0 20px var(--orange-glow);
     }
     
     .dev-section-count {
-      font-size: 12px;
-      color: var(--teal);
-      background: var(--elevated);
-      padding: 6px 16px;
-      border: 2px solid var(--teal-dim);
+      font-size: 10px;
+      padding: 4px 10px;
+      border: 1px solid var(--orange);
+      color: var(--orange);
     }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       PRODUCT TILES - PREMIUM SHOWCASE
-       ═══════════════════════════════════════════════════════════════════════ */
     
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
     }
     
     .product-tile {
-      position: relative;
-      background: rgba(10, 10, 18, 0.8);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      overflow: hidden;
-      box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-      display: flex;
-      flex-direction: column;
-      aspect-ratio: 1 / 1;
-      min-height: 280px;
-    }
-    
-    .product-tile::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.4) 20%,
-        rgba(255, 255, 255, 0.6) 50%,
-        rgba(255, 255, 255, 0.4) 80%,
-        transparent 100%
-      );
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 2;
+      transition: all 0.2s ease;
     }
     
     .product-tile:hover {
-      transform: translateY(-8px) scale(1.02);
       border-color: var(--orange);
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 107, 53, 0.2) inset,
-        0 0 60px rgba(255, 107, 53, 0.15);
-    }
-    
-    .product-tile:hover::before {
-      opacity: 1;
-    }
-    
-    /* Tier-based accent colors */
-    .product-tile[data-tier="escape"] {
-      border-left: 4px solid var(--orange);
-    }
-    
-    .product-tile[data-tier="escape"]:hover {
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 107, 53, 0.2) inset,
-        0 0 60px var(--orange-glow);
-    }
-    
-    .product-tile[data-tier="wow"] {
-      border-left: 4px solid var(--fuchsia);
-    }
-    
-    .product-tile[data-tier="wow"]:hover {
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 0, 255, 0.2) inset,
-        0 0 60px var(--fuchsia-glow);
-    }
-    
-    .product-tile[data-tier="rocket"] {
-      border-left: 4px solid var(--teal);
-    }
-    
-    .product-tile[data-tier="rocket"]:hover {
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(0, 212, 170, 0.2) inset,
-        0 0 60px var(--teal-glow);
-    }
-    
-    .product-tile[data-tier="moonshot"] {
-      border-left: 4px solid var(--green);
-    }
-    
-    .product-tile[data-tier="moonshot"]:hover {
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(57, 255, 20, 0.2) inset,
-        0 0 60px var(--green-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.15);
     }
     
     .product-image {
       width: 100%;
-      height: 0;
-      padding-bottom: 75%; /* 4:3 aspect ratio */
-      background: rgba(255, 255, 255, 0.05);
+      height: 100px;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      flex-shrink: 0;
-      position: relative;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
     }
     
     .product-name {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 22px;
+      font-size: 14px;
       color: var(--ice-white);
-      padding: 32px 24px;
-      text-align: center;
-      line-height: 1.3;
-      text-shadow: 
-        0 0 20px rgba(0, 0, 0, 0.8),
-        0 2px 4px rgba(0, 0, 0, 0.9),
-        0 0 30px rgba(255, 255, 255, 0.4);
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(0, 0, 0, 0.85) 40%,
-        rgba(0, 0, 0, 0.5) 70%,
-        transparent 100%
-      );
-      z-index: 1;
-      transition: all 0.3s ease;
+      font-weight: 600;
     }
-    
-    .product-tile:hover .product-name {
-      font-size: 24px;
-      text-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.9),
-        0 2px 6px rgba(0, 0, 0, 1),
-        0 0 40px var(--orange-glow);
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.98) 0%,
-        rgba(0, 0, 0, 0.9) 40%,
-        rgba(0, 0, 0, 0.6) 70%,
-        transparent 100%
-      );
-    }
-    
-    .product-tile::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0);
-      transition: background 0.3s ease;
-      z-index: 0;
-      pointer-events: none;
-    }
-    
-    .product-tile:hover::after {
-      background: rgba(255, 107, 53, 0.1);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       PROJECT TILES - PREMIUM SHOWCASE
-       ═══════════════════════════════════════════════════════════════════════ */
     
     .project-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 24px;
-    }
-    
-    .project-tile {
-      position: relative;
-      background: rgba(10, 10, 18, 0.8);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      overflow: hidden;
-      box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-      min-height: 180px;
-    }
-    
-    .project-tile:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: var(--teal);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(0, 212, 170, 0.2) inset,
-        0 0 40px rgba(0, 212, 170, 0.1);
-    }
-    
-    .project-name {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--ice-white);
-      font-family: 'IBM Plex Mono', monospace;
-      margin-bottom: 16px;
-    }
-    
-    .project-desc {
-      font-size: 16px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-    
-    .project-link {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      color: var(--teal);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.2s ease;
-    }
-    
-    .project-link:hover {
-      border-bottom-color: var(--teal);
-      color: var(--ice-white);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       CANDID SANDBOX FEED
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .sandbox-feed {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      margin-top: 48px;
-      max-width: none;
-      width: 100%;
-    }
-    
-    .sandbox-card {
-      background: rgba(10, 10, 18, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 20px;
-      transition: all 0.2s ease;
-    }
-    
-    .sandbox-card:hover {
-      border-color: var(--teal);
-      background: rgba(10, 10, 18, 0.8);
-    }
-    
-    .sandbox-card-tag {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      color: var(--teal);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 16px;
-      display: inline-block;
-    }
-    
-    .sandbox-card-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ice-white);
-      font-family: 'IBM Plex Mono', monospace;
-      margin-bottom: 12px;
-    }
-    
-    .sandbox-card-body {
-      font-size: 18px;
-      color: var(--text-dim);
-      line-height: 1.8;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       READING / MUSIC / ARTS - NEWSPAPER STYLE
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .newspaper-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px 80px;
-      align-items: start;
-      margin-bottom: 40px;
-      max-width: none;
-      width: 100%;
-    }
-    
-    .newspaper-columns .content-section {
-      margin-bottom: 0;
-    }
-    
-    .newspaper-columns .content-section-title {
-      margin-bottom: 24px;
-    }
-    
-    .arts-newsletter {
-      max-width: none;
-      width: 100%;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-flow: dense;
-      gap: 32px 48px;
-      padding: 0;
-    }
-    
-    .arts-entry {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-      min-width: 0;
-      padding: 24px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    
-    /* Single column span (default) */
-    .arts-entry {
-      grid-column: span 1;
-    }
-    
-    /* Two column span */
-    .arts-entry.span-2 {
-      grid-column: span 2;
-    }
-    
-    /* Full width (three columns) */
-    .arts-entry.span-3 {
-      grid-column: span 3;
-    }
-    
-    /* Full width entries */
-    .arts-entry.span-2,
-    .arts-entry.span-3 {
-      padding: 32px;
-    }
-    
-    .arts-entry-header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 12px;
-    }
-    
-    .arts-entry-title {
-      font-size: 38px;
-      line-height: 1.15;
-      font-weight: 700;
-      color: var(--ice-white);
-      font-family: 'IBM Plex Mono', monospace;
-      letter-spacing: -0.02em;
-    }
-    
-    .arts-entry-subtitle {
-      font-size: 18px;
-      color: var(--text-muted);
-      font-style: italic;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .arts-entry-body {
-      font-size: 26px;
-      line-height: 1.6;
-      color: var(--text-dim);
-      text-align: left;
-      hyphens: auto;
-      max-width: none;
-    }
-    
-    /* Multi-column for wider entries - newspaper style */
-    .arts-entry.span-2 .arts-entry-body {
-      column-count: 2;
-      column-gap: 40px;
-      column-rule: 1px solid var(--border);
-    }
-    
-    .arts-entry.span-3 .arts-entry-body {
-      column-count: 3;
-      column-gap: 40px;
-      column-rule: 1px solid var(--border);
-    }
-    
-    .arts-entry-body p {
-      margin: 0 0 16px 0;
-      text-indent: 0;
-      orphans: 2;
-      widows: 2;
-    }
-    
-    .arts-entry-body p:first-child {
-      margin-top: 0;
-    }
-    
-    .arts-entry-body p:last-child {
-      margin-bottom: 0;
-    }
-    
-    .arts-entry-section {
-      break-inside: avoid;
-      page-break-inside: avoid;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .arts-entry-section-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      color: var(--teal);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 12px;
-      text-shadow: 0 0 8px var(--teal-glow);
-    }
-    
-    .arts-entry-footer {
-      padding-top: 16px;
-      margin-top: 12px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    
-    .arts-entry-link {
-      font-family: 'IBM Plex Mono', monospace;
-      color: var(--teal);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.2s ease;
-      text-shadow: 0 0 8px var(--teal-glow);
-      font-size: 16px;
-    }
-    
-    .arts-entry-link:hover {
-      border-bottom-color: var(--teal);
-      color: var(--ice-white);
-      text-shadow: 0 0 12px var(--teal-glow);
-    }
-    
-    .arts-entry-separator {
-      color: var(--border);
-      font-size: 13px;
-      opacity: 0.5;
-    }
-    
-    /* Embedded images in arts entries */
-    .arts-entry-image {
-      float: right;
-      width: 160px;
-      max-width: 35%;
-      margin: 0 0 12px 20px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-    
-    .arts-entry-image.left {
-      float: left;
-      margin: 0 20px 12px 0;
-    }
-    
-    @media (max-width: 768px) {
-      .arts-entry-image {
-        float: none;
-        width: 100%;
-        max-width: 100%;
-        margin: 16px 0;
-        display: block;
-      }
-    }
-    
-    @media (max-width: 1200px) {
-      .newspaper-columns {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      
-      .arts-newsletter {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px 32px;
-      }
-      
-      .arts-entry.span-3 {
-        grid-column: span 2;
-      }
-      
-      .arts-entry.span-2 .arts-entry-body,
-      .arts-entry.span-3 .arts-entry-body {
-        column-count: 1;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .newspaper-columns {
-        gap: 32px;
-      }
-      
-      .arts-newsletter {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 0;
-      }
-      
-      .arts-entry {
-        padding: 16px;
-      }
-      
-      .arts-entry-title {
-        font-size: 24px;
-      }
-      
-      .arts-entry-body {
-        font-size: 18px;
-      }
-      
-      .arts-entry.span-2,
-      .arts-entry.span-3 {
-        grid-column: span 1;
-      }
-      
-      .arts-entry-body,
-      .arts-entry.span-2 .arts-entry-body,
-      .arts-entry.span-3 .arts-entry-body {
-        column-count: 1;
-        column-rule: none;
-      }
-      
-      .arts-entry-title {
-        font-size: 20px;
-      }
-      
-      .arts-entry-body {
-        font-size: 15px;
-      }
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       ESSAYS SECTION
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .essays-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      margin-bottom: 80px;
-    }
-    
-    .essays-column {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    
-    .essays-category-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 18px;
-      color: var(--teal);
-      text-shadow: 0 0 20px var(--teal-glow);
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--border);
-    }
-    
-    .essays-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
     
-    .essay-item {
-      padding: 20px 24px;
-      background: rgba(10, 10, 18, 0.6);
+    .project-tile {
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 16px;
+      transition: all 0.2s ease;
     }
     
-    .essay-item:hover {
-      background: rgba(10, 10, 18, 0.9);
+    .project-tile:hover {
       border-color: var(--teal);
-      transform: translateX(8px);
-      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.2);
     }
     
-    .essay-item.locked:hover {
-      border-color: var(--text-muted);
-      box-shadow: none;
+    .project-name {
+      font-size: 14px;
+      color: var(--teal);
+      margin-bottom: 6px;
     }
     
-    .essay-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--ice-white);
-      line-height: 1.4;
-    }
-    
-    .essay-item.locked .essay-title {
+    .project-desc {
+      font-size: 12px;
       color: var(--text-muted);
     }
     
-    .essay-preview {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 14px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-top: 12px;
-      margin-bottom: 0;
-    }
-    
-    /* Creative Writing Tiles */
-    .creative-tiles {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    
-    .creative-tile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 16px;
-      background: rgba(10, 10, 18, 0.6);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      min-height: 120px;
-    }
-    
-    .creative-tile:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    }
-    
-    .creative-tile.poem-tile {
-      border-color: var(--fuchsia);
-      background: linear-gradient(135deg, rgba(190, 49, 199, 0.1) 0%, rgba(10, 10, 18, 0.6) 100%);
-    }
-    
-    .creative-tile.poem-tile:hover {
-      border-color: var(--fuchsia);
-      box-shadow: 0 8px 30px rgba(190, 49, 199, 0.3);
-    }
-    
-    .creative-tile.song-tile {
-      border-color: var(--orange);
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(10, 10, 18, 0.6) 100%);
-    }
-    
-    .creative-tile.song-tile:hover {
-      border-color: var(--orange);
-      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
-    }
-    
-    .creative-tile-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-    
-    .creative-tile-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      color: var(--ice-white);
-      text-align: center;
-    }
-    
-    .creative-tile-lock {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      font-size: 14px;
-      opacity: 0.6;
-    }
-    
-    /* Rabbit Hole Section */
-    .rabbit-hole-section {
-      margin-top: 60px;
-      padding: 60px;
-      background: linear-gradient(135deg, rgba(10, 10, 18, 0.9) 0%, rgba(20, 20, 40, 0.8) 100%);
-      border: 3px solid var(--orange);
-      border-radius: 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 
-        0 0 60px rgba(255, 107, 53, 0.2),
-        inset 0 0 60px rgba(255, 107, 53, 0.05);
-    }
-    
-    .rabbit-hole-section:hover {
-      border-color: var(--orange);
-      transform: scale(1.02);
-      box-shadow: 
-        0 0 100px rgba(255, 107, 53, 0.4),
-        inset 0 0 80px rgba(255, 107, 53, 0.1);
-    }
-    
-    .rabbit-hole-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
+    .project-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
       color: var(--orange);
-      text-transform: uppercase;
-      letter-spacing: 0.3em;
-      margin-bottom: 24px;
+      text-decoration: none;
     }
     
-    .rabbit-hole-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 42px;
-      color: var(--ice-white);
-      text-shadow: 
-        0 0 40px rgba(255, 107, 53, 0.6),
-        0 0 80px rgba(255, 107, 53, 0.3);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-    
-    .rabbit-hole-subtitle {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 28px;
-      color: var(--orange);
-      font-weight: 400;
-      margin-bottom: 12px;
-      text-shadow: 0 0 20px var(--orange-glow);
-    }
-    
-    .rabbit-hole-tagline {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 20px;
-      color: var(--text-dim);
-      font-weight: 300;
-      font-style: italic;
-      margin-bottom: 32px;
-    }
-    
-    .rabbit-hole-status {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
+    .project-link:hover {
+      text-decoration: underline;
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       CONTENT SECTIONS
+       READING / ARTS SECTION
        ═══════════════════════════════════════════════════════════════════════ */
     
-    /* MA (間) SECTION SPACING - MULTI-COLUMN LAYOUTS */
-    .content-section {
-      margin-bottom: 80px;
-      padding-top: 20px;
-    }
-    
-    .content-section:last-child {
-      margin-bottom: 40px;
-    }
-    
-    /* Sections container - TRUE MULTI-COLUMN SIDE-BY-SIDE */
-    .sections-container {
+    .arts-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 120px;
-      margin-bottom: 120px;
-      max-width: none;
-      width: 100%;
-      align-items: start;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
     
-    .sections-container-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 80px;
-      margin-bottom: 100px;
-      align-items: start;
+    .arts-entry {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 24px;
+      transition: border-color 0.2s ease;
     }
     
-    .sections-container-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 60px;
-      margin-bottom: 100px;
-      align-items: start;
-    }
-    
-    .content-section-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 28px;
-      color: var(--teal);
-      margin-bottom: 48px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid var(--teal-dim);
-      text-shadow: 0 0 20px var(--teal-glow);
-      letter-spacing: 0.08em;
-      text-align: center;
-    }
-    
-    /* MULTI-COLUMN GRID - TRUE WIDE COLUMNS WITH PROPORTIONAL TILES */
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 40px;
-      grid-auto-flow: row dense;
-    }
-    
-    /* Large featured cards - spans 3 columns, 2 rows - PROPORTIONAL */
-    .content-card.featured {
-      grid-column: span 3;
-      grid-row: span 2;
-      min-height: 450px;
-      aspect-ratio: 3 / 2;
-    }
-    
-    /* Medium cards - spans 2 columns - PROPORTIONAL SQUARE */
-    .content-card.medium {
-      grid-column: span 2;
-      grid-row: span 1;
-      min-height: 300px;
-      aspect-ratio: 2 / 1;
-    }
-    
-    /* Wide cards - spans 4 columns - PROPORTIONAL */
-    .content-card.wide {
-      grid-column: span 4;
-      grid-row: span 1;
-      min-height: 250px;
-      aspect-ratio: 4 / 1;
-    }
-    
-    /* Tall cards - spans 2 columns, 2 rows - PROPORTIONAL SQUARE */
-    .content-card.tall {
-      grid-column: span 2;
-      grid-row: span 2;
-      min-height: 450px;
-      aspect-ratio: 1 / 1;
-    }
-    
-    /* Small accent cards - single column - PROPORTIONAL */
-    .content-card.small {
-      grid-column: span 2;
-      grid-row: span 1;
-      min-height: 250px;
-      aspect-ratio: 2 / 1;
-    }
-    
-    .content-card {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      padding: 32px;
-      transition: all 0.2s ease;
-      position: relative;
-      border-radius: 4px;
-      grid-column: span 2;
-      grid-row: span 1;
-      aspect-ratio: 2 / 1;
-      min-height: 280px;
-    }
-    
-    .content-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--teal);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      border-radius: 4px 0 0 4px;
-    }
-    
-    .content-card:hover {
+    .arts-entry:hover {
       border-color: var(--teal);
-      transform: translateX(4px);
     }
     
-    .content-card:hover::before {
-      opacity: 1;
+    .arts-entry.span-2 {
+      grid-column: span 2;
     }
     
-    .content-card-title {
-      font-size: 24px;
-      font-weight: 600;
+    @media (max-width: 700px) {
+      .arts-entry.span-2 {
+        grid-column: span 1;
+      }
+    }
+    
+    .arts-entry-header {
+      margin-bottom: 12px;
+    }
+    
+    .arts-entry-title {
+      font-size: 18px;
       color: var(--ice-white);
-      margin-bottom: 16px;
-      line-height: 1.4;
+      margin-bottom: 4px;
     }
     
-    .content-card-desc {
-      font-size: 20px;
+    .arts-entry-subtitle {
+      font-size: 12px;
       color: var(--teal);
-      line-height: 1.8;
-      letter-spacing: 0.02em;
     }
     
-    /* TOP BAR */
-    #top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 8px 16px;
-      background: rgba(5, 5, 8, 0.9);
-      backdrop-filter: blur(10px);
+    .arts-entry-body {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+    
+    .arts-entry-image {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      margin: 12px 0;
+      border: 1px solid var(--border);
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       WRITING SECTION
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    .essays-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+    
+    @media (max-width: 800px) {
+      .essays-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .essays-category-title {
+      font-size: 14px;
+      color: var(--teal);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
     
-    #pos-indicator {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
-      color: var(--orange);
-      text-shadow: 0 0 10px var(--orange-glow);
+    .essay-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
     
-    #zoom-indicator {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 8px;
+    .essay-item:hover {
+      border-color: var(--orange);
+      transform: translateX(4px);
+    }
+    
+    .essay-title {
+      font-size: 16px;
+      color: var(--ice-white);
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .essay-preview {
+      font-size: 13px;
       color: var(--text-muted);
+      line-height: 1.6;
     }
     
-    #layout-toggle {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 9px;
-      color: var(--void);
-      background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 100%);
-      padding: 8px 10px;
-      border: 1px solid var(--orange);
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.25);
-      transition: transform 0.1s ease;
-    }
-
-    #layout-toggle:active {
-      transform: translateY(1px);
-    }
-    
-    /* NAV BAR */
-    #nav-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(5, 5, 8, 0.95);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--border);
-      padding: 8px 16px;
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .nav-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .nav-btn:hover {
-      border-color: var(--orange);
-      background: rgba(255, 107, 53, 0.1);
-    }
-    
-    .nav-btn.active {
-      border-color: var(--orange);
-      background: rgba(255, 107, 53, 0.15);
-    }
-    
-    .nav-btn-key {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      color: var(--orange);
-    }
-    
-    .nav-btn-label {
-      font-size: 9px;
-      color: var(--text);
-      text-transform: uppercase;
-    }
-    
-    #minimap {
-      position: fixed;
-      bottom: 60px;
-      right: 16px;
-      z-index: 100;
-      width: 100px;
-      height: 100px;
-      background: rgba(10, 10, 16, 0.95);
-      border: 1px solid var(--border);
-      padding: 6px;
-    }
-    
-    .minimap-grid {
+    .creative-tiles {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 2px;
-      width: 100%;
-      height: 100%;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
     
-    .minimap-cell {
+    .creative-tile {
       background: var(--elevated);
-      border: 1px solid transparent;
+      border: 1px solid var(--border);
+      padding: 20px;
+      text-align: center;
       cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 6px;
-      color: var(--text-muted);
+      transition: all 0.2s ease;
     }
     
-    .minimap-cell:hover {
-      border-color: var(--orange);
+    .creative-tile:hover {
+      border-color: var(--fuchsia);
     }
     
-    .minimap-cell.active {
-      background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 100%);
-      color: var(--void);
-      box-shadow: 0 0 10px var(--orange-glow);
+    .creative-tile-icon {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 8px;
     }
     
-    .minimap-cell.empty {
-      background: transparent;
-      pointer-events: none;
+    .creative-tile-title {
+      font-size: 11px;
+      color: var(--text-dim);
+      display: block;
     }
     
-    #drag-hint {
-      position: fixed;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      font-size: 9px;
-      color: var(--text-muted);
-      opacity: 0.5;
-      pointer-events: none;
+    .creative-tile-lock {
+      font-size: 12px;
+      display: block;
+      margin-top: 8px;
     }
     
-    body.dragging #drag-hint {
-      opacity: 0;
-    }
     /* ═══════════════════════════════════════════════════════════════════════
-       POPUP DRAWER SYSTEM
+       FOOTER
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    .footer {
+      padding: 60px 40px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+    }
+    
+    .footer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    
+    .footer-link {
+      color: var(--teal);
+      text-decoration: none;
+    }
+    
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       POPUP/MODAL
        ═══════════════════════════════════════════════════════════════════════ */
     
     .popup-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(2, 2, 4, 0.9);
-      backdrop-filter: blur(12px);
-      z-index: 10000;
-      display: none;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
     
     .popup-overlay.active {
-      display: flex;
       opacity: 1;
+      visibility: visible;
     }
     
     .popup-drawer {
       background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      max-width: 900px;
+      border: 1px solid var(--orange);
+      max-width: 600px;
       width: 90%;
-      max-height: 85vh;
+      max-height: 80vh;
       overflow-y: auto;
-      transform: scale(0.9) translateY(20px);
-      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease;
-      padding: 48px;
+      padding: 40px;
       position: relative;
-      opacity: 0;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(0, 212, 170, 0.1);
-    }
-    
-    .popup-overlay.active .popup-drawer {
-      transform: scale(1) translateY(0);
-      opacity: 1;
     }
     
     .popup-close {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      background: transparent;
-      border: 2px solid var(--border);
-      color: var(--ice-white);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 24px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      transition: all 0.2s ease;
     }
     
     .popup-close:hover {
-      border-color: var(--orange);
       color: var(--orange);
     }
     
     .popup-title {
       font-size: 24px;
-      font-weight: 600;
       color: var(--ice-white);
-      margin-bottom: 16px;
-      padding-right: 50px;
+      margin-bottom: 8px;
     }
     
     .popup-subtitle {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--teal);
       margin-bottom: 24px;
-      font-style: italic;
     }
     
     .popup-content {
-      color: var(--ice-white);
-      line-height: 1.8;
-      font-size: 15px;
-      margin-bottom: 24px;
-    }
-    
-    .popup-why {
-      background: rgba(255, 107, 53, 0.1);
-      border-left: 4px solid var(--orange);
-      padding: 16px 20px;
-      margin: 24px 0;
-      border-radius: 4px;
-    }
-    
-    .popup-why-title {
-      font-size: 12px;
-      color: var(--orange);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    
-    .popup-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-    
-    .popup-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 16px;
-      background: var(--elevated);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 13px;
-      transition: all 0.2s ease;
-    }
-    
-    .popup-link:hover {
-      border-color: var(--teal);
-      background: rgba(0, 212, 170, 0.1);
-      color: var(--ice-white);
+      color: var(--text-dim);
+      line-height: 1.7;
     }
     
     .popup-locked {
       text-align: center;
-      padding: 60px 40px;
+      padding: 40px 20px;
     }
     
     .popup-locked-icon {
       font-size: 48px;
-      margin-bottom: 24px;
-      opacity: 0.6;
+      margin-bottom: 16px;
     }
     
     .popup-locked-title {
       font-size: 20px;
-      color: var(--ice-white);
+      color: var(--orange);
       margin-bottom: 16px;
     }
     
     .popup-locked-text {
       color: var(--text-dim);
-      line-height: 1.8;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    
-    .content-card.clickable {
-      cursor: pointer;
-    }
-    
-    .content-card.clickable:hover {
-      border-color: var(--orange);
-      transform: translateY(-2px);
-    }
-    
-    .content-card.locked {
-      opacity: 0.7;
-      position: relative;
-    }
-    
-    .content-card.locked::after {
-      content: '🔒';
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      font-size: 18px;
-      opacity: 0.6;
-    }
-    
-    /* Contact button - Massive simple button */
-    .contact-button-big {
-      display: inline-block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(32px, 6vw, 64px);
-      font-weight: 700;
-      color: var(--ice-white);
-      text-decoration: none;
-      cursor: pointer;
-      padding: 32px 64px;
-      background: rgba(255, 107, 53, 0.15);
-      border: 3px solid var(--orange);
-      border-radius: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      text-shadow: 
-        0 0 20px var(--orange),
-        0 0 40px var(--orange);
-      transition: all 0.3s ease;
-      box-shadow: 
-        0 0 30px rgba(255, 107, 53, 0.3),
-        inset 0 0 20px rgba(255, 107, 53, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .contact-button-big::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--orange) 0%, var(--fuchsia) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
-    
-    .contact-button-big:hover {
-      transform: scale(1.05);
-      text-shadow: 
-        0 0 30px var(--orange),
-        0 0 60px var(--orange),
-        0 0 90px var(--fuchsia);
-      box-shadow: 
-        0 0 50px rgba(255, 107, 53, 0.5),
-        inset 0 0 30px rgba(255, 107, 53, 0.2);
-      border-color: var(--fuchsia);
-    }
-    
-    .contact-button-big:hover::before {
-      opacity: 0.2;
-    }
-    
-    .contact-button-big:active {
-      transform: scale(0.98);
-    }
-    
-    /* Sandbox tabs */
-    .sandbox-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 32px;
-      border-bottom: 2px solid var(--border);
-    }
-    
-    .sandbox-tab {
-      padding: 12px 24px;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--text-dim);
-      cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      margin-bottom: -2px;
+      line-height: 1.7;
     }
     
-    .sandbox-tab.active {
-      color: var(--orange);
-      border-bottom-color: var(--orange);
-    }
+    /* ═══════════════════════════════════════════════════════════════════════
+       MOBILE
+       ═══════════════════════════════════════════════════════════════════════ */
     
-    .sandbox-tab:hover {
-      color: var(--ice-white);
-    }
-    
-    .sandbox-content {
-      display: none;
-    }
-    
-    .sandbox-content.active {
-      display: block;
-    }
-    
-    .build-log-entry {
-      background: var(--elevated);
-      border-left: 4px solid var(--teal);
-      padding: 24px;
-      margin-bottom: 24px;
-      border-radius: 4px;
-    }
-    
-    .build-log-number {
-      font-size: 12px;
-      color: var(--teal);
-      font-weight: 600;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    
-    .build-log-text {
-      color: var(--ice-white);
-      line-height: 1.8;
-      font-size: 15px;
-    }
-    
-    .daily-question {
-      background: var(--elevated);
-      border: 2px solid var(--border);
-      padding: 24px;
-      margin-bottom: 20px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-    }
-    
-    .daily-question:hover {
-      border-color: var(--green);
-    }
-    
-    .daily-question-text {
-      color: var(--ice-white);
-      font-size: 16px;
-      line-height: 1.8;
-      font-style: italic;
-    }
-    
-    .news-card {
-      background: var(--elevated);
-      border: 2px solid var(--border);
-      padding: 24px;
-      margin-bottom: 24px;
-      border-radius: 4px;
-    }
-    
-    .news-headline {
-      font-size: 18px;
-      color: var(--orange);
-      margin-bottom: 16px;
-      font-weight: 600;
-    }
-    
-    .news-take {
-      color: var(--ice-white);
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-    
-    .news-lens {
-      background: rgba(57, 255, 20, 0.1);
-      border-left: 4px solid var(--green);
-      padding: 12px 16px;
-      margin: 16px 0;
-      border-radius: 4px;
-    }
-    
-    .news-lens-title {
-      font-size: 12px;
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    
-    .news-action {
-      color: var(--text-dim);
-      font-size: 14px;
-      font-style: italic;
+    @media (max-width: 600px) {
+      .nav {
+        padding: 12px 20px;
+      }
+      
+      .nav-links {
+        gap: 16px;
+      }
+      
+      .nav-link {
+        font-size: 10px;
+      }
+      
+      .section {
+        padding: 60px 20px;
+      }
+      
+      .hero {
+        padding: 100px 20px 60px;
+      }
+      
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- ═══════════════════════════════════════════════════════════════════════
-       CANVAS
-       ═══════════════════════════════════════════════════════════════════════ -->
-  <div id="canvas-viewport">
-    <div id="canvas">
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           HOME - CENTER
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="0,0" data-name="HOME">
-        <div class="home-center">
-          <!-- HEXAGONAL STRUCTURE LINES - 6 spokes from center to surrounding pages -->
-          <div class="home-triangles">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-              <!-- LINE 1: Center to Reading (top-left, ~10 o'clock) -->
-              <line class="triangle-line orange" x1="50" y1="50" x2="25" y2="0"/>
-              <!-- LINE 2: Center to Development (top-right, ~2 o'clock) -->
-              <line class="triangle-line teal" x1="50" y1="50" x2="75" y2="0"/>
-              <!-- LINE 3: Center to Writing (left, ~9 o'clock) -->
-              <line class="triangle-line orange" x1="50" y1="50" x2="0" y2="50"/>
-              <!-- LINE 4: Center to Spotlight (right, ~3 o'clock) -->
-              <line class="triangle-line teal" x1="50" y1="50" x2="100" y2="50"/>
-              <!-- LINE 5: Center to Sandbox (bottom-left, ~8 o'clock) -->
-              <line class="triangle-line orange" x1="50" y1="50" x2="25" y2="100"/>
-              <!-- LINE 6: Center to Work (bottom-right, ~4 o'clock) -->
-              <line class="triangle-line teal" x1="50" y1="50" x2="75" y2="100"/>
-            </svg>
-          </div>
-          
-          <div class="hero-name-wrapper">
-            <div class="home-name" id="hero-name"></div>
-            
-            <div class="hero-controls-wrapper">
-              <div class="hero-animation-controls">
-                <button class="hero-anim-btn active" data-mode="matrix">MATRIX</button>
-                <button class="hero-anim-btn" data-mode="glitch">GLITCH</button>
-                <button class="hero-anim-btn" data-mode="collapse">COLLAPSE</button>
-                <button class="hero-anim-btn" data-mode="scan">SCAN</button>
-                <button class="hero-anim-btn" data-mode="pulse">PULSE</button>
-                <button class="hero-anim-btn" data-mode="neon">NEON</button>
-                <button class="hero-anim-btn" data-mode="wave">WAVE</button>
-              </div>
-              
-              <div class="hero-color-picker">
-                <div class="color-picker-label">COLOR:</div>
-                <div class="color-options">
-                  <button class="color-option active" data-color="teal" style="background: var(--teal);" title="Teal"></button>
-                  <button class="color-option" data-color="orange" style="background: var(--orange);" title="Orange"></button>
-                  <button class="color-option" data-color="brown" style="background: var(--brown);" title="Brown"></button>
-                  <button class="color-option" data-color="fuchsia" style="background: var(--fuchsia);" title="Fuchsia"></button>
-                  <button class="color-option" data-color="pink" style="background: var(--pink);" title="Pink"></button>
-                </div>
-              </div>
-            </div>
-          </div>
-                </div>
-              </div>
-
-      <!-- ═══════════════════════════════════════════════════════════════════
-           DEVELOPMENT - THE BIG SHOWCASE (Products + Projects)
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="1,-1" data-name="DEVELOPMENT">
-        <div class="page-edge bottom">↓ SPOTLIGHT</div>
-        <div class="page-edge left">← HOME</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[1] DEVELOPMENT PORTFOLIO</div>
-            <h1 class="page-title">▶ PRODUCTS & PROJECTS</h1>
-            <p class="page-desc">9 products in active development. 20+ projects shipped or in research. This is where the work happens.</p>
-      </div>
-          
-          <!-- PRODUCTS & PROJECTS SIDE BY SIDE -->
-          <div class="dev-showcase">
-            <!-- PRODUCTS COLUMN -->
-            <div class="dev-section">
-              <div class="dev-section-header">
-                <div class="dev-section-title">★ PRODUCTS <span class="dev-section-count">9 ACTIVE</span></div>
-              </div>
-              <div class="product-grid" id="products-grid"></div>
-            </div>
-
-            <!-- PROJECTS COLUMN -->
-            <div class="dev-section">
-              <div class="dev-section-header" style="border-color: var(--teal);">
-                <div class="dev-section-title" style="color: var(--teal); text-shadow: 0 0 20px var(--teal-glow);">◆ PROJECTS <span class="dev-section-count" style="border-color: var(--orange-dim); color: var(--orange);">20+ ARTIFACTS</span></div>
-              </div>
-              <div class="project-grid" id="projects-grid"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           READING / MUSIC / ARTS - LEFT TOP
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="-1,-1" data-name="READING">
-        <div class="page-edge bottom">↓ WRITING</div>
-        <div class="page-edge right">→ HOME</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[2] MIND · INPUT</div>
-            <h1 class="page-title">▶ READING · MUSIC · ARTS</h1>
-            <p class="page-desc">Taste as signal. Learning as system.</p>
-          </div>
-          
-          <div class="arts-newsletter">
-            <!-- BOOKS -->
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Crime and Punishment</h2>
-                <span class="arts-entry-subtitle">Dostoevsky · Book</span>
-              </div>
-              <div class="arts-entry-body">
-                <p>Psychology before it was clinical. Maps the architecture of justification, how we build narratives to survive our own actions.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Thinking in Systems</h2>
-                <span class="arts-entry-subtitle">Donella Meadows · Book</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
-                <p>The closest thing to a moral framework for engineers. Leverage points, feedback loops, unintended consequences.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">The Laws of Human Nature</h2>
-                <span class="arts-entry-subtitle">Robert Greene · Book</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/lawsofhumannature.jpg" alt="The Laws of Human Nature" class="arts-entry-image">
-                <p>Either you understand people, or you get managed by people. Hidden patterns in human behavior: status, envy, irrationality.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">The Road to Serfdom</h2>
-                <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/road_to_serfdom.jpg" alt="The Road to Serfdom" class="arts-entry-image">
-                <p>I read across ideologies to model incentives. Hayek's warning about how good intentions can create systems that destroy freedom.</p>
-              </div>
-            </article>
-            
-            <!-- MUSIC -->
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Heroin</h2>
-                <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
-                <p>Romantic nihilism with surgical honesty. Beauty as anesthesia, love as relapse, identity as an aesthetic. Not about drugs, about the shape of yearning.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">All Apologies</h2>
-                <span class="arts-entry-subtitle">Nirvana · In Utero</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/nirvanainutero.jpg" alt="In Utero" class="arts-entry-image">
-                <p>The purest kind of resignation: not weakness, not strength, just acceptance with teeth. Humility without surrender.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">MTV Unplugged</h2>
-                <span class="arts-entry-subtitle">Nirvana · Album</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
-                <p>The last performance, stripped down. Candles, lilies, raw emotion. What's left when you remove the distortion.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">YEEZUS</h2>
-                <span class="arts-entry-subtitle">Kanye West · Album</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
-                <p>Raw power + insecurity displayed as art. An X-ray of status hunger, control, and spectacle. Attention mechanics at full voltage.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Crystal Ship</h2>
-                <span class="arts-entry-subtitle">Cigarettes After Sex</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/CASannakaraneninacystalship.jpg" alt="Cigarettes After Sex" class="arts-entry-image">
-                <p>Ambient intimacy. The space between words matters more than the words themselves.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Man of War</h2>
-                <span class="arts-entry-subtitle">Radiohead · OKNOTOK</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/RadioheadOKNOTOKLPfront_1024x1024.png" alt="OKNOTOK" class="arts-entry-image">
-                <p>A lost track that became essential. Anxiety as architecture, every layer builds tension until it collapses.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Private Music</h2>
-                <span class="arts-entry-subtitle">Deftones · Album</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/deftonesprivatemusic.jpg" alt="Private Music" class="arts-entry-image">
-                <p>I predict this is their final tour indicator. "I Think About You All The Time" and "Infinite Source" are farewells wrapped in distortion. Not for the algorithm, just for the moment.</p>
-              </div>
-            </article>
-            
-            <!-- FILM / ANIME -->
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Shutter Island</h2>
-                <span class="arts-entry-subtitle">Scorsese · Film</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/images.jpg" alt="Shutter Island" class="arts-entry-image">
-                <p>Identity is a prison built by grief. How plausible it is to choose a comforting narrative over truth.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">One Battle After Another</h2>
-                <span class="arts-entry-subtitle">Documentary · Film</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/One_Battle_After_Another.jpg" alt="One Battle After Another" class="arts-entry-image">
-                <p>Watching for: what the story claims is 'winning,' what it punishes, what it rewards. Conflict reveals hidden rules.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Avatar 3</h2>
-                <span class="arts-entry-subtitle">Cameron · Upcoming</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/avatar3.png" alt="Avatar 3" class="arts-entry-image">
-                <p>Worldbuilding-as-politics: who gets resources, what 'progress' means, and how narratives justify domination.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Rewatched 2 Peak Animes</h2>
-                <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image left">
-                <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image">
-                <p>Eren and Gojo. Freedom as burden, power as isolation. Both shows understand that the strongest characters are the most trapped.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           WRITING / POLITICS / PHILOSOPHY - LEFT MIDDLE
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="-1,0" data-name="WRITING">
-        <div class="page-edge top">↑ READING</div>
-        <div class="page-edge bottom">↓ SANDBOX</div>
-        <div class="page-edge right">→ HOME</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[3] MIND · OUTPUT</div>
-            <h1 class="page-title">▶ WRITING</h1>
-            <p class="page-desc">Systems thinking in prose.</p>
-          </div>
-          
-          <!-- Two categories side by side -->
-          <div class="essays-container">
-            <div class="essays-column">
-              <h2 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h2>
-              <div class="essays-list">
-                <div class="essay-item clickable" onclick='openPopup({
-                  title: "Capitalism, Nihilism, and the Search for Post-Meaning",
-                  subtitle: "Philosophical Essay",
-                  content: "<div style=\"text-align: center; padding: 60px 40px;\"><div style=\"font-size: 48px; margin-bottom: 24px;\">📝</div><div style=\"font-size: 20px; color: var(--ice-white); margin-bottom: 16px;\">Full Essay Released Soon</div><div style=\"color: var(--text-dim);\">This essay is currently being written.</div></div>"
-                })'>
-                  <span class="essay-title">Capitalism, Nihilism, and the Search for Post-Meaning</span>
-                  <p class="essay-preview">Capitalism doesn't just produce goods, it produces meaning substitutes. What ethical frameworks survive modern incentive structures?</p>
-                </div>
-                <div class="essay-item clickable" onclick='openPopup({
-                  title: "Pragmatic Technosocial Market Direct Democracy",
-                  subtitle: "Political Essay",
-                  content: "<div style=\"text-align: center; padding: 60px 40px;\"><div style=\"font-size: 48px; margin-bottom: 24px;\">📝</div><div style=\"font-size: 20px; color: var(--ice-white); margin-bottom: 16px;\">Full Essay Released Soon</div><div style=\"color: var(--text-dim);\">This essay is currently being written.</div></div>"
-                })'>
-                  <span class="essay-title">Pragmatic Technosocial Market Direct Democracy</span>
-                  <p class="essay-preview">Market mechanisms where they work, direct democratic feedback where legitimacy matters, technology that prioritizes transparency.</p>
-                </div>
-                <div class="essay-item clickable" onclick='openPopup({
-                  title: "Systemic Failures vs. Individual Moral Flaws",
-                  subtitle: "Systems Essay",
-                  content: "<div style=\"text-align: center; padding: 60px 40px;\"><div style=\"font-size: 48px; margin-bottom: 24px;\">📝</div><div style=\"font-size: 20px; color: var(--ice-white); margin-bottom: 16px;\">Full Essay Released Soon</div><div style=\"color: var(--text-dim);\">This essay is currently being written.</div></div>"
-                })'>
-                  <span class="essay-title">Systemic Failures vs. Individual Moral Flaws</span>
-                  <p class="essay-preview">We treat systemic failures as individual moral flaws. People behave rationally inside broken incentive structures.</p>
-                </div>
-                <div class="essay-item clickable" onclick='openPopup({
-                  title: "Values That Survive Pressure",
-                  subtitle: "Ethics Essay",
-                  content: "<div style=\"text-align: center; padding: 60px 40px;\"><div style=\"font-size: 48px; margin-bottom: 24px;\">📝</div><div style=\"font-size: 20px; color: var(--ice-white); margin-bottom: 16px;\">Full Essay Released Soon</div><div style=\"color: var(--text-dim);\">This essay is currently being written.</div></div>"
-                })'>
-                  <span class="essay-title">Values That Survive Pressure</span>
-                  <p class="essay-preview">Post-nihilistic ethics. Not "believe harder," but choose values that survive pressure.</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="essays-column">
-              <h2 class="essays-category-title">◈ CREATIVE WRITING</h2>
-              <div class="creative-tiles">
-                <div class="creative-tile poem-tile clickable" onclick='openPopup({
-                  locked: true,
-                  lockedMessage: "Password required.<br><br>Private draft."
-                })'>
-                  <span class="creative-tile-icon">📜</span>
-                  <span class="creative-tile-title">poem.txt (1)</span>
-                  <span class="creative-tile-lock">🔒</span>
-                </div>
-                <div class="creative-tile poem-tile clickable" onclick='openPopup({
-                  locked: true,
-                  lockedMessage: "Password required.<br><br>Private draft."
-                })'>
-                  <span class="creative-tile-icon">📜</span>
-                  <span class="creative-tile-title">poem.txt (2)</span>
-                  <span class="creative-tile-lock">🔒</span>
-                </div>
-                <div class="creative-tile song-tile clickable" onclick='openPopup({
-                  locked: true,
-                  lockedMessage: "Password required.<br><br>Private draft."
-                })'>
-                  <span class="creative-tile-icon">🎵</span>
-                  <span class="creative-tile-title">song.mp4 (1)</span>
-                  <span class="creative-tile-lock">🔒</span>
-                </div>
-                <div class="creative-tile song-tile clickable" onclick='openPopup({
-                  locked: true,
-                  lockedMessage: "Password required.<br><br>Private draft."
-                })'>
-                  <span class="creative-tile-icon">🎵</span>
-                  <span class="creative-tile-title">song.mp4 (2)</span>
-                  <span class="creative-tile-lock">🔒</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Massive rabbit hole section -->
-          <div class="rabbit-hole-section">
-            <div class="rabbit-hole-header clickable" onclick='openPopup({
-              locked: true,
-              lockedMessage: "This is a book-length project in progress.<br><br>It explores modern life as a set of interacting systems: technology, status, power, addiction, identity, and belief.<br><br>Shared selectively. Password required."
-            })'>
-              <div class="rabbit-hole-label">📖 BOOK PROJECT</div>
-              <h1 class="rabbit-hole-title">INTO THE RABBIT HOLE</h1>
-              <h2 class="rabbit-hole-subtitle">WINNING THE SYSTEMS OF MODERN HUMANITY</h2>
-              <h3 class="rabbit-hole-tagline">THE GAME THEORY OF DAILY LIFE</h3>
-              <div class="rabbit-hole-status">🔒 IN PROGRESS · PASSWORD REQUIRED</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           CANDID SANDBOX - LEFT BOTTOM
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="-1,1" data-name="SANDBOX">
-        <div class="page-edge top">↑ WRITING</div>
-        <div class="page-edge right">→ WORK</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[4] OPEN THREADS</div>
-            <h1 class="page-title">▶ NOTES</h1>
-            <p class="page-desc">Open threads, not conclusions.</p>
-          </div>
-          
-          <div class="arts-newsletter">
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Excited to Release</h2>
-                <span class="arts-entry-subtitle">Coming Soon</span>
-              </div>
-              <div class="arts-entry-body">
-                <p>I'm excited to release <strong style="color: var(--orange);">PokerGeek</strong> and <strong style="color: var(--teal);">Library of Alexandria</strong> to the web soon.</p>
-                <p style="margin-top: 16px;">Big thanks to all the beta and alpha testers who helped shape these products.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Collaborate With Me</h2>
-                <span class="arts-entry-subtitle">Open Invitation</span>
-              </div>
-              <div class="arts-entry-body">
-                <p>I want people to <strong>collaborate</strong> on any of my products and projects, or <strong>use them</strong>.</p>
-                <p style="margin-top: 16px;">If you're building something interesting, or want to contribute to what I'm building, reach out.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           DAILY SPOTLIGHT - RIGHT MIDDLE
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="1,0" data-name="SPOTLIGHT">
-        <div class="page-edge top">↑ DEVELOPMENT</div>
-        <div class="page-edge bottom">↓ WORK</div>
-        <div class="page-edge left">← HOME</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[5] CURRENT FOCUS</div>
-            <h1 class="page-title">▶ SPOTLIGHT</h1>
-            <p class="page-desc">Where my attention is right now.</p>
-          </div>
-          
-          <div class="arts-newsletter">
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">PokerGeek & Library of Alexandria</h2>
-                <span class="arts-entry-subtitle">Primary Focus</span>
-              </div>
-              <div class="arts-entry-body">
-                <p>Currently iterating on <strong style="color: var(--orange);">PokerGeek</strong> and building <strong style="color: var(--teal);">Library of Alexandria</strong>. Both projects are forcing me to confront the same problem from different angles: how to make complexity survivable over time.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Mapping Distributed Systems</h2>
-                <span class="arts-entry-subtitle">Technical Focus</span>
-              </div>
-              <div class="arts-entry-body">
-                <p>Working on mapping high-level distributed systems into diagrams that don't lie. Finding a balance between accuracy and legibility. Most diagrams fail because they optimize for presentation, not truth.</p>
-              </div>
-            </article>
-            
-            <article class="arts-entry span-2">
-              <div class="arts-entry-header">
-                <h2 class="arts-entry-title">Peak Anime Rewatch</h2>
-                <span class="arts-entry-subtitle">Attack on Titan & Jujutsu Kaisen</span>
-              </div>
-              <div class="arts-entry-body">
-                <img src="pics/Eren_saying_freedom.png" alt="Eren Yeager" class="arts-entry-image" style="width: 250px; max-width: 45%;">
-                <img src="pics/gojo.png" alt="Gojo Satoru" class="arts-entry-image left" style="width: 250px; max-width: 45%;">
-                <p>Both shows are masterclasses in worldbuilding where the rules matter more than the characters.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-      
-      <!-- ═══════════════════════════════════════════════════════════════════
-           WORK WITH/FOR ME - RIGHT BOTTOM
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="page" data-pos="1,1" data-name="WORK">
-        <div class="page-edge top">↑ SPOTLIGHT</div>
-        <div class="page-edge left">← SANDBOX</div>
-        <div class="page-inner">
-          <div class="page-header">
-            <div class="page-tag">[6] COLLABORATE</div>
-            <h1 class="page-title">▶ WORK WITH / CONTACT</h1>
-            <p class="page-desc">I build with intensity and taste. My approach to development is shaped by passion, leverage of strengths, and working with people who have integrated self-congruence. I care about systems that create positive impact at scale.</p>
-          </div>
-          
-          <div style="text-align: center; padding: 120px 80px; max-width: none; width: 100%;">
-            <p style="color: var(--ice-white); font-size: 32px; line-height: 2.2; margin-bottom: 80px; max-width: 1200px; margin-left: auto; margin-right: auto;">
-              If you're doing that, I'll work with you.<br>If you're doing that and need help, I'll work for you.
-            </p>
-            <a href="mailto:waleedraza1211@gmail.com" class="contact-button-big">CONTACT ME</a>
-          </div>
-          
-        </div>
-      </div>
-      
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">WALEED RAZA</a>
+    <div class="nav-links">
+      <a href="#development" class="nav-link">Dev</a>
+      <a href="#reading" class="nav-link">Reading</a>
+      <a href="#writing" class="nav-link">Writing</a>
+      <a href="studio.html" class="nav-link">Studio</a>
     </div>
-  </div>
+  </nav>
 
-  <!-- UI ELEMENTS -->
-  <div id="top-bar">
-    <div id="pos-indicator">► HOME</div>
-    <div id="zoom-indicator">100%</div>
-  </div>
-  
-  <div id="nav-bar">
-    <div class="nav-btn" data-goto="0,0"><span class="nav-btn-key">[0]</span><span class="nav-btn-label">Home</span></div>
-    <div class="nav-btn" data-goto="1,-1"><span class="nav-btn-key">[1]</span><span class="nav-btn-label">Dev</span></div>
-    <div class="nav-btn" data-goto="-1,-1"><span class="nav-btn-key">[2]</span><span class="nav-btn-label">Read</span></div>
-    <div class="nav-btn" data-goto="-1,0"><span class="nav-btn-key">[3]</span><span class="nav-btn-label">Write</span></div>
-    <div class="nav-btn" data-goto="-1,1"><span class="nav-btn-key">[4]</span><span class="nav-btn-label">Sand</span></div>
-    <div class="nav-btn" data-goto="1,0"><span class="nav-btn-key">[5]</span><span class="nav-btn-label">Spot</span></div>
-    <div class="nav-btn" data-goto="1,1"><span class="nav-btn-key">[6]</span><span class="nav-btn-label">Work</span></div>
-  </div>
-  
-  <div id="minimap">
-    <div class="minimap-grid">
-      <div class="minimap-cell" data-goto="-1,-1">2</div>
-      <div class="minimap-cell empty"></div>
-      <div class="minimap-cell" data-goto="1,-1">1</div>
-      <div class="minimap-cell" data-goto="-1,0">3</div>
-      <div class="minimap-cell active" data-goto="0,0">0</div>
-      <div class="minimap-cell" data-goto="1,0">5</div>
-      <div class="minimap-cell" data-goto="-1,1">4</div>
-      <div class="minimap-cell empty"></div>
-      <div class="minimap-cell" data-goto="1,1">6</div>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <h1 class="hero-name">WALEED <span>RAZA</span></h1>
+    <p class="hero-tagline">I build real-time, data-intensive consumer products.</p>
+    <p class="hero-sub">Full-Stack Developer · ML/AI Engineer · Distributed Systems</p>
+    <div class="hero-cta">
+      <a href="#development" class="btn btn-primary">See My Work</a>
+      <a href="studio.html" class="btn btn-secondary">Studio & Contact</a>
     </div>
-  </div>
-  
-  <div id="drag-hint">◄ DRAG ► ARROWS ► SCROLL ► 0-6 JUMP</div>
-  
+    <div class="scroll-hint">↓ Scroll to explore</div>
+  </section>
 
-  <script>
-    /* ═══════════════════════════════════════════════════════════════════════
-       MOCK DATA - 9 PRODUCTS + 20 PROJECTS
-       ═══════════════════════════════════════════════════════════════════════ */
+  <!-- DEVELOPMENT -->
+  <section class="section" id="development">
+    <div class="section-header">
+      <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
+      <h2 class="section-title">▶ PRODUCTS & PROJECTS</h2>
+      <p class="section-desc">9 products in active development. 20+ projects shipped or in research.</p>
+    </div>
     
-    const PRODUCTS = [
-      {
-        id: 'pokergeek',
-        name: 'PokerGeek',
-        tier: 'escape',
-        image: 'pics/PoekrGeek.ai.png',
-        url: 'https://pokergeek.ai',
-        tagline: 'Provably fair poker OS. Transparent shuffles, live analytics, habit loops that train discipline.',
-        tierLabel: '★ ESCAPE VELOCITY',
-        status: 'active',
-        statusLabel: 'ACTIVE',
-        stats: { focus: 100, users: '2.1K', commits: '847' },
-        tech: ['TypeScript', 'WebSockets', 'PostgreSQL', 'Flutter', 'Node.js'],
-        cta: 'LAUNCHING JAN 2025'
-      },
-      {
-        id: 'prodpath',
-        name: 'ProdPath',
-        tier: 'wow',
-        image: 'pics/Paths.png',
-        url: 'https://alexandria-vault.com',
-        tagline: 'Consent-first library. Your PDFs stay yours; search, organize, connect without crossing lines.',
-        tierLabel: '◆ WOW FACTOR',
-        status: 'beta',
-        statusLabel: 'BETA',
-        stats: { focus: 85, users: '340', commits: '312' },
-        tech: ['Python', 'SQLite', 'FastAPI', 'React', 'Whisper'],
-        cta: 'JOIN BETA'
-      },
-      {
-        id: 'clipvault',
-        name: 'ClipVault',
-        tier: 'rocket',
-        image: 'pics/clipvault.png',
-        url: 'https://clipvault.app',
-        tagline: 'Personal capture for permitted links. Transcripts, search, organization so the feed serves you.',
-        tierLabel: '▲ ROCKET STAGE',
-        status: 'dev',
-        statusLabel: 'IN DEV',
-        stats: { focus: 65, users: '—', commits: '156' },
-        tech: ['Python', 'yt-dlp', 'FFmpeg', 'Whisper', 'SQLite'],
-        cta: 'COMING Q1'
-      },
-      {
-        id: 'musicmaster',
-        name: 'MusicMaster',
-        tier: 'rocket',
-        image: 'pics/MusicMaster.png',
-        url: 'https://lifelineos.com',
-        tagline: 'Local-first agent OS. Plan → act → review with receipts, guardrails, and focus defaults.',
-        tierLabel: '▲ ROCKET STAGE',
-        status: 'active',
-        statusLabel: 'ACTIVE',
-        stats: { focus: 70, users: '120', commits: '423' },
-        tech: ['TypeScript', 'Ollama', 'Electron', 'SQLite'],
-        cta: 'TRY ALPHA'
-      },
-      {
-        id: 'pointer',
-        name: 'Pointer',
-        tier: 'rocket',
-        image: 'pics/pointer.png',
-        url: 'https://pointer.dev',
-        tagline: 'Context engine for AI coding. Freezes intent, removes ambiguity, keeps you directing the stack.',
-        tierLabel: '▲ ROCKET STAGE',
-        status: 'dev',
-        statusLabel: 'IN DEV',
-        stats: { focus: 55, users: '—', commits: '89' },
-        tech: ['TypeScript', 'Cursor', 'Markdown', 'LLMs'],
-        cta: 'INTERNAL'
-      },
-      {
-        id: 'agentyeager',
-        name: 'AgentYeager',
-        tier: 'rocket',
-        image: 'pics/AgentYeager.png',
-        url: 'https://agentyeager.com',
-        tagline: 'Local Ollama swarms with explicit roles. Command/control loops keep autonomy in your hands.',
-        tierLabel: '▲ ROCKET STAGE',
-        status: 'active',
-        statusLabel: 'ACTIVE',
-        stats: { focus: 60, users: '85', commits: '234' },
-        tech: ['Python', 'Ollama', 'FastAPI', 'Docker'],
-        cta: 'VIEW DOCS'
-      },
-      {
-        id: 'datadepth',
-        name: 'DataDepth',
-        tier: 'moon',
-        image: 'pics/datadepth.png',
-        url: 'https://datadepth.io',
-        tagline: 'Data brokerage with consent-aware pipelines. Map incentives and power before moving bytes.',
-        tierLabel: '◎ MOONSHOT',
-        status: 'dev',
-        statusLabel: 'RESEARCH',
-        stats: { focus: 45, users: '—', commits: '67' },
-        tech: ['Python', 'PostgreSQL', 'APIs', 'Pipelines'],
-        cta: 'INCUBATING'
-      },
-      {
-        id: 'petform',
-        name: 'Petform',
-        tier: 'rocket',
-        image: 'pics/petrform.png',
-        url: 'https://petform.app',
-        tagline: 'Pet operations base: profiles, schedules, health logs, calm reminders. Trustable care ledger.',
-        tierLabel: '▲ ROCKET STAGE',
-        status: 'paused',
-        statusLabel: 'PAUSED',
-        stats: { focus: 35, users: '50', commits: '189' },
-        tech: ['Flutter', 'Firebase', 'Dart'],
-        cta: 'RESUMING Q2'
-      },
-      {
-        id: 'alexandria',
-        name: 'Library of Alexandria',
-        tier: 'wow',
-        image: 'pics/libraryofalexandria.png',
-        url: 'https://alexandria.app',
-        tagline: 'Personal PDF library with metadata, full-text search, and open-access discovery.',
-        tierLabel: '◆ WOW FACTOR',
-        status: 'beta',
-        statusLabel: 'BETA',
-        stats: { focus: 80, users: '200', commits: '278' },
-        tech: ['Python', 'SQLite', 'FastAPI', 'React'],
-        cta: 'JOIN BETA'
-      }
-    ];
-    
-    const PROJECTS = [
-      { id: 'gpuzap', name: 'GPUZap', repo: 'https://github.com/WaleedaRaza/gpuzap', desc: 'GPU provisioning CLI. One command, any cloud. No theatrics.', tier: '● UTILITY', status: 'active' },
-      { id: 'handcuts', name: 'HandCuts', repo: 'https://github.com/WaleedaRaza/handcuts', desc: 'Gesture shortcuts for desktop. Camera → actions. Friction cut to zero.', tier: '● UTILITY', status: 'active' },
-      { id: 'warvis', name: 'WARVIS', repo: 'https://github.com/WaleedaRaza/warvis', desc: 'Local Jarvis. Voice + LLM + personality. Authority with receipts.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'terminaltool', name: 'TerminalTool', repo: 'https://github.com/WaleedaRaza/terminaltool', desc: 'LLM-assisted security workflows. Defensive, consent-first testing.', tier: '● UTILITY', status: 'prototype' },
-      { id: 'mmamania', name: 'MMAmania', repo: 'https://github.com/WaleedaRaza/mmamania', desc: 'Fight analytics, ELO rankings, debate rooms. Paused, not abandoned.', tier: '○ PAUSED', status: 'paused' },
-      { id: 'newsnet', name: 'NewsNet', repo: 'https://github.com/WaleedaRaza/newsnet', desc: 'Bias-aware news analysis. Stance detection and incentive mapping.', tier: '○ PAUSED', status: 'paused' },
-      { id: 'stockscouter', name: 'StockScouter', repo: 'https://github.com/WaleedaRaza/stockscouter', desc: 'Options flow dashboard. Unusual activity alerts with risk framing.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'envdetect', name: 'EnvDetect', repo: 'https://github.com/WaleedaRaza/envdetect', desc: 'Dev environment auto-detection and setup. Ends context drift.', tier: '● UTILITY', status: 'active' },
-      { id: 'portfolio', name: 'WaleedOS', repo: 'https://github.com/WaleedaRaza/waleedaraza.github.io', desc: 'This site. Canvas terminal interface. Proof of stance.', tier: '● UTILITY', status: 'active' },
-      { id: 'cursor-rules', name: 'Cursor Rules', repo: 'https://github.com/WaleedaRaza/cursor-rules', desc: 'Derived rules from AI interaction history. Guardrails codified.', tier: '● UTILITY', status: 'active' },
-      { id: 'llm-bench', name: 'LLM Bench', repo: 'https://github.com/WaleedaRaza/llm-bench', desc: 'Local LLM benchmarking suite. Same harness, honest results.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'docgen', name: 'DocGen', repo: 'https://github.com/WaleedaRaza/docgen', desc: 'Auto-generate docs from codebase. Truth-first documentation.', tier: '● UTILITY', status: 'active' },
-      { id: 'taskflow', name: 'TaskFlow', repo: 'https://github.com/WaleedaRaza/taskflow', desc: 'Visual task dependency graphs. Shows leverage points before you move.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'chromext', name: 'ChromExt Kit', repo: 'https://github.com/WaleedaRaza/chromext-kit', desc: 'Chrome extension boilerplate + patterns. Stable starting point.', tier: '● UTILITY', status: 'active' },
-      { id: 'apiwatch', name: 'APIWatch', repo: 'https://github.com/WaleedaRaza/apiwatch', desc: 'API uptime monitoring. Alerts + logs, no surprises.', tier: '● UTILITY', status: 'active' },
-      { id: 'figma-export', name: 'Figma Export', repo: 'https://github.com/WaleedaRaza/figma-export', desc: 'Figma → code generation pipeline. Clear about limits.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'whisper-local', name: 'Whisper Local', repo: 'https://github.com/WaleedaRaza/whisper-local', desc: 'Local transcription server. Own your audio, keep data local.', tier: '● UTILITY', status: 'active' },
-      { id: 'rag-kit', name: 'RAG Kit', repo: 'https://github.com/WaleedaRaza/rag-kit', desc: 'RAG boilerplate for local LLMs. Pipes, not promises.', tier: '◇ RESEARCH', status: 'prototype' },
-      { id: 'hackfax', name: 'HackFax', repo: 'https://github.com/WaleedaRaza/hackfax', desc: 'Hackathon platform (archived). History, not roadmap.', tier: '○ ARCHIVE', status: 'paused' },
-      { id: 'patriothacks', name: 'PatriotHacks', repo: 'https://github.com/WaleedaRaza/patriothacks', desc: 'Event sites (archived). Kept as record.', tier: '○ ARCHIVE', status: 'paused' }
-    ];
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       CANVAS CONTROLLER - PANZOOM EDITION
-       Uses @panzoom/panzoom for reliable cross-browser touch/mouse handling
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    const canvas = document.getElementById('canvas');
-    const viewport = document.getElementById('canvas-viewport');
-    const posIndicator = document.getElementById('pos-indicator');
-    const zoomIndicator = document.getElementById('zoom-indicator');
-    const layoutToggle = document.getElementById('layout-toggle');
-    
-    // Panzoom instance
-    let panzoomInstance = null;
-    
-    // Detect mobile and set appropriate initial scale
-    const isMobile = window.innerWidth <= 768;
-    const initialScale = isMobile ? 0.25 : 0.5;
-    let currentPos = { x: 0, y: 0 };
-    let pageW = window.innerWidth;
-    let pageH = window.innerHeight;
-    
-    const keyToPos = {
-      '0': { x: 0, y: 0 },
-      '1': { x: 1, y: -1 },
-      '2': { x: -1, y: -1 },
-      '3': { x: -1, y: 0 },
-      '4': { x: -1, y: 1 },
-      '5': { x: 1, y: 0 },
-      '6': { x: 1, y: 1 }
-    };
-    
-    const posToName = {
-      '0,0': 'HOME',
-      '1,-1': 'PRODUCTS',
-      '-1,-1': 'READING',
-      '-1,0': 'WRITING',
-      '-1,1': 'NOTES',
-      '1,0': 'SPOTLIGHT',
-      '1,1': 'CONTACT'
-    };
-    
-    // Direct canvas init - no boot screen
-    function initApp() {
-      initCanvas();
-      goToPage(0, 0, true);
-    }
-    
-    function initCanvas() {
-      // Initialize Panzoom with Safari-friendly options
-      panzoomInstance = Panzoom(canvas, {
-        minScale: 0.15,
-        maxScale: 2.5,
-        startScale: initialScale,
-        startX: 0,
-        startY: 0,
-        step: 0.1,
-        animate: true,
-        duration: 300,
-        easing: 'ease-out',
-        // Critical for Safari - handle touch properly
-        handleStartEvent: (e) => {
-          // Don't prevent on interactive elements
-          const target = e.target;
-          const interactiveSelectors = 'button, a[href], input, textarea, select, [data-goto], .home-nav-item, .nav-btn, .minimap-cell, .boot-dest, .product-tile, .project-tile, .content-card, .popup-close';
-          if (target.closest(interactiveSelectors)) {
-            return false; // Let the element handle it
-          }
-          return true; // Panzoom handles it
-        },
-        // Exclude interactive elements from panning
-        exclude: ['button', 'a', 'input', 'textarea', 'select'],
-        excludeClass: 'no-panzoom',
-        // Canvas mode for better performance
-        canvas: true,
-        // Contain to none - allow free panning
-        contain: false,
-        // Cursor
-        cursor: 'grab',
-        // Touch action handled by Panzoom
-        touchAction: 'none'
-      });
-      
-      // Enable wheel zoom on viewport
-      viewport.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        panzoomInstance.zoomWithWheel(e);
-        updateZoomIndicator();
-      }, { passive: false });
-      
-      // Update zoom indicator on panzoom events
-      canvas.addEventListener('panzoomchange', (e) => {
-        updateZoomIndicator();
-        updatePositionIndicator();
-      });
-      
-      canvas.addEventListener('panzoomstart', () => {
-        canvas.classList.add('dragging');
-        viewport.classList.add('dragging');
-        document.body.classList.add('dragging');
-      });
-      
-      canvas.addEventListener('panzoomend', () => {
-        canvas.classList.remove('dragging');
-        viewport.classList.remove('dragging');
-        document.body.classList.remove('dragging');
-      });
-      
-      // Keyboard navigation
-      document.addEventListener('keydown', handleCanvasKey);
-      
-      // Setup nav button clicks
-      document.querySelectorAll('[data-goto]').forEach(el => {
-        el.addEventListener('click', (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          const pos = el.dataset.goto.split(',').map(Number);
-          goToPage(pos[0], pos[1]);
-        });
-      });
-      
-      renderProducts();
-      renderProjects();
-      randomizeSpotlight();
-      updatePositionIndicator();
-      updateZoomIndicator();
-    }
-    
-    function updateZoomIndicator() {
-      if (panzoomInstance && zoomIndicator) {
-        const scale = panzoomInstance.getScale();
-        zoomIndicator.textContent = Math.round(scale * 100) + '%';
-      }
-    }
-    
-    function handleCanvasKey(e) {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      if (keyToPos[e.key]) { 
-        goToPage(keyToPos[e.key].x, keyToPos[e.key].y); 
-        return; 
-      }
-      if (!panzoomInstance) return;
-      
-      const pan = panzoomInstance.getPan();
-      const move = 100;
-      
-      if (e.key === 'ArrowLeft') { 
-        panzoomInstance.pan(pan.x + move, pan.y, { animate: true }); 
-      } else if (e.key === 'ArrowRight') { 
-        panzoomInstance.pan(pan.x - move, pan.y, { animate: true }); 
-      } else if (e.key === 'ArrowUp') { 
-        panzoomInstance.pan(pan.x, pan.y + move, { animate: true }); 
-      } else if (e.key === 'ArrowDown') { 
-        panzoomInstance.pan(pan.x, pan.y - move, { animate: true }); 
-      } else if (e.key === '+' || e.key === '=') {
-        panzoomInstance.zoomIn();
-        updateZoomIndicator();
-      } else if (e.key === '-') {
-        panzoomInstance.zoomOut();
-        updateZoomIndicator();
-      }
-    }
-    
-    function goToPage(px, py, instant = false) {
-      if (!panzoomInstance) return;
-      
-      currentPos = { x: px, y: py };
-      const target = document.querySelector(`.page[data-pos="${px},${py}"]`);
-      if (!target) return;
-      
-      // Get current state
-      const scale = panzoomInstance.getScale();
-      const viewportRect = viewport.getBoundingClientRect();
-      
-      // Get target position in canvas coordinates
-      // We need to calculate where to pan so the target is centered
-      const targetRect = target.getBoundingClientRect();
-      const pan = panzoomInstance.getPan();
-      
-      // Calculate offset from current view center to target center
-      const viewCenterX = viewportRect.width / 2;
-      const viewCenterY = viewportRect.height / 2;
-      const targetCenterX = targetRect.left + targetRect.width / 2 - viewportRect.left;
-      const targetCenterY = targetRect.top + targetRect.height / 2 - viewportRect.top;
-      
-      // New pan position
-      const newX = pan.x + (viewCenterX - targetCenterX);
-      const newY = pan.y + (viewCenterY - targetCenterY);
-      
-      if (instant) {
-        panzoomInstance.pan(newX, newY, { animate: false });
-      } else {
-        panzoomInstance.pan(newX, newY, { animate: true, duration: 400, easing: 'ease-out' });
-      }
-      
-      updatePositionIndicator();
-      updateZoomIndicator();
-    }
-    
-    function updatePositionIndicator() {
-      const pages = Array.from(document.querySelectorAll('.page'));
-      const viewportRect = viewport.getBoundingClientRect();
-      const viewCenterX = viewportRect.width / 2;
-      const viewCenterY = viewportRect.height / 2;
-      
-      let closestKey = '0,0';
-      let minDist = Infinity;
-      
-      pages.forEach(page => {
-        const rect = page.getBoundingClientRect();
-        const pageCenterX = rect.left + rect.width / 2;
-        const pageCenterY = rect.top + rect.height / 2;
-        const dist = Math.sqrt(
-          Math.pow(pageCenterX - viewCenterX, 2) + 
-          Math.pow(pageCenterY - viewCenterY, 2)
-        );
-        if (dist < minDist) { 
-          minDist = dist; 
-          closestKey = page.dataset.pos; 
-        }
-      });
-      
-      if (posIndicator) {
-        posIndicator.textContent = '► ' + (posToName[closestKey] || 'EXPLORING');
-      }
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.goto === closestKey));
-      document.querySelectorAll('.minimap-cell').forEach(cell => cell.classList.toggle('active', cell.dataset.goto === closestKey));
-      document.querySelectorAll('.page').forEach(page => page.classList.toggle('in-view', page.dataset.pos === closestKey));
-    }
-    
-    // RENDER
-    function renderProducts() {
-      const grid = document.getElementById('products-grid');
-      grid.innerHTML = PRODUCTS.map(p => `
-        <div class="product-tile" data-tier="${p.tier}" data-product-id="${p.id}">
-          <div class="product-image" style="background-image: url('${p.image || 'assets/img/products/' + p.id + '.jpg'}');"></div>
-          <div class="product-name">${p.name}</div>
+    <div class="dev-showcase">
+      <!-- PRODUCTS -->
+      <div>
+        <div class="dev-section-header">
+          <div class="dev-section-title">★ PRODUCTS</div>
+          <div class="dev-section-count">9 ACTIVE</div>
         </div>
-      `).join('');
+        <div class="product-grid" id="products-grid"></div>
+      </div>
       
-      // Add click handlers - show "coming soon" popup
-      grid.querySelectorAll('.product-tile').forEach(tile => {
-        tile.addEventListener('click', () => {
-          const productId = tile.dataset.productId;
-          const product = PRODUCTS.find(p => p.id === productId);
-          if (product) {
-            openPopup({
-              title: product.name,
-              subtitle: product.tierLabel || 'Product',
-              content: '<div style="text-align: center; padding: 60px 40px;"><div style="font-size: 64px; margin-bottom: 24px;">🚀</div><div style="font-size: 24px; color: var(--ice-white); margin-bottom: 16px;">Will open ' + product.name + ' website soon!</div><div style="color: var(--text-dim);">This product is currently in development.</div></div>'
-            });
-          }
-        });
-      });
-    }
-    
-    function renderProjects() {
-      const grid = document.getElementById('projects-grid');
-      grid.innerHTML = PROJECTS.map(p => `
-        <div class="project-tile" data-project-id="${p.id}">
-          <div class="project-name">${p.name}</div>
-          <div class="project-desc">${p.desc}</div>
-          ${p.repo ? `<a href="${p.repo}" target="_blank" class="project-link" onclick="event.stopPropagation();">Repository</a>` : ''}
+      <!-- PROJECTS -->
+      <div>
+        <div class="dev-section-header" style="border-color: var(--teal);">
+          <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
+          <div class="dev-section-count" style="border-color: var(--teal); color: var(--teal);">20+</div>
         </div>
-      `).join('');
-    }
+        <div class="project-grid" id="projects-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- READING -->
+  <section class="section" id="reading">
+    <div class="section-header">
+      <div class="section-tag">[2] MIND · INPUT</div>
+      <h2 class="section-title">▶ READING · MUSIC · ARTS</h2>
+      <p class="section-desc">Taste as signal. Learning as system.</p>
+    </div>
     
-    function randomizeSpotlight() {
-      const p = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
-      document.getElementById('spotlight-name').textContent = p.name;
-      document.getElementById('spotlight-tagline').textContent = p.tagline;
-    }
-    
-    // EMOJI HEADER SYSTEM - EMOJIS ON LEFT AND RIGHT OF SECTION HEADERS
-    // ALL SYMBOLS FROM STRICT EMOJI SET - Organized into single emojis and kaomojis
-    
-    // First, define all kaomojis (multi-character emoticons) separately
-    const KAOMOJI_LIST = [
-      '^^', '--', '(╯°□°)╯︵┻━┻', '┬─┬ノ(゜-゜ノ)', '(ง•̀_•́)ง', "(ง'̀-'́)ง",'(✿◠‿◠)', '(ʘ‿ʘ)', '(☉☉)', '(•̀ᴗ•́)و̑̑', '(｡•̀ᴗ-)✧', '(≖≖)', '(⊙◎)', 
-      '(눈_눈)', '(◕‿◕✿)','¯\_(ツ)_/¯','(〠_〠)','( ͡° ͜ʖ ͡°)','( ͡ᵔ ͜ʖ ͡ᵔ )','☀️ヽ(ﾟｰﾟヽ)','( ͡° ͜ʖ ͡°)','(ಠ‿ಠ)','(ʘ‿ʘ)','(ಠ_ಠ)','(¬‿¬)','(≖‿≖)','(•‿•)','(✿◠‿◠)','(｡◕‿◕｡)'];
-    
-    // Single character emojis and symbols
-    const SINGLE_EMOJI_SET = `+∞≈≠≡≍≪≫∇∆∇²∴∵∴∧∨¬⊗⊙∈∉∋∌⊂⊃⊆⊇∪∩⊎⊔⊓∅⊘⊠↩↪↫↬⇝⇜⤴⤵⤶⤷⤺⤻↺↻⟲⟳↠↞↭↯⟿⤳⤿⇄⇆⇋▢▣▤▥▦▧▨▩▰▱▲△▶▷▼▽◀◁◆⬢⬡◍◐◑◒◓◔◕⌁⌘⌬║╔╗╚╝╠╣╦╩╬┄┅☭⚒☠☮☯☪☸⚖⚑⚐⚔⚙⚡⚠☢☣⛓◉♜♞♝♛♚♟☰≣≋░▒▓⟟⧉⟁⬣⎔⫷⫸✦✧★☆✪✺♠♦♥♣♤♢♡♧§👁️🤺💾⛓️‍💥🔦🏹🐦‍🔥❤️‍🔥🗣️🐉👽👹🫴🏽🧟‍♂️👑🙊🙉🙈🐵🐒🐻🦊🦆🦉🐺🫎🐌🐜🐡🪼🦑🦎🦈🐅🐇🦦🌵🪨🍄🪻🪷🌙🌗🌓🌪️🫧🌊🏆🎯🎹🎨🫟🧊🍪🧇🍇🥤🏊‍♂️🚞🚝🚄🚡🚂🚇✈️🛫🚀🛰️🛸🚉🚊🛺🛵🚲🛞⛵️🚁🗿⛴️🗼🌋🏜️🏝️🏖️⛰️🏔️🗻🏕️🏠🛖⛺️🏘️🏚️🏢🏛️🏫🛣️🛤️🌅🎆🌃🌁🏙️🎇🏞️🎑🌠🌆🌉🌌🌇🌄🗾⌚️⌨️🖥️💻💽📀💿🖱️📷💎🕯️🔌💡🕰️📺🛠️🔨⛏️💰🔩🧿🔮🪬🩻🕳️💊🧬🦠🩸🧼🧽🖼️🎈🗑️📈📙📚🧷🖇️📎🔗📐📌🧡‼️✅🔴🔵🟤🟠🔺⚫️🟢⚪️〰️➰➕➖➗🟰♾️💲✖️👁️‍🗨️🔳🔲◽️◼️◻️▪️▫️◾️🟥🟦🟫⬜️🟩⬛️🟪🟧🔊🔇🔔🔕💭💬🗯️🃏🀄️🕚🏳️🏴`;
-    
-    // Parse single emojis - properly handle emoji sequences
-    const singleEmojis = [];
-    const setArray = Array.from(SINGLE_EMOJI_SET);
-    for (let i = 0; i < setArray.length; i++) {
-      const char = setArray[i];
-      // Skip zero-width joiners, variation selectors, and other invisible chars
-      const isInvisible = char === '\u200D' || char === '\uFE0F' || char === '\uFE00' || char === '\uFE01' || 
-                         char === '\uFE02' || char === '\uFE03' || char === '\uFE04' || char === '\uFE05' ||
-                         char === '\uFE06' || char === '\uFE07' || char === '\uFE08' || char === '\uFE09' ||
-                         char === '\uFE0A' || char === '\uFE0B' || char === '\uFE0C' || char === '\uFE0D' ||
-                         char === '\uFE0E' || char.trim() === '';
-      if (!isInvisible) {
-        singleEmojis.push(char);
-      }
-    }
-    
-    // Combine all emojis (single + kaomojis) into one array
-    const ALL_EMOJIS = [...singleEmojis, ...KAOMOJI_LIST];
-    
-    const colors = ['var(--orange)', 'var(--teal)', 'var(--green)', 'var(--fuchsia)', 'var(--ice-white)'];
-    
-    // Individual letter ASCII art extracted from full text
-    const LETTER_W = [
-      '██╗    ██╗',
-      '██║    ██║',
-      '██║ █╗ ██║',
-      '██║███╗██║',
-      '╚███╔███╔╝',
-      ' ╚══╝╚══╝ '
-    ];
-    
-    const LETTER_A = [
-      ' █████╗ ',
-      '██╔══██╗',
-      '███████║',
-      '██╔══██║',
-      '██║  ██║',
-      '╚═╝  ╚═╝'
-    ];
-    
-    const LETTER_L = [
-      '██╗     ',
-      '██║     ',
-      '██║     ',
-      '██║     ',
-      '███████╗',
-      '╚══════╝'
-    ];
-    
-    const LETTER_E = [
-      '███████╗',
-      '██╔════╝',
-      '████╗  ',
-      '██╔══╝  ',
-      '███████╗',
-      '╚══════╝'
-    ];
-    
-    const LETTER_D = [
-      '██████╗ ',
-      '██╔══██╗',
-      '██║  ██║',
-      '██║  ██║',
-      '██████╔╝',
-      '╚═════╝ '
-    ];
-    
-    const LETTER_R = [
-      '██████╗ ',
-      '██╔══██╗',
-      '██████╔╝',
-      '██╔══██╗',
-      '██║  ██║',
-      '╚═╝  ╚═╝'
-    ];
-    
-    const LETTER_Z = [
-      '███████╗',
-      '╚══███╔╝',
-      '  ███╔╝ ',
-      ' ███╔╝  ',
-      '███████╗',
-      '╚══════╝'
-    ];
-    
-    const LETTER_C = [
-      ' ██████╗',
-      '██╔════╝',
-      '██║     ',
-      '██║     ',
-      '╚██████╗',
-      ' ╚═════╝'
-    ];
-    
-    const LETTER_O = [
-      ' ██████╗ ',
-      '██╔═══██╗',
-      '██║   ██║',
-      '██║   ██║',
-      '╚██████╔╝',
-      ' ╚═════╝ '
-    ];
-    
-    const LETTER_N = [
-      '██╗  ██╗',
-      '██║  ██║',
-      '███████║',
-      '██╔══██║',
-      '██║  ██║',
-      '╚═╝  ╚═╝'
-    ];
-    
-    const LETTER_T = [
-      '████████╗',
-      '╚══██╔══╝',
-      '   ██║   ',
-      '   ██║   ',
-      '   ██║   ',
-      '   ╚═╝   '
-    ];
-    
-    const LETTER_M = [
-      '███╗   ███╗',
-      '████╗ ████║',
-      '██╔████╔██║',
-      '██║╚██╔╝██║',
-      '██║ ╚═╝ ██║',
-      '╚═╝     ╚═╝'
-    ];
-    
-    // Letter color pairs: [color1, color2]
-    const LETTER_COLORS = {
-      // WALEED = orange
-      'W': ['var(--orange)', 'var(--orange)'],
-      'A': ['var(--orange)', 'var(--orange)'],
-      'L': ['var(--orange)', 'var(--orange)'],
-      'E': ['var(--orange)', 'var(--orange)'],
-      'E2': ['var(--orange)', 'var(--orange)'],
-      'D': ['var(--orange)', 'var(--orange)'],
-      // RAZA = teal
-      'R': ['var(--teal)', 'var(--teal)'],
-      'A2': ['var(--teal)', 'var(--teal)'],
-      'Z': ['var(--teal)', 'var(--teal)'],
-      'A3': ['var(--teal)', 'var(--teal)']
-    };
-    
-    function initHeroName() {
-      const heroNameEl = document.getElementById('hero-name');
-      if (!heroNameEl) return;
+    <div class="arts-grid">
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Crime and Punishment</h3>
+          <span class="arts-entry-subtitle">Dostoevsky · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <p>Psychology before it was clinical. Maps the architecture of justification.</p>
+        </div>
+      </article>
       
-      // Define letter sequence: W-A-L-E-E-D space R-A-Z-A
-      // Emojis removed - they were causing problems
-      const letterSequence = [
-        { letter: 'W', ascii: LETTER_W, colors: LETTER_COLORS['W'] },
-        { letter: 'A', ascii: LETTER_A, colors: LETTER_COLORS['A'] },
-        { letter: 'L', ascii: LETTER_L, colors: LETTER_COLORS['L'] },
-        { letter: 'E', ascii: LETTER_E, colors: LETTER_COLORS['E'] },
-        { letter: 'E2', ascii: LETTER_E, colors: LETTER_COLORS['E2'] },
-        { letter: 'D', ascii: LETTER_D, colors: LETTER_COLORS['D'] },
-        { letter: 'SPACE', ascii: [''], colors: null },
-        { letter: 'R', ascii: LETTER_R, colors: LETTER_COLORS['R'] },
-        { letter: 'A2', ascii: LETTER_A, colors: LETTER_COLORS['A2'] },
-        { letter: 'Z', ascii: LETTER_Z, colors: LETTER_COLORS['Z'] },
-        { letter: 'A3', ascii: LETTER_A, colors: LETTER_COLORS['A3'] }
-      ];
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Thinking in Systems</h3>
+          <span class="arts-entry-subtitle">Donella Meadows · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
+          <p>The closest thing to a moral framework for engineers.</p>
+        </div>
+      </article>
       
-      // Build HTML with separate letter boxes
-      let html = '';
-      letterSequence.forEach((item, idx) => {
-        if (item.letter === 'SPACE') {
-          html += '<div style="width: 24px;"></div>'; // Spacer between names
-          return;
-        }
-        
-        html += `<div class="letter-box" data-letter="${item.letter}" style="--color1: ${item.colors[0]}; --color2: ${item.colors[1]};">`;
-        
-        // Build ASCII art for this letter
-        item.ascii.forEach((line, lineIdx) => {
-          for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            html += `<span class="ascii-char" data-line="${lineIdx}" data-char="${i}" data-letter="${item.letter}">${char === ' ' ? '\u00A0' : char}</span>`;
-          }
-          if (lineIdx < item.ascii.length - 1) {
-            html += '<br>';
-          }
-        });
-        
-        html += '</div>';
-      });
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Laws of Human Nature</h3>
+          <span class="arts-entry-subtitle">Robert Greene · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/lawsofhumannature.jpg" alt="Laws of Human Nature" class="arts-entry-image">
+          <p>Either you understand people, or you get managed by people.</p>
+        </div>
+      </article>
       
-      heroNameEl.innerHTML = html;
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Road to Serfdom</h3>
+          <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/road_to_serfdom.jpg" alt="Road to Serfdom" class="arts-entry-image">
+          <p>How good intentions can create systems that destroy freedom.</p>
+        </div>
+      </article>
       
-      // Assign pixel indices to each character (treating entire display as TV screen)
-      let pixelIndex = 0;
-      const allChars = heroNameEl.querySelectorAll('.ascii-char');
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Heroin</h3>
+          <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
+          <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
+        </div>
+      </article>
       
-      allChars.forEach((char) => {
-        // Set pixel index for animation delays (sequential across entire display)
-        char.style.setProperty('--pixel-index', pixelIndex);
-        
-        // Calculate Y position for beach mode (0-100 based on vertical position in letter)
-        const letterBox = char.closest('.letter-box');
-        const lineNum = parseInt(char.dataset.line) || 0;
-        const totalLines = letterBox.querySelectorAll('br').length + 1;
-        const yPos = totalLines > 1 ? (lineNum / (totalLines - 1)) * 100 : 50; // 0-100 scale
-        
-        char.style.setProperty('--pixel-y-pos', yPos);
-        
-        pixelIndex++;
-      });
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">YEEZUS</h3>
+          <span class="arts-entry-subtitle">Kanye West · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
+          <p>Raw power + insecurity displayed as art. Attention mechanics at full voltage.</p>
+        </div>
+      </article>
       
-      // Animate all letters simultaneously - each letter builds at same rate
-      const letterBoxes = heroNameEl.querySelectorAll('.letter-box');
-      const animationDuration = 1500; // 1.5 seconds for each letter
-      let completedLetters = 0;
-      const totalLetters = letterBoxes.length; // Count actual letters
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">MTV Unplugged</h3>
+          <span class="arts-entry-subtitle">Nirvana · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
+          <p>The last performance, stripped down. What's left when you remove the distortion.</p>
+        </div>
+      </article>
       
-      function startLetterAnimation() {
-        completedLetters = 0;
-        
-        letterBoxes.forEach((box, idx) => {
-          if (!box.dataset.letter) return;
-          
-          // Reset state for restart
-          box.classList.remove('complete');
-          box.classList.add('typing');
-          const chars = box.querySelectorAll('.ascii-char');
-          chars.forEach(c => c.classList.remove('visible'));
-          
-          const charCount = chars.length;
-          const charDelay = animationDuration / charCount; // Same rate for all letters
-          
-          let charIdx = 0;
-          
-          function revealNextChar() {
-            if (charIdx >= charCount) {
-              // Letter complete - turn white after brief delay
-              setTimeout(() => {
-                box.classList.remove('typing');
-                box.classList.add('complete');
-                completedLetters++;
-                
-                // After all letters complete, hold white for 2 seconds then restart
-                if (completedLetters === totalLetters) {
-                  setupAnimationControls();
-                  // Hold white for 2 seconds, then restart the animation
-                  setTimeout(() => {
-                    startLetterAnimation();
-                  }, 2000);
-                }
-              }, 300);
-              return;
-            }
-            
-            // Reveal character with dual colors
-            chars[charIdx].classList.add('visible');
-            charIdx++;
-            
-            setTimeout(revealNextChar, charDelay);
-          }
-          
-          // Start all letters at the same time
-          setTimeout(() => revealNextChar(), 500);
-        });
-      }
-      
-      // Start the animation loop
-      startLetterAnimation();
-    }
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Peak Anime</h3>
+          <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image" style="max-width: 150px;">
+          <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image" style="max-width: 150px;">
+          <p>Freedom as burden, power as isolation. The strongest characters are the most trapped.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section" id="writing">
+    <div class="section-header">
+      <div class="section-tag">[3] MIND · OUTPUT</div>
+      <h2 class="section-title">▶ WRITING</h2>
+      <p class="section-desc">Systems thinking in prose.</p>
+    </div>
     
-    // Animation control buttons and color picker
-    let animationControlsSetup = false;
-    let selectedColor = 'teal'; // Default color
-    
-    function setupAnimationControls() {
-      const heroNameEl = document.getElementById('hero-name');
-      if (!heroNameEl) return;
+    <div class="essays-grid">
+      <div>
+        <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
+        <div class="essay-item" onclick="openPopup({title: 'Capitalism, Nihilism, and the Search for Post-Meaning', subtitle: 'Philosophical Essay', content: '<p>Full essay coming soon.</p>'})">
+          <span class="essay-title">Capitalism, Nihilism, and the Search for Post-Meaning</span>
+          <p class="essay-preview">Capitalism doesn't just produce goods, it produces meaning substitutes.</p>
+        </div>
+        <div class="essay-item" onclick="openPopup({title: 'Pragmatic Technosocial Market Direct Democracy', subtitle: 'Political Essay', content: '<p>Full essay coming soon.</p>'})">
+          <span class="essay-title">Pragmatic Technosocial Market Direct Democracy</span>
+          <p class="essay-preview">Market mechanisms where they work, democratic feedback where legitimacy matters.</p>
+        </div>
+        <div class="essay-item" onclick="openPopup({title: 'Systemic Failures vs. Individual Moral Flaws', subtitle: 'Systems Essay', content: '<p>Full essay coming soon.</p>'})">
+          <span class="essay-title">Systemic Failures vs. Individual Moral Flaws</span>
+          <p class="essay-preview">People behave rationally inside broken incentive structures.</p>
+        </div>
+        <div class="essay-item" onclick="openPopup({title: 'Values That Survive Pressure', subtitle: 'Ethics Essay', content: '<p>Full essay coming soon.</p>'})">
+          <span class="essay-title">Values That Survive Pressure</span>
+          <p class="essay-preview">Post-nihilistic ethics. Choose values that survive pressure.</p>
+        </div>
+      </div>
       
-      const buttons = document.querySelectorAll('.hero-anim-btn');
-      if (buttons.length === 0) return;
-      
-      // Only setup once
-      if (animationControlsSetup) return;
-      animationControlsSetup = true;
-      
-      const animationModes = ['matrix', 'glitch', 'collapse', 'scan', 'pulse', 'neon', 'wave'];
-      
-      // Start with matrix mode if no mode is set
-      if (!animationModes.some(m => heroNameEl.classList.contains(m + '-mode'))) {
-        heroNameEl.classList.add('matrix-mode');
-      }
-      
-      // Setup animation mode buttons
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const mode = btn.dataset.mode;
-          
-          // Remove all modes
-          animationModes.forEach(m => heroNameEl.classList.remove(m + '-mode'));
-          
-          // Add selected mode
-          heroNameEl.classList.add(mode + '-mode');
-          
-          // Update button states
-          buttons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          
-          // Update color
-          updateHeroColor(selectedColor);
-        });
-      });
-      
-      // Setup color picker
-      const colorOptions = document.querySelectorAll('.color-option');
-      colorOptions.forEach(option => {
-        option.addEventListener('click', () => {
-          const color = option.dataset.color;
-          selectedColor = color;
-          
-          // Update active state
-          colorOptions.forEach(opt => opt.classList.remove('active'));
-          option.classList.add('active');
-          
-          // Update hero color
-          updateHeroColor(color);
-        });
-      });
-      
-      // Initialize with default color
-      updateHeroColor(selectedColor);
-    }
-    
-    function updateHeroColor(color) {
-      const heroNameEl = document.getElementById('hero-name');
-      if (!heroNameEl) return;
-      
-      const colorMap = {
-        teal: 'var(--teal)',
-        orange: 'var(--orange)',
-        brown: 'var(--brown)',
-        fuchsia: 'var(--fuchsia)',
-        pink: 'var(--pink)'
-      };
-      
-      const colorValue = colorMap[color] || colorMap.teal;
-      heroNameEl.style.setProperty('--hero-color', colorValue);
-      
-      // Update animations that use specific colors
-      const allChars = heroNameEl.querySelectorAll('.ascii-char');
-      allChars.forEach(char => {
-        // For modes that need color updates
-        if (heroNameEl.classList.contains('matrix-mode') || 
-            heroNameEl.classList.contains('glitch-mode') ||
-            heroNameEl.classList.contains('neon-mode') ||
-            heroNameEl.classList.contains('wave-mode') ||
-            heroNameEl.classList.contains('scan-mode') ||
-            heroNameEl.classList.contains('pulse-mode')) {
-          // Color is handled via CSS custom property
-        }
-      });
-    }
-    
-    // Get random emoji from the combined list
-    function getRandomEmoji() {
-      return ALL_EMOJIS[Math.floor(Math.random() * ALL_EMOJIS.length)];
-    }
-    
-    // Update emoji text with fade effect
-    function updateEmoji(emojiElement) {
-      if (!emojiElement) return;
-      emojiElement.style.opacity = '0';
-      setTimeout(() => {
-        emojiElement.textContent = getRandomEmoji();
-        const colorIndex = Math.floor(Math.random() * colors.length);
-        emojiElement.style.color = colors[colorIndex];
-        emojiElement.style.opacity = '1';
-      }, 150);
-    }
-    
-    // Add emojis to a header element (left and right)
-    function addEmojisToHeader(headerElement) {
-      if (!headerElement) return;
-      
-      // Check if emojis already exist
-      if (headerElement.querySelector('.header-emoji-left') || headerElement.querySelector('.header-emoji-right')) {
-        return;
-      }
-      
-      // Create left emoji
-      const leftEmoji = document.createElement('span');
-      leftEmoji.className = 'header-emoji header-emoji-left';
-      leftEmoji.textContent = getRandomEmoji();
-      const leftColorIndex = Math.floor(Math.random() * colors.length);
-      leftEmoji.style.color = colors[leftColorIndex];
-      
-      // Create right emoji
-      const rightEmoji = document.createElement('span');
-      rightEmoji.className = 'header-emoji header-emoji-right';
-      rightEmoji.textContent = getRandomEmoji();
-      const rightColorIndex = Math.floor(Math.random() * colors.length);
-      rightEmoji.style.color = colors[rightColorIndex];
-      
-      // Insert left emoji at the beginning
-      headerElement.insertBefore(leftEmoji, headerElement.firstChild);
-      
-      // Insert right emoji at the end
-      headerElement.appendChild(rightEmoji);
-      
-      // Set up interval to change emojis every 3-5 seconds
-      const changeInterval = 3000 + Math.random() * 2000; // 3-5 seconds
-      
-      setInterval(() => {
-        updateEmoji(leftEmoji);
-        updateEmoji(rightEmoji);
-      }, changeInterval);
-    }
-    
-    // Emojis removed - they were causing problems
-    
-    // Initialize emojis on all headers (emojis removed from hero, kept for page titles if needed)
-    function initHeaderEmojis() {
-      // Hero emojis removed - they were causing problems
-      
-      // Add to all page titles
-      document.querySelectorAll('.page-title').forEach(header => {
-        addEmojisToHeader(header);
-      });
-      
-      // Add to all content section titles
-      document.querySelectorAll('.content-section-title').forEach(header => {
-        addEmojisToHeader(header);
-      });
-      
-      // Add to all dev section titles
-      document.querySelectorAll('.dev-section-title').forEach(header => {
-        addEmojisToHeader(header);
-      });
-    }
-    
-    // INIT
-    document.addEventListener('DOMContentLoaded', () => {
-      pageW = window.innerWidth;
-      pageH = window.innerHeight;
-      initHeroName();
-      setupAnimationControls();
-      setTimeout(() => {
-        initHeaderEmojis();
-      }, 500);
-      initApp();
-    });
-  </script>
-  
-  <!-- POPUP DRAWER -->
+      <div>
+        <h3 class="essays-category-title">◈ CREATIVE WRITING</h3>
+        <div class="creative-tiles">
+          <div class="creative-tile" onclick="openPopup({locked: true})">
+            <span class="creative-tile-icon">📜</span>
+            <span class="creative-tile-title">poem.txt (1)</span>
+            <span class="creative-tile-lock">🔒</span>
+          </div>
+          <div class="creative-tile" onclick="openPopup({locked: true})">
+            <span class="creative-tile-icon">📜</span>
+            <span class="creative-tile-title">poem.txt (2)</span>
+            <span class="creative-tile-lock">🔒</span>
+          </div>
+          <div class="creative-tile" onclick="openPopup({locked: true})">
+            <span class="creative-tile-icon">🎵</span>
+            <span class="creative-tile-title">song.mp4 (1)</span>
+            <span class="creative-tile-lock">🔒</span>
+          </div>
+          <div class="creative-tile" onclick="openPopup({locked: true})">
+            <span class="creative-tile-icon">🎵</span>
+            <span class="creative-tile-title">song.mp4 (2)</span>
+            <span class="creative-tile-lock">🔒</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-text">
+      <a href="studio.html" class="footer-link">Studio & Contact</a> · 
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank">GitHub</a> · 
+      <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
+    </p>
+    <p class="footer-text">© 2025 Waleed Raza</p>
+  </footer>
+
+  <!-- POPUP -->
   <div class="popup-overlay" id="popup-overlay">
     <div class="popup-drawer" id="popup-drawer">
       <button class="popup-close" id="popup-close">×</button>
       <div id="popup-content"></div>
     </div>
   </div>
-  
+
   <script>
+    // Products data
+    const PRODUCTS = [
+      { id: 'pokergeek', name: 'PokerGeek', image: 'pics/PoekrGeek.ai.png' },
+      { id: 'prodpath', name: 'ProdPath', image: 'pics/Paths.png' },
+      { id: 'clipvault', name: 'ClipVault', image: 'pics/clipvault.png' },
+      { id: 'musicmaster', name: 'MusicMaster', image: 'pics/MusicMaster.png' },
+      { id: 'pointer', name: 'Pointer', image: 'pics/pointer.png' },
+      { id: 'agentyeager', name: 'AgentYeager', image: 'pics/AgentYeager.png' },
+      { id: 'datadepth', name: 'DataDepth', image: 'pics/datadepth.png' },
+      { id: 'petform', name: 'Petform', image: 'pics/petrform.png' },
+      { id: 'alexandria', name: 'Library of Alexandria', image: 'pics/libraryofalexandria.png' }
+    ];
+    
+    const PROJECTS = [
+      { id: 'gpuzap', name: 'GPUZap', desc: 'GPU provisioning CLI.', repo: 'https://github.com/WaleedaRaza/gpuzap' },
+      { id: 'handcuts', name: 'HandCuts', desc: 'Gesture shortcuts for desktop.', repo: 'https://github.com/WaleedaRaza/handcuts' },
+      { id: 'warvis', name: 'WARVIS', desc: 'Local Jarvis with personality.', repo: 'https://github.com/WaleedaRaza/warvis' },
+      { id: 'mmamania', name: 'MMAmania', desc: 'Fight analytics and ELO rankings.', repo: 'https://github.com/WaleedaRaza/mmamania' },
+      { id: 'stockscouter', name: 'StockScouter', desc: 'Options flow dashboard.', repo: 'https://github.com/WaleedaRaza/stockscouter' },
+      { id: 'portfolio', name: 'WaleedOS', desc: 'This site.', repo: 'https://github.com/WaleedaRaza/waleedaraza.github.io' }
+    ];
+    
+    // Render products
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = PRODUCTS.map(p => `
+        <div class="product-tile">
+          <div class="product-image" style="background-image: url('${p.image}');"></div>
+          <div class="product-name">${p.name}</div>
+        </div>
+      `).join('');
+    }
+    
+    // Render projects
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      grid.innerHTML = PROJECTS.map(p => `
+        <div class="project-tile">
+          <div class="project-name">${p.name}</div>
+          <div class="project-desc">${p.desc}</div>
+          <a href="${p.repo}" target="_blank" class="project-link">Repository →</a>
+        </div>
+      `).join('');
+    }
+    
     // Popup system
     const popupOverlay = document.getElementById('popup-overlay');
-    const popupDrawer = document.getElementById('popup-drawer');
     const popupContent = document.getElementById('popup-content');
     const popupClose = document.getElementById('popup-close');
     
@@ -3989,63 +943,36 @@
           <div class="popup-locked">
             <div class="popup-locked-icon">🔒</div>
             <div class="popup-locked-title">Password Required</div>
-            <div class="popup-locked-text">
-              ${data.lockedMessage || 'These pieces are personal and currently private.<br><br>I share them selectively with collaborators and close friends — not because I\'m mysterious, but because I\'m protective of what\'s real.<br><br>If we\'re building together, ask.'}
-            </div>
+            <div class="popup-locked-text">Private draft. Shared selectively.</div>
           </div>
         `;
       } else {
-        let linksHTML = '';
-        if (data.links) {
-          linksHTML = '<div class="popup-links">';
-          data.links.forEach(link => {
-            linksHTML += `<a href="${link.url}" target="_blank" class="popup-link">${link.label}</a>`;
-          });
-          linksHTML += '</div>';
-        }
-        
         popupContent.innerHTML = `
-          <div class="popup-title">${data.title}</div>
-          ${data.subtitle ? `<div class="popup-subtitle">${data.subtitle}</div>` : ''}
-          <div class="popup-content">${data.content}</div>
-          ${data.why ? `<div class="popup-why"><div class="popup-why-title">Why I Care</div><div>${data.why}</div></div>` : ''}
-          ${linksHTML}
+          <div class="popup-title">${data.title || ''}</div>
+          <div class="popup-subtitle">${data.subtitle || ''}</div>
+          <div class="popup-content">${data.content || ''}</div>
         `;
       }
       popupOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
     }
     
     function closePopup() {
       popupOverlay.classList.remove('active');
-      document.body.style.overflow = '';
     }
     
     popupClose.addEventListener('click', closePopup);
     popupOverlay.addEventListener('click', (e) => {
       if (e.target === popupOverlay) closePopup();
     });
-    
-    // Close on Escape
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
-        closePopup();
-      }
+      if (e.key === 'Escape') closePopup();
     });
     
-    // Handle clickable cards with data-popup attribute
-    document.addEventListener('click', (e) => {
-      const card = e.target.closest('.content-card.clickable[data-popup]');
-      if (card) {
-        try {
-          const popupData = JSON.parse(card.getAttribute('data-popup'));
-          openPopup(popupData);
-        } catch(err) {
-          console.error('Invalid popup data', err);
-        }
-      }
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      renderProjects();
     });
   </script>
 </body>
 </html>
-
