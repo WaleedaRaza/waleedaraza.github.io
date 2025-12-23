@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Waleed Raza</title>
   <meta name="description" content="Full-Stack Developer, ML/AI Engineer, Distributed Systems">
   
@@ -97,11 +97,6 @@
       color: var(--orange);
       text-decoration: none;
       letter-spacing: 0.05em;
-      white-space: nowrap;
-    }
-    
-    .nav-brand .line-break {
-      display: none;
     }
     
     .nav-links {
@@ -170,11 +165,27 @@
       gap: 8px;
       margin-bottom: 24px;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(10px, 1.5vw, 14px);
+      font-size: clamp(18px, 2.5vw, 24px);
       line-height: 1.1;
       white-space: pre;
       position: relative;
       z-index: 2;
+    }
+    
+    /* Desktop - keep name on one line, bigger size */
+    @media (min-width: 768px) {
+      .hero-name {
+        font-size: clamp(20px, 3vw, 28px);
+        flex-wrap: nowrap;
+      }
+    }
+    
+    /* Mobile - allow split, smaller but readable */
+    @media (max-width: 767px) {
+      .hero-name {
+        font-size: clamp(12px, 2vw, 16px);
+        flex-wrap: wrap;
+      }
     }
     
     .letter-box {
@@ -882,128 +893,211 @@
       display: none;
     }
     
-    /* Desktop terminal nav - PRESERVE ALL DESKTOP STYLES */
-    @media (min-width: 769px) {
+    /* Desktop terminal - keep current styling */
+    @media (min-width: 768px) {
       .terminal-nav {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
         width: 360px;
-        max-height: none;
-        transform: none;
-        border-radius: 8px;
+      }
+    }
+    
+    /* Mobile terminal - smaller, bold terminal theme, default minimized */
+    @media (max-width: 767px) {
+      .terminal-nav {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: calc(100vw - 20px);
+        font-weight: 700;
+        border: 2px solid #39ff14;
+        box-shadow: 
+          0 0 20px rgba(57, 255, 20, 0.5),
+          0 12px 48px rgba(0,0,0,0.9),
+          inset 0 0 20px rgba(57, 255, 20, 0.1);
       }
       
-      .terminal-nav.expanded {
-        transform: none;
+      /* Mobile - default minimized */
+      .terminal-nav {
+        min-height: auto;
       }
       
-      .terminal-nav-header {
-        padding: 10px 14px;
-        cursor: move;
+      .terminal-nav.minimized {
+        min-height: 50px;
       }
       
-      .terminal-nav-title {
-        font-size: 12px;
-        font-weight: normal;
-        color: #999;
-        text-shadow: none;
-        font-family: 'IBM Plex Mono', monospace;
-      }
-      
-      .terminal-nav-title::before {
-        content: '⬢ ';
-        color: var(--teal);
-      }
-      
-      .terminal-nav-controls {
-        display: flex;
-      }
-      
-      .terminal-nav-body {
-        display: block;
-        padding: 14px 16px;
-      }
-      
-      .terminal-nav-output {
-        display: block;
-        font-size: 13px;
-      }
-      
-      .terminal-nav-history {
-        display: block;
-      }
-      
-      .terminal-nav-links {
-        grid-template-columns: 1fr 1fr;
-        padding: 10px;
-      }
-      
-      .terminal-nav-link {
-        font-size: 11px;
-        font-weight: normal;
-        font-family: 'IBM Plex Mono', monospace;
-        background: #0c0c0c;
-        border: 1px solid #222;
-        color: #888;
-        text-transform: none;
-        letter-spacing: normal;
-        box-shadow: none;
-        padding: 10px 12px;
-      }
-      
-      .terminal-nav-link:hover {
-        background: rgba(255, 107, 53, 0.1);
-        border-color: var(--orange);
-        color: var(--orange);
-        transform: none;
-      }
-      
-      .terminal-nav-link.active {
-        background: rgba(0, 212, 170, 0.1);
-        border-color: var(--teal);
-        color: var(--teal);
-        transform: none;
-      }
-      
-      .terminal-nav-link span {
-        display: inline;
-        font-size: inherit;
-        color: #444;
-        margin-right: 6px;
-        margin-bottom: 0;
-      }
-      
-      .terminal-nav-footer {
-        padding: 8px 14px;
-        background: #0f0f0f;
-        border-top: 1px solid #222;
-      }
-      
-      .terminal-nav-status {
-        font-size: 10px;
-        font-family: 'IBM Plex Mono', monospace;
-        color: #555;
-        text-transform: none;
-      }
-      
-      .terminal-nav-status-dot {
-        background: var(--teal);
-        box-shadow: 0 0 6px var(--teal);
-      }
-      
-      .terminal-nav-time {
-        font-size: 11px;
-        font-family: 'IBM Plex Mono', monospace;
-        color: var(--orange);
-      }
-      
-      .nav-brand .line-break {
+      /* Hide close button on mobile - only need minimize/maximize */
+      .terminal-nav-dot.close {
         display: none;
       }
       
-      .nav-brand {
-        white-space: nowrap;
+      .terminal-nav-dot.max {
+        display: none;
+      }
+      
+      /* Make minimize/maximize button bigger and more clickable */
+      .terminal-nav-dot.min {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+        border-radius: 4px;
+        background: #ffbd2e !important;
+        box-shadow: 0 0 12px rgba(255,189,46,0.6) !important;
+      }
+      
+      .terminal-nav-dot.min:active {
+        transform: scale(0.95);
+      }
+      
+      .terminal-nav-dot.min::after {
+        content: '−';
+        color: #000;
+        font-weight: 900;
+        line-height: 1;
+        display: block;
+      }
+      
+      .terminal-nav.minimized .terminal-nav-dot.min::after {
+        content: '+';
+      }
+      
+      /* Make header easily clickable on mobile */
+      .terminal-nav-header {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(57, 255, 20, 0.3);
+      }
+      
+      .terminal-nav-title {
+        pointer-events: none;
+      }
+      
+      .terminal-nav-header {
+        background: linear-gradient(180deg, #1a3a1a 0%, #0a1a0a 100%);
+        padding: 12px 16px;
+        border-bottom: 2px solid #39ff14;
+      }
+      
+      .terminal-nav-title {
+        font-size: 14px;
+        color: #39ff14;
+        font-weight: 700;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+        letter-spacing: 0.1em;
+      }
+      
+      .terminal-nav-title::before {
+        color: #39ff14;
+        font-weight: 700;
+      }
+      
+      .terminal-nav-body {
+        background: #0a0a0a;
+        padding: 16px 18px;
+        border-bottom: 2px solid #222;
+      }
+      
+      .terminal-nav-prompt {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      
+      .terminal-nav-user {
+        color: #39ff14;
+        font-weight: 700;
+        text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+      }
+      
+      .terminal-nav-path {
+        color: #6aff6a;
+        font-weight: 700;
+      }
+      
+      .terminal-nav-output {
+        font-size: 15px;
+        font-weight: 700;
+        color: #39ff14;
+        text-shadow: 0 0 12px rgba(57, 255, 20, 0.8);
+        padding-left: 20px;
+        min-height: 28px;
+      }
+      
+      .terminal-nav-output::before {
+        color: #ff6b35;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      
+      .terminal-cursor {
+        width: 12px;
+        height: 18px;
+        background: #39ff14;
+        box-shadow: 0 0 12px rgba(57, 255, 20, 0.8);
+      }
+      
+      .terminal-nav-links {
+        padding: 12px;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        background: #080808;
+      }
+      
+      .terminal-nav-link {
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #aaa;
+        border: 2px solid #333;
+        background: #0c0c0c;
+        letter-spacing: 0.05em;
+      }
+      
+      .terminal-nav-link:hover {
+        color: #39ff14;
+        border-color: #39ff14;
+        background: rgba(57, 255, 20, 0.15);
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      }
+      
+      .terminal-nav-link.active {
+        color: #39ff14;
+        border-color: #39ff14;
+        background: rgba(57, 255, 20, 0.2);
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+      }
+      
+      .terminal-nav-link span {
+        color: #39ff14;
+        font-weight: 700;
+        margin-right: 8px;
+      }
+      
+      .terminal-nav-footer {
+        padding: 10px 16px;
+        border-top: 2px solid #222;
+      }
+      
+      .terminal-nav-status {
+        font-size: 11px;
+        font-weight: 700;
+        color: #39ff14;
+      }
+      
+      .terminal-nav-status-dot {
+        background: #39ff14;
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.8);
+      }
+      
+      .terminal-nav-time {
+        font-size: 12px;
+        font-weight: 700;
+        color: #39ff14;
       }
     }
     
@@ -1022,11 +1116,6 @@
       50% { transform: translateX(-50%) translateY(6px); }
     }
     
-    @media (max-width: 700px) {
-      .hero-name {
-        font-size: 5px;
-      }
-    }
     
     /* ═══════════════════════════════════════════════════════════════════════
        SECTIONS
@@ -1034,10 +1123,23 @@
     
     .section {
       padding: 100px 40px;
-      max-width: 1400px;
-      margin: 0 auto;
+      width: 100%;
       position: relative;
       z-index: 10;
+    }
+    
+    /* Desktop - full width, no max-width constraint */
+    @media (min-width: 768px) {
+      .section {
+        padding: 100px 60px;
+      }
+    }
+    
+    /* Mobile - reduced padding */
+    @media (max-width: 767px) {
+      .section {
+        padding: 60px 20px;
+      }
     }
     
     .section-header {
@@ -1086,10 +1188,16 @@
       display: grid;
       grid-template-columns: 2.5fr 1fr;
       gap: 60px;
-      max-width: 1800px;
-      margin: 0 auto;
+      width: 100%;
       padding: 80px 60px;
       align-items: start;
+    }
+    
+    /* Desktop - full width layout */
+    @media (min-width: 768px) {
+      .section-pair {
+        padding: 80px 60px;
+      }
     }
     
     .section-pair .section {
@@ -1102,10 +1210,16 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 40px;
-      max-width: 1800px;
-      margin: 0 auto;
+      width: 100%;
       padding: 80px 60px;
       align-items: start;
+    }
+    
+    /* Desktop - full width layout */
+    @media (min-width: 768px) {
+      .section-trio {
+        padding: 80px 60px;
+      }
     }
     
     .section-trio .section {
@@ -1130,7 +1244,8 @@
       gap: 16px;
     }
     
-    @media (max-width: 1200px) {
+    /* Tablet - stack sections */
+    @media (max-width: 1024px) {
       .section-pair {
         grid-template-columns: 1fr;
         padding: 60px 40px;
@@ -1152,7 +1267,8 @@
       }
     }
     
-    @media (max-width: 768px) {
+    /* Mobile - reduced padding */
+    @media (max-width: 767px) {
       .section-pair,
       .section-trio {
         padding: 40px 20px;
@@ -1164,14 +1280,28 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     .dev-showcase {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      width: 100%;
     }
     
-    @media (max-width: 900px) {
+    /* Desktop - products and projects side by side (row) */
+    @media (min-width: 768px) {
       .dev-showcase {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+      }
+    }
+    
+    /* Mobile - stack vertically */
+    @media (max-width: 767px) {
+      .dev-showcase {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
       }
     }
     
@@ -1201,6 +1331,23 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 16px;
+      width: 100%;
+    }
+    
+    /* Desktop - 3x3 grid, full width */
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+    
+    /* Mobile - responsive grid */
+    @media (max-width: 767px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
     }
     
     .product-tile {
@@ -1236,6 +1383,25 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      width: 100%;
+    }
+    
+    /* Desktop - projects in a row under products */
+    @media (min-width: 768px) {
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+      }
+    }
+    
+    /* Mobile - single column */
+    @media (max-width: 767px) {
+      .project-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
     }
     
     .project-tile {
@@ -1280,6 +1446,27 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
+      width: 100%;
+    }
+    
+    /* Desktop - full width grid */
+    @media (min-width: 768px) {
+      .arts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+      }
+    }
+    
+    /* Mobile - responsive grid */
+    @media (max-width: 767px) {
+      .arts-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .arts-entry.span-2 {
+        grid-column: span 1;
+      }
     }
     
     .arts-entry {
@@ -1295,12 +1482,6 @@
     
     .arts-entry.span-2 {
       grid-column: span 2;
-    }
-    
-    @media (max-width: 700px) {
-      .arts-entry.span-2 {
-        grid-column: span 1;
-      }
     }
     
     .arts-entry-header {
@@ -1538,28 +1719,66 @@
     
     .contact-section {
       text-align: center;
-      padding: 120px 40px;
+      padding: 0;
       position: relative;
       z-index: 10;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Desktop - right side, center justified */
+    @media (min-width: 768px) {
+      .contact-section {
+        text-align: center;
+        padding: 0;
+      }
+    }
+    
+    /* Mobile - full width, centered */
+    @media (max-width: 767px) {
+      .contact-section {
+        text-align: center;
+        padding: 0;
+      }
     }
     
     .contact-intro {
       font-size: 14px;
       color: var(--text-dim);
-      max-width: 700px;
-      margin: 0 auto 48px;
+      width: 100%;
+      margin: 0 0 48px 0;
       line-height: 1.8;
+      text-align: center;
+    }
+    
+    /* Desktop - center justified */
+    @media (min-width: 768px) {
+      .contact-intro {
+        text-align: center;
+        max-width: none;
+      }
     }
     
     .contact-statement {
-      font-size: clamp(20px, 3vw, 28px);
       color: var(--ice-white);
-      max-width: 800px;
-      margin: 0 auto 48px;
+      width: 100%;
+      margin: 0 0 48px 0;
       line-height: 1.8;
       font-family: 'Press Start 2P', monospace;
       font-size: 12px;
       letter-spacing: 0.05em;
+      text-align: center;
+    }
+    
+    /* Desktop - center justified */
+    @media (min-width: 768px) {
+      .contact-statement {
+        text-align: center;
+        max-width: none;
+      }
     }
     
     .contact-button {
@@ -1572,6 +1791,7 @@
       text-decoration: none;
       border: 2px solid var(--orange);
       transition: all 0.2s ease;
+      text-align: center;
     }
     
     .contact-button:hover {
@@ -1694,632 +1914,33 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE NAVIGATION - HAMBURGER MENU
+       MOBILE
        ═══════════════════════════════════════════════════════════════════════ */
     
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 4px;
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 8px;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    
-    .nav-toggle span {
-      width: 22px;
-      height: 2px;
-      background: var(--orange);
-      transition: all 0.3s ease;
-    }
-    
-    .nav-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .nav-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-    
-    .nav-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE RESPONSIVE
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    @media (max-width: 768px) {
-      /* Navigation */
+    @media (max-width: 600px) {
       .nav {
-        padding: 12px 16px;
-        flex-wrap: wrap;
-      }
-      
-      .nav-brand {
-        font-size: 14px;
-        flex: 1;
-        line-height: 1.4;
-        white-space: normal;
-      }
-      
-      .nav-brand .line-break {
-        display: block;
-      }
-      
-      .nav-toggle {
-        display: flex;
+        padding: 12px 20px;
       }
       
       .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.98);
-        backdrop-filter: blur(12px);
-        flex-direction: column;
-        padding: 20px;
-        gap: 12px;
-        border-bottom: 2px solid var(--orange);
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        max-height: calc(100vh - 60px);
-        overflow-y: auto;
-      }
-      
-      .nav-links.open {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
+        gap: 16px;
       }
       
       .nav-link {
-        font-size: 14px;
-        padding: 14px 16px;
-        text-align: center;
-        border: 1px solid var(--border);
-        width: 100%;
-        display: block;
+        font-size: 10px;
       }
       
-      .nav-link:hover {
-        background: rgba(255, 107, 53, 0.1);
-        border-color: var(--orange);
+      .section {
+        padding: 60px 20px;
       }
       
-      /* Hero Section */
       .hero {
-        padding: 120px 16px 40px;
-        min-height: auto;
-      }
-      
-      .hero-name {
-        font-size: 4px !important;
-        margin-bottom: 20px;
-      }
-      
-      .hero-sub {
-        font-size: 10px !important;
-        margin-bottom: 8px;
-      }
-      
-      .hero-tagline {
-        font-size: 12px !important;
-        margin-bottom: 24px;
-        padding: 0 8px;
-      }
-      
-      .hero-controls {
-        margin-bottom: 16px;
-      }
-      
-      .animation-controls {
-        gap: 6px;
-      }
-      
-      .hero-anim-btn {
-        font-size: 7px;
-        padding: 6px 10px;
+        padding: 100px 20px 60px;
       }
       
       .hero-nav-grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-        gap: 8px;
-      }
-      
-      .hero-nav-btn {
-        font-size: 11px;
-        padding: 14px 16px;
-        width: 100%;
-      }
-      
-      .hero-nav-btn.full-width {
-        grid-column: 1;
-      }
-      
-      .hero-nav-btn.span-2 {
-        grid-column: 1;
-      }
-      
-      /* Sections */
-      .section {
-        padding: 40px 16px;
-      }
-      
-      .section-header {
-        margin-bottom: 32px;
-      }
-      
-      .section-tag {
-        font-size: 8px;
-        margin-bottom: 8px;
-      }
-      
-      .section-title {
-        font-size: 20px;
-        margin-bottom: 8px;
-      }
-      
-      .section-desc {
-        font-size: 12px;
-      }
-      
-      /* Section Pairs and Trios */
-      .section-pair,
-      .section-trio {
-        grid-template-columns: 1fr;
-        padding: 40px 16px;
-        gap: 40px;
-      }
-      
-      /* Development Section */
-      .dev-showcase {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-      
-      .dev-section-header {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      
-      .dev-section-title {
-        font-size: 14px;
-      }
-      
-      .dev-section-count {
-        font-size: 9px;
-        padding: 3px 8px;
-      }
-      
-      /* Product Grid */
-      .product-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      
-      .product-tile {
-        padding: 12px;
-      }
-      
-      .product-image {
-        height: 80px;
-        margin-bottom: 8px;
-      }
-      
-      .product-name {
-        font-size: 12px;
-      }
-      
-      /* Project Grid */
-      .project-grid {
-        gap: 12px;
-      }
-      
-      .project-tile {
-        padding: 12px;
-      }
-      
-      .project-name {
-        font-size: 13px;
-        margin-bottom: 4px;
-      }
-      
-      .project-desc {
-        font-size: 11px;
-      }
-      
-      .project-link {
-        font-size: 10px;
-        margin-top: 6px;
-      }
-      
-      /* Arts Grid */
-      .arts-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .arts-entry {
-        padding: 16px;
-      }
-      
-      .arts-entry.span-2 {
-        grid-column: 1;
-      }
-      
-      .arts-entry-title {
-        font-size: 16px;
-      }
-      
-      .arts-entry-subtitle {
-        font-size: 11px;
-      }
-      
-      .arts-entry-body {
-        font-size: 13px;
-      }
-      
-      .arts-entry-image {
-        max-width: 100%;
-        margin: 8px 0;
-      }
-      
-      /* Essays Grid */
-      .essays-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      
-      .essays-category-title {
-        font-size: 12px;
-        margin-bottom: 16px;
-      }
-      
-      .essay-item {
-        padding: 16px;
-        margin-bottom: 12px;
-      }
-      
-      .essay-title {
-        font-size: 14px;
-        margin-bottom: 6px;
-      }
-      
-      .essay-preview {
-        font-size: 12px;
-      }
-      
-      .creative-tiles {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      
-      .creative-tile {
-        padding: 16px;
-      }
-      
-      /* Notes Grid */
-      .notes-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .note-card {
-        padding: 20px;
-      }
-      
-      .note-title {
-        font-size: 11px;
-        margin-bottom: 6px;
-      }
-      
-      .note-subtitle {
-        font-size: 9px;
-        margin-bottom: 12px;
-      }
-      
-      .note-body {
-        font-size: 12px;
-      }
-      
-      /* Spotlight Grid */
-      .spotlight-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .spotlight-card {
-        padding: 20px;
-      }
-      
-      .spotlight-title {
-        font-size: 10px;
-        margin-bottom: 6px;
-      }
-      
-      .spotlight-subtitle {
-        font-size: 9px;
-        margin-bottom: 12px;
-      }
-      
-      .spotlight-body {
-        font-size: 12px;
-      }
-      
-      .spotlight-images {
-        flex-direction: column;
-        gap: 8px;
-      }
-      
-      .spotlight-image {
-        width: 100%;
-        max-width: 200px;
-      }
-      
-      /* Contact Section */
-      .contact-section {
-        padding: 60px 16px;
-      }
-      
-      .contact-intro {
-        font-size: 13px;
-        margin-bottom: 32px;
-      }
-      
-      .contact-statement {
-        font-size: 11px;
-        margin-bottom: 32px;
-        line-height: 1.6;
-      }
-      
-      .contact-button {
-        padding: 14px 32px;
-        font-size: 10px;
-        width: 100%;
         max-width: 300px;
-      }
-      
-      /* Footer */
-      .footer {
-        padding: 40px 16px;
-      }
-      
-      .footer-text {
-        font-size: 11px;
-      }
-      
-      /* Terminal Nav - Mobile - COMPACT BOLD TERMINAL STYLE */
-      .terminal-nav {
-        bottom: 10px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-width: none;
-        max-height: 200px;
-        overflow: hidden;
-        transform: translateY(calc(100% - 50px));
-        transition: transform 0.3s ease;
-        border: 2px solid #39ff14;
-        background: #000000;
-        box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
-      }
-      
-      .terminal-nav.expanded {
-        transform: translateY(0);
-        max-height: 200px;
-      }
-      
-      /* Prevent terminal nav from overlapping with nav menu */
-      .nav-links.open ~ .terminal-nav {
-        display: none;
-      }
-      
-      .terminal-nav-header {
-        padding: 8px 12px;
-        cursor: pointer;
-        background: #0a0a0a;
-        border-bottom: 2px solid #39ff14;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      
-      .terminal-nav-title {
-        font-size: 11px;
-        font-weight: 700;
-        color: #39ff14;
-        font-family: 'Press Start 2P', monospace;
-        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
-        letter-spacing: 0.1em;
-      }
-      
-      .terminal-nav-title::before {
-        content: '▶ ';
-        color: #39ff14;
-      }
-      
-      .terminal-nav-controls {
-        display: none; /* Hide controls on mobile */
-      }
-      
-      .terminal-nav-body {
-        padding: 10px 12px;
-        display: none; /* Hide body on mobile - just show links */
-      }
-      
-      .terminal-nav-output {
-        display: none; /* Hide output on mobile */
-      }
-      
-      .terminal-nav-history {
-        display: none; /* Hide history on mobile */
-      }
-      
-      .terminal-nav-links {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-        padding: 10px;
-        background: #000000;
-      }
-      
-      .terminal-nav-link {
-        padding: 12px 8px;
-        font-size: 11px;
-        font-weight: 700;
-        text-align: center;
-        font-family: 'Press Start 2P', monospace;
-        background: #0a0a0a;
-        border: 2px solid #39ff14;
-        color: #39ff14;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: all 0.2s ease;
-        box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-      }
-      
-      .terminal-nav-link:hover,
-      .terminal-nav-link.active {
-        background: #39ff14;
-        color: #000000;
-        box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
-        transform: scale(1.05);
-      }
-      
-      .terminal-nav-link span {
-        display: block;
-        font-size: 9px;
-        color: #39ff14;
-        margin-bottom: 4px;
-        opacity: 0.7;
-      }
-      
-      .terminal-nav-link.active span,
-      .terminal-nav-link:hover span {
-        color: #000000;
-        opacity: 1;
-      }
-      
-      .terminal-nav-footer {
-        padding: 6px 12px;
-        background: #0a0a0a;
-        border-top: 2px solid #39ff14;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      
-      .terminal-nav-status {
-        font-size: 8px;
-        font-family: 'Press Start 2P', monospace;
-        color: #39ff14;
-        text-transform: uppercase;
-      }
-      
-      .terminal-nav-status-dot {
-        background: #39ff14;
-        box-shadow: 0 0 8px rgba(57, 255, 20, 0.8);
-      }
-      
-      .terminal-nav-time {
-        font-size: 9px;
-        font-family: 'Press Start 2P', monospace;
-        color: #39ff14;
-        font-variant-numeric: tabular-nums;
-      }
-      
-      /* Popup */
-      .popup-drawer {
-        width: 95%;
-        max-width: none;
-        padding: 24px 20px;
-        max-height: 85vh;
-      }
-      
-      .popup-title {
-        font-size: 18px;
-      }
-      
-      .popup-subtitle {
-        font-size: 11px;
-      }
-      
-      .popup-content {
-        font-size: 13px;
-      }
-      
-      /* Scroll hint */
-      .scroll-hint {
-        bottom: 80px;
-        font-size: 10px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .hero-name {
-        font-size: 3px !important;
-      }
-      
-      .hero-sub {
-        font-size: 9px !important;
-      }
-      
-      .hero-tagline {
-        font-size: 11px !important;
-      }
-      
-      .hero-anim-btn {
-        font-size: 6px;
-        padding: 5px 8px;
-      }
-      
-      .hero-nav-btn {
-        font-size: 10px;
-        padding: 12px 14px;
-      }
-      
-      .section-title {
-        font-size: 18px;
-      }
-      
-      .product-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .product-image {
-        height: 120px;
-      }
-    }
-    
-    /* Touch target improvements */
-    @media (hover: none) and (pointer: coarse) {
-      .nav-link,
-      .hero-nav-btn,
-      .hero-anim-btn,
-      .product-tile,
-      .project-tile,
-      .essay-item,
-      .note-card,
-      .spotlight-card,
-      .arts-entry,
-      .terminal-nav-link {
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .color-btn {
-        width: 24px;
-        height: 24px;
       }
     }
   </style>
@@ -2327,13 +1948,8 @@
 <body>
   <!-- NAVIGATION -->
   <nav class="nav">
-    <a href="index.html" class="nav-brand">WALEED<span class="line-break"></span> A. RAZA</a>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <div class="nav-links" id="nav-links">
+    <a href="index.html" class="nav-brand">WALEED A. RAZA</a>
+    <div class="nav-links">
       <a href="#development" class="nav-link">DEV</a>
       <a href="#reading" class="nav-link">READING</a>
       <a href="#writing" class="nav-link">WRITING</a>
@@ -2438,105 +2054,6 @@
       <a href="mailto:waleedraza1211@gmail.com" class="contact-button">CONTACT ME</a>
     </section>
   </div>
-
-  <!-- READING -->
-  <section class="section" id="reading">
-    <div class="section-header">
-      <div class="section-tag">[2] MIND · INPUT</div>
-      <h2 class="section-title">▶ READING · MUSIC · ARTS</h2>
-      <p class="section-desc">Taste as signal. Learning as system.</p>
-    </div>
-    
-    <div class="arts-grid">
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Crime and Punishment</h3>
-          <span class="arts-entry-subtitle">Dostoevsky · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <p>Psychology before it was clinical. Maps the architecture of justification.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Thinking in Systems</h3>
-          <span class="arts-entry-subtitle">Donella Meadows · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
-          <p>The closest thing to a moral framework for engineers.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">The Laws of Human Nature</h3>
-          <span class="arts-entry-subtitle">Robert Greene · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/lawsofhumannature.jpg" alt="Laws of Human Nature" class="arts-entry-image">
-          <p>Either you understand people, or you get managed by people.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">The Road to Serfdom</h3>
-          <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/road_to_serfdom.jpg" alt="Road to Serfdom" class="arts-entry-image">
-          <p>How good intentions can create systems that destroy freedom.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry span-2">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Heroin</h3>
-          <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
-          <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">YEEZUS</h3>
-          <span class="arts-entry-subtitle">Kanye West · Album</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
-          <p>Raw power + insecurity displayed as art. Attention mechanics at full voltage.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">MTV Unplugged</h3>
-          <span class="arts-entry-subtitle">Nirvana · Album</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
-          <p>The last performance, stripped down. What's left when you remove the distortion.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry span-2">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Peak Anime</h3>
-          <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image" style="max-width: 150px;">
-          <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image" style="max-width: 150px;">
-          <p>Freedom as burden, power as isolation. The strongest characters are the most trapped.</p>
-        </div>
-      </article>
-    </div>
-  </section>
 
   <!-- WRITING + NOTES + SPOTLIGHT (side by side) -->
   <div class="section-trio">
@@ -2662,6 +2179,105 @@
       </div>
     </section>
   </div>
+
+  <!-- READING -->
+  <section class="section" id="reading">
+    <div class="section-header">
+      <div class="section-tag">[2] MIND · INPUT</div>
+      <h2 class="section-title">▶ READING · MUSIC · ARTS</h2>
+      <p class="section-desc">Taste as signal. Learning as system.</p>
+    </div>
+    
+    <div class="arts-grid">
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Crime and Punishment</h3>
+          <span class="arts-entry-subtitle">Dostoevsky · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <p>Psychology before it was clinical. Maps the architecture of justification.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Thinking in Systems</h3>
+          <span class="arts-entry-subtitle">Donella Meadows · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
+          <p>The closest thing to a moral framework for engineers.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Laws of Human Nature</h3>
+          <span class="arts-entry-subtitle">Robert Greene · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/lawsofhumannature.jpg" alt="Laws of Human Nature" class="arts-entry-image">
+          <p>Either you understand people, or you get managed by people.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Road to Serfdom</h3>
+          <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/road_to_serfdom.jpg" alt="Road to Serfdom" class="arts-entry-image">
+          <p>How good intentions can create systems that destroy freedom.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Heroin</h3>
+          <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
+          <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">YEEZUS</h3>
+          <span class="arts-entry-subtitle">Kanye West · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
+          <p>Raw power + insecurity displayed as art. Attention mechanics at full voltage.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">MTV Unplugged</h3>
+          <span class="arts-entry-subtitle">Nirvana · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
+          <p>The last performance, stripped down. What's left when you remove the distortion.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Peak Anime</h3>
+          <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image" style="max-width: 150px;">
+          <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image" style="max-width: 150px;">
+          <p>Freedom as burden, power as isolation. The strongest characters are the most trapped.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -3008,11 +2624,10 @@
       
       if (!heroNameEl || buttons.length === 0) return;
       
-      // Default mode
-      heroNameEl.classList.add('matrix-mode', 'matrix-green');
-      document.getElementById('matrix-btn').classList.add('active');
-      updateColorControls('matrix');
-      updateActiveColorButton('matrix', 'green');
+      // Default mode - GLITCH
+      heroNameEl.classList.add('glitch-mode');
+      document.getElementById('glitch-btn').classList.add('active');
+      updateColorControls('glitch');
       
       // Animation button handlers
       buttons.forEach(btn => {
@@ -3307,6 +2922,11 @@
       
       if (!terminal) return;
       
+      // Mobile - default to minimized
+      if (window.innerWidth <= 767) {
+        terminal.classList.add('minimized');
+      }
+      
       // Initial typing animation
       typeText(textEl, getTerminalMessage('hero'));
       
@@ -3347,9 +2967,20 @@
         terminal.classList.add('hidden');
       });
       
-      minBtn.addEventListener('click', () => {
+      minBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         terminal.classList.toggle('minimized');
       });
+      
+      // Make header clickable on mobile to toggle
+      if (window.innerWidth <= 767) {
+        header.addEventListener('click', (e) => {
+          // Only toggle if clicking on header itself, not controls
+          if (e.target === header || e.target.classList.contains('terminal-nav-title')) {
+            terminal.classList.toggle('minimized');
+          }
+        });
+      }
       
       // Navigation links
       links.forEach(link => {
@@ -3396,73 +3027,6 @@
       });
     }
     
-    // ═══════════════════════════════════════════════════════════════════════
-    // MOBILE NAVIGATION
-    // ═══════════════════════════════════════════════════════════════════════
-    
-    function initMobileNav() {
-      const navToggle = document.getElementById('nav-toggle');
-      const navLinks = document.getElementById('nav-links');
-      const navLinksItems = navLinks.querySelectorAll('.nav-link');
-      
-      if (!navToggle || !navLinks) return;
-      
-      // Toggle menu
-      navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('open');
-        document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-      });
-      
-      // Close menu when clicking a link
-      navLinksItems.forEach(link => {
-        link.addEventListener('click', () => {
-          navToggle.classList.remove('active');
-          navLinks.classList.remove('open');
-          document.body.style.overflow = '';
-        });
-      });
-      
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
-          navToggle.classList.remove('active');
-          navLinks.classList.remove('open');
-          document.body.style.overflow = '';
-        }
-      });
-      
-      // Handle terminal nav on mobile - make it collapsible
-      const terminalNav = document.getElementById('terminal-nav');
-      if (terminalNav) {
-        const terminalHeader = document.getElementById('terminal-nav-header');
-        if (terminalHeader) {
-          // Start COLLAPSED on mobile (just show header bar)
-          if (window.innerWidth <= 768) {
-            terminalNav.classList.remove('expanded');
-          }
-          
-          terminalHeader.addEventListener('click', (e) => {
-            // Don't toggle if clicking the close/min/max buttons
-            if (e.target.classList.contains('terminal-nav-dot')) return;
-            if (window.innerWidth <= 768) {
-              terminalNav.classList.toggle('expanded');
-            }
-          });
-        }
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-          if (window.innerWidth > 768) {
-            terminalNav.classList.remove('expanded');
-          } else {
-            // Keep collapsed on mobile unless user expanded it
-            // Don't force expand on resize
-          }
-        });
-      }
-    }
-    
     // Init
     document.addEventListener('DOMContentLoaded', () => {
       initHeroName();
@@ -3471,7 +3035,6 @@
       renderProducts();
       renderProjects();
       initTerminalNav();
-      initMobileNav();
     });
   </script>
   
@@ -3516,3 +3079,4 @@
   </div>
 </body>
 </html>
+
