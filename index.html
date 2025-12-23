@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Waleed Raza</title>
   <meta name="description" content="Full-Stack Developer, ML/AI Engineer, Distributed Systems">
   
@@ -72,150 +72,58 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       TERMINAL NAV BAR
+       NAVIGATION
        ═══════════════════════════════════════════════════════════════════════ */
     
-    .terminal-bar {
+    .nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      font-family: 'IBM Plex Mono', monospace;
+      padding: 16px 40px;
       display: flex;
-      align-items: stretch;
-      height: 44px;
-    }
-    
-    .terminal-bar-left {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      padding: 0 16px;
-      border-right: 1px solid var(--border);
-      background: rgba(255, 107, 53, 0.05);
+      font-family: 'Press Start 2P', monospace;
     }
     
-    .terminal-bar-dots {
-      display: flex;
-      gap: 6px;
-    }
-    
-    .terminal-bar-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    
-    .terminal-bar-dot.red { background: #ff5f56; }
-    .terminal-bar-dot.yellow { background: #ffbd2e; }
-    .terminal-bar-dot.green { background: #27ca40; }
-    
-    .terminal-bar-title {
-      font-size: 11px;
+    .nav-brand {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
       color: var(--orange);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-    
-    .terminal-bar-path {
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      color: #666;
-      font-size: 11px;
-      border-right: 1px solid var(--border);
-    }
-    
-    .terminal-bar-path span {
-      color: var(--teal);
-    }
-    
-    .terminal-bar-tabs {
-      display: flex;
-      flex: 1;
-      align-items: stretch;
-    }
-    
-    .terminal-bar-tab {
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      color: #555;
       text-decoration: none;
-      font-size: 10px;
       letter-spacing: 0.05em;
-      text-transform: uppercase;
-      border-right: 1px solid rgba(255,255,255,0.03);
-      transition: all 0.15s ease;
-      position: relative;
+      white-space: nowrap;
     }
     
-    .terminal-bar-tab::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: transparent;
-      transition: background 0.15s ease;
+    .nav-brand .line-break {
+      display: none;
     }
     
-    .terminal-bar-tab:hover {
-      color: var(--ice-white);
-      background: rgba(255,255,255,0.02);
-    }
-    
-    .terminal-bar-tab:hover::before {
-      background: var(--orange);
-    }
-    
-    .terminal-bar-tab.active {
-      color: var(--teal);
-      background: rgba(0, 212, 170, 0.05);
-    }
-    
-    .terminal-bar-tab.active::before {
-      background: var(--teal);
-    }
-    
-    .terminal-bar-tab .tab-num {
-      color: #444;
-      margin-right: 6px;
-      font-size: 9px;
-    }
-    
-    .terminal-bar-status {
+    .nav-links {
       display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 0 20px;
-      margin-left: auto;
-      border-left: 1px solid var(--border);
-      font-size: 10px;
-      color: #555;
+      gap: 32px;
     }
     
-    .terminal-bar-status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-      animation: statusPulse 2s ease-in-out infinite;
+    .nav-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s ease;
     }
     
-    @keyframes statusPulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--teal); }
-      50% { opacity: 0.5; box-shadow: 0 0 8px var(--teal); }
-    }
-    
-    .terminal-bar-time {
-      font-family: 'IBM Plex Mono', monospace;
+    .nav-link:hover {
       color: var(--orange);
-      font-size: 10px;
+    }
+    
+    .nav-link.active {
+      color: var(--teal);
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
@@ -295,7 +203,7 @@
       text-shadow: none;
     }
     
-    /* White when complete with sporadic orange and teal boxes */
+    /* White when complete with glow */
     .letter-box.complete .ascii-char {
       color: var(--ice-white) !important;
       -webkit-text-fill-color: var(--ice-white) !important;
@@ -303,45 +211,6 @@
       text-shadow: 0 0 12px rgba(255,255,255,0.4);
       animation: charGlow 2s ease-in-out infinite;
       animation-delay: calc(var(--pixel-index, 0) * 0.01s);
-    }
-    
-    /* Sporadic orange boxes */
-    .letter-box.complete .ascii-char:nth-child(3n) {
-      color: var(--orange) !important;
-      -webkit-text-fill-color: var(--orange) !important;
-      text-shadow: 0 0 12px var(--orange-glow);
-    }
-    
-    /* Sporadic teal boxes */
-    .letter-box.complete .ascii-char:nth-child(7n) {
-      color: var(--teal) !important;
-      -webkit-text-fill-color: var(--teal) !important;
-      text-shadow: 0 0 12px var(--teal-glow);
-    }
-    
-    /* More sporadic patterns */
-    .letter-box.complete .ascii-char:nth-child(11n) {
-      color: var(--orange) !important;
-      -webkit-text-fill-color: var(--orange) !important;
-      text-shadow: 0 0 12px var(--orange-glow);
-    }
-    
-    .letter-box.complete .ascii-char:nth-child(13n) {
-      color: var(--teal) !important;
-      -webkit-text-fill-color: var(--teal) !important;
-      text-shadow: 0 0 12px var(--teal-glow);
-    }
-    
-    .letter-box.complete .ascii-char:nth-child(17n) {
-      color: var(--orange) !important;
-      -webkit-text-fill-color: var(--orange) !important;
-      text-shadow: 0 0 12px var(--orange-glow);
-    }
-    
-    .letter-box.complete .ascii-char:nth-child(19n) {
-      color: var(--teal) !important;
-      -webkit-text-fill-color: var(--teal) !important;
-      text-shadow: 0 0 12px var(--teal-glow);
     }
     
     @keyframes charGlow {
@@ -1013,15 +882,128 @@
       display: none;
     }
     
-    @media (max-width: 600px) {
+    /* Desktop terminal nav - PRESERVE ALL DESKTOP STYLES */
+    @media (min-width: 769px) {
       .terminal-nav {
-        bottom: 10px;
-        right: 10px;
-        width: 300px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 360px;
+        max-height: none;
+        transform: none;
+        border-radius: 8px;
+      }
+      
+      .terminal-nav.expanded {
+        transform: none;
+      }
+      
+      .terminal-nav-header {
+        padding: 10px 14px;
+        cursor: move;
+      }
+      
+      .terminal-nav-title {
+        font-size: 12px;
+        font-weight: normal;
+        color: #999;
+        text-shadow: none;
+        font-family: 'IBM Plex Mono', monospace;
+      }
+      
+      .terminal-nav-title::before {
+        content: '⬢ ';
+        color: var(--teal);
+      }
+      
+      .terminal-nav-controls {
+        display: flex;
+      }
+      
+      .terminal-nav-body {
+        display: block;
+        padding: 14px 16px;
+      }
+      
+      .terminal-nav-output {
+        display: block;
+        font-size: 13px;
+      }
+      
+      .terminal-nav-history {
+        display: block;
       }
       
       .terminal-nav-links {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        padding: 10px;
+      }
+      
+      .terminal-nav-link {
+        font-size: 11px;
+        font-weight: normal;
+        font-family: 'IBM Plex Mono', monospace;
+        background: #0c0c0c;
+        border: 1px solid #222;
+        color: #888;
+        text-transform: none;
+        letter-spacing: normal;
+        box-shadow: none;
+        padding: 10px 12px;
+      }
+      
+      .terminal-nav-link:hover {
+        background: rgba(255, 107, 53, 0.1);
+        border-color: var(--orange);
+        color: var(--orange);
+        transform: none;
+      }
+      
+      .terminal-nav-link.active {
+        background: rgba(0, 212, 170, 0.1);
+        border-color: var(--teal);
+        color: var(--teal);
+        transform: none;
+      }
+      
+      .terminal-nav-link span {
+        display: inline;
+        font-size: inherit;
+        color: #444;
+        margin-right: 6px;
+        margin-bottom: 0;
+      }
+      
+      .terminal-nav-footer {
+        padding: 8px 14px;
+        background: #0f0f0f;
+        border-top: 1px solid #222;
+      }
+      
+      .terminal-nav-status {
+        font-size: 10px;
+        font-family: 'IBM Plex Mono', monospace;
+        color: #555;
+        text-transform: none;
+      }
+      
+      .terminal-nav-status-dot {
+        background: var(--teal);
+        box-shadow: 0 0 6px var(--teal);
+      }
+      
+      .terminal-nav-time {
+        font-size: 11px;
+        font-family: 'IBM Plex Mono', monospace;
+        color: var(--orange);
+      }
+      
+      .nav-brand .line-break {
+        display: none;
+      }
+      
+      .nav-brand {
+        white-space: nowrap;
       }
     }
     
@@ -1051,13 +1033,11 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     .section {
-      padding: 80px 40px;
-      width: 100%;
-      max-width: none;
-      margin: 0;
+      padding: 100px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
       position: relative;
       z-index: 10;
-      box-sizing: border-box;
     }
     
     .section-header {
@@ -1104,14 +1084,12 @@
     
     .section-pair {
       display: grid;
-      grid-template-columns: 3fr 1fr;
+      grid-template-columns: 2.5fr 1fr;
       gap: 60px;
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 80px 40px;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 80px 60px;
       align-items: start;
-      box-sizing: border-box;
     }
     
     .section-pair .section {
@@ -1123,13 +1101,11 @@
     .section-trio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 50px;
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 80px 40px;
+      gap: 40px;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 80px 60px;
       align-items: start;
-      box-sizing: border-box;
     }
     
     .section-trio .section {
@@ -1138,61 +1114,31 @@
       margin: 0;
     }
     
-    /* Adjust internal grids for side-by-side layout - allow 2 tiles per row */
+    /* Adjust internal grids for side-by-side layout */
     .section-trio .essays-grid {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 24px;
     }
     
     .section-trio .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: 16px;
     }
     
     .section-trio .spotlight-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: 16px;
-    }
-    
-    /* Make cards square-ish in trio */
-    .section-trio .note-card,
-    .section-trio .spotlight-card {
-      aspect-ratio: 1 / 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      overflow: hidden;
-    }
-    
-    .section-trio .note-card .note-body,
-    .section-trio .spotlight-card .spotlight-body {
-      flex: 1;
-      overflow: hidden;
-    }
-    
-    @media (max-width: 1400px) {
-      .section-trio .notes-grid,
-      .section-trio .spotlight-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .section-trio .note-card,
-      .section-trio .spotlight-card {
-        aspect-ratio: auto;
-      }
     }
     
     @media (max-width: 1200px) {
       .section-pair {
         grid-template-columns: 1fr;
-        padding: 60px 30px;
+        padding: 60px 40px;
       }
       
       .section-trio {
         grid-template-columns: 1fr;
-        padding: 60px 30px;
+        padding: 60px 40px;
       }
       
       .section-trio .section {
@@ -1218,36 +1164,15 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     .dev-showcase {
-      display: flex;
-      flex-direction: column;
-      gap: 80px;
-    }
-    
-    /* Products section - more prominent */
-    .dev-products {
-      padding: 40px;
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
-      border: 1px solid rgba(255, 107, 53, 0.15);
-      border-radius: 4px;
-    }
-    
-    .dev-products .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
     }
     
-    /* Projects section - secondary */
-    .dev-projects {
-      padding: 30px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-    }
-    
-    .dev-projects .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+    @media (max-width: 900px) {
+      .dev-showcase {
+        grid-template-columns: 1fr;
+      }
     }
     
     .dev-section-header {
@@ -1274,17 +1199,16 @@
     
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
     }
     
     .product-tile {
       background: var(--card);
       border: 1px solid var(--border);
-      padding: 0;
+      padding: 16px;
       cursor: pointer;
       transition: all 0.2s ease;
-      overflow: hidden;
     }
     
     .product-tile:hover {
@@ -1295,19 +1219,11 @@
     
     .product-image {
       width: 100%;
-      height: 0;
-      padding-bottom: 75%; /* 4:3 aspect ratio - adjust as needed */
+      height: 100px;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      border: none;
-    }
-    
-    .product-name {
-      padding: 16px;
-      font-size: 14px;
-      color: var(--ice-white);
-      font-weight: 600;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
     }
     
     .product-name {
@@ -1778,61 +1694,652 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE
+       MOBILE NAVIGATION - HAMBURGER MENU
        ═══════════════════════════════════════════════════════════════════════ */
     
-    @media (max-width: 600px) {
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 8px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    
+    .nav-toggle span {
+      width: 22px;
+      height: 2px;
+      background: var(--orange);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .nav-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       MOBILE RESPONSIVE
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    @media (max-width: 768px) {
+      /* Navigation */
       .nav {
-        padding: 12px 20px;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+      }
+      
+      .nav-brand {
+        font-size: 14px;
+        flex: 1;
+        line-height: 1.4;
+        white-space: normal;
+      }
+      
+      .nav-brand .line-break {
+        display: block;
+      }
+      
+      .nav-toggle {
+        display: flex;
       }
       
       .nav-links {
-        gap: 16px;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.98);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 12px;
+        border-bottom: 2px solid var(--orange);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+      }
+      
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
       }
       
       .nav-link {
-        font-size: 10px;
+        font-size: 14px;
+        padding: 14px 16px;
+        text-align: center;
+        border: 1px solid var(--border);
+        width: 100%;
+        display: block;
       }
       
-      .section {
-        padding: 60px 20px;
+      .nav-link:hover {
+        background: rgba(255, 107, 53, 0.1);
+        border-color: var(--orange);
       }
       
+      /* Hero Section */
       .hero {
-        padding: 100px 20px 60px;
+        padding: 120px 16px 40px;
+        min-height: auto;
+      }
+      
+      .hero-name {
+        font-size: 4px !important;
+        margin-bottom: 20px;
+      }
+      
+      .hero-sub {
+        font-size: 10px !important;
+        margin-bottom: 8px;
+      }
+      
+      .hero-tagline {
+        font-size: 12px !important;
+        margin-bottom: 24px;
+        padding: 0 8px;
+      }
+      
+      .hero-controls {
+        margin-bottom: 16px;
+      }
+      
+      .animation-controls {
+        gap: 6px;
+      }
+      
+      .hero-anim-btn {
+        font-size: 7px;
+        padding: 6px 10px;
       }
       
       .hero-nav-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        gap: 8px;
+      }
+      
+      .hero-nav-btn {
+        font-size: 11px;
+        padding: 14px 16px;
+        width: 100%;
+      }
+      
+      .hero-nav-btn.full-width {
+        grid-column: 1;
+      }
+      
+      .hero-nav-btn.span-2 {
+        grid-column: 1;
+      }
+      
+      /* Sections */
+      .section {
+        padding: 40px 16px;
+      }
+      
+      .section-header {
+        margin-bottom: 32px;
+      }
+      
+      .section-tag {
+        font-size: 8px;
+        margin-bottom: 8px;
+      }
+      
+      .section-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      
+      .section-desc {
+        font-size: 12px;
+      }
+      
+      /* Section Pairs and Trios */
+      .section-pair,
+      .section-trio {
+        grid-template-columns: 1fr;
+        padding: 40px 16px;
+        gap: 40px;
+      }
+      
+      /* Development Section */
+      .dev-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      
+      .dev-section-header {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .dev-section-title {
+        font-size: 14px;
+      }
+      
+      .dev-section-count {
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+      
+      /* Product Grid */
+      .product-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      
+      .product-tile {
+        padding: 12px;
+      }
+      
+      .product-image {
+        height: 80px;
+        margin-bottom: 8px;
+      }
+      
+      .product-name {
+        font-size: 12px;
+      }
+      
+      /* Project Grid */
+      .project-grid {
+        gap: 12px;
+      }
+      
+      .project-tile {
+        padding: 12px;
+      }
+      
+      .project-name {
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      
+      .project-desc {
+        font-size: 11px;
+      }
+      
+      .project-link {
+        font-size: 10px;
+        margin-top: 6px;
+      }
+      
+      /* Arts Grid */
+      .arts-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .arts-entry {
+        padding: 16px;
+      }
+      
+      .arts-entry.span-2 {
+        grid-column: 1;
+      }
+      
+      .arts-entry-title {
+        font-size: 16px;
+      }
+      
+      .arts-entry-subtitle {
+        font-size: 11px;
+      }
+      
+      .arts-entry-body {
+        font-size: 13px;
+      }
+      
+      .arts-entry-image {
+        max-width: 100%;
+        margin: 8px 0;
+      }
+      
+      /* Essays Grid */
+      .essays-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .essays-category-title {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
+      
+      .essay-item {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+      
+      .essay-title {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      
+      .essay-preview {
+        font-size: 12px;
+      }
+      
+      .creative-tiles {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .creative-tile {
+        padding: 16px;
+      }
+      
+      /* Notes Grid */
+      .notes-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .note-card {
+        padding: 20px;
+      }
+      
+      .note-title {
+        font-size: 11px;
+        margin-bottom: 6px;
+      }
+      
+      .note-subtitle {
+        font-size: 9px;
+        margin-bottom: 12px;
+      }
+      
+      .note-body {
+        font-size: 12px;
+      }
+      
+      /* Spotlight Grid */
+      .spotlight-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .spotlight-card {
+        padding: 20px;
+      }
+      
+      .spotlight-title {
+        font-size: 10px;
+        margin-bottom: 6px;
+      }
+      
+      .spotlight-subtitle {
+        font-size: 9px;
+        margin-bottom: 12px;
+      }
+      
+      .spotlight-body {
+        font-size: 12px;
+      }
+      
+      .spotlight-images {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .spotlight-image {
+        width: 100%;
+        max-width: 200px;
+      }
+      
+      /* Contact Section */
+      .contact-section {
+        padding: 60px 16px;
+      }
+      
+      .contact-intro {
+        font-size: 13px;
+        margin-bottom: 32px;
+      }
+      
+      .contact-statement {
+        font-size: 11px;
+        margin-bottom: 32px;
+        line-height: 1.6;
+      }
+      
+      .contact-button {
+        padding: 14px 32px;
+        font-size: 10px;
+        width: 100%;
         max-width: 300px;
+      }
+      
+      /* Footer */
+      .footer {
+        padding: 40px 16px;
+      }
+      
+      .footer-text {
+        font-size: 11px;
+      }
+      
+      /* Terminal Nav - Mobile - COMPACT BOLD TERMINAL STYLE */
+      .terminal-nav {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: none;
+        max-height: 200px;
+        overflow: hidden;
+        transform: translateY(calc(100% - 50px));
+        transition: transform 0.3s ease;
+        border: 2px solid #39ff14;
+        background: #000000;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+      }
+      
+      .terminal-nav.expanded {
+        transform: translateY(0);
+        max-height: 200px;
+      }
+      
+      /* Prevent terminal nav from overlapping with nav menu */
+      .nav-links.open ~ .terminal-nav {
+        display: none;
+      }
+      
+      .terminal-nav-header {
+        padding: 8px 12px;
+        cursor: pointer;
+        background: #0a0a0a;
+        border-bottom: 2px solid #39ff14;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .terminal-nav-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #39ff14;
+        font-family: 'Press Start 2P', monospace;
+        text-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+        letter-spacing: 0.1em;
+      }
+      
+      .terminal-nav-title::before {
+        content: '▶ ';
+        color: #39ff14;
+      }
+      
+      .terminal-nav-controls {
+        display: none; /* Hide controls on mobile */
+      }
+      
+      .terminal-nav-body {
+        padding: 10px 12px;
+        display: none; /* Hide body on mobile - just show links */
+      }
+      
+      .terminal-nav-output {
+        display: none; /* Hide output on mobile */
+      }
+      
+      .terminal-nav-history {
+        display: none; /* Hide history on mobile */
+      }
+      
+      .terminal-nav-links {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        padding: 10px;
+        background: #000000;
+      }
+      
+      .terminal-nav-link {
+        padding: 12px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+        font-family: 'Press Start 2P', monospace;
+        background: #0a0a0a;
+        border: 2px solid #39ff14;
+        color: #39ff14;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+      }
+      
+      .terminal-nav-link:hover,
+      .terminal-nav-link.active {
+        background: #39ff14;
+        color: #000000;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+        transform: scale(1.05);
+      }
+      
+      .terminal-nav-link span {
+        display: block;
+        font-size: 9px;
+        color: #39ff14;
+        margin-bottom: 4px;
+        opacity: 0.7;
+      }
+      
+      .terminal-nav-link.active span,
+      .terminal-nav-link:hover span {
+        color: #000000;
+        opacity: 1;
+      }
+      
+      .terminal-nav-footer {
+        padding: 6px 12px;
+        background: #0a0a0a;
+        border-top: 2px solid #39ff14;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .terminal-nav-status {
+        font-size: 8px;
+        font-family: 'Press Start 2P', monospace;
+        color: #39ff14;
+        text-transform: uppercase;
+      }
+      
+      .terminal-nav-status-dot {
+        background: #39ff14;
+        box-shadow: 0 0 8px rgba(57, 255, 20, 0.8);
+      }
+      
+      .terminal-nav-time {
+        font-size: 9px;
+        font-family: 'Press Start 2P', monospace;
+        color: #39ff14;
+        font-variant-numeric: tabular-nums;
+      }
+      
+      /* Popup */
+      .popup-drawer {
+        width: 95%;
+        max-width: none;
+        padding: 24px 20px;
+        max-height: 85vh;
+      }
+      
+      .popup-title {
+        font-size: 18px;
+      }
+      
+      .popup-subtitle {
+        font-size: 11px;
+      }
+      
+      .popup-content {
+        font-size: 13px;
+      }
+      
+      /* Scroll hint */
+      .scroll-hint {
+        bottom: 80px;
+        font-size: 10px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-name {
+        font-size: 3px !important;
+      }
+      
+      .hero-sub {
+        font-size: 9px !important;
+      }
+      
+      .hero-tagline {
+        font-size: 11px !important;
+      }
+      
+      .hero-anim-btn {
+        font-size: 6px;
+        padding: 5px 8px;
+      }
+      
+      .hero-nav-btn {
+        font-size: 10px;
+        padding: 12px 14px;
+      }
+      
+      .section-title {
+        font-size: 18px;
+      }
+      
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .product-image {
+        height: 120px;
+      }
+    }
+    
+    /* Touch target improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .nav-link,
+      .hero-nav-btn,
+      .hero-anim-btn,
+      .product-tile,
+      .project-tile,
+      .essay-item,
+      .note-card,
+      .spotlight-card,
+      .arts-entry,
+      .terminal-nav-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .color-btn {
+        width: 24px;
+        height: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- TERMINAL NAV BAR -->
-  <nav class="terminal-bar">
-    <div class="terminal-bar-left">
-      <div class="terminal-bar-dots">
-        <span class="terminal-bar-dot red"></span>
-        <span class="terminal-bar-dot yellow"></span>
-        <span class="terminal-bar-dot green"></span>
-      </div>
-      <span class="terminal-bar-title">waleed.sh</span>
-    </div>
-    <div class="terminal-bar-path">~/portfolio/<span>index</span></div>
-    <div class="terminal-bar-tabs">
-      <a href="#development" class="terminal-bar-tab active" data-section="development"><span class="tab-num">1</span>DEV</a>
-      <a href="#writing" class="terminal-bar-tab" data-section="writing"><span class="tab-num">2</span>WRITE</a>
-      <a href="#notes" class="terminal-bar-tab" data-section="notes"><span class="tab-num">3</span>NOTES</a>
-      <a href="#spotlight" class="terminal-bar-tab" data-section="spotlight"><span class="tab-num">4</span>SPOT</a>
-      <a href="#reading" class="terminal-bar-tab" data-section="reading"><span class="tab-num">5</span>READ</a>
-      <a href="#contact" class="terminal-bar-tab" data-section="contact"><span class="tab-num">6</span>CONTACT</a>
-    </div>
-    <div class="terminal-bar-status">
-      <span class="terminal-bar-status-dot"></span>
-      <span>online</span>
-      <span class="terminal-bar-time" id="bar-time">00:00</span>
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">WALEED<span class="line-break"></span> A. RAZA</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="#development" class="nav-link">DEV</a>
+      <a href="#reading" class="nav-link">READING</a>
+      <a href="#writing" class="nav-link">WRITING</a>
+      <a href="#notes" class="nav-link">NOTES</a>
+      <a href="#spotlight" class="nav-link">SPOTLIGHT</a>
+      <a href="#contact" class="nav-link">CONTACT</a>
     </div>
   </nav>
 
@@ -1875,10 +2382,10 @@
     <div class="hero-nav-grid">
       <a href="#development" class="hero-nav-btn orange span-2">▶ DEVELOPMENT</a>
       <a href="#contact" class="hero-nav-btn teal">CONTACT</a>
-      <a href="#writing" class="hero-nav-btn teal">WRITING</a>
-      <a href="#notes" class="hero-nav-btn orange">NOTES</a>
-      <a href="#spotlight" class="hero-nav-btn teal">SPOTLIGHT</a>
-      <a href="#reading" class="hero-nav-btn orange full-width">READING · MUSIC · ARTS</a>
+      <a href="#writing" class="hero-nav-btn orange">WRITING</a>
+      <a href="#notes" class="hero-nav-btn teal">NOTES</a>
+      <a href="#spotlight" class="hero-nav-btn orange">SPOTLIGHT</a>
+      <a href="#reading" class="hero-nav-btn teal full-width">READING · MUSIC · ARTS</a>
     </div>
     <div class="scroll-hint">↓ SCROLL</div>
   </section>
@@ -1893,8 +2400,8 @@
       </div>
       
       <div class="dev-showcase">
-        <!-- PRODUCTS (Primary, more prominent) -->
-        <div class="dev-products">
+        <!-- PRODUCTS -->
+        <div>
           <div class="dev-section-header">
             <div class="dev-section-title">★ PRODUCTS</div>
             <div class="dev-section-count">9 ACTIVE</div>
@@ -1902,8 +2409,8 @@
           <div class="product-grid" id="products-grid"></div>
         </div>
         
-        <!-- PROJECTS (Secondary) -->
-        <div class="dev-projects">
+        <!-- PROJECTS -->
+        <div>
           <div class="dev-section-header" style="border-color: var(--teal);">
             <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
             <div class="dev-section-count" style="border-color: var(--teal); color: var(--teal);">20+</div>
@@ -1931,6 +2438,105 @@
       <a href="mailto:waleedraza1211@gmail.com" class="contact-button">CONTACT ME</a>
     </section>
   </div>
+
+  <!-- READING -->
+  <section class="section" id="reading">
+    <div class="section-header">
+      <div class="section-tag">[2] MIND · INPUT</div>
+      <h2 class="section-title">▶ READING · MUSIC · ARTS</h2>
+      <p class="section-desc">Taste as signal. Learning as system.</p>
+    </div>
+    
+    <div class="arts-grid">
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Crime and Punishment</h3>
+          <span class="arts-entry-subtitle">Dostoevsky · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <p>Psychology before it was clinical. Maps the architecture of justification.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Thinking in Systems</h3>
+          <span class="arts-entry-subtitle">Donella Meadows · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
+          <p>The closest thing to a moral framework for engineers.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Laws of Human Nature</h3>
+          <span class="arts-entry-subtitle">Robert Greene · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/lawsofhumannature.jpg" alt="Laws of Human Nature" class="arts-entry-image">
+          <p>Either you understand people, or you get managed by people.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">The Road to Serfdom</h3>
+          <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/road_to_serfdom.jpg" alt="Road to Serfdom" class="arts-entry-image">
+          <p>How good intentions can create systems that destroy freedom.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Heroin</h3>
+          <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
+          <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">YEEZUS</h3>
+          <span class="arts-entry-subtitle">Kanye West · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
+          <p>Raw power + insecurity displayed as art. Attention mechanics at full voltage.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">MTV Unplugged</h3>
+          <span class="arts-entry-subtitle">Nirvana · Album</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
+          <p>The last performance, stripped down. What's left when you remove the distortion.</p>
+        </div>
+      </article>
+      
+      <article class="arts-entry span-2">
+        <div class="arts-entry-header">
+          <h3 class="arts-entry-title">Peak Anime</h3>
+          <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
+        </div>
+        <div class="arts-entry-body">
+          <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image" style="max-width: 150px;">
+          <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image" style="max-width: 150px;">
+          <p>Freedom as burden, power as isolation. The strongest characters are the most trapped.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 
   <!-- WRITING + NOTES + SPOTLIGHT (side by side) -->
   <div class="section-trio">
@@ -2056,105 +2662,6 @@
       </div>
     </section>
   </div>
-
-  <!-- READING · MUSIC · ARTS (full width, bottom) -->
-  <section class="section" id="reading">
-    <div class="section-header">
-      <div class="section-tag">[2] MIND · INPUT</div>
-      <h2 class="section-title">▶ READING · MUSIC · ARTS</h2>
-      <p class="section-desc">Taste as signal. Learning as system.</p>
-    </div>
-    
-    <div class="arts-grid">
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Crime and Punishment</h3>
-          <span class="arts-entry-subtitle">Dostoevsky · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <p>Psychology before it was clinical. Maps the architecture of justification.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Thinking in Systems</h3>
-          <span class="arts-entry-subtitle">Donella Meadows · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/thinkinginsystems.jpg" alt="Thinking in Systems" class="arts-entry-image">
-          <p>The closest thing to a moral framework for engineers.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">The Laws of Human Nature</h3>
-          <span class="arts-entry-subtitle">Robert Greene · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/lawsofhumannature.jpg" alt="Laws of Human Nature" class="arts-entry-image">
-          <p>Either you understand people, or you get managed by people.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">The Road to Serfdom</h3>
-          <span class="arts-entry-subtitle">F.A. Hayek · Book</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/road_to_serfdom.jpg" alt="Road to Serfdom" class="arts-entry-image">
-          <p>How good intentions can create systems that destroy freedom.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry span-2">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Heroin</h3>
-          <span class="arts-entry-subtitle">Lana Del Rey · Lust for Life</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="arts-entry-image">
-          <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">YEEZUS</h3>
-          <span class="arts-entry-subtitle">Kanye West · Album</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Yeezus_album_cover.png" alt="YEEZUS" class="arts-entry-image">
-          <p>Raw power + insecurity displayed as art. Attention mechanics at full voltage.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">MTV Unplugged</h3>
-          <span class="arts-entry-subtitle">Nirvana · Album</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/nirvanaunpluggedmtv.png" alt="MTV Unplugged" class="arts-entry-image">
-          <p>The last performance, stripped down. What's left when you remove the distortion.</p>
-        </div>
-      </article>
-      
-      <article class="arts-entry span-2">
-        <div class="arts-entry-header">
-          <h3 class="arts-entry-title">Peak Anime</h3>
-          <span class="arts-entry-subtitle">Attack on Titan · Jujutsu Kaisen</span>
-        </div>
-        <div class="arts-entry-body">
-          <img src="pics/Eren_saying_freedom.png" alt="Eren" class="arts-entry-image" style="max-width: 150px;">
-          <img src="pics/gojo.png" alt="Gojo" class="arts-entry-image" style="max-width: 150px;">
-          <p>Freedom as burden, power as isolation. The strongest characters are the most trapped.</p>
-        </div>
-      </article>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -2889,57 +3396,71 @@
       });
     }
     
-    // Terminal Bar functionality
-    function initTerminalBar() {
-      const barTimeEl = document.getElementById('bar-time');
-      const tabs = document.querySelectorAll('.terminal-bar-tab');
+    // ═══════════════════════════════════════════════════════════════════════
+    // MOBILE NAVIGATION
+    // ═══════════════════════════════════════════════════════════════════════
+    
+    function initMobileNav() {
+      const navToggle = document.getElementById('nav-toggle');
+      const navLinks = document.getElementById('nav-links');
+      const navLinksItems = navLinks.querySelectorAll('.nav-link');
       
-      // Update time
-      function updateBarTime() {
-        if (barTimeEl) {
-          const now = new Date();
-          const hours = String(now.getHours()).padStart(2, '0');
-          const mins = String(now.getMinutes()).padStart(2, '0');
-          barTimeEl.textContent = `${hours}:${mins}`;
+      if (!navToggle || !navLinks) return;
+      
+      // Toggle menu
+      navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+        document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+      });
+      
+      // Close menu when clicking a link
+      navLinksItems.forEach(link => {
+        link.addEventListener('click', () => {
+          navToggle.classList.remove('active');
+          navLinks.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+          navToggle.classList.remove('active');
+          navLinks.classList.remove('open');
+          document.body.style.overflow = '';
         }
+      });
+      
+      // Handle terminal nav on mobile - make it collapsible
+      const terminalNav = document.getElementById('terminal-nav');
+      if (terminalNav) {
+        const terminalHeader = document.getElementById('terminal-nav-header');
+        if (terminalHeader) {
+          // Start COLLAPSED on mobile (just show header bar)
+          if (window.innerWidth <= 768) {
+            terminalNav.classList.remove('expanded');
+          }
+          
+          terminalHeader.addEventListener('click', (e) => {
+            // Don't toggle if clicking the close/min/max buttons
+            if (e.target.classList.contains('terminal-nav-dot')) return;
+            if (window.innerWidth <= 768) {
+              terminalNav.classList.toggle('expanded');
+            }
+          });
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768) {
+            terminalNav.classList.remove('expanded');
+          } else {
+            // Keep collapsed on mobile unless user expanded it
+            // Don't force expand on resize
+          }
+        });
       }
-      updateBarTime();
-      setInterval(updateBarTime, 1000);
-      
-      // Scroll-based active tab switching
-      const sections = ['development', 'writing', 'notes', 'spotlight', 'reading', 'contact'];
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
-            const sectionId = entry.target.id;
-            tabs.forEach(tab => {
-              if (tab.dataset.section === sectionId) {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-              }
-            });
-          }
-        });
-      }, { threshold: [0.3], rootMargin: '-44px 0px 0px 0px' });
-      
-      sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el);
-      });
-      
-      // Click handling with smooth scroll
-      tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = tab.getAttribute('href').substring(1);
-          const target = document.getElementById(targetId);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-          tabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-        });
-      });
     }
     
     // Init
@@ -2950,7 +3471,7 @@
       renderProducts();
       renderProjects();
       initTerminalNav();
-      initTerminalBar();
+      initMobileNav();
     });
   </script>
   
