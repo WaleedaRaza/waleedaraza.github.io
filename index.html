@@ -112,43 +112,63 @@
        HERO SECTION
        ═══════════════════════════════════════════════════════════════════════ */
     
+    /* ═══════════════════════════════════════════════════════════════════════
+       HERO SECTION - TECHNO THEME
+       ═══════════════════════════════════════════════════════════════════════ */
+    
     .hero {
-      min-height: 70vh;
+      min-height: 60vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 100px 40px 60px;
+      padding: 80px 40px 40px;
       text-align: center;
       position: relative;
-      background: 
-        radial-gradient(ellipse at 30% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(0, 212, 170, 0.06) 0%, transparent 50%);
+      overflow: hidden;
+      background: var(--void);
     }
     
-    /* ASCII NAME DISPLAY */
+    /* Grid overlay for techno feel */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    
+    /* ASCII NAME DISPLAY - BIGGER */
     .hero-name {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: flex-end;
-      gap: 4px;
-      margin-bottom: 32px;
+      gap: 8px;
+      margin-bottom: 24px;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 8px;
-      line-height: 1;
+      font-size: clamp(10px, 1.5vw, 14px);
+      line-height: 1.1;
       white-space: pre;
+      position: relative;
+      z-index: 2;
     }
     
     .letter-box {
       display: inline-block;
       text-align: left;
+      position: relative;
     }
     
     .ascii-char {
       opacity: 0;
       color: var(--text-muted);
-      transition: opacity 0.1s ease, color 0.3s ease;
+      display: inline-block;
+      transition: opacity 0.05s linear, color 0.2s ease;
     }
     
     .ascii-char.visible {
@@ -158,59 +178,125 @@
     /* Letter colors during typing */
     .letter-box.typing .ascii-char.visible {
       color: var(--hero-color, var(--teal));
-      text-shadow: 0 0 10px var(--teal-glow);
+      text-shadow: 0 0 8px var(--teal-glow);
     }
     
     /* White when complete */
     .letter-box.complete .ascii-char {
       color: var(--ice-white) !important;
-      text-shadow: 0 0 20px rgba(255,255,255,0.3);
+      text-shadow: 0 0 12px rgba(255,255,255,0.4);
     }
     
-    /* MATRIX MODE */
+    /* MATRIX MODE - WORKING */
     .hero-name.matrix-mode .letter-box.complete .ascii-char {
-      animation: matrixDrip 2s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.02s);
+      animation: matrixDrip 3s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.03s);
     }
     
     @keyframes matrixDrip {
-      0%, 100% { opacity: 1; color: var(--ice-white); }
-      50% { opacity: 0.6; color: var(--hero-color, var(--teal)); }
+      0%, 100% { 
+        opacity: 1; 
+        color: var(--ice-white);
+        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      }
+      50% { 
+        opacity: 0.4; 
+        color: var(--hero-color, var(--teal));
+        text-shadow: 0 0 20px var(--teal-glow);
+      }
     }
     
-    /* GLITCH MODE */
+    /* GLITCH MODE - WORKING */
     .hero-name.glitch-mode .letter-box.complete .ascii-char {
-      animation: glitchChar 0.5s steps(2) infinite;
-      animation-delay: calc(var(--pixel-index) * 0.01s);
+      animation: glitchChar 0.8s steps(2) infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.015s);
     }
     
     @keyframes glitchChar {
-      0%, 100% { transform: translate(0); }
-      25% { transform: translate(-2px, 2px); }
-      50% { transform: translate(2px, -2px); }
-      75% { transform: translate(-1px, 1px); }
+      0%, 100% { 
+        transform: translate(0);
+        color: var(--ice-white);
+      }
+      20% { 
+        transform: translate(-2px, 2px);
+        color: var(--orange);
+      }
+      40% { 
+        transform: translate(2px, -2px);
+        color: var(--teal);
+      }
+      60% { 
+        transform: translate(-1px, 1px);
+        color: var(--fuchsia);
+      }
+      80% {
+        transform: translate(1px, -1px);
+        color: var(--ice-white);
+      }
     }
     
-    /* PULSE MODE */
+    /* PULSE MODE - WORKING */
     .hero-name.pulse-mode .letter-box.complete .ascii-char {
-      animation: pulseChar 1.5s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.02s);
+      animation: pulseChar 2s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.02s);
     }
     
     @keyframes pulseChar {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
+      0%, 100% { 
+        transform: scale(1); 
+        opacity: 1;
+        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      }
+      50% { 
+        transform: scale(1.15); 
+        opacity: 0.7;
+        text-shadow: 0 0 25px var(--teal-glow);
+      }
     }
     
-    /* WAVE MODE */
+    /* WAVE MODE - WORKING */
     .hero-name.wave-mode .letter-box.complete .ascii-char {
-      animation: waveChar 2s ease-in-out infinite;
-      animation-delay: calc(var(--pixel-index) * 0.03s);
+      animation: waveChar 2.5s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.04s);
     }
     
     @keyframes waveChar {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
+      0%, 100% { 
+        transform: translateY(0);
+        color: var(--ice-white);
+      }
+      50% { 
+        transform: translateY(-4px);
+        color: var(--teal);
+        text-shadow: 0 0 15px var(--teal-glow);
+      }
+    }
+    
+    /* FLYING EMOJIS */
+    .emoji-float {
+      position: absolute;
+      font-size: 20px;
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: 1;
+      animation: floatEmoji 15s linear infinite;
+    }
+    
+    @keyframes floatEmoji {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
     }
     
     /* Animation controls */
@@ -219,11 +305,13 @@
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
     }
     
     .hero-anim-btn {
-      padding: 6px 12px;
+      padding: 8px 14px;
       font-family: 'Press Start 2P', monospace;
       font-size: 8px;
       background: var(--elevated);
@@ -231,30 +319,38 @@
       border: 1px solid var(--border);
       cursor: pointer;
       transition: all 0.2s ease;
+      text-transform: uppercase;
     }
     
     .hero-anim-btn:hover {
       border-color: var(--teal);
       color: var(--teal);
+      box-shadow: 0 0 15px var(--teal-glow);
     }
     
     .hero-anim-btn.active {
       background: var(--teal);
       color: var(--void);
       border-color: var(--teal);
+      box-shadow: 0 0 20px var(--teal-glow);
     }
     
     .hero-tagline {
-      font-size: clamp(14px, 2vw, 20px);
-      color: var(--text-dim);
-      margin-bottom: 12px;
+      font-size: clamp(13px, 1.8vw, 18px);
+      color: var(--teal);
+      margin-bottom: 10px;
       max-width: 600px;
+      text-shadow: 0 0 15px var(--teal-glow);
+      font-weight: 500;
+      letter-spacing: 0.05em;
     }
     
     .hero-sub {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
+      font-family: 'Press Start 2P', monospace;
+      letter-spacing: 0.1em;
     }
     
     .hero-cta {
@@ -792,13 +888,13 @@
       <button class="hero-anim-btn" data-mode="wave">WAVE</button>
     </div>
     
-    <p class="hero-tagline">I build real-time, data-intensive consumer products.</p>
-    <p class="hero-sub">Full-Stack Developer · ML/AI Engineer · Distributed Systems</p>
+    <p class="hero-tagline">▶ BUILDING REAL-TIME, DATA-INTENSIVE CONSUMER PRODUCTS</p>
+    <p class="hero-sub">FULL-STACK · ML/AI · DISTRIBUTED SYSTEMS</p>
     <div class="hero-cta">
-      <a href="#development" class="btn btn-primary">See My Work</a>
-      <a href="studio.html" class="btn btn-secondary">Studio & Contact</a>
+      <a href="#development" class="btn btn-primary">SEE WORK</a>
+      <a href="studio.html" class="btn btn-secondary">STUDIO</a>
     </div>
-    <div class="scroll-hint">↓ Scroll</div>
+    <div class="scroll-hint">↓ SCROLL</div>
   </section>
 
   <!-- DEVELOPMENT -->
@@ -1009,13 +1105,14 @@
     // ASCII LETTER DEFINITIONS
     // ═══════════════════════════════════════════════════════════════════════
     
+    // Bigger ASCII art - full block characters
     const LETTER_W = [
-      '██╗    ██╗',
-      '██║    ██║',
-      '██║ █╗ ██║',
-      '██║███╗██║',
-      '╚███╔███╔╝',
-      ' ╚══╝╚══╝ '
+      '██╗    ██╗ █████╗ ██╗     ███████╗███████╗██████╗ ',
+      '██║    ██║██╔══██╗██║     ██╔════╝██╔════╝██╔══██╗',
+      '██║ █╗ ██║███████║██║     █████╗  █████╗  ██║  ██║',
+      '██║███╗██║██╔══██║██║     ██╔══╝  ██╔══╝  ██║  ██║',
+      '╚███╔███╔╝██║  ██║███████╗███████╗███████╗██████╔╝',
+      ' ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═════╝ '
     ];
     
     const LETTER_A = [
@@ -1072,6 +1169,39 @@
       '╚══════╝'
     ];
     
+    // Emoji pool for flying
+    const EMOJI_POOL = ['⚡', '🔥', '💻', '🚀', '⚙️', '🔧', '💾', '🌐', '📡', '🔌', '💡', '⚡', '🔋', '📊', '🎯', '⚡', '🔥'];
+    
+    function createFlyingEmoji() {
+      const hero = document.getElementById('hero');
+      if (!hero) return;
+      
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji-float';
+      emoji.textContent = EMOJI_POOL[Math.floor(Math.random() * EMOJI_POOL.length)];
+      emoji.style.left = Math.random() * 100 + '%';
+      emoji.style.animationDuration = (10 + Math.random() * 10) + 's';
+      emoji.style.animationDelay = Math.random() * 2 + 's';
+      
+      hero.appendChild(emoji);
+      
+      setTimeout(() => {
+        emoji.remove();
+      }, 20000);
+    }
+    
+    function initFlyingEmojis() {
+      // Create emojis periodically
+      setInterval(() => {
+        if (Math.random() > 0.3) createFlyingEmoji();
+      }, 2000);
+      
+      // Initial burst
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => createFlyingEmoji(), i * 400);
+      }
+    }
+    
     function initHeroName() {
       const heroNameEl = document.getElementById('hero-name');
       if (!heroNameEl) return;
@@ -1093,7 +1223,7 @@
       let html = '';
       letterSequence.forEach((item) => {
         if (item.letter === 'SPACE') {
-          html += '<div style="width: 20px;"></div>';
+          html += '<div style="width: 30px;"></div>';
           return;
         }
         
@@ -1110,10 +1240,11 @@
       
       heroNameEl.innerHTML = html;
       
-      // Assign pixel indices
+      // Assign pixel indices properly
       let pixelIndex = 0;
       heroNameEl.querySelectorAll('.ascii-char').forEach((char) => {
-        char.style.setProperty('--pixel-index', pixelIndex++);
+        char.style.setProperty('--pixel-index', pixelIndex);
+        pixelIndex++;
       });
       
       // Start animation
@@ -1124,13 +1255,12 @@
       const heroNameEl = document.getElementById('hero-name');
       if (!heroNameEl) return;
       
-      const letterBoxes = heroNameEl.querySelectorAll('.letter-box');
-      const animationDuration = 1200;
+      const letterBoxes = Array.from(heroNameEl.querySelectorAll('.letter-box')).filter(box => box.dataset.letter && box.dataset.letter !== 'SPACE');
+      const animationDuration = 1500;
       let completedLetters = 0;
+      const totalLetters = letterBoxes.length;
       
-      letterBoxes.forEach((box) => {
-        if (!box.dataset.letter) return;
-        
+      letterBoxes.forEach((box, boxIdx) => {
         box.classList.remove('complete');
         box.classList.add('typing');
         const chars = box.querySelectorAll('.ascii-char');
@@ -1147,11 +1277,10 @@
               box.classList.add('complete');
               completedLetters++;
               
-              if (completedLetters === letterBoxes.length) {
-                // Hold for 2s then restart
+              if (completedLetters === totalLetters) {
                 setTimeout(() => startLetterAnimation(), 3000);
               }
-            }, 200);
+            }, 300);
             return;
           }
           
@@ -1160,7 +1289,7 @@
           setTimeout(revealNextChar, charDelay);
         }
         
-        setTimeout(() => revealNextChar(), 300);
+        setTimeout(() => revealNextChar(), boxIdx * 200);
       });
     }
     
@@ -1275,6 +1404,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       initHeroName();
       setupAnimationControls();
+      initFlyingEmojis();
       renderProducts();
       renderProjects();
     });
