@@ -1852,15 +1852,17 @@
         char.style.setProperty('--pixel-y-pos', yPos);
         
         // Assign piano key based on X position (piano keyboard layout)
-        const charIndex = Array.from(letterBox.querySelectorAll('.ascii-char')).indexOf(char);
-        const lineLength = letterBox.querySelectorAll(`.ascii-char[data-line="${lineNum}"]`).length;
-        const xPos = lineLength > 1 ? (charIndex % lineLength) / lineLength : 0;
+        // Get all chars in same line
+        const lineChars = Array.from(letterBox.querySelectorAll(`.ascii-char[data-line="${lineNum}"]`));
+        const charIndexInLine = lineChars.indexOf(char);
+        const lineLength = lineChars.length;
+        const xPos = lineLength > 1 ? charIndexInLine / (lineLength - 1) : 0;
         
         // Map X position to piano keys (white and black keys)
-        const pianoKeyNum = Math.floor(xPos * 52); // 52 keys total (4 octaves)
-        // White keys pattern: C, D, E, F, G, A, B (repeats)
-        const whiteKeyPattern = [0,2,4,5,7,9,11]; // C, D, E, F, G, A, B in one octave
-        const octave = Math.floor(pianoKeyNum / 12);
+        // Use pixel index to create consistent key mapping
+        const pianoKeyNum = pixelIndex % 52; // 52 keys total (4 octaves)
+        // White keys pattern: C, D, E, F, G, A, B (repeats) = notes 0,2,4,5,7,9,11
+        const whiteKeyPattern = [0,2,4,5,7,9,11];
         const noteInOctave = pianoKeyNum % 12;
         const isWhiteKey = whiteKeyPattern.includes(noteInOctave);
         
