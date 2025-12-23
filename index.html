@@ -189,20 +189,42 @@
       opacity: 1;
     }
     
-    /* Letter colors during typing */
+    /* Letter colors during typing - dual color gradient */
     .letter-box.typing .ascii-char.visible {
-      color: var(--hero-color, var(--teal));
-      text-shadow: 0 0 8px var(--teal-glow);
+      background: linear-gradient(180deg, var(--color1) 0%, var(--color1) 49%, var(--color2) 51%, var(--color2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
     }
     
-    /* White when complete */
+    /* White when complete with glow */
     .letter-box.complete .ascii-char {
       color: var(--ice-white) !important;
+      -webkit-text-fill-color: var(--ice-white) !important;
+      background: none !important;
       text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      animation: charGlow 2s ease-in-out infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.01s);
     }
     
-    /* MATRIX MODE - Configurable colors */
+    @keyframes charGlow {
+      0%, 100% {
+        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+        filter: brightness(1);
+      }
+      50% {
+        text-shadow: 0 0 20px rgba(255,255,255,0.6);
+        filter: brightness(1.1);
+      }
+    }
+    
+    /* MATRIX MODE - Color the actual characters */
     .hero-name.matrix-mode .letter-box.complete .ascii-char {
+      color: var(--matrix-color, #39ff14) !important;
+      -webkit-text-fill-color: var(--matrix-color, #39ff14) !important;
+      background: none !important;
+      text-shadow: 0 0 8px var(--matrix-glow, rgba(57, 255, 20, 0.6));
       animation: matrixDrip 2.5s ease-in-out infinite;
       animation-delay: calc(var(--pixel-index, 0) * 0.03s);
     }
@@ -210,13 +232,11 @@
     @keyframes matrixDrip {
       0%, 100% { 
         opacity: 1; 
-        color: var(--ice-white);
-        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+        filter: brightness(1);
       }
       50% { 
-        opacity: 0.3; 
-        color: var(--matrix-color, var(--teal));
-        text-shadow: 0 0 20px var(--matrix-glow, var(--teal-glow));
+        opacity: 0.4; 
+        filter: brightness(1.5);
       }
     }
     
@@ -230,119 +250,98 @@
       --matrix-glow: rgba(0, 255, 255, 0.6);
     }
     .hero-name.matrix-mode.matrix-purple {
-      --matrix-color: #9400d3;
-      --matrix-glow: rgba(148, 0, 211, 0.6);
+      --matrix-color: #ff00ff;
+      --matrix-glow: rgba(255, 0, 255, 0.6);
     }
     .hero-name.matrix-mode.matrix-orange {
-      --matrix-color: var(--orange);
-      --matrix-glow: var(--orange-glow);
+      --matrix-color: #ff6b35;
+      --matrix-glow: rgba(255, 107, 53, 0.6);
     }
     .hero-name.matrix-mode.matrix-blue {
-      --matrix-color: #0000ff;
-      --matrix-glow: rgba(0, 0, 255, 0.6);
+      --matrix-color: #0088ff;
+      --matrix-glow: rgba(0, 136, 255, 0.6);
+    }
+    .hero-name.matrix-mode.matrix-brown {
+      --matrix-color: #cd853f;
+      --matrix-glow: rgba(205, 133, 63, 0.6);
     }
     
-    /* GLITCH MODE - Configurable colors */
+    /* GLITCH MODE - Randomly flash orange, brown, green, teal */
     .hero-name.glitch-mode .letter-box.complete .ascii-char {
-      animation: glitchChar 0.6s steps(2) infinite;
-      animation-delay: calc(var(--pixel-index, 0) * 0.015s);
+      color: var(--ice-white) !important;
+      -webkit-text-fill-color: var(--ice-white) !important;
+      background: none !important;
+      animation: glitchCharRandom 0.3s steps(1) infinite;
+      animation-delay: calc(var(--pixel-index, 0) * 0.01s);
     }
     
-    @keyframes glitchChar {
+    @keyframes glitchCharRandom {
       0%, 100% { 
         transform: translate(0);
-        color: var(--ice-white);
+        color: var(--ice-white) !important;
+        -webkit-text-fill-color: var(--ice-white) !important;
       }
       25% { 
-        transform: translate(-2px, 2px);
-        color: var(--glitch-color-1, #00ffff);
+        transform: translate(-1px, 1px);
+        color: #ff6b35 !important; /* Orange */
+        -webkit-text-fill-color: #ff6b35 !important;
       }
       50% { 
-        transform: translate(2px, -2px);
-        color: var(--glitch-color-2, #ff00ff);
+        transform: translate(1px, -1px);
+        color: #8b4513 !important; /* Brown */
+        -webkit-text-fill-color: #8b4513 !important;
       }
       75% { 
-        transform: translate(-1px, 1px);
-        color: var(--glitch-color-1, #00ffff);
+        transform: translate(-1px);
+        color: #39ff14 !important; /* Green */
+        -webkit-text-fill-color: #39ff14 !important;
       }
     }
     
-    /* Glitch color schemes */
-    .hero-name.glitch-mode.glitch-cyan-magenta {
-      --glitch-color-1: #00ffff;
-      --glitch-color-2: #ff00ff;
+    /* Random glitch colors per character */
+    .hero-name.glitch-mode .letter-box.complete .ascii-char:nth-child(4n+1) {
+      animation-name: glitchCharRandom1;
     }
-    .hero-name.glitch-mode.glitch-red-blue {
-      --glitch-color-1: #ff0000;
-      --glitch-color-2: #0000ff;
+    .hero-name.glitch-mode .letter-box.complete .ascii-char:nth-child(4n+2) {
+      animation-name: glitchCharRandom2;
     }
-    .hero-name.glitch-mode.glitch-green-orange {
-      --glitch-color-1: #00ff00;
-      --glitch-color-2: var(--orange);
+    .hero-name.glitch-mode .letter-box.complete .ascii-char:nth-child(4n+3) {
+      animation-name: glitchCharRandom3;
     }
-    .hero-name.glitch-mode.glitch-yellow-purple {
-      --glitch-color-1: #ffff00;
-      --glitch-color-2: #9400d3;
+    .hero-name.glitch-mode .letter-box.complete .ascii-char:nth-child(4n+4) {
+      animation-name: glitchCharRandom4;
     }
     
-    /* SCAN MODE - Rainbow scan with configurable colors */
-    .hero-name.rainbow-scan-mode .letter-box.complete .ascii-char {
-      animation: scanLine 3s linear infinite;
-      animation-delay: calc(var(--pixel-y-pos, 0) * 0.03s);
+    @keyframes glitchCharRandom1 {
+      0%, 100% { color: var(--ice-white) !important; -webkit-text-fill-color: var(--ice-white) !important; transform: translate(0); }
+      25% { color: #ff6b35 !important; -webkit-text-fill-color: #ff6b35 !important; transform: translate(-1px, 1px); }
+      50% { color: #00d4aa !important; -webkit-text-fill-color: #00d4aa !important; transform: translate(1px, -1px); }
+      75% { color: #39ff14 !important; -webkit-text-fill-color: #39ff14 !important; transform: translate(-1px); }
+    }
+    @keyframes glitchCharRandom2 {
+      0%, 100% { color: var(--ice-white) !important; -webkit-text-fill-color: var(--ice-white) !important; transform: translate(0); }
+      25% { color: #8b4513 !important; -webkit-text-fill-color: #8b4513 !important; transform: translate(1px, -1px); }
+      50% { color: #ff6b35 !important; -webkit-text-fill-color: #ff6b35 !important; transform: translate(-1px, 1px); }
+      75% { color: #00d4aa !important; -webkit-text-fill-color: #00d4aa !important; transform: translate(1px); }
+    }
+    @keyframes glitchCharRandom3 {
+      0%, 100% { color: var(--ice-white) !important; -webkit-text-fill-color: var(--ice-white) !important; transform: translate(0); }
+      25% { color: #39ff14 !important; -webkit-text-fill-color: #39ff14 !important; transform: translate(-1px); }
+      50% { color: #8b4513 !important; -webkit-text-fill-color: #8b4513 !important; transform: translate(1px, 1px); }
+      75% { color: #ff6b35 !important; -webkit-text-fill-color: #ff6b35 !important; transform: translate(-1px, -1px); }
+    }
+    @keyframes glitchCharRandom4 {
+      0%, 100% { color: var(--ice-white) !important; -webkit-text-fill-color: var(--ice-white) !important; transform: translate(0); }
+      25% { color: #00d4aa !important; -webkit-text-fill-color: #00d4aa !important; transform: translate(1px); }
+      50% { color: #39ff14 !important; -webkit-text-fill-color: #39ff14 !important; transform: translate(-1px, -1px); }
+      75% { color: #8b4513 !important; -webkit-text-fill-color: #8b4513 !important; transform: translate(1px, 1px); }
     }
     
-    @keyframes scanLine {
-      0% {
-        color: var(--scan-color-1, #ff0000);
-        text-shadow: 0 0 10px var(--scan-color-1, #ff0000);
-      }
-      14% {
-        color: var(--scan-color-2, #ff7f00);
-        text-shadow: 0 0 10px var(--scan-color-2, #ff7f00);
-      }
-      28% {
-        color: var(--scan-color-3, #ffff00);
-        text-shadow: 0 0 10px var(--scan-color-3, #ffff00);
-      }
-      42% {
-        color: var(--scan-color-4, #00ff00);
-        text-shadow: 0 0 10px var(--scan-color-4, #00ff00);
-      }
-      57% {
-        color: var(--scan-color-5, #0000ff);
-        text-shadow: 0 0 10px var(--scan-color-5, #0000ff);
-      }
-      71% {
-        color: var(--scan-color-6, #4b0082);
-        text-shadow: 0 0 10px var(--scan-color-6, #4b0082);
-      }
-      85% {
-        color: var(--scan-color-7, #9400d3);
-        text-shadow: 0 0 10px var(--scan-color-7, #9400d3);
-      }
-      100% {
-        color: var(--ice-white);
-        text-shadow: 0 0 12px rgba(255,255,255,0.4);
-      }
-    }
-    
-    /* Scan color schemes */
-    .hero-name.rainbow-scan-mode.scan-rainbow {
-      --scan-color-1: #ff0000; --scan-color-2: #ff7f00; --scan-color-3: #ffff00;
-      --scan-color-4: #00ff00; --scan-color-5: #0000ff; --scan-color-6: #4b0082; --scan-color-7: #9400d3;
-    }
-    .hero-name.rainbow-scan-mode.scan-teal-orange {
-      --scan-color-1: var(--teal); --scan-color-2: var(--orange); --scan-color-3: var(--teal);
-      --scan-color-4: var(--orange); --scan-color-5: var(--teal); --scan-color-6: var(--orange); --scan-color-7: var(--teal);
-    }
-    .hero-name.rainbow-scan-mode.scan-monochrome {
-      --scan-color-1: #ffffff; --scan-color-2: #cccccc; --scan-color-3: #999999;
-      --scan-color-4: #666666; --scan-color-5: #999999; --scan-color-6: #cccccc; --scan-color-7: #ffffff;
-    }
-    
-    /* CLEAR MODE - Fade out effect */
+    /* CLEAR MODE - Color the actual characters */
     .hero-name.clear-mode .letter-box.complete .ascii-char {
       color: var(--clear-color, var(--ice-white)) !important;
+      -webkit-text-fill-color: var(--clear-color, var(--ice-white)) !important;
+      background: none !important;
       animation: clearFade 2s ease-out forwards;
       animation-delay: calc(var(--pixel-index, 0) * 0.02s);
     }
@@ -351,17 +350,20 @@
       0% {
         opacity: 1;
         filter: brightness(1) blur(0px);
-        color: var(--clear-color, var(--ice-white));
+        color: var(--clear-color, var(--ice-white)) !important;
+        -webkit-text-fill-color: var(--clear-color, var(--ice-white)) !important;
       }
       50% {
         opacity: 0.5;
         filter: brightness(0.7) blur(1px);
-        color: var(--clear-color, var(--ice-white));
+        color: var(--clear-color, var(--ice-white)) !important;
+        -webkit-text-fill-color: var(--clear-color, var(--ice-white)) !important;
       }
       100% {
         opacity: 0;
         filter: brightness(0.3) blur(2px);
-        color: var(--clear-color, var(--ice-white));
+        color: var(--clear-color, var(--ice-white)) !important;
+        -webkit-text-fill-color: var(--clear-color, var(--ice-white)) !important;
       }
     }
     
@@ -370,63 +372,10 @@
       --clear-color: #ffffff;
     }
     .hero-name.clear-mode.clear-teal {
-      --clear-color: var(--teal);
+      --clear-color: #00d4aa;
     }
     .hero-name.clear-mode.clear-orange {
-      --clear-color: var(--orange);
-    }
-    
-    /* PIANO MODE - Piano keyboard with key presses */
-    .hero-name.piano-mode .letter-box.complete .ascii-char {
-      color: var(--ice-white) !important;
-      transition: color 0.1s ease, filter 0.1s ease;
-    }
-    
-    .hero-name.piano-mode .ascii-char[data-piano-key="white"] {
-      background: rgba(255, 255, 255, 0.05);
-    }
-    
-    .hero-name.piano-mode .ascii-char[data-piano-key="black"] {
-      background: rgba(0, 0, 0, 0.2);
-    }
-    
-    .hero-name.piano-mode .ascii-char[data-piano-pressed="true"] {
-      color: var(--piano-press-color, var(--orange)) !important;
-      filter: brightness(1.5);
-      text-shadow: 0 0 10px var(--piano-press-color, var(--orange));
-      animation: pianoKeyPress 0.3s ease-out;
-    }
-    
-    @keyframes pianoKeyPress {
-      0% {
-        transform: scale(1);
-        filter: brightness(2);
-      }
-      50% {
-        transform: scale(1.1);
-        filter: brightness(1.8);
-      }
-      100% {
-        transform: scale(1);
-        filter: brightness(1.5);
-      }
-    }
-    
-    /* Piano color schemes */
-    .hero-name.piano-mode.piano-orange {
-      --piano-press-color: var(--orange);
-    }
-    .hero-name.piano-mode.piano-teal {
-      --piano-press-color: var(--teal);
-    }
-    .hero-name.piano-mode.piano-fuchsia {
-      --piano-press-color: var(--fuchsia);
-    }
-    .hero-name.piano-mode.piano-green {
-      --piano-press-color: var(--green);
-    }
-    .hero-name.piano-mode.piano-rainbow {
-      /* Rainbow handled by JS */
+      --clear-color: #ff6b35;
     }
     
     /* PULSE MODE - Keep for compatibility */
@@ -537,21 +486,16 @@
       box-shadow: 0 0 20px var(--teal-glow);
     }
     
-    /* Color Control Panel */
+    /* Color Control Panel - Compact */
     .color-controls {
       display: none;
-      flex-direction: column;
-      gap: 12px;
-      padding: 16px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      max-width: 600px;
-      width: 100%;
+      gap: 4px;
+      margin-top: 8px;
     }
     
     .color-controls.active {
       display: flex;
+      justify-content: center;
     }
     
     .color-group {
@@ -559,38 +503,37 @@
     }
     
     .color-group.active {
-      display: block;
+      display: flex;
+      gap: 4px;
     }
     
     .color-group-label {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 8px;
-      color: var(--teal);
-      margin-bottom: 8px;
-      text-align: center;
+      display: none;
     }
     
     .color-buttons {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
+      gap: 4px;
     }
     
     .color-btn {
-      padding: 6px 12px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      background: var(--elevated);
-      color: var(--text-dim);
-      border: 1px solid var(--border);
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      font-size: 0;
+      border: 2px solid transparent;
+      border-radius: 50%;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
     
     .color-btn:hover {
-      border-color: var(--orange);
-      transform: translateY(-2px);
+      transform: scale(1.2);
+    }
+    
+    .color-btn.active {
+      border-color: #fff;
+      box-shadow: 0 0 6px currentColor;
     }
     
     .color-btn.active {
@@ -600,72 +543,350 @@
       box-shadow: 0 0 15px var(--orange-glow);
     }
     
-    .hero-tagline {
-      font-size: clamp(13px, 1.8vw, 18px);
-      color: var(--teal);
-      margin-bottom: 10px;
-      max-width: 600px;
-      text-shadow: 0 0 15px var(--teal-glow);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      font-family: 'Press Start 2P', monospace;
-      animation: terminalPulse 3s ease-in-out infinite;
-    }
-    
-    @keyframes terminalPulse {
-      0%, 100% { text-shadow: 0 0 15px var(--teal-glow); }
-      50% { text-shadow: 0 0 25px var(--teal-glow), 0 0 35px var(--teal-glow); }
-    }
     
     .hero-sub {
-      font-size: 11px;
+      font-size: clamp(12px, 1.5vw, 16px);
       color: var(--text-muted);
-      margin-bottom: 24px;
+      margin-bottom: 12px;
       font-family: 'Press Start 2P', monospace;
       letter-spacing: 0.1em;
     }
     
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .hero-tagline {
+      font-size: clamp(14px, 2vw, 20px);
+      color: var(--teal);
+      margin-bottom: 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 20px var(--teal-glow);
     }
     
-    .btn {
-      padding: 12px 28px;
+    .hero-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    .hero-nav-btn {
+      padding: 14px 16px;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
+      font-size: clamp(10px, 1.2vw, 13px);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-decoration: none;
       border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       cursor: pointer;
+      background: transparent;
+      text-align: center;
     }
     
-    .btn-primary {
+    .hero-nav-btn.full-width {
+      grid-column: 1 / -1;
+      padding: 16px 20px;
+      font-size: clamp(11px, 1.4vw, 14px);
+      font-weight: 600;
+    }
+    
+    .hero-nav-btn.span-2 {
+      grid-column: span 2;
+    }
+    
+    .hero-nav-btn.orange {
+      color: var(--orange);
+      border-color: rgba(255, 107, 53, 0.4);
+    }
+    
+    .hero-nav-btn.orange:hover {
       background: var(--orange);
       color: var(--void);
-      border-color: var(--orange);
+      box-shadow: 0 0 20px var(--orange-glow);
     }
     
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--orange);
-      box-shadow: 0 0 30px var(--orange-glow);
-    }
-    
-    .btn-secondary {
-      background: transparent;
+    .hero-nav-btn.teal {
       color: var(--teal);
-      border-color: var(--teal);
+      border-color: rgba(0, 212, 170, 0.4);
     }
     
-    .btn-secondary:hover {
+    .hero-nav-btn.teal:hover {
       background: var(--teal);
       color: var(--void);
-      box-shadow: 0 0 30px var(--teal-glow);
+      box-shadow: 0 0 20px var(--teal-glow);
+    }
+    
+    @media (max-width: 500px) {
+      .hero-nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .hero-nav-btn.full-width {
+        grid-column: 1 / -1;
+      }
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       TERMINAL NAV (SITE CONTROL)
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    .terminal-nav {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      font-family: 'IBM Plex Mono', monospace;
+      width: 360px;
+      background: #0c0c0c;
+      border: 1px solid #333;
+      box-shadow: 
+        0 12px 48px rgba(0,0,0,0.9),
+        0 0 1px rgba(255,255,255,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      user-select: none;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .terminal-nav-header {
+      background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #333;
+      cursor: move;
+    }
+    
+    .terminal-nav-title {
+      font-size: 12px;
+      color: #999;
+      letter-spacing: 0.05em;
+    }
+    
+    .terminal-nav-title::before {
+      content: '⬢ ';
+      color: var(--teal);
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes iconPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .terminal-nav-controls {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .terminal-nav-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #333;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .terminal-nav-dot:hover {
+      transform: scale(1.15);
+    }
+    
+    .terminal-nav-dot.close { background: #ff5f56; box-shadow: 0 0 6px rgba(255,95,86,0.4); }
+    .terminal-nav-dot.min { background: #ffbd2e; box-shadow: 0 0 6px rgba(255,189,46,0.4); }
+    .terminal-nav-dot.max { background: #27ca3f; box-shadow: 0 0 6px rgba(39,202,63,0.4); }
+    
+    .terminal-nav-body {
+      background: #0a0a0a;
+      padding: 14px 16px;
+      border-bottom: 1px solid #222;
+    }
+    
+    .terminal-nav-prompt {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+    
+    .terminal-nav-user {
+      color: var(--teal);
+      font-weight: 500;
+    }
+    
+    .terminal-nav-user::after {
+      content: ':';
+      color: #555;
+    }
+    
+    .terminal-nav-path {
+      color: #6a9fb5;
+    }
+    
+    .terminal-nav-path::after {
+      content: '$';
+      color: #888;
+      margin-left: 6px;
+    }
+    
+    .terminal-nav-output {
+      font-size: 13px;
+      color: #39ff14;
+      min-height: 24px;
+      line-height: 1.6;
+      position: relative;
+      padding-left: 18px;
+      text-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
+    }
+    
+    .terminal-nav-output::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+    }
+    
+    .terminal-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 16px;
+      background: var(--teal);
+      margin-left: 3px;
+      animation: cursorBlink 0.8s step-end infinite;
+      vertical-align: text-bottom;
+      box-shadow: 0 0 8px var(--teal-glow);
+    }
+    
+    @keyframes cursorBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    .terminal-nav-history {
+      font-size: 11px;
+      color: #555;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #222;
+    }
+    
+    .terminal-nav-history-line {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    
+    .terminal-nav-history-line .cmd {
+      color: #666;
+    }
+    
+    .terminal-nav-history-line .result {
+      color: var(--teal);
+      opacity: 0.6;
+    }
+    
+    .terminal-nav-links {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #080808;
+    }
+    
+    .terminal-nav-link {
+      display: block;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #888;
+      text-decoration: none;
+      border: 1px solid #222;
+      transition: all 0.12s ease;
+      background: #0c0c0c;
+      text-align: center;
+    }
+    
+    .terminal-nav-link:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+      background: rgba(255, 107, 53, 0.1);
+      box-shadow: 0 0 16px rgba(255, 107, 53, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    .terminal-nav-link.active {
+      color: var(--teal);
+      border-color: var(--teal);
+      background: rgba(0, 212, 170, 0.1);
+      box-shadow: 0 0 16px rgba(0, 212, 170, 0.15);
+    }
+    
+    .terminal-nav-link span {
+      color: #444;
+      margin-right: 6px;
+      font-weight: 600;
+    }
+    
+    .terminal-nav-footer {
+      background: #0f0f0f;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #222;
+    }
+    
+    .terminal-nav-status {
+      font-size: 10px;
+      color: #555;
+      display: flex;
+      align-items: center;
+    }
+    
+    .terminal-nav-status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      margin-right: 8px;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--teal); }
+      50% { opacity: 0.4; box-shadow: none; }
+    }
+    
+    .terminal-nav-time {
+      font-size: 11px;
+      color: var(--orange);
+      font-variant-numeric: tabular-nums;
+      opacity: 0.8;
+    }
+    
+    .terminal-nav.minimized .terminal-nav-body,
+    .terminal-nav.minimized .terminal-nav-links,
+    .terminal-nav.minimized .terminal-nav-footer {
+      display: none;
+    }
+    
+    .terminal-nav.hidden {
+      display: none;
+    }
+    
+    @media (max-width: 600px) {
+      .terminal-nav {
+        bottom: 10px;
+        right: 10px;
+        width: 300px;
+      }
+      
+      .terminal-nav-links {
+        grid-template-columns: 1fr;
+      }
     }
     
     .scroll-hint {
@@ -737,6 +958,121 @@
       max-width: 600px;
       font-family: 'IBM Plex Mono', monospace;
       letter-spacing: 0.02em;
+    }
+    
+    /* ═══════════════════════════════════════════════════════════════════════
+       SECTION LAYOUTS - Full-width side-by-side arrangements
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    .section-pair {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 60px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 80px 40px;
+      align-items: start;
+      box-sizing: border-box;
+    }
+    
+    .section-pair .section {
+      padding: 0;
+      max-width: none;
+      margin: 0;
+    }
+    
+    .section-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 50px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 80px 40px;
+      align-items: start;
+      box-sizing: border-box;
+    }
+    
+    .section-trio .section {
+      padding: 0;
+      max-width: none;
+      margin: 0;
+    }
+    
+    /* Adjust internal grids for side-by-side layout - allow 2 tiles per row */
+    .section-trio .essays-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .section-trio .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    .section-trio .spotlight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    /* Make cards square-ish in trio */
+    .section-trio .note-card,
+    .section-trio .spotlight-card {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+    
+    .section-trio .note-card .note-body,
+    .section-trio .spotlight-card .spotlight-body {
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    @media (max-width: 1400px) {
+      .section-trio .notes-grid,
+      .section-trio .spotlight-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-trio .note-card,
+      .section-trio .spotlight-card {
+        aspect-ratio: auto;
+      }
+    }
+    
+    @media (max-width: 1200px) {
+      .section-pair {
+        grid-template-columns: 1fr;
+        padding: 60px 30px;
+      }
+      
+      .section-trio {
+        grid-template-columns: 1fr;
+        padding: 60px 30px;
+      }
+      
+      .section-trio .section {
+        padding-bottom: 60px;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .section-trio .section:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .section-pair,
+      .section-trio {
+        padding: 40px 20px;
+      }
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
@@ -1298,15 +1634,9 @@
         padding: 100px 20px 60px;
       }
       
-      .hero-cta {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .btn {
-        width: 100%;
-        max-width: 280px;
-        text-align: center;
+      .hero-nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 300px;
       }
     }
   </style>
@@ -1314,7 +1644,7 @@
 <body>
   <!-- NAVIGATION -->
   <nav class="nav">
-    <a href="index.html" class="nav-brand">WALEED RAZA</a>
+    <a href="index.html" class="nav-brand">WALEED A. RAZA</a>
     <div class="nav-links">
       <a href="#development" class="nav-link">DEV</a>
       <a href="#reading" class="nav-link">READING</a>
@@ -1333,109 +1663,220 @@
       <div class="animation-controls">
         <button class="hero-anim-btn" data-mode="glitch" id="glitch-btn">⚡ GLITCH</button>
         <button class="hero-anim-btn active" data-mode="matrix" id="matrix-btn">💚 MATRIX</button>
-        <button class="hero-anim-btn" data-mode="rainbow-scan" id="scan-btn">🌈 SCAN</button>
-        <button class="hero-anim-btn" data-mode="piano" id="piano-btn">🎹 PIANO</button>
         <button class="hero-anim-btn" data-mode="clear" id="clear-btn">⚪ CLEAR</button>
       </div>
       
       <!-- Color Control Panel -->
       <div class="color-controls" id="color-controls">
-        <!-- Matrix Colors -->
         <div class="color-group active" data-mode="matrix">
-          <div class="color-group-label">MATRIX COLORS</div>
           <div class="color-buttons">
-            <button class="color-btn active" data-color="green" style="background: #39ff14; color: #000;">GREEN</button>
-            <button class="color-btn" data-color="cyan" style="background: #00ffff; color: #000;">CYAN</button>
-            <button class="color-btn" data-color="purple" style="background: #9400d3;">PURPLE</button>
-            <button class="color-btn" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
-            <button class="color-btn" data-color="blue" style="background: #0000ff;">BLUE</button>
+            <button class="color-btn active" data-color="green" style="background: #39ff14;" title="Green"></button>
+            <button class="color-btn" data-color="cyan" style="background: #00ffff;" title="Cyan"></button>
+            <button class="color-btn" data-color="purple" style="background: #9400d3;" title="Purple"></button>
+            <button class="color-btn" data-color="orange" style="background: #ff6b35;" title="Orange"></button>
+            <button class="color-btn" data-color="blue" style="background: #0066ff;" title="Blue"></button>
+            <button class="color-btn" data-color="brown" style="background: #8b4513;" title="Brown"></button>
           </div>
         </div>
-        
-        <!-- Glitch Colors -->
-        <div class="color-group" data-mode="glitch">
-          <div class="color-group-label">GLITCH COLORS</div>
-          <div class="color-buttons">
-            <button class="color-btn active" data-color="cyan-magenta" style="background: linear-gradient(90deg, #00ffff 50%, #ff00ff 50%);">CYAN/MAGENTA</button>
-            <button class="color-btn" data-color="red-blue" style="background: linear-gradient(90deg, #ff0000 50%, #0000ff 50%);">RED/BLUE</button>
-            <button class="color-btn" data-color="green-orange" style="background: linear-gradient(90deg, #00ff00 50%, var(--orange) 50%);">GREEN/ORANGE</button>
-            <button class="color-btn" data-color="yellow-purple" style="background: linear-gradient(90deg, #ffff00 50%, #9400d3 50%);">YELLOW/PURPLE</button>
-          </div>
-        </div>
-        
-        <!-- Scan Colors -->
-        <div class="color-group" data-mode="rainbow-scan">
-          <div class="color-group-label">SCAN COLORS</div>
-          <div class="color-buttons">
-            <button class="color-btn active" data-color="rainbow" style="background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);">RAINBOW</button>
-            <button class="color-btn" data-color="teal-orange" style="background: linear-gradient(90deg, var(--teal), var(--orange));">TEAL/ORANGE</button>
-            <button class="color-btn" data-color="monochrome" style="background: linear-gradient(90deg, #fff, #ccc, #999, #666);">MONOCHROME</button>
-          </div>
-        </div>
-        
-        <!-- Piano Colors -->
-        <div class="color-group" data-mode="piano">
-          <div class="color-group-label">PIANO COLORS</div>
-          <div class="color-buttons">
-            <button class="color-btn active" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
-            <button class="color-btn" data-color="teal" style="background: var(--teal); color: #000;">TEAL</button>
-            <button class="color-btn" data-color="fuchsia" style="background: var(--fuchsia);">FUCHSIA</button>
-            <button class="color-btn" data-color="green" style="background: var(--green); color: #000;">GREEN</button>
-            <button class="color-btn" data-color="rainbow" style="background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);">RAINBOW</button>
-          </div>
-        </div>
-        
-        <!-- Clear Colors -->
         <div class="color-group" data-mode="clear">
-          <div class="color-group-label">CLEAR COLORS</div>
           <div class="color-buttons">
-            <button class="color-btn active" data-color="white" style="background: #fff; color: #000;">WHITE</button>
-            <button class="color-btn" data-color="teal" style="background: var(--teal); color: #000;">TEAL</button>
-            <button class="color-btn" data-color="orange" style="background: var(--orange); color: #000;">ORANGE</button>
+            <button class="color-btn active" data-color="white" style="background: #fff;" title="White"></button>
+            <button class="color-btn" data-color="teal" style="background: #00d4aa;" title="Teal"></button>
+            <button class="color-btn" data-color="orange" style="background: #ff6b35;" title="Orange"></button>
           </div>
         </div>
       </div>
     </div>
     
-    <p class="hero-tagline">▶ BUILDING REAL-TIME, DATA-INTENSIVE CONSUMER PRODUCTS</p>
     <p class="hero-sub">FULL-STACK · ML/AI · DISTRIBUTED SYSTEMS</p>
-    <div class="hero-cta">
-      <a href="#development" class="btn btn-primary">SEE WORK</a>
-      <a href="studio.html" class="btn btn-secondary">STUDIO</a>
+    <p class="hero-tagline">Working on apps, exploring passions, knowledgemaxxing.</p>
+    
+    <div class="hero-nav-grid">
+      <a href="#development" class="hero-nav-btn orange span-2">▶ DEVELOPMENT</a>
+      <a href="#contact" class="hero-nav-btn teal">CONTACT</a>
+      <a href="#writing" class="hero-nav-btn teal">WRITING</a>
+      <a href="#notes" class="hero-nav-btn orange">NOTES</a>
+      <a href="#spotlight" class="hero-nav-btn teal">SPOTLIGHT</a>
+      <a href="#reading" class="hero-nav-btn orange full-width">READING · MUSIC · ARTS</a>
     </div>
     <div class="scroll-hint">↓ SCROLL</div>
   </section>
 
-  <!-- DEVELOPMENT -->
-  <section class="section" id="development">
-    <div class="section-header">
-      <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
-      <h2 class="section-title">▶ PRODUCTS & PROJECTS</h2>
-      <p class="section-desc">9 products in active development. 20+ projects shipped or in research.</p>
-    </div>
-    
-    <div class="dev-showcase">
-      <!-- PRODUCTS -->
-      <div>
-        <div class="dev-section-header">
-          <div class="dev-section-title">★ PRODUCTS</div>
-          <div class="dev-section-count">9 ACTIVE</div>
-        </div>
-        <div class="product-grid" id="products-grid"></div>
+  <!-- DEVELOPMENT + CONTACT (side by side) -->
+  <div class="section-pair">
+    <section class="section" id="development">
+      <div class="section-header">
+        <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
+        <h2 class="section-title">▶ PRODUCTS & PROJECTS</h2>
+        <p class="section-desc">9 products in active development. 20+ projects shipped or in research.</p>
       </div>
       
-      <!-- PROJECTS -->
-      <div>
-        <div class="dev-section-header" style="border-color: var(--teal);">
-          <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
-          <div class="dev-section-count" style="border-color: var(--teal); color: var(--teal);">20+</div>
+      <div class="dev-showcase">
+        <!-- PRODUCTS -->
+        <div>
+          <div class="dev-section-header">
+            <div class="dev-section-title">★ PRODUCTS</div>
+            <div class="dev-section-count">9 ACTIVE</div>
+          </div>
+          <div class="product-grid" id="products-grid"></div>
         </div>
-        <div class="project-grid" id="projects-grid"></div>
+        
+        <!-- PROJECTS -->
+        <div>
+          <div class="dev-section-header" style="border-color: var(--teal);">
+            <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
+            <div class="dev-section-count" style="border-color: var(--teal); color: var(--teal);">20+</div>
+          </div>
+          <div class="project-grid" id="projects-grid"></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- READING -->
+    <section class="section" id="contact">
+      <div class="section-header" style="border-color: var(--orange);">
+        <div class="section-tag">[6] COLLABORATE</div>
+        <h2 class="section-title" style="color: var(--orange);">▶CONTACT</h2>
+      </div>
+      
+      <p class="contact-intro">
+        I see CS as a creative pursuit, I feel that with passion and some domain knowledge, the medium of programming allows me to express myself and impact others positively. I have a deep passion for technology and formal logical systems. I love building products that are user-friendly and efficient, as well as technically deep and elegant. I take a pragmatic game theory approach to life, and as of right now, im applying myself most in development, while im also exploring other passions such as reading, writing, and music.
+      </p>
+      
+      <p class="contact-statement">
+        I love working with others, and I'm always open to collaboration. <br>
+        If you're doing that and need help, I'll work for you.
+      </p>
+      
+      <a href="mailto:waleedraza1211@gmail.com" class="contact-button">CONTACT ME</a>
+    </section>
+  </div>
+
+  <!-- WRITING + NOTES + SPOTLIGHT (side by side) -->
+  <div class="section-trio">
+    <section class="section" id="writing">
+      <div class="section-header">
+        <div class="section-tag">[3] MIND · OUTPUT</div>
+        <h2 class="section-title">▶ WRITING</h2>
+        <p class="section-desc">Systems thinking in prose.</p>
+      </div>
+      
+      <div class="essays-grid">
+        <div>
+          <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
+          <div class="essay-item" onclick="openPopup({title: 'Capitalism, Nihilism, and the Search for Post-Meaning', subtitle: 'Philosophical Essay', content: '<p>Full essay coming soon.</p>'})">
+            <span class="essay-title">Capitalism, Nihilism, and the Search for Post-Meaning</span>
+            <p class="essay-preview">Capitalism doesn't just produce goods, it produces meaning substitutes.</p>
+          </div>
+          <div class="essay-item" onclick="openPopup({title: 'Pragmatic Technosocial Market Direct Democracy', subtitle: 'Political Essay', content: '<p>Full essay coming soon.</p>'})">
+            <span class="essay-title">Pragmatic Technosocial Market Direct Democracy</span>
+            <p class="essay-preview">Market mechanisms where they work, democratic feedback where legitimacy matters.</p>
+          </div>
+          <div class="essay-item" onclick="openPopup({title: 'Systemic Failures vs. Individual Moral Flaws', subtitle: 'Systems Essay', content: '<p>Full essay coming soon.</p>'})">
+            <span class="essay-title">Systemic Failures vs. Individual Moral Flaws</span>
+            <p class="essay-preview">People behave rationally inside broken incentive structures.</p>
+          </div>
+          <div class="essay-item" onclick="openPopup({title: 'Values That Survive Pressure', subtitle: 'Ethics Essay', content: '<p>Full essay coming soon.</p>'})">
+            <span class="essay-title">Values That Survive Pressure</span>
+            <p class="essay-preview">Post-nihilistic ethics. Choose values that survive pressure.</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="essays-category-title">◈ CREATIVE WRITING</h3>
+          <div class="creative-tiles">
+            <div class="creative-tile" onclick="openPopup({locked: true})">
+              <span class="creative-tile-icon">📜</span>
+              <span class="creative-tile-title">poem.txt (1)</span>
+              <span class="creative-tile-lock">🔒</span>
+            </div>
+            <div class="creative-tile" onclick="openPopup({locked: true})">
+              <span class="creative-tile-icon">📜</span>
+              <span class="creative-tile-title">poem.txt (2)</span>
+              <span class="creative-tile-lock">🔒</span>
+            </div>
+            <div class="creative-tile" onclick="openPopup({locked: true})">
+              <span class="creative-tile-icon">🎵</span>
+              <span class="creative-tile-title">song.mp4 (1)</span>
+              <span class="creative-tile-lock">🔒</span>
+            </div>
+            <div class="creative-tile" onclick="openPopup({locked: true})">
+              <span class="creative-tile-icon">🎵</span>
+              <span class="creative-tile-title">song.mp4 (2)</span>
+              <span class="creative-tile-lock">🔒</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="notes">
+      <div class="section-header" style="border-color: var(--teal);">
+        <div class="section-tag">[4] OPEN THREADS</div>
+        <h2 class="section-title" style="color: var(--teal);">▶ NOTES</h2>
+        <p class="section-desc">Open threads, not conclusions.</p>
+      </div>
+      
+      <div class="notes-grid">
+        <article class="note-card">
+          <h3 class="note-title">Excited to Release</h3>
+          <div class="note-subtitle">Coming Soon</div>
+          <div class="note-body">
+            <p>I'm excited to release <strong>PokerGeek</strong> and <strong class="teal">Library of Alexandria</strong> to the web soon.</p>
+            <p style="margin-top: 12px;">Big thanks to all the beta and alpha testers who helped shape these products.</p>
+          </div>
+        </article>
+        
+        <article class="note-card">
+          <h3 class="note-title">Collaborate With Me</h3>
+          <div class="note-subtitle">Open Invitation</div>
+          <div class="note-body">
+            <p>I want people to <strong>collaborate</strong> on any of my products and projects, or <strong>use them</strong>.</p>
+            <p style="margin-top: 12px;">If you're building something interesting, or want to contribute to what I'm building, reach out.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="spotlight">
+      <div class="section-header">
+        <div class="section-tag">[5] CURRENT FOCUS</div>
+        <h2 class="section-title">▶ SPOTLIGHT</h2>
+        <p class="section-desc">Where my attention is right now.</p>
+      </div>
+      
+      <div class="spotlight-grid">
+        <article class="spotlight-card">
+          <h3 class="spotlight-title">PokerGeek & Library of Alexandria</h3>
+          <div class="spotlight-subtitle">Primary Focus</div>
+          <div class="spotlight-body">
+            <p>Currently iterating on <strong>PokerGeek</strong> and building <strong class="teal">Library of Alexandria</strong>. Both projects are forcing me to confront the same problem from different angles: how to make complexity survivable over time.</p>
+          </div>
+        </article>
+        
+        <article class="spotlight-card">
+          <h3 class="spotlight-title">Mapping Distributed Systems</h3>
+          <div class="spotlight-subtitle">Technical Focus</div>
+          <div class="spotlight-body">
+            <p>Working on mapping high-level distributed systems into diagrams that don't lie. Finding a balance between accuracy and legibility. Most diagrams fail because they optimize for presentation, not truth.</p>
+          </div>
+        </article>
+        
+        <article class="spotlight-card">
+          <h3 class="spotlight-title">Peak Anime Rewatch</h3>
+          <div class="spotlight-subtitle">Attack on Titan & Jujutsu Kaisen</div>
+          <div class="spotlight-body">
+            <p>Both shows are masterclasses in worldbuilding where the rules matter more than the characters.</p>
+            <div class="spotlight-images">
+              <img src="pics/Eren_saying_freedom.png" alt="Eren" class="spotlight-image">
+              <img src="pics/gojo.png" alt="Gojo" class="spotlight-image">
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- READING · MUSIC · ARTS (full width, bottom) -->
   <section class="section" id="reading">
     <div class="section-header">
       <div class="section-tag">[2] MIND · INPUT</div>
@@ -1532,150 +1973,6 @@
         </div>
       </article>
     </div>
-  </section>
-
-  <!-- WRITING -->
-  <section class="section" id="writing">
-    <div class="section-header">
-      <div class="section-tag">[3] MIND · OUTPUT</div>
-      <h2 class="section-title">▶ WRITING</h2>
-      <p class="section-desc">Systems thinking in prose.</p>
-    </div>
-    
-    <div class="essays-grid">
-      <div>
-        <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
-        <div class="essay-item" onclick="openPopup({title: 'Capitalism, Nihilism, and the Search for Post-Meaning', subtitle: 'Philosophical Essay', content: '<p>Full essay coming soon.</p>'})">
-          <span class="essay-title">Capitalism, Nihilism, and the Search for Post-Meaning</span>
-          <p class="essay-preview">Capitalism doesn't just produce goods, it produces meaning substitutes.</p>
-        </div>
-        <div class="essay-item" onclick="openPopup({title: 'Pragmatic Technosocial Market Direct Democracy', subtitle: 'Political Essay', content: '<p>Full essay coming soon.</p>'})">
-          <span class="essay-title">Pragmatic Technosocial Market Direct Democracy</span>
-          <p class="essay-preview">Market mechanisms where they work, democratic feedback where legitimacy matters.</p>
-        </div>
-        <div class="essay-item" onclick="openPopup({title: 'Systemic Failures vs. Individual Moral Flaws', subtitle: 'Systems Essay', content: '<p>Full essay coming soon.</p>'})">
-          <span class="essay-title">Systemic Failures vs. Individual Moral Flaws</span>
-          <p class="essay-preview">People behave rationally inside broken incentive structures.</p>
-        </div>
-        <div class="essay-item" onclick="openPopup({title: 'Values That Survive Pressure', subtitle: 'Ethics Essay', content: '<p>Full essay coming soon.</p>'})">
-          <span class="essay-title">Values That Survive Pressure</span>
-          <p class="essay-preview">Post-nihilistic ethics. Choose values that survive pressure.</p>
-        </div>
-      </div>
-      
-      <div>
-        <h3 class="essays-category-title">◈ CREATIVE WRITING</h3>
-        <div class="creative-tiles">
-          <div class="creative-tile" onclick="openPopup({locked: true})">
-            <span class="creative-tile-icon">📜</span>
-            <span class="creative-tile-title">poem.txt (1)</span>
-            <span class="creative-tile-lock">🔒</span>
-          </div>
-          <div class="creative-tile" onclick="openPopup({locked: true})">
-            <span class="creative-tile-icon">📜</span>
-            <span class="creative-tile-title">poem.txt (2)</span>
-            <span class="creative-tile-lock">🔒</span>
-          </div>
-          <div class="creative-tile" onclick="openPopup({locked: true})">
-            <span class="creative-tile-icon">🎵</span>
-            <span class="creative-tile-title">song.mp4 (1)</span>
-            <span class="creative-tile-lock">🔒</span>
-          </div>
-          <div class="creative-tile" onclick="openPopup({locked: true})">
-            <span class="creative-tile-icon">🎵</span>
-            <span class="creative-tile-title">song.mp4 (2)</span>
-            <span class="creative-tile-lock">🔒</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- NOTES / SANDBOX -->
-  <section class="section" id="notes">
-    <div class="section-header">
-      <div class="section-tag">[4] OPEN THREADS</div>
-      <h2 class="section-title">▶ NOTES</h2>
-      <p class="section-desc">Open threads, not conclusions.</p>
-    </div>
-    
-    <div class="notes-grid">
-      <article class="note-card">
-        <h3 class="note-title">Excited to Release</h3>
-        <div class="note-subtitle">Coming Soon</div>
-        <div class="note-body">
-          <p>I'm excited to release <strong>PokerGeek</strong> and <strong class="teal">Library of Alexandria</strong> to the web soon.</p>
-          <p style="margin-top: 12px;">Big thanks to all the beta and alpha testers who helped shape these products.</p>
-        </div>
-      </article>
-      
-      <article class="note-card">
-        <h3 class="note-title">Collaborate With Me</h3>
-        <div class="note-subtitle">Open Invitation</div>
-        <div class="note-body">
-          <p>I want people to <strong>collaborate</strong> on any of my products and projects, or <strong>use them</strong>.</p>
-          <p style="margin-top: 12px;">If you're building something interesting, or want to contribute to what I'm building, reach out.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- SPOTLIGHT -->
-  <section class="section" id="spotlight">
-    <div class="section-header">
-      <div class="section-tag">[5] CURRENT FOCUS</div>
-      <h2 class="section-title">▶ SPOTLIGHT</h2>
-      <p class="section-desc">Where my attention is right now.</p>
-    </div>
-    
-    <div class="spotlight-grid">
-      <article class="spotlight-card">
-        <h3 class="spotlight-title">PokerGeek & Library of Alexandria</h3>
-        <div class="spotlight-subtitle">Primary Focus</div>
-        <div class="spotlight-body">
-          <p>Currently iterating on <strong>PokerGeek</strong> and building <strong class="teal">Library of Alexandria</strong>. Both projects are forcing me to confront the same problem from different angles: how to make complexity survivable over time.</p>
-        </div>
-      </article>
-      
-      <article class="spotlight-card">
-        <h3 class="spotlight-title">Mapping Distributed Systems</h3>
-        <div class="spotlight-subtitle">Technical Focus</div>
-        <div class="spotlight-body">
-          <p>Working on mapping high-level distributed systems into diagrams that don't lie. Finding a balance between accuracy and legibility. Most diagrams fail because they optimize for presentation, not truth.</p>
-        </div>
-      </article>
-      
-      <article class="spotlight-card">
-        <h3 class="spotlight-title">Peak Anime Rewatch</h3>
-        <div class="spotlight-subtitle">Attack on Titan & Jujutsu Kaisen</div>
-        <div class="spotlight-body">
-          <p>Both shows are masterclasses in worldbuilding where the rules matter more than the characters.</p>
-          <div class="spotlight-images">
-            <img src="pics/Eren_saying_freedom.png" alt="Eren" class="spotlight-image">
-            <img src="pics/gojo.png" alt="Gojo" class="spotlight-image">
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <div class="section-header" style="max-width: 800px; margin: 0 auto 48px; border-color: var(--orange);">
-      <div class="section-tag">[6] COLLABORATE</div>
-      <h2 class="section-title" style="color: var(--orange);">▶ WORK WITH / CONTACT</h2>
-    </div>
-    
-    <p class="contact-intro">
-      I build with intensity and taste. My approach to development is shaped by passion, leverage of strengths, and working with people who have integrated self-congruence. I care about systems that create positive impact at scale.
-    </p>
-    
-    <p class="contact-statement">
-      If you're doing that, I'll work with you.<br>
-      If you're doing that and need help, I'll work for you.
-    </p>
-    
-    <a href="mailto:waleedraza1211@gmail.com" class="contact-button">CONTACT ME</a>
   </section>
 
   <!-- FOOTER -->
@@ -1801,75 +2098,112 @@
       const heroNameEl = document.getElementById('hero-name');
       if (!heroNameEl) return;
       
+      // Letter color assignments - dual colors for each letter
+      const LETTER_COLORS = {
+        'W': ['var(--orange)', 'var(--teal)'],
+        'A': ['var(--green)', 'var(--orange)'],
+        'L': ['var(--fuchsia)', 'var(--teal)'],
+        'E': ['var(--orange)', 'var(--teal)'],
+        'E2': ['var(--green)', 'var(--fuchsia)'],
+        'D': ['var(--orange)', 'var(--orange)'],
+        'R': ['var(--teal)', 'var(--fuchsia)'],
+        'A2': ['var(--green)', 'var(--orange)'],
+        'Z': ['var(--orange)', 'var(--teal)'],
+        'A3': ['var(--fuchsia)', 'var(--green)']
+      };
+      
+      // Define letter sequence: W-A-L-E-E-D space A space R-A-Z-A
       const letterSequence = [
-        { letter: 'W', ascii: LETTER_W, color: 'var(--orange)' },
-        { letter: 'A', ascii: LETTER_A, color: 'var(--orange)' },
-        { letter: 'L', ascii: LETTER_L, color: 'var(--orange)' },
-        { letter: 'E', ascii: LETTER_E, color: 'var(--orange)' },
-        { letter: 'E2', ascii: LETTER_E, color: 'var(--orange)' },
-        { letter: 'D', ascii: LETTER_D, color: 'var(--orange)' },
-        { letter: 'SPACE', ascii: [''], color: null },
-        { letter: 'R', ascii: LETTER_R, color: 'var(--teal)' },
-        { letter: 'A2', ascii: LETTER_A, color: 'var(--teal)' },
-        { letter: 'Z', ascii: LETTER_Z, color: 'var(--teal)' },
-        { letter: 'A3', ascii: LETTER_A, color: 'var(--teal)' }
+        { letter: 'W', ascii: LETTER_W, colors: LETTER_COLORS['W'] },
+        { letter: 'A', ascii: LETTER_A, colors: LETTER_COLORS['A'] },
+        { letter: 'L', ascii: LETTER_L, colors: LETTER_COLORS['L'] },
+        { letter: 'E', ascii: LETTER_E, colors: LETTER_COLORS['E'] },
+        { letter: 'E2', ascii: LETTER_E, colors: LETTER_COLORS['E2'] },
+        { letter: 'D', ascii: LETTER_D, colors: LETTER_COLORS['D'] },
+        { letter: 'SPACE', ascii: [''], colors: null },
+        { letter: 'A_MIDDLE', ascii: LETTER_A, colors: LETTER_COLORS['A'] },
+        { letter: 'SPACE2', ascii: [''], colors: null },
+        { letter: 'R', ascii: LETTER_R, colors: LETTER_COLORS['R'] },
+        { letter: 'A2', ascii: LETTER_A, colors: LETTER_COLORS['A2'] },
+        { letter: 'Z', ascii: LETTER_Z, colors: LETTER_COLORS['Z'] },
+        { letter: 'A3', ascii: LETTER_A, colors: LETTER_COLORS['A3'] }
       ];
       
+      // Build HTML with separate letter boxes
       let html = '';
-      letterSequence.forEach((item) => {
-        if (item.letter === 'SPACE') {
-          html += '<div style="width: 24px;"></div>';
+      letterSequence.forEach((item, idx) => {
+        if (item.letter === 'SPACE' || item.letter === 'SPACE2') {
+          html += '<div style="width: 24px;"></div>'; // Spacer between names
           return;
         }
         
-        html += `<div class="letter-box" data-letter="${item.letter}" style="--hero-color: ${item.color};">`;
+        html += `<div class="letter-box" data-letter="${item.letter}" style="--color1: ${item.colors[0]}; --color2: ${item.colors[1]};">`;
+        
+        // Build ASCII art for this letter
         item.ascii.forEach((line, lineIdx) => {
           for (let i = 0; i < line.length; i++) {
             const char = line[i];
             html += `<span class="ascii-char" data-line="${lineIdx}" data-char="${i}" data-letter="${item.letter}">${char === ' ' ? '\u00A0' : char}</span>`;
           }
-          if (lineIdx < item.ascii.length - 1) html += '<br>';
+          if (lineIdx < item.ascii.length - 1) {
+            html += '<br>';
+          }
         });
+        
         html += '</div>';
       });
       
       heroNameEl.innerHTML = html;
       
-      // Assign pixel indices to each character (treating entire display as TV screen)
-      let pixelIndex = 0;
-      const allChars = heroNameEl.querySelectorAll('.ascii-char');
-      
-      allChars.forEach((char) => {
-        // Set pixel index for animation delays (sequential across entire display)
-        char.style.setProperty('--pixel-index', pixelIndex);
+      // Assign pixel indices and positions to each character (treating entire display as TV screen)
+      // Wait for layout to calculate positions
+      setTimeout(() => {
+        let pixelIndex = 0;
+        const allChars = heroNameEl.querySelectorAll('.ascii-char');
         
-        // Calculate Y position for scan mode (0-100 based on vertical position in letter)
-        const letterBox = char.closest('.letter-box');
-        const lineNum = parseInt(char.dataset.line) || 0;
-        const totalLines = letterBox.querySelectorAll('br').length + 1;
-        const yPos = totalLines > 1 ? (lineNum / (totalLines - 1)) * 100 : 50;
+        // Calculate bounding box of entire display for wave calculations
+        const containerRect = heroNameEl.getBoundingClientRect();
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         
-        char.style.setProperty('--pixel-y-pos', yPos);
+        allChars.forEach((char) => {
+          const rect = char.getBoundingClientRect();
+          const x = rect.left - containerRect.left;
+          const y = rect.top - containerRect.top;
+          
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x + rect.width);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y + rect.height);
+        });
         
-        // Assign piano key based on X position (piano keyboard layout)
-        // Get all chars in same line
-        const lineChars = Array.from(letterBox.querySelectorAll(`.ascii-char[data-line="${lineNum}"]`));
-        const charIndexInLine = lineChars.indexOf(char);
-        const lineLength = lineChars.length;
-        const xPos = lineLength > 1 ? charIndexInLine / (lineLength - 1) : 0;
+        const displayWidth = maxX - minX || 1;
+        const displayHeight = maxY - minY || 1;
         
-        // Map X position to piano keys (white and black keys)
-        // Use pixel index to create consistent key mapping
-        const pianoKeyNum = pixelIndex % 52; // 52 keys total (4 octaves)
-        // White keys pattern: C, D, E, F, G, A, B (repeats) = notes 0,2,4,5,7,9,11
-        const whiteKeyPattern = [0,2,4,5,7,9,11];
-        const noteInOctave = pianoKeyNum % 12;
-        const isWhiteKey = whiteKeyPattern.includes(noteInOctave);
-        
-        char.setAttribute('data-piano-key', isWhiteKey ? 'white' : 'black');
-        
-        pixelIndex++;
-      });
+        allChars.forEach((char) => {
+          // Set pixel index for sequential animations
+          char.style.setProperty('--pixel-index', pixelIndex);
+          
+          // Calculate pixel position (0-1 normalized)
+          const rect = char.getBoundingClientRect();
+          const x = rect.left - containerRect.left;
+          const y = rect.top - containerRect.top;
+          
+          const xPos = displayWidth > 0 ? (x - minX) / displayWidth : 0; // 0-1
+          const yPos = displayHeight > 0 ? (y - minY) / displayHeight : 0; // 0-1
+          
+          char.style.setProperty('--pixel-x-pos', xPos);
+          char.style.setProperty('--pixel-y-pos', yPos);
+          
+          // Assign piano key based on X position (piano keyboard layout)
+          const pianoKeyNum = Math.floor(xPos * 52); // 52 keys total (4 octaves)
+          const noteInOctave = pianoKeyNum % 12;
+          const isWhiteKey = [0,2,4,5,7,9,11].includes(noteInOctave);
+          char.setAttribute('data-piano-key', isWhiteKey ? 'white' : 'black');
+          char.setAttribute('data-piano-key-num', pianoKeyNum);
+          
+          pixelIndex++;
+        });
+      }, 100);
       
       // Start the animation loop
       startLetterAnimation();
@@ -1883,17 +2217,13 @@
       const letterBoxes = heroNameEl.querySelectorAll('.letter-box');
       const animationDuration = 1500; // 1.5 seconds for each letter
       let completedLetters = 0;
-      const totalLetters = Array.from(letterBoxes).filter(box => box.dataset.letter && box.dataset.letter !== 'SPACE').length;
+      const totalLetters = letterBoxes.length - 1; // Exclude space
       
-      letterBoxes.forEach((box) => {
+      letterBoxes.forEach((box, idx) => {
         if (!box.dataset.letter || box.dataset.letter === 'SPACE') return;
         
-        // Reset state for restart
-        box.classList.remove('complete');
         box.classList.add('typing');
         const chars = box.querySelectorAll('.ascii-char');
-        chars.forEach(c => c.classList.remove('visible'));
-        
         const charCount = chars.length;
         const charDelay = animationDuration / charCount; // Same rate for all letters
         
@@ -1907,19 +2237,15 @@
               box.classList.add('complete');
               completedLetters++;
               
-              // After all letters complete, hold white for 2 seconds then restart
+              // After all letters complete, setup animation controls
               if (completedLetters === totalLetters) {
                 setupAnimationControls();
-                // Hold white for 2 seconds, then restart the animation
-                setTimeout(() => {
-                  startLetterAnimation();
-                }, 2000);
               }
             }, 300);
             return;
           }
           
-          // Reveal character
+          // Reveal character with dual colors
           chars[charIdx].classList.add('visible');
           charIdx++;
           
@@ -1932,63 +2258,14 @@
     }
     
     // Color scheme arrays
-    const matrixColors = ['green', 'cyan', 'purple', 'orange', 'blue'];
-    const glitchColors = ['cyan-magenta', 'red-blue', 'green-orange', 'yellow-purple'];
-    const scanColors = ['rainbow', 'teal-orange', 'monochrome'];
-    const pianoColors = ['orange', 'teal', 'fuchsia', 'green', 'rainbow'];
+    const matrixColors = ['green', 'cyan', 'purple', 'orange', 'blue', 'brown'];
     const clearColors = ['white', 'teal', 'orange'];
     
     let matrixColorIndex = 0;
     let glitchColorIndex = 0;
     let scanColorIndex = 0;
-    let pianoColorIndex = 0;
     let clearColorIndex = 0;
     let normalizeTimer = null;
-    let pianoInterval = null;
-    
-    // Piano animation
-    function startPianoAnimation(heroNameEl) {
-      if (pianoInterval) clearInterval(pianoInterval);
-      
-      const chars = heroNameEl.querySelectorAll('.ascii-char');
-      const isRainbow = heroNameEl.classList.contains('piano-rainbow');
-      
-      pianoInterval = setInterval(() => {
-        // Reset all presses
-        chars.forEach(c => c.removeAttribute('data-piano-pressed'));
-        
-        // Press 1-3 random keys
-        const numPresses = 1 + Math.floor(Math.random() * 3);
-        const pressedIndices = new Set();
-        
-        while (pressedIndices.size < numPresses) {
-          const idx = Math.floor(Math.random() * chars.length);
-          pressedIndices.add(idx);
-        }
-        
-        pressedIndices.forEach(idx => {
-          const char = chars[idx];
-          char.setAttribute('data-piano-pressed', 'true');
-          
-          if (isRainbow) {
-            const rainbowColors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
-            const color = rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
-            char.style.setProperty('--piano-press-color', color);
-          }
-          
-          setTimeout(() => {
-            char.removeAttribute('data-piano-pressed');
-          }, 300);
-        });
-      }, 500);
-    }
-    
-    function stopPianoAnimation() {
-      if (pianoInterval) {
-        clearInterval(pianoInterval);
-        pianoInterval = null;
-      }
-    }
     
     // Auto-normalize function
     function normalizeToTyping() {
@@ -1996,11 +2273,8 @@
       if (!heroNameEl) return;
       
       // Remove all animation modes
-      heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'rainbow-scan-mode', 'piano-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
-      heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue');
-      heroNameEl.classList.remove('glitch-cyan-magenta', 'glitch-red-blue', 'glitch-green-orange', 'glitch-yellow-purple');
-      heroNameEl.classList.remove('scan-rainbow', 'scan-teal-orange', 'scan-monochrome');
-      heroNameEl.classList.remove('piano-orange', 'piano-teal', 'piano-fuchsia', 'piano-green', 'piano-rainbow');
+      heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
+      heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue', 'matrix-brown');
       heroNameEl.classList.remove('clear-white', 'clear-teal', 'clear-orange');
       
       // Remove all active states
@@ -2010,15 +2284,6 @@
       // Hide color controls
       document.getElementById('color-controls').classList.remove('active');
       document.querySelectorAll('.color-group').forEach(group => group.classList.remove('active'));
-      
-      // Stop piano
-      stopPianoAnimation();
-      
-      // Reset all chars to normal
-      heroNameEl.querySelectorAll('.ascii-char').forEach(char => {
-        char.removeAttribute('data-piano-pressed');
-        char.style.removeProperty('--piano-press-color');
-      });
     }
     
     // Update color controls visibility
@@ -2073,13 +2338,8 @@
             normalizeTimer = null;
           }
           
-          // Stop piano if switching away
-          if (mode !== 'piano') {
-            stopPianoAnimation();
-          }
-          
           // Remove all modes
-          heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'rainbow-scan-mode', 'piano-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
+          heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'clear-mode', 'pulse-mode', 'wave-mode');
           buttons.forEach(b => b.classList.remove('active'));
           
           // Add selected mode
@@ -2091,15 +2351,7 @@
             heroNameEl.classList.add('matrix-' + matrixColors[matrixColorIndex]);
             updateActiveColorButton('matrix', matrixColors[matrixColorIndex]);
           } else if (mode === 'glitch') {
-            heroNameEl.classList.add('glitch-' + glitchColors[glitchColorIndex]);
-            updateActiveColorButton('glitch', glitchColors[glitchColorIndex]);
-          } else if (mode === 'rainbow-scan') {
-            heroNameEl.classList.add('scan-' + scanColors[scanColorIndex]);
-            updateActiveColorButton('rainbow-scan', scanColors[scanColorIndex]);
-          } else if (mode === 'piano') {
-            heroNameEl.classList.add('piano-' + pianoColors[pianoColorIndex]);
-            updateActiveColorButton('piano', pianoColors[pianoColorIndex]);
-            startPianoAnimation(heroNameEl);
+            // Glitch doesn't need color selection - it's random
           } else if (mode === 'clear') {
             heroNameEl.classList.add('clear-' + clearColors[clearColorIndex]);
             updateActiveColorButton('clear', clearColors[clearColorIndex]);
@@ -2128,24 +2380,9 @@
           
           // Apply color
           if (mode === 'matrix') {
-            heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue');
+            heroNameEl.classList.remove('matrix-green', 'matrix-cyan', 'matrix-purple', 'matrix-orange', 'matrix-blue', 'matrix-brown');
             heroNameEl.classList.add('matrix-' + color);
             matrixColorIndex = matrixColors.indexOf(color);
-          } else if (mode === 'glitch') {
-            heroNameEl.classList.remove('glitch-cyan-magenta', 'glitch-red-blue', 'glitch-green-orange', 'glitch-yellow-purple');
-            heroNameEl.classList.add('glitch-' + color);
-            glitchColorIndex = glitchColors.indexOf(color);
-          } else if (mode === 'rainbow-scan') {
-            heroNameEl.classList.remove('scan-rainbow', 'scan-teal-orange', 'scan-monochrome');
-            heroNameEl.classList.add('scan-' + color);
-            scanColorIndex = scanColors.indexOf(color);
-          } else if (mode === 'piano') {
-            heroNameEl.classList.remove('piano-orange', 'piano-teal', 'piano-fuchsia', 'piano-green', 'piano-rainbow');
-            heroNameEl.classList.add('piano-' + color);
-            pianoColorIndex = pianoColors.indexOf(color);
-            if (color === 'rainbow') {
-              startPianoAnimation(heroNameEl);
-            }
           } else if (mode === 'clear') {
             heroNameEl.classList.remove('clear-white', 'clear-teal', 'clear-orange');
             heroNameEl.classList.add('clear-' + color);
@@ -2240,6 +2477,237 @@
       if (e.key === 'Escape') closePopup();
     });
     
+    // ═══════════════════════════════════════════════════════════════════════
+    // TERMINAL NAV
+    // ═══════════════════════════════════════════════════════════════════════
+    
+    // Multiple messages per section - picks randomly
+    const TERMINAL_MESSAGES = {
+      hero: [
+        "Welcome. This is where I build things.",
+        "9 products. 20+ projects. One person.",
+        "Apps, passions, knowledge. All here.",
+        "Scroll to explore, or use the nav below."
+      ],
+      development: [
+        "Check out PokerGeek — provably fair poker.",
+        "Library of Alexandria is my knowledge system.",
+        "DataDepth: data brokerage infrastructure.",
+        "9 active products. Click any tile.",
+        "AgentYeager runs local AI swarms.",
+        "ProdPath is how I plan execution."
+      ],
+      reading: [
+        "Dostoevsky maps the architecture of guilt.",
+        "Thinking in Systems — essential reading.",
+        "Music shapes how I think about time.",
+        "Film informs visual decisions here.",
+        "Taste is signal. This is mine."
+      ],
+      writing: [
+        "Read my thoughts on game theory in life.",
+        "Essays on socialism, ethics, agency.",
+        "Philosophy meets practical building.",
+        "Some entries are locked — ask for access.",
+        "Writing clarifies thinking."
+      ],
+      notes: [
+        "Raw captures. Unfiltered thoughts.",
+        "These update when I think out loud.",
+        "Notes before they become essays.",
+        "Messy by design. That's the point."
+      ],
+      spotlight: [
+        "Current focus: PokerGeek and Alexandria.",
+        "Mapping distributed systems into diagrams.",
+        "Priority queue of what matters now.",
+        "Where attention is actually going."
+      ],
+      contact: [
+        "Email works best for real conversations.",
+        "I respond to interesting messages.",
+        "Want to collaborate? Reach out.",
+        "Clear subject lines help."
+      ]
+    };
+    
+    // Track navigation history for contextual messages
+    let navHistory = [];
+    let visitCounts = {};
+    let currentTypingTimeout = null;
+    
+    function getTerminalMessage(section) {
+      const messages = TERMINAL_MESSAGES[section];
+      if (!messages) return "Section not found.";
+      
+      // Track visit count
+      visitCounts[section] = (visitCounts[section] || 0) + 1;
+      
+      // Special messages based on behavior
+      if (navHistory.length > 3 && navHistory.slice(-3).every(s => s === section)) {
+        return "You seem interested in this. Take your time.";
+      }
+      
+      if (visitCounts[section] > 2) {
+        // Return a different message on repeat visits
+        const idx = (visitCounts[section] - 1) % messages.length;
+        return messages[idx];
+      }
+      
+      // Contextual suggestions based on previous section
+      const prev = navHistory[navHistory.length - 1];
+      if (prev === 'development' && section === 'reading') {
+        return "From building to inputs. Smart sequence.";
+      }
+      if (prev === 'reading' && section === 'writing') {
+        return "Input → Output. See the connection.";
+      }
+      if (prev === 'writing' && section === 'notes') {
+        return "Essays come from these raw notes.";
+      }
+      if (prev === 'hero' && section === 'development') {
+        return "Starting with the work. Good choice.";
+      }
+      
+      // Track navigation
+      navHistory.push(section);
+      if (navHistory.length > 10) navHistory.shift();
+      
+      // Random message
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    function typeText(element, text, callback) {
+      if (currentTypingTimeout) {
+        clearTimeout(currentTypingTimeout);
+      }
+      
+      element.textContent = '';
+      let i = 0;
+      
+      function type() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          currentTypingTimeout = setTimeout(type, 20 + Math.random() * 25);
+        } else if (callback) {
+          callback();
+        }
+      }
+      
+      type();
+    }
+    
+    function updateTerminalTime() {
+      const timeEl = document.getElementById('terminal-time');
+      if (timeEl) {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        timeEl.textContent = `${hours}:${mins}:${secs}`;
+      }
+    }
+    
+    function initTerminalNav() {
+      const terminal = document.getElementById('terminal-nav');
+      const header = document.getElementById('terminal-nav-header');
+      const textEl = document.getElementById('terminal-text');
+      const closeBtn = document.getElementById('terminal-close');
+      const minBtn = document.getElementById('terminal-min');
+      const links = document.querySelectorAll('.terminal-nav-link');
+      
+      if (!terminal) return;
+      
+      // Initial typing animation
+      typeText(textEl, getTerminalMessage('hero'));
+      
+      // Update time every second
+      updateTerminalTime();
+      setInterval(updateTerminalTime, 1000);
+      
+      // Dragging
+      let isDragging = false;
+      let dragOffsetX = 0;
+      let dragOffsetY = 0;
+      
+      header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        const rect = terminal.getBoundingClientRect();
+        dragOffsetX = e.clientX - rect.left;
+        dragOffsetY = e.clientY - rect.top;
+        terminal.style.transition = 'none';
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const x = e.clientX - dragOffsetX;
+        const y = e.clientY - dragOffsetY;
+        terminal.style.left = x + 'px';
+        terminal.style.top = y + 'px';
+        terminal.style.right = 'auto';
+        terminal.style.bottom = 'auto';
+      });
+      
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        terminal.style.transition = '';
+      });
+      
+      // Close and minimize
+      closeBtn.addEventListener('click', () => {
+        terminal.classList.add('hidden');
+      });
+      
+      minBtn.addEventListener('click', () => {
+        terminal.classList.toggle('minimized');
+      });
+      
+      // Navigation links
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          const section = link.dataset.section;
+          if (section) {
+            typeText(textEl, getTerminalMessage(section));
+          }
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+      
+      // Watch for scroll to update
+      const sections = ['hero', 'development', 'reading', 'writing', 'notes', 'spotlight', 'contact'];
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id || 'hero';
+            typeText(textEl, getTerminalMessage(sectionId));
+            links.forEach(link => {
+              link.classList.toggle('active', link.dataset.section === sectionId);
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+      
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        const key = parseInt(e.key);
+        if (key >= 0 && key <= 6) {
+          const allLinks = Array.from(links);
+          if (allLinks[key]) {
+            allLinks[key].click();
+          }
+        }
+      });
+    }
+    
     // Init
     document.addEventListener('DOMContentLoaded', () => {
       initHeroName();
@@ -2247,7 +2715,48 @@
       initFlyingEmojis();
       renderProducts();
       renderProjects();
+      initTerminalNav();
     });
   </script>
+  
+  <!-- Terminal Nav -->
+  <div class="terminal-nav" id="terminal-nav">
+    <div class="terminal-nav-header" id="terminal-nav-header">
+      <span class="terminal-nav-title">waleed@site:~</span>
+      <div class="terminal-nav-controls">
+        <span class="terminal-nav-dot close" id="terminal-close"></span>
+        <span class="terminal-nav-dot min" id="terminal-min"></span>
+        <span class="terminal-nav-dot max"></span>
+      </div>
+    </div>
+    <div class="terminal-nav-body">
+      <div class="terminal-nav-prompt">
+        <span class="terminal-nav-user">guest@waleedraza</span>
+        <span class="terminal-nav-path">~/portfolio</span>
+      </div>
+      <div class="terminal-nav-output" id="terminal-output">
+        <span id="terminal-text"></span><span class="terminal-cursor"></span>
+      </div>
+      <div class="terminal-nav-history">
+        <div class="terminal-nav-history-line">
+          <span class="cmd">last: home</span>
+          <span class="result">→ ready</span>
+        </div>
+      </div>
+    </div>
+    <div class="terminal-nav-links">
+      <a href="#hero" class="terminal-nav-link active" data-section="hero"><span>0</span>HOME</a>
+      <a href="#development" class="terminal-nav-link" data-section="development"><span>1</span>DEVELOPMENT</a>
+      <a href="#reading" class="terminal-nav-link" data-section="reading"><span>2</span>READING</a>
+      <a href="#writing" class="terminal-nav-link" data-section="writing"><span>3</span>WRITING</a>
+      <a href="#notes" class="terminal-nav-link" data-section="notes"><span>4</span>NOTES</a>
+      <a href="#spotlight" class="terminal-nav-link" data-section="spotlight"><span>5</span>SPOTLIGHT</a>
+      <a href="#contact" class="terminal-nav-link" data-section="contact"><span>6</span>CONTACT</a>
+    </div>
+    <div class="terminal-nav-footer">
+      <span class="terminal-nav-status"><span class="terminal-nav-status-dot"></span>connected</span>
+      <span class="terminal-nav-time" id="terminal-time">00:00:00</span>
+    </div>
+  </div>
 </body>
 </html>
