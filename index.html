@@ -3718,7 +3718,8 @@
     .pw-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.95);
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(2px);
       z-index: 99999;
       display: flex;
       align-items: center;
@@ -3730,7 +3731,7 @@
       background: #ece9d8;
       border: none;
       border-radius: 8px 8px 4px 4px;
-      width: clamp(340px, 90vw, 420px);
+      width: clamp(480px, 85vw, 600px);
       box-shadow: 0 0 0 1px #0054e3, 2px 2px 15px rgba(0,0,0,0.6);
       overflow: hidden;
     }
@@ -3767,8 +3768,17 @@
       background: linear-gradient(180deg, #dc6b6b 0%, #c94545 50%, #b33b3b 100%);
       border: 1px solid #993333;
       color: #fff;
+      cursor: pointer;
+      transition: all 0.1s ease;
     }
     .pw-dot-red::after { content: '×'; }
+    .pw-dot-red:hover {
+      background: linear-gradient(180deg, #ff6b6b 0%, #e94545 50%, #d93b3b 100%);
+      transform: scale(1.05);
+    }
+    .pw-dot-red:active {
+      transform: scale(0.95);
+    }
     
     .pw-dot-yellow, .pw-dot-green { display: none; }
     
@@ -4665,7 +4675,7 @@
         <button class="pw-close" id="pw-close">×</button>
       </div>
       <div class="pw-terminal-body">
-        <div class="pw-prompt">$ authenticate --level=restricted</div>
+        <div class="pw-prompt">Enter a code if you have one</div>
         <div class="pw-message">You being here means you either: Know the password to access XYZ content, stumbled here out of curiosity (hi!), or are trying to edit the site content (if u get in make it funny!)</div>
         <input type="password" id="pw-input" placeholder="enter_password...">
         <button id="pw-submit">AUTHENTICATE</button>
@@ -6067,10 +6077,21 @@
         if (e.key === 'Enter') document.getElementById('pw-submit').click();
       });
       
-      // Close button for password modal
-      document.getElementById('pw-close').addEventListener('click', () => {
-        document.getElementById('pw-modal').style.display = 'none';
-        document.getElementById('pw-input').value = '';
+      // Close button for password modal (X button in header)
+      const pwCloseBtn = document.querySelector('.pw-dot-red');
+      if (pwCloseBtn) {
+        pwCloseBtn.addEventListener('click', () => {
+          document.getElementById('pw-modal').style.display = 'none';
+          document.getElementById('pw-input').value = '';
+        });
+      }
+      
+      // Click outside modal to close
+      document.getElementById('pw-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'pw-modal') {
+          document.getElementById('pw-modal').style.display = 'none';
+          document.getElementById('pw-input').value = '';
+        }
       });
       
       // Locked items click handler - show password modal
