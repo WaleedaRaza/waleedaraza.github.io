@@ -1345,14 +1345,14 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     :root {
-      /* Default theme: Windows XP */
-      --term-bg: #ece9d8;
+      /* Default theme: Windows 95 */
+      --term-bg: #c0c0c0;
       --term-fg: #000000;
-      --term-border: #0054e3;
-      --term-header-bg: linear-gradient(180deg, #0a246a 0%, #a6caf0 8%, #0a246a 90%, #0a246a 100%);
-      --term-accent: #d4d0c8;
-      --term-glow: rgba(51, 255, 51, 0.4);
-      --term-btn-bg: #1a3a1a;
+      --term-border: #000000;
+      --term-header-bg: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+      --term-accent: #000080;
+      --term-glow: none;
+      --term-btn-bg: #c0c0c0;
     }
     
     .terminal-nav {
@@ -4406,8 +4406,6 @@
     <!-- THE NAME - CENTERPIECE -->
     <div class="hero-name" id="hero-name"></div>
     
-    tagline: 'Progress, Passions & random stuff!',
-    subline: 'See what I\'m coding, writing, reading, listening to, catastrophizing, romanticizing, etc.'
     <!-- Hero Text - Tagline + Subline -->
     <div class="hero-text">
       <p class="hero-tagline">Progress updates on various projects across domains, some random stuff!</p>
@@ -5006,7 +5004,7 @@
     const TERMINAL_THEMES = ['dos', 'win95', 'xp', 'playstation', 'aqua', 'monterey', 'ubuntu', 'mint', 'c64', 'amiga'];
     
     // Sidebar theme index (separate from terminal nav theme)
-    let sidebarThemeIdx = 2; // Default to XP
+    let sidebarThemeIdx = 1; // Default to Win95
     
     // Animation modes for cycling
     const ANIM_MODES = ['matrix', 'glitch', 'wave', 'pulse', 'fire'];
