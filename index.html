@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -204,16 +204,9 @@
       }
     }
     
-    /* Mobile - wraps between words, never within words */
-    @media (max-width: 767px) {
-      .hero-name {
-        font-size: clamp(14px, 2.5vw, 18px);
-        flex-wrap: wrap;
-      }
-      
-      .word-group {
-        flex-wrap: nowrap !important;
-      }
+    /* Fixed layout - hero name maintains size */
+    .word-group {
+      flex-wrap: nowrap !important;
     }
     
     .letter-box {
@@ -590,33 +583,7 @@
       }
     }
     
-    /* FLYING EMOJIS - ENTIRE PAGE */
-    .emoji-float {
-      position: fixed;
-      font-size: 18px;
-      pointer-events: none;
-      opacity: 0.5;
-      z-index: 9998;
-      animation: floatEmoji linear forwards;
-      will-change: transform;
-    }
-    
-    @keyframes floatEmoji {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-      }
-      5% {
-        opacity: 0.5;
-      }
-      95% {
-        opacity: 0.5;
-      }
-      100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-      }
-    }
+    /* Flying emojis - REMOVED: Performance drain, distracting gimmick */
     
     /* Animation controls */
     .hero-controls {
@@ -1102,10 +1069,137 @@
       transform: rotate(90deg);
     }
     
-    /* Mobile: hide sidebar on small screens */
-    @media (max-width: 767px) {
+    /* ═══════════════════════════════════════════════════════════════════════
+       MOBILE FIXES - iPhone Safari compatibility
+       ═══════════════════════════════════════════════════════════════════════ */
+    
+    /* Small phones (iPhone SE, etc.) */
+    @media (max-width: 480px) {
+      /* Hide top nav links - terminal-nav provides same function */
+      .nav-links {
+        display: none;
+      }
+      
+      /* Hide sidebar on small screens - it takes too much space */
       .hero-sidebar {
         display: none;
+      }
+      
+      /* Make terminal nav full width on small screens */
+      .terminal-nav {
+        width: calc(100vw - 20px);
+        max-width: none;
+        right: 10px;
+        left: 10px;
+        bottom: 10px;
+      }
+      
+      /* Reduce nav padding */
+      .nav {
+        padding: 10px 16px;
+      }
+      
+      /* Improve hero text readability */
+      .hero-tagline {
+        font-size: 14px;
+        padding: 0 10px;
+      }
+      
+      .hero-subline {
+        font-size: 12px;
+        padding: 0 10px;
+      }
+      
+      /* Contact section better on mobile */
+      .contact-intro,
+      .contact-statement {
+        font-size: 14px;
+        padding: 0 8px;
+      }
+      
+      /* Cards need less padding on mobile */
+      .note-card,
+      .spotlight-card,
+      .music-card,
+      .media-card {
+        padding: 16px;
+      }
+      
+      /* Reading grid single column on small screens */
+      .reading-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+      }
+      
+      /* Ensure body doesn't get stuck scrolled */
+      body {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+    
+    /* Medium phones */
+    @media (max-width: 600px) {
+      /* Smaller nav links */
+      .nav-links {
+        gap: 16px;
+      }
+      
+      .nav-link {
+        font-size: 10px;
+      }
+      
+      .hero-sidebar {
+        width: 50px;
+        padding: 4px;
+      }
+      
+      .sidebar-header {
+        font-size: 6px;
+      }
+      
+      .sidebar-cycle-btn {
+        font-size: 9px;
+        padding: 8px 4px;
+      }
+    }
+    
+    /* Tablets */
+    @media (max-width: 768px) {
+      /* Ensure sections don't break weirdly */
+      .section-pair {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .section-columns {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .dev-showcase {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    
+    /* iOS Safari specific fixes */
+    @supports (-webkit-touch-callout: none) {
+      /* Fix for iOS Safari 100vh issue */
+      .popup-overlay,
+      .admin-overlay,
+      .pw-modal,
+      .product-popup,
+      .edit-popup {
+        min-height: -webkit-fill-available;
+      }
+      
+      /* Ensure smooth scrolling works */
+      html {
+        scroll-behavior: auto;
+      }
+      
+      /* Fix fixed positioning on iOS */
+      .nav,
+      .terminal-nav,
+      .hero-sidebar {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
       }
     }
     
@@ -1227,15 +1321,7 @@
       box-shadow: 0 0 20px var(--teal-glow);
     }
     
-    @media (max-width: 500px) {
-      .hero-nav-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .hero-nav-btn.full-width {
-        grid-column: 1 / -1;
-      }
-    }
+    /* Fixed layout - no mobile grid changes */
     
     /* ═══════════════════════════════════════════════════════════════════════
        TERMINAL NAV - MULTI-THEME SYSTEM
@@ -2241,12 +2327,7 @@
       50% { box-shadow: 0 0 20px #00d9ff, 0 0 40px #ff8c00; }
     }
     
-    /* Mobile adjustments */
-    @media (max-width: 500px) {
-      .terminal-nav { left: 10px; right: 10px; width: auto; }
-      .terminal-nav-links { grid-template-columns: repeat(3, 1fr); }
-      .terminal-nav-link { font-size: 8px; padding: 5px; }
-    }
+    /* Fixed layout - terminal nav maintains structure */
     
     /* ═══════════════════════════════════════════════════════════════════════
        SIDEBAR THEMES - Inherit from terminal themes
@@ -2343,8 +2424,7 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     /* UNIVERSAL LAYOUT - Mobile-first, fluid everywhere */
-    .section-pair,
-    .section-trio {
+    .section-pair {
       display: flex;
       flex-direction: column;
       gap: clamp(32px, 6vw, 60px);
@@ -2360,35 +2440,17 @@
         display: grid;
         grid-template-columns: 1.8fr 1fr;
         gap: clamp(40px, 5vw, 80px);
-    }
-    
-    .section-trio {
-      display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-        gap: clamp(24px, 4vw, 48px);
       }
     }
     
-    .section-pair .section,
-    .section-trio .section {
+    .section-pair .section {
       padding: 0;
       max-width: none;
       margin: 0;
       min-width: 0;
     }
     
-    /* Internal grids - fluid */
-    .section-trio .essays-grid,
-    .section-trio .notes-grid,
-    .section-trio .spotlight-grid,
-    .section-trio .reading-grid,
-    .section-trio .music-grid,
-    .section-trio .media-grid,
-    .section-trio .arts-grid-new {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(12px, 2.5vw, 20px);
-    }
+    /* .section-trio CSS - REMOVED: Never used */
     
     /* ═══════════════════════════════════════════════════════════════════════
        SECTION COLUMNS LAYOUT - Paired sections vertically
@@ -2744,45 +2806,7 @@
       font-weight: 400;
     }
     
-    .creative-tiles {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    
-    .creative-tile {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .creative-tile:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--fuchsia);
-    }
-    
-    .creative-tile-icon {
-      font-size: 24px;
-      display: block;
-      margin-bottom: 8px;
-    }
-    
-    .creative-tile-title {
-      font-size: 11px;
-      color: var(--text-dim);
-      display: block;
-    }
-    
-    .creative-tile-lock {
-      font-size: 12px;
-      display: block;
-      margin-top: 8px;
-    }
+    /* .creative-tile CSS - REMOVED: Never used */
     
     /* ═══════════════════════════════════════════════════════════════════════
        NOTES / SANDBOX SECTION
@@ -3088,14 +3112,12 @@
        MISC MEDIA SECTION (Shows & Films)
        ═══════════════════════════════════════════════════════════════════════ */
     
-    .media-grid,
-    .arts-grid-new {
+    .media-grid {
       display: flex;
       flex-direction: column;
       gap: clamp(12px, 2.5vw, 20px);
     }
     
-    .arts-card,
     .media-card {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(10px);
@@ -3105,7 +3127,6 @@
       transition: all 0.2s ease;
     }
     
-    .arts-card:hover,
     .media-card:hover {
       background: rgba(255, 255, 255, 0.05);
       border-color: var(--orange);
@@ -3117,41 +3138,7 @@
     .media-images { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
     .media-image { max-width: 100px; max-height: 80px; object-fit: cover; border: 1px solid var(--border); }
     
-    .arts-title {
-      color: var(--ice-white);
-      margin-bottom: 6px;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-size: clamp(15px, 2.8vw, 19px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-    
-    .arts-subtitle {
-      font-size: clamp(10px, 1.8vw, 12px);
-      color: var(--teal);
-      margin-bottom: 12px;
-      font-family: 'Outfit', sans-serif;
-    }
-    
-    .arts-body {
-      font-size: clamp(13px, 2.2vw, 15px);
-      color: var(--text-dim);
-      line-height: 1.6;
-      font-family: 'Outfit', sans-serif;
-    }
-    
-    .arts-images {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-    
-    .arts-image {
-      max-width: 100px;
-      height: auto;
-      border: 1px solid var(--border);
-    }
+    /* .arts-* CSS - REMOVED: Never used, replaced by .media-* */
     
     .spotlight-image {
       width: 120px;
@@ -4026,146 +4013,68 @@
       opacity: 0.9;
     }
     
-    /* Compact for small screens */
-    @media (max-width: 400px) {
-      .nav {
-        padding: clamp(10px, 3vw, 12px) clamp(14px, 4vw, 20px);
-      }
-      
-      .nav-brand {
-        font-size: 8px;
-      }
-      
-      .nav-links {
-        gap: clamp(10px, 3vw, 16px);
-      }
-      
-      .nav-link {
-        font-size: 9px;
-      }
-      
-      .hero-nav-btn {
-        font-size: 8px;
-        padding: 8px 10px;
-      }
-    }
+    /* Small screens no longer apply - fixed layout at 900px min-width */
     
     /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE-SPECIFIC VIEW - Dedicated layout for phones (not scaled desktop)
-       Target: Portrait phones < 768px width
+       FIXED-LAYOUT MOBILE VIEW - Desktop layout scaled, NOT reflowed
+       Maintains grid structure at all screen sizes
        ═══════════════════════════════════════════════════════════════════════ */
-    @media screen and (max-width: 767px) {
-      /* Force single-column stacked layout - no side-by-side */
-      .section-pair,
-      .section-trio,
-      .section-columns,
-      .dev-showcase {
-        display: flex !important;
-        flex-direction: column !important;
-        grid-template-columns: unset !important;
-      }
-      
-      .section-columns {
-        gap: 60px !important;
-      }
-      
-      /* Nav goes full width, horizontal scroll if needed */
-      .nav-links {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        gap: 16px !important;
-        padding-right: 20px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      
-      .nav-links::-webkit-scrollbar {
-        display: none;
-      }
-      
-      /* Hero grid becomes vertical buttons */
-      .hero-nav-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-      }
-      
-      .hero-nav-btn {
-        width: 100% !important;
-        text-align: center !important;
-      }
-      
-      /* Hide sidebar on mobile - it's fixed positioned anyway */
-      .hero-sidebar {
-        display: none !important;
-      }
-      
-      /* Terminal nav at bottom stays but simplified */
-      .terminal-nav {
-        left: 8px !important;
-        right: 8px !important;
-        width: auto !important;
-      }
-      
-      .terminal-nav-links {
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)) !important;
-        gap: 4px !important;
-      }
-      
-      .terminal-nav-link {
-        font-size: 9px !important;
-        padding: 6px 4px !important;
-      }
-      
-      /* Product/project grids stack */
-      .products-grid,
-      .projects-grid,
-      .essays-grid,
-      .notes-grid,
-      .spotlight-grid,
-      .reading-grid,
-      .music-grid,
-      .media-grid,
-      .arts-grid-new {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
-      }
-      
-      /* Cards full width */
-      .product-item,
-      .project-item,
-      .essay-item,
-      .note-item {
-        width: 100% !important;
-        min-width: unset !important;
-      }
-      
-      /* Smaller typography for mobile */
-      .section-title {
-        font-size: 16px !important;
-      }
-      
-      .section-subtitle {
-        font-size: 12px !important;
-      }
-      
-      /* Reduce spacing */
-      .section {
-        padding: 24px 16px !important;
-      }
-      
-      /* Hero adjustments */
-      .hero {
-        padding: 60px 16px 40px !important;
-      }
-      
-      .hero-name {
-        font-size: 14px !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-      }
+    
+    /* Minimum page width - prevents layout collapse */
+    html {
+      min-width: 900px;
+    }
+    
+    /* Allow horizontal scroll on very small screens rather than break layout */
+    body {
+      min-width: 900px;
+      overflow-x: auto;
+    }
+    
+    /* FORCE grid layouts to ALWAYS be side-by-side - no stacking ever */
+    .section-pair {
+      display: grid !important;
+      grid-template-columns: 1.8fr 1fr !important;
+      gap: clamp(24px, 4vw, 80px) !important;
+    }
+    
+    
+    .section-columns {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: clamp(16px, 3vw, 48px) !important;
+    }
+    
+    .dev-showcase {
+      display: grid !important;
+      grid-template-columns: 1.5fr 1fr !important;
+      gap: clamp(16px, 3vw, 48px) !important;
+    }
+    
+    /* Nav always visible, never truncated */
+    .nav {
+      min-width: 900px;
+    }
+    
+    .nav-brand {
+      white-space: nowrap !important;
+      font-size: 10px !important;
+    }
+    
+    .nav-links {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 24px !important;
+    }
+    
+    /* Hero sidebar always visible */
+    .hero-sidebar {
+      display: block !important;
+    }
+    
+    /* Terminal nav maintains grid */
+    .terminal-nav-links {
+      grid-template-columns: repeat(4, 1fr) !important;
     }
   </style>
 </head>
@@ -4191,12 +4100,12 @@
     <!-- Hero Text - Tagline + Subline -->
     <div class="hero-text">
       <p class="hero-tagline">progress updates on various projects across domains, some random stuff!</p>
-      <p class="hero-subline">These days: integration testing on web apps across dist. systems and layers for pokergeek and library of alexandria, Dr K healthyGG podcast, The Stranger by Camus, piano.</p>
+      <p class="hero-subline">These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.</p>
     </div>
     
     <!-- Social Icons (below hero text) -->
     <div class="social-icons">
-      <a href="https://instagram.com/waleedaraza" target="_blank" class="social-icon" aria-label="Instagram" data-key="instagram">
+      <a href="https://instagram.com/wwwaleedaraza" target="_blank" class="social-icon" aria-label="Instagram" data-key="instagram">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/></svg>
       </a>
       <a href="https://linkedin.com/in/waleedaraza" target="_blank" class="social-icon" aria-label="LinkedIn" data-key="linkedin">
@@ -4208,7 +4117,7 @@
       <a href="https://github.com/waleedaraza" target="_blank" class="social-icon" aria-label="GitHub" data-key="github">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/></svg>
       </a>
-      <a href="https://x.com/waleedaraza" target="_blank" class="social-icon" aria-label="X (Twitter)" data-key="twitter">
+      <a href="https://x.com/walugen" target="_blank" class="social-icon" aria-label="X (Twitter)" data-key="twitter">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>
       </a>
     </div>
@@ -4290,16 +4199,9 @@
         <h2 class="section-title" style="color: var(--orange);">▶CONTACT</h2>
       </div>
       
-      <p class="contact-intro">
-       Full stack app development is the game I play right now as it triangulates my: passions, domain knowledge, and accessible mediums. I didn't decide capitalism in this form should exist, so I do not adhere to the principle that my entire life should be dedicated to software engineering, solely on the notion that its my favorite passion whcih is most easy to make lucrative. In that regard, my interest beyond CS are less pursued by my present self, but I'm open to discussing them on any level including: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.
-      </p>
+      <p class="contact-intro">Send email via button below, it will be responded to by an llm, and I will be informed to schedule meetings if needed.<br><br>For professional inquiries, please include "job" or "startup" in the subject line.<br><br>To set up a meeting, please include "meeting" in the subject line.<br><br><b>For project related inquiries, please first refer to site FAQ's or github for questions concerns or collaborations.</b></p>
       
-      <p class="contact-statement">
-         <br>
-        <br>Any email sent will be responded to by an llm, and I will be informed to schedule meetings if needed. <br>
-        <br> for professional inquiries, please include "job" or "startup" in the subject line.
-        <br>to schedule meetings, please include "meeting" in the subject line.
-      </p>
+      <p class="contact-statement">Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.<br><br>In that regard, my interests beyond CS are less pursued by my present self, but I'm open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.</p>
       
       <div class="contact-button-wrapper">
         <a href="mailto:waleedraza1211@gmail.com" class="contact-button">✉ CONTACT ME</a>
@@ -4320,22 +4222,7 @@
         <div class="essays-grid">
           <div>
             <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
-            <div class="essay-item" onclick="openPopup({title: 'Capitalism, Nihilism, and the Search for Post-Meaning', subtitle: 'Philosophical Essay', content: '<p>Full essay coming soon.</p>'})">
-              <span class="essay-title">Capitalism, Nihilism, and the Search for Post-Meaning</span>
-              <p class="essay-preview">Capitalism doesn't just produce goods, it produces meaning substitutes.</p>
-            </div>
-            <div class="essay-item" onclick="openPopup({title: 'Pragmatic Technosocial Market Direct Democracy', subtitle: 'Political Essay', content: '<p>Full essay coming soon.</p>'})">
-              <span class="essay-title">Pragmatic Technosocial Market Direct Democracy</span>
-              <p class="essay-preview">Market mechanisms where they work, democratic feedback where legitimacy matters.</p>
-            </div>
-            <div class="essay-item" onclick="openPopup({title: 'Systemic Failures vs. Individual Moral Flaws', subtitle: 'Systems Essay', content: '<p>Full essay coming soon.</p>'})">
-              <span class="essay-title">Systemic Failures vs. Individual Moral Flaws</span>
-              <p class="essay-preview">People behave rationally inside broken incentive structures.</p>
-            </div>
-            <div class="essay-item" onclick="openPopup({title: 'Values That Survive Pressure', subtitle: 'Ethics Essay', content: '<p>Full essay coming soon.</p>'})">
-              <span class="essay-title">Values That Survive Pressure</span>
-              <p class="essay-preview">Post-nihilistic ethics. Choose values that survive pressure.</p>
-            </div>
+            <!-- Content rendered from SITE_DATA.writing via renderWriting() -->
           </div>
         </div>
       </section>
@@ -4361,23 +4248,7 @@
         </div>
         
         <div class="notes-grid">
-          <article class="note-card">
-            <h3 class="note-title">Excited to Release</h3>
-            <div class="note-subtitle">Coming Soon</div>
-            <div class="note-body">
-              <p>I'm excited to release <strong>PokerGeek</strong> and <strong class="teal">Library of Alexandria</strong> to the web soon.</p>
-              <p style="margin-top: 12px;">Big thanks to all the beta and alpha testers who helped shape these products.</p>
-            </div>
-          </article>
-          
-          <article class="note-card">
-            <h3 class="note-title">Collaborate With Me</h3>
-            <div class="note-subtitle">Open Invitation</div>
-            <div class="note-body">
-              <p>I want people to <strong>collaborate</strong> on any of my products and projects, or <strong>use them</strong>.</p>
-              <p style="margin-top: 12px;">If you're building something interesting, or want to contribute to what I'm building, reach out.</p>
-            </div>
-          </article>
+          <!-- Content rendered from SITE_DATA.notes via renderNotes() -->
         </div>
       </section>
 
@@ -4390,14 +4261,7 @@
         </div>
         
         <div class="music-grid" id="music-grid">
-          <article class="music-card">
-            <h3 class="music-title">Heroin</h3>
-            <div class="music-subtitle">Lana Del Rey · Lust for Life</div>
-            <div class="music-body">
-              <img src="pics/Lana_Del_Rey_-_Lust_for_Life.png" alt="Lust for Life" class="music-image">
-              <p>Romantic nihilism with surgical honesty. Not about drugs, about the shape of yearning.</p>
-            </div>
-          </article>
+          <!-- Content rendered from SITE_DATA.music via renderMusic() -->
         </div>
       </section>
     </div>
@@ -4411,33 +4275,7 @@
         </div>
         
         <div class="spotlight-grid">
-          <article class="spotlight-card">
-            <h3 class="spotlight-title">PokerGeek & Library of Alexandria</h3>
-            <div class="spotlight-subtitle">Primary Focus</div>
-            <div class="spotlight-body">
-              <p>Currently iterating on <strong>PokerGeek</strong> and building <strong class="teal">Library of Alexandria</strong>. Both projects are forcing me to confront the same problem from different angles: how to make complexity survivable over time.</p>
-            </div>
-          </article>
-          
-          <article class="spotlight-card">
-            <h3 class="spotlight-title">Mapping Distributed Systems</h3>
-            <div class="spotlight-subtitle">Technical Focus</div>
-            <div class="spotlight-body">
-              <p>Working on mapping high-level distributed systems into diagrams that don't lie. Finding a balance between accuracy and legibility. Most diagrams fail because they optimize for presentation, not truth.</p>
-            </div>
-          </article>
-          
-          <article class="spotlight-card">
-            <h3 class="spotlight-title">Peak Anime Rewatch</h3>
-            <div class="spotlight-subtitle">Attack on Titan & Jujutsu Kaisen</div>
-            <div class="spotlight-body">
-              <p>Both shows are masterclasses in worldbuilding where the rules matter more than the characters.</p>
-              <div class="spotlight-images">
-                <img src="pics/Eren_saying_freedom.png" alt="Eren" class="spotlight-image">
-                <img src="pics/gojo.png" alt="Gojo" class="spotlight-image">
-              </div>
-            </div>
-          </article>
+          <!-- Content rendered from SITE_DATA.spotlight via renderSpotlight() -->
         </div>
       </section>
 
@@ -4622,38 +4460,7 @@
       '╚══════╝'
     ];
     
-    // EXACT EMOJI LIST - ONLY THESE
-    const EMOJI_POOL = ['☭', '☠︎', '⚔︎', '∆', '△', '▲', '▼', '▽', '∴', '∵', '∞', '≈', '≠', '≡', '⋆', '✦', '✧', '✺', '✹', '✸', '☼', '☾', '☽', '⟁', '⧍', '⧋', '⧊', '◬', '◭', '◮', '◯', '⛓︎', '⛓️‍💥', '⌘', '🜁', '🜂', '🜃', '🜄', '👁️', '( ͡° ͜ʖ ͡°)', '(¬‿¬)', '(˘⌣˘ )', '(￣ー￣)', '(•‿•)', '(⊙‿⊙)', '(ʘ‿ʘ)', '(≖‿≖)', '(͠≖ ͜ʖ͠≖)', '(¬¬ )', '(ಠ_ಠ)', '(ಠ‿ಠ)', '(ಠ⌣ಠ)', '(ง\'̀-\'́)ง', '(￣ー￣)︻デ═一', '(づ｡◕‿‿◕｡)づ💻', '(╯°□°）╯︵ ┻━┻', '¯_(ツ)/¯', '💾', '⛓️‍💥', '🔦', '🏹', '🐦‍🔥', '❤️‍🔥', '🗣️', '🐉', '👽', '👹', '🫴🏽', '🧟‍♂️', '👑', '🙊', '🙉', '🙈', '🐵', '🐒', '🦆', '🪼', '🦈', '🦦', '🌵', '🪨', '🍄', '🪻', '🪷', '🌙', '🌗', '🌓', '🫧', '🌊', '🏆', '🎯', '🎹', '🎨', '🧊', '🍪', '🧇', '🍇', '🏊‍♂️', '🚞', '✈️', '🚀', '🛰️', '🛸', '🚉', '🚊', '🛺', '🛵', '🚲', '🛞', '⛵️', '🚁', '🗿', '⛴️', '🗼', '🌋', '🏜️', '🏝️', '🏖️', '⛰️', '🏔️', '🗻', '🏕️', '🏠', '🛖', '⛺️', '🏘️', '🏚️', '🏢', '🏛️', '🏫', '🛣️', '🛤️', '🌅', '🏞️', '🌆', '🌉', '🌄', '🗾', '⌚️', '⌨️', '🖥️', '💻', '💽', '💿', '🖱️', '📷', '💎', '💡', '🕰️', '📺', '🛠️', '🔩', '🧿', '🔮', '🪬', '🩻', '🕳️', '💊', '🧬', '🦠', '🩸', '🖼️', '📈', '📙', '📚', '🖇️', '📎', '📌', '🧡', '‼️', '✅', '🔴', '🔵', '🟤', '🟠', '🔺', '⚫️', '🟢', '⚪️', '🐜', '🌇'];
-    
-    function createFlyingEmoji() {
-      const body = document.body;
-      if (!body) return;
-      
-      const emoji = document.createElement('div');
-      emoji.className = 'emoji-float';
-      emoji.textContent = EMOJI_POOL[Math.floor(Math.random() * EMOJI_POOL.length)];
-      emoji.style.left = Math.random() * 100 + '%';
-      emoji.style.animationDuration = (12 + Math.random() * 15) + 's';
-      emoji.style.animationDelay = Math.random() * 1 + 's';
-      
-      body.appendChild(emoji);
-      
-      setTimeout(() => {
-        if (emoji.parentNode) emoji.remove();
-      }, 30000);
-    }
-    
-    function initFlyingEmojis() {
-      // Create emojis periodically - entire page
-      setInterval(() => {
-        if (Math.random() > 0.4) createFlyingEmoji();
-      }, 1500);
-      
-      // Initial burst
-      for (let i = 0; i < 8; i++) {
-        setTimeout(() => createFlyingEmoji(), i * 300);
-      }
-    }
+    // Flying emojis - REMOVED: Performance drain, distracting gimmick
     
     function initHeroName() {
       const heroNameEl = document.getElementById('hero-name');
@@ -5642,8 +5449,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       initHeroName();
       setupAnimationControls();
-      initFlyingEmojis();
-      initAdminSystem(); // MUST RUN FIRST - loads data before rendering
+      initAdminSystem();
       initTerminalNav();
     });
     
@@ -5657,7 +5463,7 @@
     let currentEditType = null;
     let currentEditIdx = null;
     
-    // Default data function - only used if no localStorage exists
+    // Default data function - CANONICAL DATA (from localStorage export 2026-01-15)
     function getDefaultSiteData() {
       return {
         products: [...PRODUCTS],
@@ -5667,12 +5473,12 @@
           subline: 'These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.'
         },
         contact: {
-          intro: 'I see CS as a creative pursuit, I feel that with passion and some domain knowledge, the medium of programming allows me to express myself and impact others positively. I have a deep passion for technology and formal logical systems. I love building products that are user-friendly and efficient, as well as technically deep and elegant. I take a pragmatic game theory approach to life, and as of right now, im applying myself most in development, while im also exploring other passions such as reading, writing, and music.',
-          statement: 'I love working with others, and I\'m always open to collaboration.<br>If you\'re doing that and need help, I\'ll work for you.'
+          intro: 'Send email via button below, it will be responded to by an llm, and I will be informed to schedule meetings if needed.\n\n<br> For professional inquiries, please include "job" or "startup" in the subject line.<br>\n<br> To set up a meeting, please include "meeting" in the subject line.<br>\n<br> <b>For project related inquiries, please first refer to site FAQ\'s or github for questions concerns or collaborations.</b>\n    ',
+          statement: 'Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.\n<br><br>\nIn that regard, my interests beyond CS are less pursued by my present self, but I\'m open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.\n'
         },
         writing: [
-          { id: 'writing-1', title: 'Game theory and folk lore', preview: 'Systems thinking in prose.', date: '2025' },
-          { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? shit, but always possibilities.', date: '2026' },
+          { id: 'writing-1', title: 'Game theory and folk lore', preview: '', date: '2025' },
+          { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? plausibilities?', date: '2026' },
           { id: 'writing-3', title: '2025 media/entertainment review', preview: 'Premises had...', date: '2025' }
         ],
         notes: [
@@ -5722,7 +5528,7 @@
           { title: 'The Mythical Man-Month', author: 'Frederick P. Brooks Jr.', image: '', subtext: '' }
         ],
         music: [
-          { id: 'music-1', title: 'Heroin', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png' },
+          { id: 'music-1', title: 'Heroinn', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png', description: '' },
           { id: 'music-2', title: 'YEEZUS', subtitle: 'Kanye West · Album', image: 'pics/Yeezus_album_cover.png' },
           { id: 'music-3', title: 'MTV Unplugged', subtitle: 'Nirvana · Live Album', image: 'pics/nirvanaunpluggedmtv.png' }
         ],
@@ -5746,10 +5552,10 @@
           contact: ["Want to collaborate? Reach out."]
         },
         socialLinks: {
-          instagram: { url: 'https://instagram.com/waleedaraza', icon: '📸', label: 'Instagram' },
+          instagram: { url: 'https://instagram.com/wwwaleedaraza', icon: '📸', label: 'Instagram' },
           linkedin: { url: 'https://linkedin.com/in/waleedaraza', icon: '💼', label: 'LinkedIn' },
           github: { url: 'https://github.com/waleedaraza', icon: '💻', label: 'GitHub' },
-          twitter: { url: 'https://x.com/waleedaraza', icon: '🐦', label: 'X' },
+          twitter: { url: 'https://x.com/walugen', icon: '🐦', label: 'X' },
           custom: { url: '', icon: '?', label: 'Custom' }
         }
       };
@@ -6627,17 +6433,11 @@
     }
     
     // ─── DATA ───
+    // localStorage DISABLED - hardcoded defaults are the single source of truth
     function loadSiteData() {
-      const saved = localStorage.getItem('site_data_v11');
-      if (saved) {
-        SITE_DATA = JSON.parse(saved);
-        console.log('✅ LOADED SITE_DATA from localStorage:', SITE_DATA);
-      } else {
-        // No saved data - initialize with defaults
-        SITE_DATA = getDefaultSiteData();
-        console.log('✅ NO SAVED DATA - Initialized with defaults');
-        saveSiteData(); // Save defaults to localStorage
-      }
+      // ALWAYS load from hardcoded canonical data - no localStorage
+      SITE_DATA = getDefaultSiteData();
+      console.log('✅ LOADED SITE_DATA from hardcoded defaults (localStorage disabled)');
       
       // Sync PRODUCTS/PROJECTS arrays for backward compatibility
       if (SITE_DATA.products) {
@@ -6697,102 +6497,12 @@
       }
     }
     
-    function initDataFromDOM() {
-      // Scrape writing
-      SITE_DATA.writing = [];
-      document.querySelectorAll('#writing .essay-item').forEach((el, idx) => {
-        SITE_DATA.writing.push({
-          id: 'writing-' + idx,
-          title: el.querySelector('.essay-title')?.textContent || 'Essay',
-          preview: el.querySelector('.essay-preview')?.textContent || '',
-          date: ''
-        });
-      });
-      
-      // Scrape notes
-      SITE_DATA.notes = [];
-      document.querySelectorAll('#notes .note-card').forEach((el, idx) => {
-        const img = el.querySelector('img');
-        SITE_DATA.notes.push({
-          id: 'note-' + idx,
-          title: el.querySelector('.note-title')?.textContent || 'Note',
-          body: el.querySelector('.note-body')?.innerHTML || '',
-          image: img ? img.src : ''
-        });
-      });
-      
-      // Scrape spotlight
-      SITE_DATA.spotlight = [];
-      document.querySelectorAll('#spotlight .spotlight-card').forEach((el, idx) => {
-        const images = [];
-        el.querySelectorAll('.spotlight-images img, .spotlight-image').forEach(img => {
-          images.push(img.src);
-        });
-        SITE_DATA.spotlight.push({
-          id: 'spot-' + idx,
-          title: el.querySelector('.spotlight-title')?.textContent || 'Spotlight',
-          body: el.querySelector('.spotlight-body')?.innerHTML || '',
-          images: images
-        });
-      });
-      
-      // Scrape reading - books
-      SITE_DATA.reading = [];
-      document.querySelectorAll('#reading .reading-card').forEach((el, idx) => {
-        const img = el.querySelector('.reading-image');
-        SITE_DATA.reading.push({
-          id: 'read-' + idx,
-          title: el.querySelector('.reading-title')?.textContent || '',
-          subtitle: el.querySelector('.reading-subtitle')?.textContent || '',
-          description: el.querySelector('.reading-body p')?.textContent || '',
-          image: img ? img.src : ''
-        });
-      });
-      
-      // Scrape music - albums
-      SITE_DATA.music = [];
-      document.querySelectorAll('#music .music-card').forEach((el, idx) => {
-        const img = el.querySelector('.music-image');
-        SITE_DATA.music.push({
-          id: 'music-' + idx,
-          title: el.querySelector('.music-title')?.textContent || '',
-          subtitle: el.querySelector('.music-subtitle')?.textContent || '',
-          description: el.querySelector('.music-body p')?.textContent || '',
-          image: img ? img.src : ''
-        });
-      });
-      
-      // Scrape misc media - shows & films
-      SITE_DATA.miscMedia = [];
-      document.querySelectorAll('#miscMedia .media-card').forEach((el, idx) => {
-        const images = [];
-        el.querySelectorAll('.media-image').forEach(img => {
-          images.push(img.src);
-        });
-        SITE_DATA.miscMedia.push({
-          id: 'arts-' + idx,
-          title: el.querySelector('.arts-title')?.textContent || '',
-          subtitle: el.querySelector('.arts-subtitle')?.textContent || '',
-          description: el.querySelector('.arts-body p')?.textContent || '',
-          images: images
-        });
-      });
-      
-      // Scrape hero
-      SITE_DATA.hero = {
-        tagline: document.querySelector('.hero-tagline')?.textContent || '',
-        subline: document.querySelector('.hero-subline')?.textContent || ''
-      };
-      
-      // Scrape contact
-      SITE_DATA.contact = {
-        intro: document.querySelector('.contact-intro')?.textContent || '',
-        statement: document.querySelector('.contact-statement')?.innerHTML || ''
-      };
-    }
+    // initDataFromDOM() - REMOVED: Dead code, was never called
     
     function saveSiteData() {
-      localStorage.setItem('site_data_v11', JSON.stringify(SITE_DATA));
+      // NO-OP: localStorage disabled - edits require direct file modification
+      // To re-enable admin editing, implement a backend or static file export
+      console.log('⚠️ saveSiteData() called but localStorage is disabled');
     }
     
     function applyAllData() {
