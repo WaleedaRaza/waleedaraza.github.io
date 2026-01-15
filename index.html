@@ -3718,8 +3718,9 @@
     .pw-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(2px);
+      background: rgba(0,0,0,0.15) !important;
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
       z-index: 99999;
       display: flex;
       align-items: center;
@@ -6068,7 +6069,7 @@
           document.getElementById('pw-modal').style.display = 'none';
           openAdminPanel();
         } else {
-          alert('Wrong password');
+          alert('WRONG LOL');
           document.getElementById('pw-input').value = '';
         }
       });
@@ -6077,19 +6078,20 @@
         if (e.key === 'Enter') document.getElementById('pw-submit').click();
       });
       
-      // Close button for password modal (X button in header)
-      const pwCloseBtn = document.querySelector('.pw-dot-red');
-      if (pwCloseBtn) {
-        pwCloseBtn.addEventListener('click', () => {
+      // Close button for password modal (X button in header) - both the red dot and the hidden pw-close
+      document.querySelectorAll('.pw-dot-red, #pw-close').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           document.getElementById('pw-modal').style.display = 'none';
           document.getElementById('pw-input').value = '';
         });
-      }
+      });
       
-      // Click outside modal to close
-      document.getElementById('pw-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'pw-modal') {
-          document.getElementById('pw-modal').style.display = 'none';
+      // Click outside modal to close (on the backdrop)
+      const pwModal = document.getElementById('pw-modal');
+      pwModal.addEventListener('click', (e) => {
+        if (e.target === pwModal) {
+          pwModal.style.display = 'none';
           document.getElementById('pw-input').value = '';
         }
       });
