@@ -3863,6 +3863,11 @@
       background: linear-gradient(180deg, #98c8ff 0%, #68a8ff 100%);
     }
     
+    .pw-terminal-body button:disabled {
+      cursor: not-allowed;
+      opacity: 1;
+    }
+    
     /* Locked item styles */
     .locked-item {
       position: relative;
@@ -6063,14 +6068,37 @@
       // Password modal
       document.getElementById('pw-submit').addEventListener('click', () => {
         const pw = document.getElementById('pw-input').value;
+        const btn = document.getElementById('pw-submit');
+        
         if (pw === ADMIN_PW) {
           ADMIN_AUTHENTICATED = true;
           localStorage.setItem('admin_auth', (Date.now() + 86400000).toString());
           document.getElementById('pw-modal').style.display = 'none';
           openAdminPanel();
         } else {
-          alert('WRONG LOL');
-          document.getElementById('pw-input').value = '';
+          // Disable button during animation
+          btn.disabled = true;
+          
+          // Phase 1: Orange "..."
+          btn.textContent = '...';
+          btn.style.background = 'linear-gradient(180deg, #ffa500 0%, #cc8400 100%)';
+          btn.style.color = '#000';
+          
+          // Phase 2: After 3 seconds, red "WRONG LOL"
+          setTimeout(() => {
+            btn.textContent = 'WRONG LOL';
+            btn.style.background = 'linear-gradient(180deg, #ff4444 0%, #cc0000 100%)';
+            btn.style.color = '#fff';
+            
+            // Phase 3: Reset after 2 more seconds
+            setTimeout(() => {
+              btn.textContent = 'AUTHENTICATE';
+              btn.style.background = '';
+              btn.style.color = '';
+              btn.disabled = false;
+              document.getElementById('pw-input').value = '';
+            }, 2000);
+          }, 3000);
         }
       });
       
