@@ -138,6 +138,36 @@
       color: var(--teal);
     }
     
+    .nav-link.nav-locked {
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00;
+      font-weight: 700;
+      position: relative;
+      animation: nav-locked-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes nav-locked-pulse {
+      0%, 100% { 
+        color: #00ff00; 
+        text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00;
+      }
+      50% { 
+        color: #ffa500; 
+        text-shadow: 0 0 10px #ffa500, 0 0 15px #ffa500;
+      }
+    }
+    
+    .nav-link.nav-locked::before {
+      content: '🔒 ';
+      margin-right: 4px;
+    }
+    
+    .nav-link.nav-locked:hover {
+      color: #fff;
+      text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+      transform: scale(1.05);
+    }
+    
     /* ═══════════════════════════════════════════════════════════════════════
        HERO SECTION
        ═══════════════════════════════════════════════════════════════════════ */
@@ -4397,7 +4427,10 @@
       <a href="#writing" class="nav-link">WRITING</a>
       <a href="#notes" class="nav-link">NOTES</a>
       <a href="#spotlight" class="nav-link">SPOTLIGHT</a>
-      <a href="#contact" class="nav-link">CONTACT</a>
+      <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="nav-link">CONTACT</a>
+      <a href="#" class="nav-link nav-locked" data-locked="true">ACCESS COLLAB SUITE V2</a>
+      <a href="#" class="nav-link nav-locked" data-locked="true">LIBXNDR ALPHA TESTER SUITE</a>
+      <a href="#" class="nav-link nav-locked" data-locked="true">DEV / MUSIC / WRITING SUITE</a>
     </div>
   </nav>
 
@@ -7053,7 +7086,7 @@
       <a href="#writing" class="terminal-nav-link" data-section="writing">WRITE</a>
       <a href="#notes" class="terminal-nav-link" data-section="notes">NOTES</a>
       <a href="#spotlight" class="terminal-nav-link" data-section="spotlight">SPOT</a>
-      <a href="#contact" class="terminal-nav-link" data-section="contact">CONTACT</a>
+      <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="terminal-nav-link">CONTACT</a>
     </div>
     <div class="terminal-action-tabs">
       <button class="terminal-theme-btn" id="theme-trigger">CLICK TO TOGGLE THEME</button>
