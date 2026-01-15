@@ -204,16 +204,9 @@
       }
     }
     
-    /* Mobile - wraps between words, never within words */
-    @media (max-width: 767px) {
-      .hero-name {
-        font-size: clamp(14px, 2.5vw, 18px);
-        flex-wrap: wrap;
-      }
-      
-      .word-group {
-        flex-wrap: nowrap !important;
-      }
+    /* Fixed layout - hero name maintains size */
+    .word-group {
+      flex-wrap: nowrap !important;
     }
     
     .letter-box {
@@ -1102,12 +1095,7 @@
       transform: rotate(90deg);
     }
     
-    /* Mobile: hide sidebar on small screens */
-    @media (max-width: 767px) {
-      .hero-sidebar {
-        display: none;
-      }
-    }
+    /* Sidebar always visible - fixed layout */
     
     /* HERO SUBTITLE - ELEGANT */
     .hero-subtitle {
@@ -1227,15 +1215,7 @@
       box-shadow: 0 0 20px var(--teal-glow);
     }
     
-    @media (max-width: 500px) {
-      .hero-nav-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .hero-nav-btn.full-width {
-        grid-column: 1 / -1;
-      }
-    }
+    /* Fixed layout - no mobile grid changes */
     
     /* ═══════════════════════════════════════════════════════════════════════
        TERMINAL NAV - MULTI-THEME SYSTEM
@@ -2241,12 +2221,7 @@
       50% { box-shadow: 0 0 20px #00d9ff, 0 0 40px #ff8c00; }
     }
     
-    /* Mobile adjustments */
-    @media (max-width: 500px) {
-      .terminal-nav { left: 10px; right: 10px; width: auto; }
-      .terminal-nav-links { grid-template-columns: repeat(3, 1fr); }
-      .terminal-nav-link { font-size: 8px; padding: 5px; }
-    }
+    /* Fixed layout - terminal nav maintains structure */
     
     /* ═══════════════════════════════════════════════════════════════════════
        SIDEBAR THEMES - Inherit from terminal themes
@@ -4026,146 +4001,73 @@
       opacity: 0.9;
     }
     
-    /* Compact for small screens */
-    @media (max-width: 400px) {
-      .nav {
-        padding: clamp(10px, 3vw, 12px) clamp(14px, 4vw, 20px);
-      }
-      
-      .nav-brand {
-        font-size: 8px;
-      }
-      
-      .nav-links {
-        gap: clamp(10px, 3vw, 16px);
-      }
-      
-      .nav-link {
-        font-size: 9px;
-      }
-      
-      .hero-nav-btn {
-        font-size: 8px;
-        padding: 8px 10px;
-      }
-    }
+    /* Small screens no longer apply - fixed layout at 900px min-width */
     
     /* ═══════════════════════════════════════════════════════════════════════
-       MOBILE-SPECIFIC VIEW - Dedicated layout for phones (not scaled desktop)
-       Target: Portrait phones < 768px width
+       FIXED-LAYOUT MOBILE VIEW - Desktop layout scaled, NOT reflowed
+       Maintains grid structure at all screen sizes
        ═══════════════════════════════════════════════════════════════════════ */
-    @media screen and (max-width: 767px) {
-      /* Force single-column stacked layout - no side-by-side */
-      .section-pair,
-      .section-trio,
-      .section-columns,
-      .dev-showcase {
-        display: flex !important;
-        flex-direction: column !important;
-        grid-template-columns: unset !important;
-      }
-      
-      .section-columns {
-        gap: 60px !important;
-      }
-      
-      /* Nav goes full width, horizontal scroll if needed */
-      .nav-links {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        gap: 16px !important;
-        padding-right: 20px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      
-      .nav-links::-webkit-scrollbar {
-        display: none;
-      }
-      
-      /* Hero grid becomes vertical buttons */
-      .hero-nav-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-      }
-      
-      .hero-nav-btn {
-        width: 100% !important;
-        text-align: center !important;
-      }
-      
-      /* Hide sidebar on mobile - it's fixed positioned anyway */
-      .hero-sidebar {
-        display: none !important;
-      }
-      
-      /* Terminal nav at bottom stays but simplified */
-      .terminal-nav {
-        left: 8px !important;
-        right: 8px !important;
-        width: auto !important;
-      }
-      
-      .terminal-nav-links {
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)) !important;
-        gap: 4px !important;
-      }
-      
-      .terminal-nav-link {
-        font-size: 9px !important;
-        padding: 6px 4px !important;
-      }
-      
-      /* Product/project grids stack */
-      .products-grid,
-      .projects-grid,
-      .essays-grid,
-      .notes-grid,
-      .spotlight-grid,
-      .reading-grid,
-      .music-grid,
-      .media-grid,
-      .arts-grid-new {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
-      }
-      
-      /* Cards full width */
-      .product-item,
-      .project-item,
-      .essay-item,
-      .note-item {
-        width: 100% !important;
-        min-width: unset !important;
-      }
-      
-      /* Smaller typography for mobile */
-      .section-title {
-        font-size: 16px !important;
-      }
-      
-      .section-subtitle {
-        font-size: 12px !important;
-      }
-      
-      /* Reduce spacing */
-      .section {
-        padding: 24px 16px !important;
-      }
-      
-      /* Hero adjustments */
-      .hero {
-        padding: 60px 16px 40px !important;
-      }
-      
-      .hero-name {
-        font-size: 14px !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-      }
+    
+    /* Minimum page width - prevents layout collapse */
+    html {
+      min-width: 900px;
+    }
+    
+    /* Allow horizontal scroll on very small screens rather than break layout */
+    body {
+      min-width: 900px;
+      overflow-x: auto;
+    }
+    
+    /* FORCE grid layouts to ALWAYS be side-by-side - no stacking ever */
+    .section-pair {
+      display: grid !important;
+      grid-template-columns: 1.8fr 1fr !important;
+      gap: clamp(24px, 4vw, 80px) !important;
+    }
+    
+    .section-trio {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: clamp(16px, 3vw, 48px) !important;
+    }
+    
+    .section-columns {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: clamp(16px, 3vw, 48px) !important;
+    }
+    
+    .dev-showcase {
+      display: grid !important;
+      grid-template-columns: 1.5fr 1fr !important;
+      gap: clamp(16px, 3vw, 48px) !important;
+    }
+    
+    /* Nav always visible, never truncated */
+    .nav {
+      min-width: 900px;
+    }
+    
+    .nav-brand {
+      white-space: nowrap !important;
+      font-size: 10px !important;
+    }
+    
+    .nav-links {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 24px !important;
+    }
+    
+    /* Hero sidebar always visible */
+    .hero-sidebar {
+      display: block !important;
+    }
+    
+    /* Terminal nav maintains grid */
+    .terminal-nav-links {
+      grid-template-columns: repeat(4, 1fr) !important;
     }
   </style>
 </head>
@@ -5657,7 +5559,7 @@
     let currentEditType = null;
     let currentEditIdx = null;
     
-    // Default data function - only used if no localStorage exists
+    // Default data function - CANONICAL DATA (from localStorage export 2026-01-15)
     function getDefaultSiteData() {
       return {
         products: [...PRODUCTS],
@@ -5667,12 +5569,12 @@
           subline: 'These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.'
         },
         contact: {
-          intro: 'I see CS as a creative pursuit, I feel that with passion and some domain knowledge, the medium of programming allows me to express myself and impact others positively. I have a deep passion for technology and formal logical systems. I love building products that are user-friendly and efficient, as well as technically deep and elegant. I take a pragmatic game theory approach to life, and as of right now, im applying myself most in development, while im also exploring other passions such as reading, writing, and music.',
-          statement: 'I love working with others, and I\'m always open to collaboration.<br>If you\'re doing that and need help, I\'ll work for you.'
+          intro: 'Send email via button below, it will be responded to by an llm, and I will be informed to schedule meetings if needed.\n\n<br> For professional inquiries, please include "job" or "startup" in the subject line.<br>\n<br> To set up a meeting, please include "meeting" in the subject line.<br>\n<br> <b>For project related inquiries, please first refer to site FAQ\'s or github for questions concerns or collaborations.</b>\n    ',
+          statement: 'Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.\n<br><br>\nIn that regard, my interests beyond CS are less pursued by my present self, but I\'m open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.\n'
         },
         writing: [
-          { id: 'writing-1', title: 'Game theory and folk lore', preview: 'Systems thinking in prose.', date: '2025' },
-          { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? shit, but always possibilities.', date: '2026' },
+          { id: 'writing-1', title: 'Game theory and folk lore', preview: '', date: '2025' },
+          { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? plausibilities?', date: '2026' },
           { id: 'writing-3', title: '2025 media/entertainment review', preview: 'Premises had...', date: '2025' }
         ],
         notes: [
@@ -5722,7 +5624,7 @@
           { title: 'The Mythical Man-Month', author: 'Frederick P. Brooks Jr.', image: '', subtext: '' }
         ],
         music: [
-          { id: 'music-1', title: 'Heroin', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png' },
+          { id: 'music-1', title: 'Heroinn', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png', description: '' },
           { id: 'music-2', title: 'YEEZUS', subtitle: 'Kanye West · Album', image: 'pics/Yeezus_album_cover.png' },
           { id: 'music-3', title: 'MTV Unplugged', subtitle: 'Nirvana · Live Album', image: 'pics/nirvanaunpluggedmtv.png' }
         ],
@@ -5746,10 +5648,10 @@
           contact: ["Want to collaborate? Reach out."]
         },
         socialLinks: {
-          instagram: { url: 'https://instagram.com/waleedaraza', icon: '📸', label: 'Instagram' },
+          instagram: { url: 'https://instagram.com/wwwaleedaraza', icon: '📸', label: 'Instagram' },
           linkedin: { url: 'https://linkedin.com/in/waleedaraza', icon: '💼', label: 'LinkedIn' },
           github: { url: 'https://github.com/waleedaraza', icon: '💻', label: 'GitHub' },
-          twitter: { url: 'https://x.com/waleedaraza', icon: '🐦', label: 'X' },
+          twitter: { url: 'https://x.com/walugen', icon: '🐦', label: 'X' },
           custom: { url: '', icon: '?', label: 'Custom' }
         }
       };
