@@ -882,49 +882,80 @@
       border-bottom: none;
     }
     
-    /* Animation preset buttons - 5 in a row */
+    /* Animation cycle button - single inviting button */
     .sidebar-anim-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 2px;
+      display: flex;
+      justify-content: center;
+      padding: 4px;
     }
     
-    .sidebar-anim-btn {
+    .sidebar-cycle-btn {
       width: 100%;
-      aspect-ratio: 1;
+      padding: 10px 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 8px;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--term-fg, rgba(255,255,255,0.6));
-      background: var(--term-btn-bg, rgba(255,255,255,0.05));
-      border: 1px solid var(--term-border, rgba(255,255,255,0.1));
-      border-radius: 3px;
+      letter-spacing: 0.5px;
+      color: var(--term-bg, #000);
+      background: linear-gradient(135deg, var(--term-accent, var(--teal)) 0%, var(--term-fg, #00ffcc) 100%);
+      border: 2px solid var(--term-accent, var(--teal));
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.15s ease;
-      padding: 0;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+      text-transform: uppercase;
     }
     
-    .sidebar-anim-btn:hover {
-      background: var(--term-fg, var(--teal));
-      color: var(--term-bg, #000);
-      border-color: var(--term-fg, var(--teal));
+    .sidebar-cycle-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0, 212, 170, 0.5), inset 0 1px 0 rgba(255,255,255,0.4);
     }
     
-    .sidebar-anim-btn.active {
-      background: var(--term-accent, var(--teal));
-      color: var(--term-bg, #000);
-      border-color: var(--term-accent, var(--teal));
+    .sidebar-cycle-btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 1px 4px rgba(0, 212, 170, 0.3);
     }
     
-    /* Vertical sliders */
+    /* Vertical sliders with visible track lines */
     .sidebar-sliders {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      padding: 4px 0;
+      gap: 16px;
+      padding: 8px 4px;
+      height: 80px;
+    }
+    
+    .sidebar-slider-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .sidebar-slider-track {
+      position: absolute;
+      width: 8px;
       height: 60px;
+      border-radius: 4px;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .sidebar-slider-track.brightness-track {
+      background: linear-gradient(to top, #111 0%, #888 50%, #fff 100%);
+    }
+    
+    .sidebar-slider-label {
+      font-size: 8px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .sidebar-slider {
@@ -932,42 +963,40 @@
       appearance: none;
       writing-mode: vertical-lr;
       direction: rtl;
-      width: 16px;
-      height: 100%;
+      width: 24px;
+      height: 60px;
       background: transparent;
       cursor: pointer;
+      position: relative;
+      z-index: 2;
     }
     
     .sidebar-slider::-webkit-slider-track {
-      width: 4px;
-      background: var(--term-border, rgba(255,255,255,0.1));
-      border-radius: 2px;
+      width: 8px;
+      background: transparent;
+      border-radius: 4px;
     }
     
     .sidebar-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      background: var(--term-fg, var(--teal));
+      width: 16px;
+      height: 16px;
+      background: var(--term-fg, #fff);
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid var(--term-bg, #000);
+      border: 3px solid var(--term-bg, #000);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.3);
     }
     
-    .hue-slider::-webkit-slider-track {
-      background: linear-gradient(to top, 
-        hsl(0, 100%, 50%), 
-        hsl(60, 100%, 50%), 
-        hsl(120, 100%, 50%), 
-        hsl(180, 100%, 50%), 
-        hsl(240, 100%, 50%), 
-        hsl(300, 100%, 50%), 
-        hsl(360, 100%, 50%)
-      );
+    .sidebar-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px var(--term-accent, var(--teal));
     }
     
+    /* Track backgrounds handled by wrapper elements now */
+    .hue-slider::-webkit-slider-track,
     .brightness-slider::-webkit-slider-track {
-      background: linear-gradient(to top, #333, #fff);
+      background: transparent;
     }
     
     /* Color grid - 5x2 */
@@ -998,34 +1027,56 @@
       transform: scale(1.1);
     }
     
-    /* Toggle buttons */
-    .sidebar-toggles {
+    /* Palette navigation */
+    .sidebar-palette-nav {
       display: flex;
-      gap: 2px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 6px;
     }
     
-    .sidebar-toggle {
-      flex: 1;
-      padding: 4px;
-      font-size: 8px;
+    .sidebar-palette-arrow {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--term-fg, rgba(255,255,255,0.6));
-      background: var(--term-btn-bg, rgba(255,255,255,0.05));
-      border: 1px solid var(--term-border, rgba(255,255,255,0.1));
-      border-radius: 3px;
+      color: var(--term-fg, rgba(255,255,255,0.8));
+      background: var(--term-btn-bg, rgba(255,255,255,0.1));
+      border: 1px solid var(--term-border, rgba(255,255,255,0.2));
+      border-radius: 4px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
     
-    .sidebar-toggle:hover {
-      background: var(--term-fg, var(--teal));
-      color: var(--term-bg, #000);
-    }
-    
-    .sidebar-toggle.active {
+    .sidebar-palette-arrow:hover {
       background: var(--term-accent, var(--teal));
       color: var(--term-bg, #000);
       border-color: var(--term-accent, var(--teal));
+      transform: scale(1.1);
+    }
+    
+    .sidebar-palette-arrow:active {
+      transform: scale(0.95);
+    }
+    
+    .sidebar-palette-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--term-fg, rgba(255,255,255,0.6));
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Single slider wrapper */
+    .sidebar-slider-wrapper.single {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     /* Cog/theme button */
@@ -1283,9 +1334,17 @@
     
     .terminal-nav-output {
       font-size: clamp(11px, 2vw, 13px);
-      color: var(--term-fg);
       min-height: 20px;
       line-height: 1.5;
+    }
+    
+    #terminal-text {
+      color: #00ffcc;
+      text-shadow: 
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc,
+        0 0 20px rgba(0, 255, 204, 0.5);
+      font-weight: 500;
     }
     
     .terminal-cursor {
@@ -3121,25 +3180,25 @@
     
     .contact-intro {
       font-size: clamp(16px, 2.8vw, 20px);
-      color: var(--text-dim);
+      color: var(--ice-white);
       width: 100%;
       margin: 0 0 var(--space-xl) 0;
       line-height: 1.8;
-      text-align: center;
+      text-align: left;
       font-family: 'Crimson Pro', Georgia, serif;
       font-style: italic;
     }
     
     .contact-statement {
-      color: var(--ice-white);
+      color: var(--teal);
       width: 100%;
       margin: 0 0 var(--space-xl) 0;
       line-height: 1.7;
       font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-size: clamp(14px, 2.5vw, 17px);
+      font-size: clamp(12px, 2vw, 14px);
       font-weight: 500;
       letter-spacing: 0.05em;
-      text-align: center;
+      text-align: left;
     }
     
     .contact-button-wrapper {
@@ -4163,40 +4222,28 @@
     
     <div class="sidebar-section">
       <div class="sidebar-anim-grid">
-        <button class="sidebar-anim-btn" data-mode="glitch" id="glitch-btn" title="Glitch">G</button>
-        <button class="sidebar-anim-btn active" data-mode="matrix" id="matrix-btn" title="Rain">R</button>
-        <button class="sidebar-anim-btn" data-mode="wave" id="wave-btn" title="Wave">W</button>
-        <button class="sidebar-anim-btn" data-mode="pulse" id="pulse-btn" title="Pulse">P</button>
-        <button class="sidebar-anim-btn" data-mode="fire" id="fire-btn" title="Fire">F</button>
+        <button class="sidebar-cycle-btn" id="anim-cycle-btn" title="Click to change animation!">CLICK ME!</button>
+      </div>
+    </div>
+    
+    <div class="sidebar-section">
+      <div class="sidebar-palette-nav">
+        <button class="sidebar-palette-arrow" id="palette-prev" title="Previous palette">&lt;</button>
+        <span class="sidebar-palette-label" id="palette-label">NEON</span>
+        <button class="sidebar-palette-arrow" id="palette-next" title="Next palette">&gt;</button>
+      </div>
+      <div class="sidebar-color-grid" id="color-grid">
+        <!-- Colors populated by JS -->
       </div>
     </div>
     
     <div class="sidebar-section">
       <div class="sidebar-sliders">
-        <input type="range" id="hue-slider" min="0" max="360" value="170" class="sidebar-slider hue-slider" orient="vertical" title="Hue">
-        <input type="range" id="brightness-slider" min="20" max="100" value="80" class="sidebar-slider brightness-slider" orient="vertical" title="Brightness">
-      </div>
-    </div>
-    
-    <div class="sidebar-section">
-      <div class="sidebar-color-grid">
-        <button class="sidebar-color" data-color="red" style="background:#ff3333;" title="Red"></button>
-        <button class="sidebar-color" data-color="orange" style="background:#ff6b35;" title="Orange"></button>
-        <button class="sidebar-color" data-color="yellow" style="background:#ffd700;" title="Yellow"></button>
-        <button class="sidebar-color" data-color="green" style="background:#39ff14;" title="Green"></button>
-        <button class="sidebar-color active" data-color="teal" style="background:#00d4aa;" title="Teal"></button>
-        <button class="sidebar-color" data-color="blue" style="background:#0088ff;" title="Blue"></button>
-        <button class="sidebar-color" data-color="purple" style="background:#9933ff;" title="Purple"></button>
-        <button class="sidebar-color" data-color="pink" style="background:#ff69b4;" title="Pink"></button>
-        <button class="sidebar-color" data-color="white" style="background:#ffffff;" title="White"></button>
-        <button class="sidebar-color" data-color="gray" style="background:#888888;" title="Gray"></button>
-      </div>
-    </div>
-    
-    <div class="sidebar-section">
-      <div class="sidebar-toggles">
-        <button class="sidebar-toggle active" id="glow-toggle" title="Glow">G</button>
-        <button class="sidebar-toggle" id="shadow-toggle" title="Shadow">S</button>
+        <div class="sidebar-slider-wrapper single">
+          <div class="sidebar-slider-track brightness-track"></div>
+          <input type="range" id="brightness-slider" min="20" max="100" value="80" class="sidebar-slider brightness-slider" orient="vertical" title="Brightness">
+          <span class="sidebar-slider-label">LIGHT</span>
+        </div>
       </div>
     </div>
     
@@ -4244,12 +4291,14 @@
       </div>
       
       <p class="contact-intro">
-       Full stack app development is my primary pursuit, the reasoning behind that simply is that currently, alignment within CS most optimally triangulates my: passions, domain knoledge, and accessible mediums. Knowledge and experience in this field are the fuel that keeps my passion for technology and engineering combusting. but it won't be that way forever. Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.
+       Full stack app development is the game I play right now as it triangulates my: passions, domain knowledge, and accessible mediums. I didn't decide capitalism in this form should exist, so I do not adhere to the principle that my entire life should be dedicated to software engineering, solely on the notion that its my favorite passion whcih is most easy to make lucrative. In that regard, my interest beyond CS are less pursued by my present self, but I'm open to discussing them on any level including: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.
       </p>
       
       <p class="contact-statement">
-        I love working with others, and I'm always open to collaboration. <br>
-        If you're doing that and need help, I'll work for you.
+         <br>
+        <br>Any email sent will be responded to by an llm, and I will be informed to schedule meetings if needed. <br>
+        <br> for professional inquiries, please include "job" or "startup" in the subject line.
+        <br>to schedule meetings, please include "meeting" in the subject line.
       </p>
       
       <div class="contact-button-wrapper">
@@ -4817,128 +4866,189 @@
       heroNameEl.style.removeProperty('--custom-color');
       
       // Remove all active states from sidebar buttons
-      document.querySelectorAll('.sidebar-anim-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.sidebar-color').forEach(btn => btn.classList.remove('active'));
+      // Reset cycle button text
+      const cycleBtn = document.getElementById('anim-cycle-btn');
+      if (cycleBtn) cycleBtn.textContent = 'CLICK ME!';
     }
     
     // Animation mode controls
-    let glowEnabled = true;
-    let shadowEnabled = false;
-    let currentHue = 170;
     let currentBrightness = 80;
     
     // Sidebar theme index (separate from terminal nav theme)
     let sidebarThemeIdx = 2; // Default to XP
     
+    // Animation modes for cycling
+    const ANIM_MODES = ['matrix', 'glitch', 'wave', 'pulse', 'fire'];
+    const ANIM_LABELS = ['RAIN!', 'GLITCH!', 'WAVE!', 'PULSE!', 'FIRE!'];
+    let currentAnimIdx = 0;
+    
     function setupAnimationControls() {
       const heroNameEl = document.getElementById('hero-name');
       const sidebar = document.getElementById('hero-sidebar');
       
-      // Use sidebar buttons instead of old hero-anim-btn
-      const animButtons = document.querySelectorAll('.sidebar-anim-btn');
-      const colorButtons = document.querySelectorAll('.sidebar-color');
-      const hueSlider = document.getElementById('hue-slider');
-      const brightnessSlider = document.getElementById('brightness-slider');
-      const glowToggle = document.getElementById('glow-toggle');
-      const shadowToggle = document.getElementById('shadow-toggle');
+      // Single cycle button instead of multiple animation buttons
+      const cycleBtn = document.getElementById('anim-cycle-btn');
       const themeBtn = document.getElementById('sidebar-theme-btn');
       
       if (!heroNameEl) return;
       
       // Default mode - RAIN/MATRIX with teal
       heroNameEl.classList.add('matrix-mode');
-      const defaultBtn = document.getElementById('matrix-btn');
-      if (defaultBtn) defaultBtn.classList.add('active');
-      applyColor('teal');
+      if (cycleBtn) cycleBtn.textContent = ANIM_LABELS[0];
       
       // Apply default sidebar theme
       applySidebarTheme(TERMINAL_THEMES[sidebarThemeIdx]);
       
-      // Animation button handlers - INFINITE (no auto-normalize)
-      animButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const mode = btn.dataset.mode;
+      // Cycle button handler - cycles through all animation modes
+      if (cycleBtn) {
+        cycleBtn.addEventListener('click', () => {
+          // Move to next animation
+          currentAnimIdx = (currentAnimIdx + 1) % ANIM_MODES.length;
+          const mode = ANIM_MODES[currentAnimIdx];
           
           // Remove all modes
           heroNameEl.classList.remove('matrix-mode', 'glitch-mode', 'pulse-mode', 'wave-mode', 'fire-mode');
-          animButtons.forEach(b => b.classList.remove('active'));
           
           // Add selected mode
           heroNameEl.classList.add(mode + '-mode');
-          btn.classList.add('active');
+          
+          // Update button text to show current mode
+          cycleBtn.textContent = ANIM_LABELS[currentAnimIdx];
           
           // Apply current color to mode
           applyColor(currentColorName);
         });
-      });
+      }
       
-      // 10 Color preset handlers
-      const colorPresetMap = {
-        red: '#ff3333',
-        orange: '#ff6b35',
-        yellow: '#ffd700',
-        green: '#39ff14',
-        teal: '#00d4aa',
-        blue: '#0088ff',
-        purple: '#9933ff',
-        pink: '#ff69b4',
-        white: '#ffffff',
-        gray: '#888888'
+      // 5 Color palettes, 10 colors each
+      const COLOR_PALETTES = {
+        neon: [
+          { name: 'cyan', hex: '#00ffff' },
+          { name: 'magenta', hex: '#ff00ff' },
+          { name: 'lime', hex: '#39ff14' },
+          { name: 'hotpink', hex: '#ff69b4' },
+          { name: 'electric', hex: '#7df9ff' },
+          { name: 'yellow', hex: '#ffff00' },
+          { name: 'orange', hex: '#ff6600' },
+          { name: 'violet', hex: '#ee82ee' },
+          { name: 'spring', hex: '#00ff7f' },
+          { name: 'coral', hex: '#ff7f50' }
+        ],
+        earth: [
+          { name: 'terracotta', hex: '#e2725b' },
+          { name: 'olive', hex: '#808000' },
+          { name: 'rust', hex: '#b7410e' },
+          { name: 'sage', hex: '#9dc183' },
+          { name: 'clay', hex: '#b66a50' },
+          { name: 'moss', hex: '#8a9a5b' },
+          { name: 'sand', hex: '#c2b280' },
+          { name: 'copper', hex: '#b87333' },
+          { name: 'forest', hex: '#228b22' },
+          { name: 'stone', hex: '#918e85' }
+        ],
+        pastel: [
+          { name: 'blush', hex: '#ffb6c1' },
+          { name: 'mint', hex: '#98fb98' },
+          { name: 'lavender', hex: '#e6e6fa' },
+          { name: 'peach', hex: '#ffcba4' },
+          { name: 'sky', hex: '#87ceeb' },
+          { name: 'butter', hex: '#fffacd' },
+          { name: 'lilac', hex: '#c8a2c8' },
+          { name: 'seafoam', hex: '#93e9be' },
+          { name: 'rose', hex: '#ffb7c5' },
+          { name: 'cream', hex: '#fffdd0' }
+        ],
+        dark: [
+          { name: 'blood', hex: '#8b0000' },
+          { name: 'navy', hex: '#000080' },
+          { name: 'maroon', hex: '#800000' },
+          { name: 'midnight', hex: '#191970' },
+          { name: 'plum', hex: '#8e4585' },
+          { name: 'hunter', hex: '#355e3b' },
+          { name: 'charcoal', hex: '#36454f' },
+          { name: 'wine', hex: '#722f37' },
+          { name: 'slate', hex: '#708090' },
+          { name: 'steel', hex: '#4682b4' }
+        ],
+        classic: [
+          { name: 'red', hex: '#ff3333' },
+          { name: 'orange', hex: '#ff6b35' },
+          { name: 'yellow', hex: '#ffd700' },
+          { name: 'green', hex: '#39ff14' },
+          { name: 'teal', hex: '#00d4aa' },
+          { name: 'blue', hex: '#0088ff' },
+          { name: 'purple', hex: '#9933ff' },
+          { name: 'pink', hex: '#ff69b4' },
+          { name: 'white', hex: '#ffffff' },
+          { name: 'gray', hex: '#888888' }
+        ]
       };
       
-      colorButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const color = btn.dataset.color;
-          colorButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          currentColorName = color;
-          currentColor = colorPresetMap[color] || colorPresets[color];
-          applyColor(color);
-          // Update hue slider to match
-          const hsl = hexToHSL(currentColor);
-          if (hueSlider) hueSlider.value = hsl.h;
-          if (brightnessSlider) brightnessSlider.value = hsl.l;
-        });
-      });
+      const PALETTE_NAMES = ['neon', 'earth', 'pastel', 'dark', 'classic'];
+      const PALETTE_LABELS = ['NEON', 'EARTH', 'PASTEL', 'DARK', 'CLASSIC'];
+      let currentPaletteIdx = 0;
       
-      // Hue slider handler
-      if (hueSlider) {
-        hueSlider.addEventListener('input', (e) => {
-          currentHue = parseInt(e.target.value);
-          colorButtons.forEach(b => b.classList.remove('active'));
-          const color = hslToHex(currentHue, 100, currentBrightness);
-          currentColor = color;
-          currentColorName = 'custom';
-          applyCustomColor(color);
+      const colorGrid = document.getElementById('color-grid');
+      const paletteLabel = document.getElementById('palette-label');
+      const palettePrev = document.getElementById('palette-prev');
+      const paletteNext = document.getElementById('palette-next');
+      
+      function renderColorPalette() {
+        const paletteName = PALETTE_NAMES[currentPaletteIdx];
+        const colors = COLOR_PALETTES[paletteName];
+        
+        colorGrid.innerHTML = colors.map((c, i) => 
+          `<button class="sidebar-color${i === 4 ? ' active' : ''}" data-color="${c.name}" data-hex="${c.hex}" style="background:${c.hex};" title="${c.name}"></button>`
+        ).join('');
+        
+        paletteLabel.textContent = PALETTE_LABELS[currentPaletteIdx];
+        
+        // Re-attach click handlers
+        document.querySelectorAll('.sidebar-color').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-color').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentColorName = btn.dataset.color;
+            currentColor = btn.dataset.hex;
+            applyCustomColor(currentColor);
+          });
+        });
+        
+        // Apply default color from new palette
+        const defaultColor = colors[4];
+        currentColorName = defaultColor.name;
+        currentColor = defaultColor.hex;
+        applyCustomColor(currentColor);
+      }
+      
+      // Palette navigation
+      if (palettePrev) {
+        palettePrev.addEventListener('click', () => {
+          currentPaletteIdx = (currentPaletteIdx - 1 + PALETTE_NAMES.length) % PALETTE_NAMES.length;
+          renderColorPalette();
         });
       }
       
+      if (paletteNext) {
+        paletteNext.addEventListener('click', () => {
+          currentPaletteIdx = (currentPaletteIdx + 1) % PALETTE_NAMES.length;
+          renderColorPalette();
+        });
+      }
+      
+      // Initialize first palette
+      renderColorPalette();
+      
       // Brightness slider handler
+      const brightnessSlider = document.getElementById('brightness-slider');
       if (brightnessSlider) {
         brightnessSlider.addEventListener('input', (e) => {
           currentBrightness = parseInt(e.target.value);
-          colorButtons.forEach(b => b.classList.remove('active'));
-          const color = hslToHex(currentHue, 100, currentBrightness);
-          currentColor = color;
-          currentColorName = 'custom';
-          applyCustomColor(color);
-        });
-      }
-      
-      // Appearance toggle handlers
-      if (glowToggle) {
-        glowToggle.addEventListener('click', () => {
-          glowEnabled = !glowEnabled;
-          glowToggle.classList.toggle('active', glowEnabled);
-          updateAppearanceEffects();
-        });
-      }
-      
-      if (shadowToggle) {
-        shadowToggle.addEventListener('click', () => {
-          shadowEnabled = !shadowEnabled;
-          shadowToggle.classList.toggle('active', shadowEnabled);
-          updateAppearanceEffects();
+          // Adjust current color brightness
+          const hsl = hexToHSL(currentColor);
+          const adjustedColor = hslToHex(hsl.h, hsl.s, currentBrightness);
+          applyCustomColor(adjustedColor);
         });
       }
       
@@ -4958,13 +5068,6 @@
       TERMINAL_THEMES.forEach(t => sidebar.classList.remove('theme-' + t));
       // Add current theme
       sidebar.classList.add('theme-' + theme);
-    }
-    
-    function updateAppearanceEffects() {
-      const heroNameEl = document.getElementById('hero-name');
-      if (!heroNameEl) return;
-      heroNameEl.classList.toggle('glow-effect', glowEnabled);
-      heroNameEl.classList.toggle('shadow-effect', shadowEnabled);
     }
     
     // Helper: Convert hex to HSL
@@ -5084,10 +5187,10 @@
     function renderProducts() {
       const grid = document.getElementById('products-grid');
       const indicators = document.getElementById('product-indicators');
-      if (!grid) return;
+      if (!grid || !SITE_DATA.products || !SITE_DATA.products.length) return;
       
-      // Render product tiles
-      grid.innerHTML = PRODUCTS.map((p, idx) => `
+      // Render product tiles - use SITE_DATA.products (terminal is source of truth)
+      grid.innerHTML = SITE_DATA.products.map((p, idx) => `
         <div class="product-tile ${idx === 0 ? 'active' : ''}" data-type="product" data-id="${p.id}" data-idx="${idx}">
           <div class="product-image" style="background-image: url('${p.image}');"></div>
           <div class="product-name">${p.name}</div>
@@ -5096,7 +5199,7 @@
       
       // Render indicators
       if (indicators) {
-        indicators.innerHTML = PRODUCTS.map((p, idx) => `
+        indicators.innerHTML = SITE_DATA.products.map((p, idx) => `
           <div class="product-indicator ${idx === 0 ? 'active' : ''}" data-idx="${idx}"></div>
         `).join('');
         
@@ -5130,7 +5233,8 @@
     }
     
     function openProductPopup(idx) {
-      const product = PRODUCTS[idx];
+      if (!SITE_DATA.products || !SITE_DATA.products[idx]) return;
+      const product = SITE_DATA.products[idx];
       const popup = document.getElementById('product-popup');
       
       document.getElementById('product-popup-title').textContent = product.name.toUpperCase();
@@ -5187,8 +5291,9 @@
     
     function startProductRotation() {
       if (productRotationInterval) clearInterval(productRotationInterval);
+      if (!SITE_DATA.products || !SITE_DATA.products.length) return;
       productRotationInterval = setInterval(() => {
-        currentProductIdx = (currentProductIdx + 1) % PRODUCTS.length;
+        currentProductIdx = (currentProductIdx + 1) % SITE_DATA.products.length;
         setActiveProduct(currentProductIdx);
       }, 3000); // Rotate every 3 seconds
     }
@@ -5199,8 +5304,8 @@
     
     function renderProjects() {
       const grid = document.getElementById('projects-grid');
-      if (!grid) return;
-      grid.innerHTML = PROJECTS.map((p, idx) => `
+      if (!grid || !SITE_DATA.projects || !SITE_DATA.projects.length) return;
+      grid.innerHTML = SITE_DATA.projects.map((p, idx) => `
         <div class="project-tile" data-type="project" data-id="${p.id}" data-idx="${idx}">
           <div class="project-name">${p.name}</div>
           <a href="${p.repo}" target="_blank" class="project-link">GitHub →</a>
@@ -5354,101 +5459,36 @@
     // TERMINAL NAV
     // ═══════════════════════════════════════════════════════════════════════
     
-    // Default terminal messages - will be overridden by SITE_DATA if available
-    const DEFAULT_TERMINAL_MESSAGES = {
-      hero: [
-        "Welcome. This is where I build things.",
-        "3 products. 6 projects. Focus over noise.",
-        "Apps, passions, knowledge. All here.",
-        "Scroll to explore, or use the nav below."
-      ],
-      development: [
-        "Check out PokerGeek — provably fair poker.",
-        "Library of Alexandria is my knowledge system.",
-        "3 active products. Click any tile."
-      ],
-      reading: [
-        "Dostoevsky maps the architecture of guilt.",
-        "Thinking in Systems — essential reading.",
-        "Taste is signal. This is mine."
-      ],
-      music: [
-        "Sound that shapes thinking.",
-        "Albums that matter."
-      ],
-      miscMedia: [
-        "Visual stories worth watching.",
-        "Film informs decisions."
-      ],
-      writing: [
-        "Read my thoughts on game theory.",
-        "Philosophy meets practical building.",
-        "Writing clarifies thinking."
-      ],
-      notes: [
-        "Raw captures. Unfiltered thoughts.",
-        "Messy by design. That's the point."
-      ],
-      spotlight: [
-        "Current focus: PokerGeek and Alexandria.",
-        "Where attention is actually going."
-      ],
-      contact: [
-        "Email works best for real conversations.",
-        "Want to collaborate? Reach out."
-      ]
-    };
+    // 15 random quotes for terminal popup
+    const TERMINAL_QUOTES = [
+      '"The world is a comedy to those that think; a tragedy to those that feel." — Horace Walpole',
+      '"Man is not worried by real problems so much as by his imagined anxieties about real problems." — Epictetus',
+      '"One must still have chaos in oneself to be able to give birth to a dancing star." — Friedrich Nietzsche',
+      '"Every man takes the limits of his own field of vision for the limits of the world." — Arthur Schopenhauer',
+      '"The tree that would grow to heaven must send its roots to hell." — Carl Jung',
+      '"Power tends to corrupt, and absolute power corrupts absolutely." — Lord Acton',
+      '"It is difficult to get a man to understand something, when his salary depends upon his not understanding it." — Upton Sinclair',
+      '"Where all think alike, no one thinks very much." — Walter Lippmann',
+      '"He who has a why to live can bear almost any how." — Friedrich Nietzsche',
+      '"Men freely believe that which they desire." — Julius Caesar',
+      '"The individual has always had to struggle to keep from being overwhelmed by the tribe." — Friedrich Nietzsche',
+      '"To see what is in front of one\'s nose needs a constant struggle." — George Orwell',
+      '"A man who has committed a mistake and doesn\'t correct it is committing another mistake." — Confucius',
+      '"In a time of deceit, telling the truth is a revolutionary act." — George Orwell',
+      '"The mystery of human existence lies not in just staying alive, but in finding something to live for." — Fyodor Dostoevsky'
+    ];
     
-    // Get messages from SITE_DATA or fallback to defaults
-    function getTerminalMessages() {
-      return (SITE_DATA && SITE_DATA.terminalMessages) ? SITE_DATA.terminalMessages : DEFAULT_TERMINAL_MESSAGES;
-    }
-    
-    // Track navigation history for contextual messages
-    let navHistory = [];
-    let visitCounts = {};
     let currentTypingTimeout = null;
+    let lastQuoteIdx = -1;
     
     function getTerminalMessage(section) {
-      const allMessages = getTerminalMessages();
-      const messages = allMessages[section];
-      if (!messages || messages.length === 0) return "Exploring...";
-      
-      // Track visit count
-      visitCounts[section] = (visitCounts[section] || 0) + 1;
-      
-      // Special messages based on behavior
-      if (navHistory.length > 3 && navHistory.slice(-3).every(s => s === section)) {
-        return "You seem interested in this. Take your time.";
-      }
-      
-      if (visitCounts[section] > 2) {
-        // Return a different message on repeat visits
-        const idx = (visitCounts[section] - 1) % messages.length;
-        return messages[idx];
-      }
-      
-      // Contextual suggestions based on previous section
-      const prev = navHistory[navHistory.length - 1];
-      if (prev === 'development' && section === 'reading') {
-        return "From building to inputs. Smart sequence.";
-      }
-      if (prev === 'reading' && section === 'writing') {
-        return "Input → Output. See the connection.";
-      }
-      if (prev === 'writing' && section === 'notes') {
-        return "Essays come from these raw notes.";
-      }
-      if (prev === 'hero' && section === 'development') {
-        return "Starting with the work. Good choice.";
-      }
-      
-      // Track navigation
-      navHistory.push(section);
-      if (navHistory.length > 10) navHistory.shift();
-      
-      // Random message
-      return messages[Math.floor(Math.random() * messages.length)];
+      // Pick a random quote, avoiding repeats
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * TERMINAL_QUOTES.length);
+      } while (idx === lastQuoteIdx && TERMINAL_QUOTES.length > 1);
+      lastQuoteIdx = idx;
+      return TERMINAL_QUOTES[idx];
     }
     
     function typeText(element, text, callback) {
@@ -5603,10 +5643,8 @@
       initHeroName();
       setupAnimationControls();
       initFlyingEmojis();
-      renderProducts();
-      renderProjects();
+      initAdminSystem(); // MUST RUN FIRST - loads data before rendering
       initTerminalNav();
-      initAdminSystem();
     });
     
     // ═══════════════════════════════════════════════════════════════════════
@@ -5615,102 +5653,107 @@
     
     const ADMIN_PW = 'waleed2025';
     let ADMIN_AUTHENTICATED = false;
-    let SITE_DATA = {
-      products: [...PRODUCTS],
-      projects: [...PROJECTS],
-      hero: {
-        tagline: 'progress updates on various projects across domains, some random stuff!',
-        subline: 'These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.'
-      },
-      contact: {
-        intro: 'I see CS as a creative pursuit, I feel that with passion and some domain knowledge, the medium of programming allows me to express myself and impact others positively. I have a deep passion for technology and formal logical systems. I love building products that are user-friendly and efficient, as well as technically deep and elegant. I take a pragmatic game theory approach to life, and as of right now, im applying myself most in development, while im also exploring other passions such as reading, writing, and music.',
-        statement: 'I love working with others, and I\'m always open to collaboration.<br>If you\'re doing that and need help, I\'ll work for you.'
-      },
-      writing: [
-        { id: 'writing-1', title: 'Game theory and folk lore', preview: 'Systems thinking in prose.', date: '2025' },
-        { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? shit, but always possibilities.', date: '2026' },
-        { id: 'writing-3', title: '2025 media/entertainment review', preview: 'Premises had...', date: '2025' }
-      ],
-      notes: [
-        { id: 'note-1', title: 'updates .8182826811214g', preview: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure', body: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure. Content overhaul and refinement biweekly, sporadic updates.', date: '2025' },
-        { id: 'note-2', title: 'Collaborate With Me', preview: 'If you\'re building something interesting...', body: 'If you\'re building something interesting, or want to contribute to what I\'m building, reach out.', date: '2025' }
-      ],
-      spotlight: [
-        { id: 'spot-1', title: 'PokerGeek & LibrarAI', body: 'Both progressing smooth towards Q1 2026 launch following alpha and beta milestones. Pokergeek journey has recently pushed me to the root of determinism. In a fifth set of countless of other tech stacks with only the core user functionality intact while our functional layers produced unpredictable bugs in runtime. The solution to naive concerns was grasping and flustered me with formal logical systems to craft a more seamless experience in the event of scaled LibrarAI V1 in also slated for release, LibrarAI is housed in the sleeky gray kindle pdf book sourcing pipeline to sort in a friend to help him sort these books. Our work together on those core high processes culminated in the first edition of First Ed (also old library of alexandria/b for "Fake from building). After an imperfectly debut, we look everything down and are continuing work better insights to deliver a more sophisticated MVP, the same simplicity just at scale.' },
-        { id: 'spot-2', title: 'January Quotes (rough quotes :)', body: '"when you know the way broadly, you can apply it to all things" - Miyamoto musashi "If your memory faded, and everyone you knew had to remind you who you were, could they do it?" ..."if you do your work truly and conscientiously, unknown friends will come and seek you" "What you seek is seeking you." - rumi "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion" 4. "In the depths of winter, I finally learned that within me there lay an invincible summer" - Albert Camus' }
-      ],
-      reading: [
-        { title: 'Crime and Punishment', author: 'Dostoevsky', image: '', subtext: '' },
-        { title: 'Thinking in Systems', author: 'Donella Meadows', image: 'pics/thinkinginsystems.jpg', subtext: '' },
-        { title: 'The Laws of Human Nature', author: 'Robert Greene', image: 'pics/lawsofhumannature.jpg', subtext: '' },
-        { title: 'The Road to Serfdom', author: 'F.A. Hayek', image: 'pics/road_to_serfdom.jpg', subtext: '' },
-        { title: 'The Stranger', author: 'Albert Camus', image: '', subtext: '' },
-        { title: 'The Book of Five Rings', author: 'Miyamoto Musashi', image: '', subtext: '' },
-        { title: 'Modern Man in Search of a Soul', author: 'Carl Jung', image: '', subtext: '' },
-        { title: 'The Undiscovered Self', author: 'Carl Jung', image: '', subtext: '' },
-        { title: 'The Pragmatic Programmer', author: 'Hunt & Thomas', image: '', subtext: '' },
-        { title: 'Game Theory and Strategy', author: 'Joel Watson', image: '', subtext: '' },
-        { title: 'The Almanack of Naval Ravikant', author: 'Eric Jorgenson', image: '', subtext: '' },
-        { title: 'The Road to Wigan Pier', author: 'George Orwell', image: '', subtext: '' },
-        { title: 'Ego Is the Enemy', author: 'Ryan Holiday', image: '', subtext: '' },
-        { title: 'The Moral Animal', author: 'Robert Wright', image: '', subtext: '' },
-        { title: 'The Inner Game of Tennis', author: 'Timothy Gallwey', image: '', subtext: '' },
-        { title: 'An Unquiet Mind', author: 'Kay Redfield Jamison', image: '', subtext: '' },
-        { title: 'Sickness Unto Death', author: 'Kierkegaard', image: '', subtext: '' },
-        { title: 'The Perennial Philosophy', author: 'Aldous Huxley', image: '', subtext: '' },
-        { title: 'Thus Spoke Zarathustra', author: 'Nietzsche', image: '', subtext: '' },
-        { title: 'The Power of Myth', author: 'Campbell & Moyers', image: '', subtext: '' },
-        { title: 'Metaphysics', author: 'Aristotle', image: '', subtext: '' },
-        { title: 'Demons', author: 'Dostoevsky', image: '', subtext: '' },
-        { title: 'Infinite Jest', author: 'David Foster Wallace', image: '', subtext: '' },
-        { title: 'Clean Code', author: 'Robert C. Martin', image: '', subtext: '' },
-        { title: 'Code Complete', author: 'Steve McConnell', image: '', subtext: '' },
-        { title: 'Refactoring', author: 'Martin Fowler', image: '', subtext: '' },
-        { title: 'A Philosophy of Software Design', author: 'John Ousterhout', image: '', subtext: '' },
-        { title: 'The Software Engineer\'s Guidebook', author: 'Gergely Orosz', image: '', subtext: '' },
-        { title: 'The Missing README', author: 'Riccomini & Ryaboy', image: '', subtext: '' },
-        { title: 'Modern Software Engineering', author: 'David Farley', image: '', subtext: '' },
-        { title: 'Working Effectively with Legacy Code', author: 'Michael Feathers', image: '', subtext: '' },
-        { title: 'The Software Craftsman', author: 'Sandro Mancuso', image: '', subtext: '' },
-        { title: 'Programming Pearls', author: 'Jon Bentley', image: '', subtext: '' },
-        { title: 'Structure and Interpretation of Computer Programs', author: 'Abelson & Sussman', image: '', subtext: '' },
-        { title: 'Code: The Hidden Language', author: 'Charles Petzold', image: '', subtext: '' },
-        { title: 'The Mythical Man-Month', author: 'Frederick P. Brooks Jr.', image: '', subtext: '' }
-      ],
-      music: [
-        { id: 'music-1', title: 'Heroin', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png' },
-        { id: 'music-2', title: 'YEEZUS', subtitle: 'Kanye West · Album', image: 'pics/Yeezus_album_cover.png' },
-        { id: 'music-3', title: 'MTV Unplugged', subtitle: 'Nirvana · Live Album', image: 'pics/nirvanaunpluggedmtv.png' }
-      ],
-      miscMedia: [
-        { id: 'media-1', title: 'Attack on Titan', subtitle: 'Anime · Series', images: ['pics/Eren_saying_freedom.png'] },
-        { id: 'media-2', title: 'Jujutsu Kaisen', subtitle: 'Anime · Series', images: ['pics/gojo.png'] },
-        { id: 'media-3', title: '3 Body Problem', subtitle: 'Sci-Fi · Series', images: [] },
-        { id: 'media-4', title: 'Severance', subtitle: 'Thriller · Series', images: [] },
-        { id: 'media-5', title: 'Shutter Island', subtitle: 'Thriller · Film', images: [] },
-        { id: 'media-6', title: 'One Battle After Another', subtitle: 'Documentary · Film', images: ['pics/One_Battle_After_Another.jpg'] }
-      ],
-      terminalMessages: {
-        hero: ["Welcome. This is where I build things.", "Apps, passions, knowledge. All here."],
-        development: ["Check out PokerGeek — provably fair poker.", "3 active products. Click any tile."],
-        reading: ["Taste is signal. This is mine."],
-        music: ["Sound that shapes thinking."],
-        miscMedia: ["Visual stories worth watching."],
-        writing: ["Writing clarifies thinking."],
-        notes: ["Raw captures. Unfiltered thoughts."],
-        spotlight: ["Where attention is actually going."],
-        contact: ["Want to collaborate? Reach out."]
-      },
-      socialLinks: {
-        instagram: { url: 'https://instagram.com/waleedaraza', icon: '📸', label: 'Instagram' },
-        linkedin: { url: 'https://linkedin.com/in/waleedaraza', icon: '💼', label: 'LinkedIn' },
-        github: { url: 'https://github.com/waleedaraza', icon: '💻', label: 'GitHub' },
-        twitter: { url: 'https://x.com/waleedaraza', icon: '🐦', label: 'X' },
-        custom: { url: '', icon: '?', label: 'Custom' }
-      }
-    };
+    let SITE_DATA = {}; // Start empty - terminal is source of truth
     let currentEditType = null;
     let currentEditIdx = null;
+    
+    // Default data function - only used if no localStorage exists
+    function getDefaultSiteData() {
+      return {
+        products: [...PRODUCTS],
+        projects: [...PROJECTS],
+        hero: {
+          tagline: 'progress updates on various projects across domains, some random stuff!',
+          subline: 'These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.'
+        },
+        contact: {
+          intro: 'I see CS as a creative pursuit, I feel that with passion and some domain knowledge, the medium of programming allows me to express myself and impact others positively. I have a deep passion for technology and formal logical systems. I love building products that are user-friendly and efficient, as well as technically deep and elegant. I take a pragmatic game theory approach to life, and as of right now, im applying myself most in development, while im also exploring other passions such as reading, writing, and music.',
+          statement: 'I love working with others, and I\'m always open to collaboration.<br>If you\'re doing that and need help, I\'ll work for you.'
+        },
+        writing: [
+          { id: 'writing-1', title: 'Game theory and folk lore', preview: 'Systems thinking in prose.', date: '2025' },
+          { id: 'writing-2', title: '2026 american and geo-politics', preview: 'predictions? predictions? possibilities? shit, but always possibilities.', date: '2026' },
+          { id: 'writing-3', title: '2025 media/entertainment review', preview: 'Premises had...', date: '2025' }
+        ],
+        notes: [
+          { id: 'note-1', title: 'updates .8182826811214g', preview: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure', body: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure. Content overhaul and refinement biweekly, sporadic updates.', date: '2025' },
+          { id: 'note-2', title: 'Collaborate With Me', preview: 'If you\'re building something interesting...', body: 'If you\'re building something interesting, or want to contribute to what I\'m building, reach out.', date: '2025' }
+        ],
+        spotlight: [
+          { id: 'spot-1', title: 'PokerGeek & LibrarAI', body: 'Both progressing smooth towards Q1 2026 launch following alpha and beta milestones. Pokergeek journey has recently pushed me to the root of determinism. In a fifth set of countless of other tech stacks with only the core user functionality intact while our functional layers produced unpredictable bugs in runtime. The solution to naive concerns was grasping and flustered me with formal logical systems to craft a more seamless experience in the event of scaled LibrarAI V1 in also slated for release, LibrarAI is housed in the sleeky gray kindle pdf book sourcing pipeline to sort in a friend to help him sort these books. Our work together on those core high processes culminated in the first edition of First Ed (also old library of alexandria/b for "Fake from building). After an imperfectly debut, we look everything down and are continuing work better insights to deliver a more sophisticated MVP, the same simplicity just at scale.' },
+          { id: 'spot-2', title: 'January Quotes (rough quotes :)', body: '"when you know the way broadly, you can apply it to all things" - Miyamoto musashi "If your memory faded, and everyone you knew had to remind you who you were, could they do it?" ..."if you do your work truly and conscientiously, unknown friends will come and seek you" "What you seek is seeking you." - rumi "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion" 4. "In the depths of winter, I finally learned that within me there lay an invincible summer" - Albert Camus' }
+        ],
+        reading: [
+          { title: 'Crime and Punishment', author: 'Dostoevsky', image: '', subtext: '' },
+          { title: 'Thinking in Systems', author: 'Donella Meadows', image: 'pics/thinkinginsystems.jpg', subtext: '' },
+          { title: 'The Laws of Human Nature', author: 'Robert Greene', image: 'pics/lawsofhumannature.jpg', subtext: '' },
+          { title: 'The Road to Serfdom', author: 'F.A. Hayek', image: 'pics/road_to_serfdom.jpg', subtext: '' },
+          { title: 'The Stranger', author: 'Albert Camus', image: '', subtext: '' },
+          { title: 'The Book of Five Rings', author: 'Miyamoto Musashi', image: '', subtext: '' },
+          { title: 'Modern Man in Search of a Soul', author: 'Carl Jung', image: '', subtext: '' },
+          { title: 'The Undiscovered Self', author: 'Carl Jung', image: '', subtext: '' },
+          { title: 'The Pragmatic Programmer', author: 'Hunt & Thomas', image: '', subtext: '' },
+          { title: 'Game Theory and Strategy', author: 'Joel Watson', image: '', subtext: '' },
+          { title: 'The Almanack of Naval Ravikant', author: 'Eric Jorgenson', image: '', subtext: '' },
+          { title: 'The Road to Wigan Pier', author: 'George Orwell', image: '', subtext: '' },
+          { title: 'Ego Is the Enemy', author: 'Ryan Holiday', image: '', subtext: '' },
+          { title: 'The Moral Animal', author: 'Robert Wright', image: '', subtext: '' },
+          { title: 'The Inner Game of Tennis', author: 'Timothy Gallwey', image: '', subtext: '' },
+          { title: 'An Unquiet Mind', author: 'Kay Redfield Jamison', image: '', subtext: '' },
+          { title: 'Sickness Unto Death', author: 'Kierkegaard', image: '', subtext: '' },
+          { title: 'The Perennial Philosophy', author: 'Aldous Huxley', image: '', subtext: '' },
+          { title: 'Thus Spoke Zarathustra', author: 'Nietzsche', image: '', subtext: '' },
+          { title: 'The Power of Myth', author: 'Campbell & Moyers', image: '', subtext: '' },
+          { title: 'Metaphysics', author: 'Aristotle', image: '', subtext: '' },
+          { title: 'Demons', author: 'Dostoevsky', image: '', subtext: '' },
+          { title: 'Infinite Jest', author: 'David Foster Wallace', image: '', subtext: '' },
+          { title: 'Clean Code', author: 'Robert C. Martin', image: '', subtext: '' },
+          { title: 'Code Complete', author: 'Steve McConnell', image: '', subtext: '' },
+          { title: 'Refactoring', author: 'Martin Fowler', image: '', subtext: '' },
+          { title: 'A Philosophy of Software Design', author: 'John Ousterhout', image: '', subtext: '' },
+          { title: 'The Software Engineer\'s Guidebook', author: 'Gergely Orosz', image: '', subtext: '' },
+          { title: 'The Missing README', author: 'Riccomini & Ryaboy', image: '', subtext: '' },
+          { title: 'Modern Software Engineering', author: 'David Farley', image: '', subtext: '' },
+          { title: 'Working Effectively with Legacy Code', author: 'Michael Feathers', image: '', subtext: '' },
+          { title: 'The Software Craftsman', author: 'Sandro Mancuso', image: '', subtext: '' },
+          { title: 'Programming Pearls', author: 'Jon Bentley', image: '', subtext: '' },
+          { title: 'Structure and Interpretation of Computer Programs', author: 'Abelson & Sussman', image: '', subtext: '' },
+          { title: 'Code: The Hidden Language', author: 'Charles Petzold', image: '', subtext: '' },
+          { title: 'The Mythical Man-Month', author: 'Frederick P. Brooks Jr.', image: '', subtext: '' }
+        ],
+        music: [
+          { id: 'music-1', title: 'Heroin', subtitle: 'Lana Del Rey · Lust for Life', image: 'pics/Lana_Del_Rey_-_Lust_for_Life.png' },
+          { id: 'music-2', title: 'YEEZUS', subtitle: 'Kanye West · Album', image: 'pics/Yeezus_album_cover.png' },
+          { id: 'music-3', title: 'MTV Unplugged', subtitle: 'Nirvana · Live Album', image: 'pics/nirvanaunpluggedmtv.png' }
+        ],
+        miscMedia: [
+          { id: 'media-1', title: 'Attack on Titan', subtitle: 'Anime · Series', images: ['pics/Eren_saying_freedom.png'] },
+          { id: 'media-2', title: 'Jujutsu Kaisen', subtitle: 'Anime · Series', images: ['pics/gojo.png'] },
+          { id: 'media-3', title: '3 Body Problem', subtitle: 'Sci-Fi · Series', images: [] },
+          { id: 'media-4', title: 'Severance', subtitle: 'Thriller · Series', images: [] },
+          { id: 'media-5', title: 'Shutter Island', subtitle: 'Thriller · Film', images: [] },
+          { id: 'media-6', title: 'One Battle After Another', subtitle: 'Documentary · Film', images: ['pics/One_Battle_After_Another.jpg'] }
+        ],
+        terminalMessages: {
+          hero: ["Welcome. This is where I build things.", "Apps, passions, knowledge. All here."],
+          development: ["Check out PokerGeek — provably fair poker.", "3 active products. Click any tile."],
+          reading: ["Taste is signal. This is mine."],
+          music: ["Sound that shapes thinking."],
+          miscMedia: ["Visual stories worth watching."],
+          writing: ["Writing clarifies thinking."],
+          notes: ["Raw captures. Unfiltered thoughts."],
+          spotlight: ["Where attention is actually going."],
+          contact: ["Want to collaborate? Reach out."]
+        },
+        socialLinks: {
+          instagram: { url: 'https://instagram.com/waleedaraza', icon: '📸', label: 'Instagram' },
+          linkedin: { url: 'https://linkedin.com/in/waleedaraza', icon: '💼', label: 'LinkedIn' },
+          github: { url: 'https://github.com/waleedaraza', icon: '💻', label: 'GitHub' },
+          twitter: { url: 'https://x.com/waleedaraza', icon: '🐦', label: 'X' },
+          custom: { url: '', icon: '?', label: 'Custom' }
+        }
+      };
+    }
     
     // ═══════════════════════════════════════════════════════════════════════
     // TERMINAL THEME SYSTEM
@@ -6588,92 +6631,69 @@
       const saved = localStorage.getItem('site_data_v11');
       if (saved) {
         SITE_DATA = JSON.parse(saved);
-        console.log('✅ LOADED SITE_DATA:', SITE_DATA);
-        
-        // Render products & projects
-        if (SITE_DATA.products) {
-          PRODUCTS.length = 0; 
-          PRODUCTS.push(...SITE_DATA.products);
-          renderProducts();
-        }
-        if (SITE_DATA.projects) {
-          PROJECTS.length = 0; 
-          PROJECTS.push(...SITE_DATA.projects);
-          renderProjects();
-        }
-        
-        // Render ALL content sections
-        if (SITE_DATA.writing && SITE_DATA.writing.length) {
-          renderWriting();
-        }
-        if (SITE_DATA.notes && SITE_DATA.notes.length) {
-          renderNotes();
-        }
-        if (SITE_DATA.spotlight && SITE_DATA.spotlight.length) {
-          renderSpotlight();
-        }
-        if (SITE_DATA.reading && SITE_DATA.reading.length) {
-          renderReading();
-        }
-        if (SITE_DATA.music && SITE_DATA.music.length) {
-          renderMusic();
-        }
-        if (SITE_DATA.miscMedia && SITE_DATA.miscMedia.length) {
-          renderMiscMedia();
-        }
-        
-        // Apply hero - ALWAYS apply, admin is source of truth
-        if (SITE_DATA.hero) {
-          const tagline = document.querySelector('.hero-tagline');
-          const subline = document.querySelector('.hero-subline');
-          if (tagline) tagline.textContent = SITE_DATA.hero.tagline || '';
-          if (subline) subline.textContent = SITE_DATA.hero.subline || '';
-        }
-        
-        // Apply contact - ALWAYS apply, admin is source of truth
-        if (SITE_DATA.contact) {
-          const intro = document.querySelector('.contact-intro');
-          const statement = document.querySelector('.contact-statement');
-          if (intro) intro.innerHTML = SITE_DATA.contact.intro || '';
-          if (statement) statement.innerHTML = SITE_DATA.contact.statement || '';
-        }
-        
-        // Apply social links
-        if (SITE_DATA.socialLinks) {
-          renderSocialLinks();
-        }
+        console.log('✅ LOADED SITE_DATA from localStorage:', SITE_DATA);
       } else {
-        // No saved data - use initialized SITE_DATA defaults and render everything
-        console.log('✅ NO SAVED DATA - Using initialized SITE_DATA defaults');
+        // No saved data - initialize with defaults
+        SITE_DATA = getDefaultSiteData();
+        console.log('✅ NO SAVED DATA - Initialized with defaults');
+        saveSiteData(); // Save defaults to localStorage
+      }
+      
+      // Sync PRODUCTS/PROJECTS arrays for backward compatibility
+      if (SITE_DATA.products) {
+        PRODUCTS.length = 0; 
+        PRODUCTS.push(...SITE_DATA.products);
+      }
+      if (SITE_DATA.projects) {
+        PROJECTS.length = 0; 
+        PROJECTS.push(...SITE_DATA.projects);
+      }
+      
+      // Render ALL sections - terminal is source of truth
+      if (SITE_DATA.products && SITE_DATA.products.length) {
         renderProducts();
+      }
+      if (SITE_DATA.projects && SITE_DATA.projects.length) {
         renderProjects();
+      }
+      if (SITE_DATA.writing && SITE_DATA.writing.length) {
         renderWriting();
+      }
+      if (SITE_DATA.notes && SITE_DATA.notes.length) {
         renderNotes();
+      }
+      if (SITE_DATA.spotlight && SITE_DATA.spotlight.length) {
         renderSpotlight();
+      }
+      if (SITE_DATA.reading && SITE_DATA.reading.length) {
         renderReading();
+      }
+      if (SITE_DATA.music && SITE_DATA.music.length) {
         renderMusic();
+      }
+      if (SITE_DATA.miscMedia && SITE_DATA.miscMedia.length) {
         renderMiscMedia();
-        
-        // Apply hero - admin is source of truth
-        if (SITE_DATA.hero) {
-          const tagline = document.querySelector('.hero-tagline');
-          const subline = document.querySelector('.hero-subline');
-          if (tagline) tagline.textContent = SITE_DATA.hero.tagline || '';
-          if (subline) subline.textContent = SITE_DATA.hero.subline || '';
-        }
-        
-        // Apply contact - admin is source of truth
-        if (SITE_DATA.contact) {
-          const intro = document.querySelector('.contact-intro');
-          const statement = document.querySelector('.contact-statement');
-          if (intro) intro.innerHTML = SITE_DATA.contact.intro || '';
-          if (statement) statement.innerHTML = SITE_DATA.contact.statement || '';
-        }
-        
-        // Apply social links
-        if (SITE_DATA.socialLinks) {
-          renderSocialLinks();
-        }
+      }
+      
+      // Apply hero - ALWAYS apply, admin is source of truth
+      if (SITE_DATA.hero) {
+        const tagline = document.querySelector('.hero-tagline');
+        const subline = document.querySelector('.hero-subline');
+        if (tagline) tagline.textContent = SITE_DATA.hero.tagline || '';
+        if (subline) subline.textContent = SITE_DATA.hero.subline || '';
+      }
+      
+      // Apply contact - ALWAYS apply, admin is source of truth
+      if (SITE_DATA.contact) {
+        const intro = document.querySelector('.contact-intro');
+        const statement = document.querySelector('.contact-statement');
+        if (intro) intro.innerHTML = SITE_DATA.contact.intro || '';
+        if (statement) statement.innerHTML = SITE_DATA.contact.statement || '';
+      }
+      
+      // Apply social links
+      if (SITE_DATA.socialLinks) {
+        renderSocialLinks();
       }
     }
     
