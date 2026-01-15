@@ -6529,17 +6529,11 @@
     }
     
     // ─── DATA ───
+    // localStorage DISABLED - hardcoded defaults are the single source of truth
     function loadSiteData() {
-      const saved = localStorage.getItem('site_data_v11');
-      if (saved) {
-        SITE_DATA = JSON.parse(saved);
-        console.log('✅ LOADED SITE_DATA from localStorage:', SITE_DATA);
-      } else {
-        // No saved data - initialize with defaults
-        SITE_DATA = getDefaultSiteData();
-        console.log('✅ NO SAVED DATA - Initialized with defaults');
-        saveSiteData(); // Save defaults to localStorage
-      }
+      // ALWAYS load from hardcoded canonical data - no localStorage
+      SITE_DATA = getDefaultSiteData();
+      console.log('✅ LOADED SITE_DATA from hardcoded defaults (localStorage disabled)');
       
       // Sync PRODUCTS/PROJECTS arrays for backward compatibility
       if (SITE_DATA.products) {
@@ -6694,7 +6688,9 @@
     }
     
     function saveSiteData() {
-      localStorage.setItem('site_data_v11', JSON.stringify(SITE_DATA));
+      // NO-OP: localStorage disabled - edits require direct file modification
+      // To re-enable admin editing, implement a backend or static file export
+      console.log('⚠️ saveSiteData() called but localStorage is disabled');
     }
     
     function applyAllData() {
