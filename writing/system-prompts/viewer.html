@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Prompt Viewer | Waleed A. Raza</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --orange: #ff6b35;
+      --teal: #00c8a0;
+      --text: #e8e8e8;
+      --text-dim: #888;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--orange);
+      color: #000;
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .back-btn:hover {
+      background: #ff8c5a;
+      transform: translateX(-2px);
+    }
+    
+    .header-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--teal);
+    }
+    
+    .header-right {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: transparent;
+      color: var(--teal);
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--teal);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .download-btn:hover {
+      background: var(--teal);
+      color: #000;
+    }
+    
+    .pdf-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 20px;
+      background: #1a1a24;
+    }
+    
+    .pdf-embed {
+      width: 100%;
+      max-width: 900px;
+      height: calc(100vh - 120px);
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #fff;
+    }
+    
+    .prompt-nav {
+      background: var(--surface);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 24px;
+    }
+    
+    .prompt-nav-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+    
+    .prompt-nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .prompt-nav-item {
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s;
+    }
+    
+    .prompt-nav-item:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+    
+    .prompt-nav-item.active {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(0,200,160,0.1);
+    }
+    
+    @media (max-width: 600px) {
+      .header {
+        padding: 12px 16px;
+      }
+      .header-title {
+        display: none;
+      }
+      .pdf-embed {
+        height: calc(100vh - 180px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="../../index.html#writing" class="back-btn">← Back to Site</a>
+      <span class="header-title" id="doc-title">System Prompt</span>
+    </div>
+    <div class="header-right">
+      <a href="#" class="download-btn" id="download-link">↓ Download PDF</a>
+    </div>
+  </header>
+  
+  <div class="pdf-container">
+    <iframe class="pdf-embed" id="pdf-viewer" src="" frameborder="0"></iframe>
+  </div>
+  
+  <nav class="prompt-nav">
+    <div class="prompt-nav-title">ALL SYSTEM PROMPTS</div>
+    <div class="prompt-nav-list">
+      <a href="?doc=01" class="prompt-nav-item" data-doc="01">01 - Philosophical OS</a>
+      <a href="?doc=02" class="prompt-nav-item" data-doc="02">02 - Learning Protocol</a>
+      <a href="?doc=03" class="prompt-nav-item" data-doc="03">03 - Vision Planning</a>
+      <a href="?doc=04" class="prompt-nav-item" data-doc="04">04 - Flowchart Mind</a>
+      <a href="?doc=05" class="prompt-nav-item" data-doc="05">05 - 90/10 Doctrine</a>
+    </div>
+  </nav>
+
+  <script>
+    const docs = {
+      '01': { file: '01-Philosophical-Operating-System.pdf', title: 'The Philosophical Operating System' },
+      '02': { file: '02-Learning-Protocol.pdf', title: 'The Learning Protocol' },
+      '03': { file: '03-Vision-Based-Planning.pdf', title: 'Vision-Based Planning' },
+      '04': { file: '04-Flowchart-Mind.pdf', title: 'The Flowchart Mind' },
+      '05': { file: '05-Ninety-Ten-Doctrine.pdf', title: 'The 90/10 Doctrine' }
+    };
+    
+    function loadDoc() {
+      const params = new URLSearchParams(window.location.search);
+      let docId = params.get('doc') || '01';
+      
+      if (!docs[docId]) docId = '01';
+      
+      const doc = docs[docId];
+      document.getElementById('pdf-viewer').src = doc.file;
+      document.getElementById('doc-title').textContent = doc.title;
+      document.getElementById('download-link').href = doc.file;
+      document.title = doc.title + ' | System Prompts';
+      
+      // Update nav active state
+      document.querySelectorAll('.prompt-nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.doc === docId) {
+          item.classList.add('active');
+        }
+      });
+    }
+    
+    loadDoc();
+  </script>
+</body>
+</html>
