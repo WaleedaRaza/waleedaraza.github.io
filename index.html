@@ -2845,11 +2845,26 @@
     }
     
     .essays-category-title {
-      font-size: 14px;
+      font-size: clamp(16px, 3vw, 20px);
       color: var(--teal);
       margin-bottom: 24px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    
+    .essays-category-title.essays-category-glow {
+      color: var(--orange);
+      text-shadow: 0 0 20px var(--orange-glow), 0 0 40px rgba(255, 107, 53, 0.3);
+      border-bottom-color: var(--orange);
+      animation: subtleGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes subtleGlow {
+      0%, 100% { text-shadow: 0 0 20px var(--orange-glow), 0 0 40px rgba(255, 107, 53, 0.3); }
+      50% { text-shadow: 0 0 30px var(--orange-glow), 0 0 60px rgba(255, 107, 53, 0.5); }
     }
     
     .essay-item {
@@ -5562,8 +5577,8 @@
       // System Prompts category (displayed first as featured content)
       if (systemPrompts.length > 0) {
         html += `<div class="essays-category">
-          <h3 class="essays-category-title">◈ SYSTEM PROMPTS</h3>
-          <p class="essays-category-desc">Cognitive frameworks for human-AI synthesis. Free to use.</p>
+          <h3 class="essays-category-title essays-category-glow">◈ System Prompts for LLM Code Editors</h3>
+          <p class="essays-category-desc">Use and edit at your will and discretion! Have fun! Let me know if you make improvements!</p>
           ${systemPrompts.map((item, idx) => {
             const realIdx = SITE_DATA.writing.indexOf(item);
             if (item.downloadUrl) {
@@ -5571,7 +5586,7 @@
                 <a href="${item.downloadUrl}" target="_blank" class="essay-item essay-downloadable" data-type="writing" data-idx="${realIdx}">
                   <span class="essay-title">${item.title}</span>
                   <p class="essay-preview">${item.preview}</p>
-                  <span class="essay-download-hint">↓ Download .md</span>
+                  <span class="essay-download-hint">↓ Download PDF</span>
                 </a>
               `;
             }
@@ -5987,11 +6002,11 @@
         },
         writing: [
           // System Prompts - Cognitive frameworks for human-AI synthesis
-          { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/01-philosophical-operating-system.md' },
-          { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/02-learning-protocol.md' },
-          { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/03-vision-based-planning.md' },
-          { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/04-flowchart-mind.md' },
-          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/05-ninety-ten-doctrine.md' },
+          { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/01-Philosophical-Operating-System.pdf' },
+          { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/02-Learning-Protocol.pdf' },
+          { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/03-Vision-Based-Planning.pdf' },
+          { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/04-Flowchart-Mind.pdf' },
+          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/05-Ninety-Ten-Doctrine.pdf' },
           // Essays
           { id: 'writing-1', title: 'Game theory and folk lore', preview: '40% complete', date: '2025', locked: true },
           { id: 'writing-2', title: '2026 american and geo-politics', preview: 'January 2026 updates releasing on 02/01/2026', date: '2026', locked: true },
