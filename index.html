@@ -2841,14 +2841,7 @@
     .essays-grid {
       display: flex;
       flex-direction: column;
-      gap: clamp(24px, 5vw, 48px);
-    }
-    
-    @media (min-width: 600px) {
-      .essays-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
+      gap: clamp(16px, 3vw, 24px);
     }
     
     .essays-category-title {
@@ -2892,6 +2885,62 @@
       line-height: 1.6;
       font-family: 'Outfit', sans-serif;
       font-weight: 400;
+    }
+    
+    /* Essays Category Structure */
+    .essays-category {
+      margin-bottom: clamp(32px, 5vw, 48px);
+    }
+    
+    .essays-category:last-child {
+      margin-bottom: 0;
+    }
+    
+    .essays-category-desc {
+      font-size: clamp(12px, 2vw, 14px);
+      color: var(--text-dim);
+      margin: -16px 0 20px 0;
+      font-family: 'Outfit', sans-serif;
+      font-style: italic;
+    }
+    
+    /* Downloadable System Prompts */
+    .essay-downloadable {
+      display: block;
+      text-decoration: none;
+      position: relative;
+      border-left: 3px solid var(--teal);
+    }
+    
+    .essay-downloadable:hover {
+      border-color: var(--orange);
+      border-left-color: var(--orange);
+    }
+    
+    .essay-downloadable .essay-title {
+      color: var(--teal);
+    }
+    
+    .essay-downloadable:hover .essay-title {
+      color: var(--orange);
+    }
+    
+    .essay-download-hint {
+      display: inline-block;
+      font-size: 11px;
+      color: var(--teal);
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 8px;
+      padding: 4px 8px;
+      background: rgba(0, 255, 200, 0.08);
+      border: 1px solid rgba(0, 255, 200, 0.2);
+      transition: all 0.2s ease;
+    }
+    
+    .essay-downloadable:hover .essay-download-hint {
+      background: rgba(255, 107, 53, 0.15);
+      border-color: var(--orange);
+      color: var(--orange);
     }
     
     /* .creative-tile CSS - REMOVED: Never used */
@@ -4578,10 +4627,7 @@
         </div>
         
         <div class="essays-grid">
-          <div>
-            <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
-            <!-- Content rendered from SITE_DATA.writing via renderWriting() -->
-          </div>
+          <!-- Content rendered from SITE_DATA.writing via renderWriting() -->
         </div>
       </section>
 
@@ -5504,28 +5550,69 @@
     }
     
     function renderWriting() {
-      const container = document.querySelector('#writing .essays-grid > div:first-child');
+      const container = document.querySelector('#writing .essays-grid');
       if (!container || !SITE_DATA.writing) return;
-      container.innerHTML = `<h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>` +
-        SITE_DATA.writing.map((item, idx) => {
-          if (item.locked) {
+      
+      // Separate by category
+      const essays = SITE_DATA.writing.filter(item => item.category !== 'systemPrompts');
+      const systemPrompts = SITE_DATA.writing.filter(item => item.category === 'systemPrompts');
+      
+      let html = '';
+      
+      // System Prompts category (displayed first as featured content)
+      if (systemPrompts.length > 0) {
+        html += `<div class="essays-category">
+          <h3 class="essays-category-title">◈ SYSTEM PROMPTS</h3>
+          <p class="essays-category-desc">Cognitive frameworks for human-AI synthesis. Free to use.</p>
+          ${systemPrompts.map((item, idx) => {
+            const realIdx = SITE_DATA.writing.indexOf(item);
+            if (item.downloadUrl) {
+              return `
+                <a href="${item.downloadUrl}" target="_blank" class="essay-item essay-downloadable" data-type="writing" data-idx="${realIdx}">
+                  <span class="essay-title">${item.title}</span>
+                  <p class="essay-preview">${item.preview}</p>
+                  <span class="essay-download-hint">↓ Download .md</span>
+                </a>
+              `;
+            }
             return `
-              <div class="essay-item locked-card locked-variant-${idx % 3}" data-type="writing" data-idx="${idx}" data-locked="true">
-                <span class="locked-icon">🔒</span>
-                <div class="locked-content">
-                  <span class="locked-title">${item.title}</span>
-                  <span class="locked-subtitle">${item.preview}</span>
-                </div>
+              <div class="essay-item" data-type="writing" data-idx="${realIdx}">
+                <span class="essay-title">${item.title}</span>
+                <p class="essay-preview">${item.preview}</p>
               </div>
             `;
-          }
-          return `
-            <div class="essay-item" data-type="writing" data-idx="${idx}">
-              <span class="essay-title">${item.title}</span>
-              <p class="essay-preview">${item.preview}</p>
-            </div>
-          `;
-        }).join('');
+          }).join('')}
+        </div>`;
+      }
+      
+      // Essays category
+      if (essays.length > 0) {
+        html += `<div class="essays-category">
+          <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
+          ${essays.map((item, idx) => {
+            const realIdx = SITE_DATA.writing.indexOf(item);
+            if (item.locked) {
+              return `
+                <div class="essay-item locked-card locked-variant-${idx % 3}" data-type="writing" data-idx="${realIdx}" data-locked="true">
+                  <span class="locked-icon">🔒</span>
+                  <div class="locked-content">
+                    <span class="locked-title">${item.title}</span>
+                    <span class="locked-subtitle">${item.preview}</span>
+                  </div>
+                </div>
+              `;
+            }
+            return `
+              <div class="essay-item" data-type="writing" data-idx="${realIdx}">
+                <span class="essay-title">${item.title}</span>
+                <p class="essay-preview">${item.preview}</p>
+              </div>
+            `;
+          }).join('')}
+        </div>`;
+      }
+      
+      container.innerHTML = html;
     }
     
     function renderNotes() {
@@ -5899,6 +5986,13 @@
           statement: 'Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.\n<br><br>\nIn that regard, my interests beyond CS are less pursued by my present self, but I\'m open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.\n'
         },
         writing: [
+          // System Prompts - Cognitive frameworks for human-AI synthesis
+          { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/01-philosophical-operating-system.md' },
+          { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/02-learning-protocol.md' },
+          { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/03-vision-based-planning.md' },
+          { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/04-flowchart-mind.md' },
+          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/05-ninety-ten-doctrine.md' },
+          // Essays
           { id: 'writing-1', title: 'Game theory and folk lore', preview: '40% complete', date: '2025', locked: true },
           { id: 'writing-2', title: '2026 american and geo-politics', preview: 'January 2026 updates releasing on 02/01/2026', date: '2026', locked: true },
           { id: 'writing-3', title: '2025 media/entertainment review', preview: 'Finished', date: '2025', locked: true }
