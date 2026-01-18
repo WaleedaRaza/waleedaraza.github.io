@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Prompt Viewer | Waleed A. Raza</title>
+  <title>System Prompts | Waleed A. Raza</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0a0a0f;
-      --surface: #12121a;
       --orange: #ff6b35;
       --teal: #00c8a0;
       --text: #e8e8e8;
-      --text-dim: #888;
+      --text-dim: #777;
+      --border: rgba(255,255,255,0.08);
     }
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       background: var(--bg);
@@ -28,21 +24,16 @@
       min-height: 100vh;
     }
     
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    
+    /* Header */
     .header {
-      background: var(--surface);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
       padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      border-bottom: 1px solid var(--border);
     }
     
     .back-btn {
@@ -56,395 +47,249 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
     }
     
-    .back-btn:hover {
-      background: #ff8c5a;
-      transform: translateX(-2px);
-    }
+    .back-btn:hover { background: #ff8c5a; text-decoration: none; }
     
-    .header-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      color: var(--teal);
-    }
-    
-    .header-right {
+    .header-actions {
       display: flex;
       gap: 12px;
+      align-items: center;
     }
     
     .download-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
       padding: 10px 20px;
       background: transparent;
       color: var(--teal);
-      text-decoration: none;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 500;
       border: 1px solid var(--teal);
-      cursor: pointer;
-      transition: all 0.2s;
+      text-decoration: none;
     }
     
-    .download-btn:hover {
-      background: var(--teal);
-      color: #000;
+    .download-btn:hover { background: var(--teal); color: #000; text-decoration: none; }
+    
+    /* Main Layout - Side by Side */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 60px);
     }
     
-    /* Intro Section */
-    .intro {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 48px 24px;
-      display: none;
+    @media (max-width: 1000px) {
+      .main {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        order: 2;
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+      .pdf-side {
+        order: 1;
+        height: 60vh;
+      }
     }
     
-    .intro.show {
-      display: block;
+    /* Left Side - Content */
+    .sidebar {
+      padding: 40px 32px;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
     }
     
     .intro-hook {
       font-family: 'Crimson Pro', Georgia, serif;
-      font-size: clamp(18px, 4vw, 24px);
+      font-size: 20px;
       font-style: italic;
       color: var(--text-dim);
       margin-bottom: 32px;
       line-height: 1.6;
-      text-align: center;
     }
     
-    .intro-hook em {
-      color: var(--orange);
-      font-style: normal;
-    }
+    .intro-hook em { color: var(--orange); font-style: normal; }
     
-    .intro-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(11px, 2vw, 13px);
-      color: var(--teal);
-      letter-spacing: 0.15em;
-      margin-bottom: 16px;
-    }
+    .section { margin-bottom: 28px; }
     
-    .intro-section {
-      margin-bottom: 28px;
-    }
-    
-    .intro-section h3 {
-      font-size: 16px;
+    .section h3 {
+      font-size: 15px;
       color: var(--orange);
       margin-bottom: 10px;
       font-weight: 600;
     }
     
-    .intro-section p {
-      font-size: 14px;
+    .section p {
+      font-size: 13px;
       line-height: 1.7;
       color: var(--text-dim);
     }
     
-    .intro-section p strong {
-      color: var(--text);
-    }
+    .section p strong { color: var(--text); }
     
-    .intro-section a {
-      color: var(--teal);
-      text-decoration: none;
-    }
-    
-    .intro-section a:hover {
-      text-decoration: underline;
-    }
-    
-    .intro-problems {
-      background: rgba(255,107,53,0.08);
-      border-left: 3px solid var(--orange);
-      padding: 16px 20px;
-      margin: 20px 0;
-    }
-    
-    .intro-problems li {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 6px;
-      list-style: none;
-    }
-    
-    .intro-problems li::before {
-      content: "→ ";
-      color: var(--orange);
-    }
-    
-    .intro-cta {
+    .cta-row {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
     }
     
-    .intro-cta a {
-      padding: 12px 24px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    
-    .cta-primary {
-      background: var(--orange);
-      color: #000;
-    }
-    
-    .cta-primary:hover {
-      background: #ff8c5a;
-    }
-    
-    .cta-secondary {
-      background: transparent;
-      border: 1px solid var(--teal);
-      color: var(--teal);
-    }
-    
-    .cta-secondary:hover {
-      background: var(--teal);
-      color: #000;
-    }
-    
-    .toggle-intro {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--text-dim);
-      padding: 8px 16px;
+    .cta-row a {
+      padding: 10px 20px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      cursor: pointer;
-      transition: all 0.2s;
+      text-decoration: none;
     }
     
-    .toggle-intro:hover {
-      border-color: var(--teal);
-      color: var(--teal);
+    .cta-primary { background: var(--orange); color: #000; }
+    .cta-primary:hover { background: #ff8c5a; }
+    .cta-secondary { border: 1px solid var(--teal); color: var(--teal); }
+    .cta-secondary:hover { background: var(--teal); color: #000; }
+    
+    /* Right Side - PDF */
+    .pdf-side {
+      display: flex;
+      flex-direction: column;
     }
+    
+    .pdf-nav {
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .pdf-nav-item {
+      padding: 6px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      text-decoration: none;
+    }
+    
+    .pdf-nav-item:hover { border-color: var(--orange); color: var(--orange); text-decoration: none; }
+    .pdf-nav-item.active { border-color: var(--teal); color: var(--teal); }
     
     .pdf-container {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      padding: 20px;
-      background: #1a1a24;
+      flex: 1;
+      padding: 16px;
     }
     
     .pdf-embed {
       width: 100%;
-      max-width: 900px;
-      height: calc(100vh - 180px);
-      border: 1px solid rgba(255,255,255,0.1);
+      height: 100%;
+      min-height: 500px;
+      border: none;
       background: #fff;
-    }
-    
-    .prompt-nav {
-      background: var(--surface);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 16px 24px;
-    }
-    
-    .prompt-nav-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-      letter-spacing: 0.1em;
-    }
-    
-    .prompt-nav-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    
-    .prompt-nav-item {
-      padding: 8px 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      transition: all 0.2s;
-    }
-    
-    .prompt-nav-item:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
-    
-    .prompt-nav-item.active {
-      border-color: var(--teal);
-      color: var(--teal);
-      background: rgba(0,200,160,0.1);
-    }
-    
-    @media (max-width: 600px) {
-      .header {
-        padding: 12px 16px;
-      }
-      .header-title {
-        display: none;
-      }
-      .pdf-embed {
-        height: calc(100vh - 220px);
-      }
-      .intro {
-        padding: 32px 16px;
-      }
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <div class="header-left">
-      <a href="../../index.html#writing" class="back-btn">← Back to Site</a>
-      <span class="header-title" id="doc-title">System Prompt</span>
-    </div>
-    <div class="header-right">
-      <button class="toggle-intro" id="toggle-intro">About These Prompts</button>
+    <a href="../../index.html#writing" class="back-btn">← Back to Site</a>
+    <div class="header-actions">
       <a href="#" class="download-btn" id="download-link">↓ Download PDF</a>
     </div>
   </header>
   
-  <!-- Intro Section -->
-  <section class="intro" id="intro-section">
-    <p class="intro-hook">
-      A samurai sharpens his sword. A pianist learns his instrument. A vibe coder prompts their LLM. They walk into a bar. The bartender asks: <em>"What can I get for you?"</em>
-    </p>
-    
-    <div class="intro-section">
-      <h3>You're here on purpose.</h3>
-      <p>
-        If you've found this page, you're not browsing. You're searching. You've hit the walls—context collapse, hallucination loops, fixes that spawn three new bugs, plans that sound brilliant but never materialize into working code. You've shipped things you can't fully explain. <strong>We seek those who seek this.</strong>
+  <div class="main">
+    <!-- Left: Intro Content -->
+    <div class="sidebar">
+      <p class="intro-hook">
+        A samurai sharpens his sword. A pianist learns his instrument. A vibe coder prompts their LLM. They walk into a bar. The bartender asks: <em>"What can I get for you?"</em>
       </p>
+      
+      <div class="section">
+        <h3>You're here on purpose.</h3>
+        <p>
+          If you've found this page, you're not browsing. You're searching. You've hit the walls—context collapse, hallucination loops, fixes that spawn three new bugs. You've shipped things you can't fully explain. <strong>We seek those who seek this.</strong>
+        </p>
+      </div>
+      
+      <div class="section">
+        <h3>80 years in 15 minutes.</h3>
+        <p>
+          There's a story about a painter who, at the end of his life, could complete a masterpiece in 15 minutes. Someone asked how. He said: <em>"It took me 80 years to learn how to do it in 15 minutes."</em>
+        </p>
+        <p style="margin-top: 10px;">
+          These prompts are that. <strong>~1.5 years of editing.</strong> Input from devs across FAANG, startups, solo builders. Accumulated failures, breakthroughs, hard-won patterns. What you're reading is compressed experience—not theory.
+        </p>
+      </div>
+      
+      <div class="section">
+        <h3>The difference is the words you know how to say.</h3>
+        <p>
+          Prompt engineering isn't magic. It's accumulated knowledge externalized. The gap between 8 months of failure and 1 week of success isn't intelligence—it's <strong>knowing what to ask</strong>.
+        </p>
+        <p style="margin-top: 10px;">
+          My approach: peel back the onion. Every LLM conversation is layers—surface request, underlying assumption, hidden context, actual goal. Most prompt at the surface. The leverage is deeper.
+        </p>
+      </div>
+      
+      <div class="section">
+        <h3>Edit them. Make them yours.</h3>
+        <p>
+          These aren't sacred texts. Adapt them to your stack, your style. If you improve them, <a href="mailto:waleedraza1211@gmail.com?subject=System%20Prompt%20Improvement">tell me</a>—I'll update these for everyone.
+        </p>
+      </div>
+      
+      <div class="section">
+        <h3>Want more?</h3>
+        <p>
+          I have unorthodox tactics for LLM code editing that bring results and cut costs. <a href="mailto:waleedraza1211@gmail.com?subject=LLM%20Tactics">Reach out</a> to discuss.
+        </p>
+        <p style="margin-top: 10px;">
+          For the deeper problem—maintaining architecture across sessions—I'm building <a href="https://pointer.waleedraza1211.workers.dev" target="_blank"><strong>Pointer</strong></a>. Alpha access limited.
+        </p>
+      </div>
+      
+      <div class="cta-row">
+        <a href="https://pointer.waleedraza1211.workers.dev" target="_blank" class="cta-primary">Try Pointer →</a>
+        <a href="mailto:waleedraza1211@gmail.com?subject=LLM%20Tactics" class="cta-secondary">Get My Tactics</a>
+      </div>
     </div>
     
-    <div class="intro-section">
-      <h3>80 years in 15 minutes.</h3>
-      <p>
-        There's a story about a painter who, at the end of his life, could complete a masterpiece in 15 minutes. Someone asked how. He said: <em>"It took me 80 years to learn how to do it in 15 minutes."</em>
-      </p>
-      <p style="margin-top: 12px;">
-        These prompts are that. <strong>~1.5 years of editing.</strong> Input from devs across FAANG, startups, solo builders. Accumulated failures, breakthroughs, and hard-won patterns. Every sentence has been questioned, tested, refined. What you're reading is compressed experience—not theory.
-      </p>
+    <!-- Right: PDF Viewer -->
+    <div class="pdf-side">
+      <nav class="pdf-nav">
+        <a href="?doc=01" class="pdf-nav-item" data-doc="01">01 Philosophical OS</a>
+        <a href="?doc=02" class="pdf-nav-item" data-doc="02">02 Learning Protocol</a>
+        <a href="?doc=03" class="pdf-nav-item" data-doc="03">03 Vision Planning</a>
+        <a href="?doc=04" class="pdf-nav-item" data-doc="04">04 Flowchart Mind</a>
+        <a href="?doc=05" class="pdf-nav-item" data-doc="05">05 90/10 Doctrine</a>
+      </nav>
+      <div class="pdf-container">
+        <iframe class="pdf-embed" id="pdf-viewer" src=""></iframe>
+      </div>
     </div>
-    
-    <div class="intro-section">
-      <h3>The difference is the words you know how to say.</h3>
-      <p>
-        Prompt engineering isn't magic. It's accumulated knowledge externalized. The gap between someone who struggles for 8 months and someone who solves it in a week isn't intelligence—it's <strong>knowing what to ask</strong>. The right framing. The right sequence. The right constraints.
-      </p>
-      <p style="margin-top: 12px;">
-        My approach: peel back the onion. Every conversation with an LLM is layers—surface request, underlying assumption, hidden context, actual goal. Most people prompt at the surface. The leverage is deeper. These frameworks teach you to think in layers before you type.
-      </p>
-    </div>
-    
-    <div class="intro-section">
-      <h3>Edit them. Break them. Make them yours.</h3>
-      <p>
-        These aren't sacred texts. They're tools. Adapt them to your stack, your style, your problems. Use GPT to customize them. Rip out what doesn't work. Add what does.
-      </p>
-      <p style="margin-top: 12px;">
-        <strong>If you improve them, tell me.</strong> I'll update these for everyone. This is a shared resource—it gets better when you contribute. <a href="mailto:waleedraza1211@gmail.com?subject=System%20Prompt%20Improvement">Reach out.</a>
-      </p>
-    </div>
-    
-    <div class="intro-section">
-      <h3>Want more?</h3>
-      <p>
-        I have unorthodox tactics for LLM code editing that bring results and reduce costs—strategies that aren't in these documents. <a href="mailto:waleedraza1211@gmail.com?subject=LLM%20Tactics%20Request">Reach out</a> if you want to discuss.
-      </p>
-      <p style="margin-top: 12px;">
-        For the deeper problem—maintaining architecture across sessions, chaining agents that write, review, and verify—I'm building <a href="https://pointer.waleedraza1211.workers.dev" target="_blank"><strong>Pointer</strong></a>. Alpha access is limited to devs who understand the problem.
-      </p>
-    </div>
-    
-    <div class="intro-cta">
-      <a href="https://pointer.waleedraza1211.workers.dev" target="_blank" class="cta-primary">Try Pointer →</a>
-      <a href="mailto:waleedraza1211@gmail.com?subject=LLM%20Tactics" class="cta-secondary">Get My Tactics</a>
-    </div>
-  </section>
-  
-  <div class="pdf-container">
-    <iframe class="pdf-embed" id="pdf-viewer" src="" frameborder="0"></iframe>
   </div>
-  
-  <nav class="prompt-nav">
-    <div class="prompt-nav-title">ALL SYSTEM PROMPTS</div>
-    <div class="prompt-nav-list">
-      <a href="?doc=01" class="prompt-nav-item" data-doc="01">01 - Philosophical OS</a>
-      <a href="?doc=02" class="prompt-nav-item" data-doc="02">02 - Learning Protocol</a>
-      <a href="?doc=03" class="prompt-nav-item" data-doc="03">03 - Vision Planning</a>
-      <a href="?doc=04" class="prompt-nav-item" data-doc="04">04 - Flowchart Mind</a>
-      <a href="?doc=05" class="prompt-nav-item" data-doc="05">05 - 90/10 Doctrine</a>
-    </div>
-  </nav>
 
   <script>
     const docs = {
-      '01': { file: '01-Philosophical-Operating-System.pdf', title: 'The Philosophical Operating System' },
-      '02': { file: '02-Learning-Protocol.pdf', title: 'The Learning Protocol' },
-      '03': { file: '03-Vision-Based-Planning.pdf', title: 'Vision-Based Planning' },
-      '04': { file: '04-Flowchart-Mind.pdf', title: 'The Flowchart Mind' },
-      '05': { file: '05-Ninety-Ten-Doctrine.pdf', title: 'The 90/10 Doctrine' }
+      '01': '01-Philosophical-Operating-System.pdf',
+      '02': '02-Learning-Protocol.pdf',
+      '03': '03-Vision-Based-Planning.pdf',
+      '04': '04-Flowchart-Mind.pdf',
+      '05': '05-Ninety-Ten-Doctrine.pdf'
     };
     
-    function loadDoc() {
-      const params = new URLSearchParams(window.location.search);
-      let docId = params.get('doc') || '01';
+    function load() {
+      const p = new URLSearchParams(location.search);
+      let id = p.get('doc') || '01';
+      if (!docs[id]) id = '01';
       
-      if (!docs[docId]) docId = '01';
+      document.getElementById('pdf-viewer').src = docs[id];
+      document.getElementById('download-link').href = docs[id];
       
-      const doc = docs[docId];
-      document.getElementById('pdf-viewer').src = doc.file;
-      document.getElementById('doc-title').textContent = doc.title;
-      document.getElementById('download-link').href = doc.file;
-      document.title = doc.title + ' | System Prompts';
-      
-      // Update nav active state
-      document.querySelectorAll('.prompt-nav-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.doc === docId) {
-          item.classList.add('active');
-        }
+      document.querySelectorAll('.pdf-nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.doc === id);
       });
     }
     
-    // Toggle intro section
-    const toggleBtn = document.getElementById('toggle-intro');
-    const introSection = document.getElementById('intro-section');
-    
-    toggleBtn.addEventListener('click', () => {
-      introSection.classList.toggle('show');
-      toggleBtn.textContent = introSection.classList.contains('show') 
-        ? 'Hide Info' 
-        : 'About These Prompts';
-    });
-    
-    // Show intro on first visit (check localStorage)
-    if (!localStorage.getItem('systemPromptIntroSeen')) {
-      introSection.classList.add('show');
-      toggleBtn.textContent = 'Hide Info';
-      localStorage.setItem('systemPromptIntroSeen', 'true');
-    }
-    
-    loadDoc();
+    load();
   </script>
 </body>
 </html>
