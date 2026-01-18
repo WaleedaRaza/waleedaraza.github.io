@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>System Prompt Viewer | Waleed A. Raza</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0a0a0f;
@@ -26,8 +26,6 @@
       color: var(--text);
       font-family: 'Outfit', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
     
     .header {
@@ -101,8 +99,144 @@
       color: #000;
     }
     
+    /* Intro Section */
+    .intro {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      display: none;
+    }
+    
+    .intro.show {
+      display: block;
+    }
+    
+    .intro-hook {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: clamp(18px, 4vw, 24px);
+      font-style: italic;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    
+    .intro-hook em {
+      color: var(--orange);
+      font-style: normal;
+    }
+    
+    .intro-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(11px, 2vw, 13px);
+      color: var(--teal);
+      letter-spacing: 0.15em;
+      margin-bottom: 16px;
+    }
+    
+    .intro-section {
+      margin-bottom: 28px;
+    }
+    
+    .intro-section h3 {
+      font-size: 16px;
+      color: var(--orange);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .intro-section p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-dim);
+    }
+    
+    .intro-section p strong {
+      color: var(--text);
+    }
+    
+    .intro-section a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+    
+    .intro-section a:hover {
+      text-decoration: underline;
+    }
+    
+    .intro-problems {
+      background: rgba(255,107,53,0.08);
+      border-left: 3px solid var(--orange);
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    
+    .intro-problems li {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      list-style: none;
+    }
+    
+    .intro-problems li::before {
+      content: "→ ";
+      color: var(--orange);
+    }
+    
+    .intro-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .intro-cta a {
+      padding: 12px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .cta-primary {
+      background: var(--orange);
+      color: #000;
+    }
+    
+    .cta-primary:hover {
+      background: #ff8c5a;
+    }
+    
+    .cta-secondary {
+      background: transparent;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+    }
+    
+    .cta-secondary:hover {
+      background: var(--teal);
+      color: #000;
+    }
+    
+    .toggle-intro {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text-dim);
+      padding: 8px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .toggle-intro:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    
     .pdf-container {
-      flex: 1;
       display: flex;
       justify-content: center;
       align-items: stretch;
@@ -113,7 +247,7 @@
     .pdf-embed {
       width: 100%;
       max-width: 900px;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 180px);
       border: 1px solid rgba(255,255,255,0.1);
       background: #fff;
     }
@@ -168,7 +302,10 @@
         display: none;
       }
       .pdf-embed {
-        height: calc(100vh - 180px);
+        height: calc(100vh - 220px);
+      }
+      .intro {
+        padding: 32px 16px;
       }
     }
   </style>
@@ -180,9 +317,64 @@
       <span class="header-title" id="doc-title">System Prompt</span>
     </div>
     <div class="header-right">
+      <button class="toggle-intro" id="toggle-intro">About These Prompts</button>
       <a href="#" class="download-btn" id="download-link">↓ Download PDF</a>
     </div>
   </header>
+  
+  <!-- Intro Section -->
+  <section class="intro" id="intro-section">
+    <p class="intro-hook">
+      A samurai who sharpens his sword, a pianist who learns his instrument, a vibe coder who prompts their LLM walk into a bar. The bartender asks, <em>"What can I get for you?"</em>
+    </p>
+    
+    <div class="intro-section">
+      <div class="intro-title">THE PROBLEM</div>
+      <h3>If you've vibe coded, you know.</h3>
+      <p>
+        LLM coding tools like Cursor, Claude Code, and Copilot are excellent for practice and non-distributed projects. But when your goals change—when you're building something real—without a holistic plan, you hit the wall:
+      </p>
+      <ul class="intro-problems">
+        <li>Context collapse across sessions</li>
+        <li>Hallucination-driven debug loops</li>
+        <li>Fixes that break three other things</li>
+        <li>Plans that sound great but never get written</li>
+        <li>Code you can ship but can't explain</li>
+      </ul>
+    </div>
+    
+    <div class="intro-section">
+      <div class="intro-title">THE SOLUTION</div>
+      <h3>Partly an LLM problem we can't solve. Partly a prompting problem we can.</h3>
+      <p>
+        We can't directly tune the LLMs these tools use—but we <strong>can</strong> impact the prompting we do, and the rules/system prompts we give our tools. These 5 frameworks address the human side of the equation.
+      </p>
+    </div>
+    
+    <div class="intro-section">
+      <div class="intro-title">BUILT ON EXPERIENCE</div>
+      <h3>Tested by dozens of devs across FAANG and startups.</h3>
+      <p>
+        These prompts are only as effective as the experiences they're built on. Devs who've added these to their Cursor rules section report more efficiency and clearer thinking. But they're not finished—<strong>they're living documents</strong>.
+      </p>
+      <p style="margin-top: 12px;">
+        <strong>Edit them. Adapt them to your needs.</strong> Use GPT to customize them for your specific workflow. If you make improvements, <a href="mailto:waleedraza1211@gmail.com?subject=System%20Prompt%20Improvement">reach out</a>—I'll update the content here for everyone.
+      </p>
+    </div>
+    
+    <div class="intro-section">
+      <div class="intro-title">GOING DEEPER</div>
+      <h3>For the deeper problem: Pointer</h3>
+      <p>
+        I'm building <a href="https://pointerdev.io" target="_blank"><strong>Pointer</strong></a>—an orchestration tool where chained agents write, review, and verify. It maintains your conventions and architecture across sessions. Your editor stays the same; results and costs vary by model, query, and context. Alpha access is limited.
+      </p>
+    </div>
+    
+    <div class="intro-cta">
+      <a href="https://pointerdev.io" target="_blank" class="cta-primary">Try Pointer →</a>
+      <a href="mailto:waleedraza1211@gmail.com?subject=System%20Prompt%20Feedback" class="cta-secondary">Suggest Improvements</a>
+    </div>
+  </section>
   
   <div class="pdf-container">
     <iframe class="pdf-embed" id="pdf-viewer" src="" frameborder="0"></iframe>
@@ -227,6 +419,24 @@
           item.classList.add('active');
         }
       });
+    }
+    
+    // Toggle intro section
+    const toggleBtn = document.getElementById('toggle-intro');
+    const introSection = document.getElementById('intro-section');
+    
+    toggleBtn.addEventListener('click', () => {
+      introSection.classList.toggle('show');
+      toggleBtn.textContent = introSection.classList.contains('show') 
+        ? 'Hide Info' 
+        : 'About These Prompts';
+    });
+    
+    // Show intro on first visit (check localStorage)
+    if (!localStorage.getItem('systemPromptIntroSeen')) {
+      introSection.classList.add('show');
+      toggleBtn.textContent = 'Hide Info';
+      localStorage.setItem('systemPromptIntroSeen', 'true');
     }
     
     loadDoc();
