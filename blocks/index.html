@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blocks</title>
+<style>
+  :root {
+    --bg: #0e0e10; --panel: #17171a; --line: #2a2a2f; --ink: #ececee; --mute: #8d8d95; --accent: #e5484d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif; }
+  body { min-height: 100vh; }
+  header { display: flex; align-items: baseline; gap: 12px; padding: 16px 16px 8px; }
+  header h1 { margin: 0; font-size: 18px; letter-spacing: .04em; font-weight: 600; }
+  header span { color: var(--mute); font-size: 13px; }
+  main { display: grid; grid-template-columns: 300px 1fr; gap: 16px; padding: 8px 16px 32px; max-width: 1400px; margin: 0 auto; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .panel h2 { margin: 0 0 10px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); font-weight: 600; }
+  .panel + .panel { margin-top: 12px; }
+  label.row { display: block; margin: 12px 0 0; }
+  label.row .top { display: flex; justify-content: space-between; font-size: 13px; }
+  label.row .top b { font-weight: 500; color: var(--mute); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); margin: 6px 0 0; }
+  .hint { font-size: 12px; color: var(--mute); margin-top: 2px; }
+  button, .btn { appearance: none; background: #232327; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 8px; padding: 9px 12px; font: inherit; cursor: pointer; }
+  button:hover, .btn:hover { background: #2c2c31; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button.primary:hover { filter: brightness(1.1); }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btnrow > * { flex: 1 1 auto; text-align: center; }
+  input[type=file] { display: none; }
+  select { width: 100%; background: #232327; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 9px; font: inherit; }
+  .swatches { display: flex; gap: 8px; margin-top: 8px; }
+  .swatches input[type=color] { width: 100%; height: 38px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; cursor: pointer; }
+  .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; }
+  .check input { accent-color: var(--accent); width: 18px; height: 18px; }
+
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tabs button { padding: 8px 14px; }
+  .tabs button.on { background: var(--ink); color: #000; border-color: var(--ink); font-weight: 600; }
+  .stage { min-height: 320px; display: flex; align-items: center; justify-content: center; }
+  .stage.empty { border: 2px dashed var(--line); border-radius: 12px; color: var(--mute); text-align: center; padding: 40px 20px; cursor: pointer; }
+  .stage.drag { border-color: var(--accent); color: var(--ink); }
+  .single canvas { max-width: 100%; max-height: 78vh; border-radius: 8px; background: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; width: 100%; }
+  .grid figure { margin: 0; }
+  .grid canvas { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .grid figcaption { font-size: 12px; color: var(--mute); margin-top: 4px; }
+  #printArea { display: none; }
+
+  @media print {
+    @page { margin: 10mm; }
+    html, body { background: #fff !important; color: #000 !important; }
+    header, main { display: none !important; }
+    #printArea { display: block !important; }
+    #printArea.sheet { display: grid !important; grid-template-columns: 1fr 1fr; gap: 6mm; }
+    #printArea figure { margin: 0; break-inside: avoid; }
+    #printArea img { width: 100%; height: auto; display: block; }
+    #printArea figcaption { font: 10pt sans-serif; margin-top: 1mm; color: #000; }
+    #printArea.single img, #printArea.pages img { max-height: 255mm; width: auto; max-width: 100%; margin: 0 auto; }
+    #printArea.pages figure { break-after: page; }
+    #printArea.pages figure:last-child { break-after: auto; }
+  }
+</style>
+</head>
+<body>
+<header><h1>BLOCKS</h1><span>Turn a photo into 2 – 5 flat tones to draw from.</span></header>
+
+<main>
+  <aside>
+    <div class="panel">
+      <h2>Image</h2>
+      <div class="btnrow">
+        <label class="btn" for="file">Choose photo</label>
+        <button id="sample" type="button">Sample</button>
+      </div>
+      <input id="file" type="file" accept="image/*">
+      <div class="hint">Or drop / paste an image anywhere.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Shaping</h2>
+      <label class="row"><div class="top">Smooth detail <b id="vBlur">4</b></div>
+        <input id="blur" type="range" min="0" max="14" value="4">
+        <div class="hint">Blurs before splitting, so hair and texture collapse into masses.</div></label>
+      <label class="row"><div class="top">Merge small shapes <b id="vMerge">3</b></div>
+        <input id="merge" type="range" min="0" max="12" value="3">
+        <div class="hint">Absorbs specks into the shape around them.</div></label>
+      <label class="row"><div class="top">Even areas ↔ even values <b id="vBal">60</b></div>
+        <input id="bal" type="range" min="0" max="100" value="60">
+        <div class="hint">Left: every tone gets the same range of light. Right: every tone covers about the same area of the picture.</div></label>
+      <label class="row"><div class="top">Lighter ↔ darker <b id="vShift">0</b></div>
+        <input id="shift" type="range" min="-60" max="60" value="0"></label>
+    </div>
+
+    <div class="panel">
+      <h2>Look</h2>
+      <label class="check"><input id="outline" type="checkbox" checked> Outline the shapes</label>
+      <label class="row"><div class="top">Line weight <b id="vLine">3</b></div>
+        <input id="line" type="range" min="1" max="10" value="3"></label>
+      <div class="swatches" style="align-items:center">
+        <span style="font-size:13px;color:var(--mute);white-space:nowrap">Line colour</span>
+        <input id="lineColor" type="color" value="#e5484d">
+      </div>
+      <div class="hint" style="margin-top:12px">Tone colours for the step you're viewing (tap to change):</div>
+      <div class="swatches" id="swatches"></div>
+      <button id="resetTones" type="button" style="margin-top:8px;width:100%">Reset to greys</button>
+    </div>
+
+    <div class="panel">
+      <h2>Print &amp; save</h2>
+      <select id="printMode">
+        <option value="sheet">One sheet: all steps together</option>
+        <option value="pages">One step per page, all steps</option>
+        <option value="single">Just the step I'm viewing</option>
+      </select>
+      <div class="btnrow" style="margin-top:8px">
+        <button id="print" class="primary" type="button">Print</button>
+        <button id="save" type="button">Save PNG</button>
+      </div>
+      <label class="check"><input id="printOrig" type="checkbox" checked> Include original photo</label>
+    </div>
+  </aside>
+
+  <section>
+    <div class="tabs" id="tabs"></div>
+    <div class="stage empty" id="stage">Drop a photo here, or tap to choose one.</div>
+  </section>
+</main>
+
+<div id="printArea"></div>
+
+<script>
+(() => {
+  const MAXDIM = 1200;
+  const $ = id => document.getElementById(id);
+  const stepsAll = [2, 3, 4, 5];
+  const state = {
+    img: null, w: 0, h: 0, gray: null, view: 'all',
+    tones: {}, // n -> array of hex
+  };
+  const cache = {}; // n -> canvas
+
+  /* ---------- tabs ---------- */
+  const tabDefs = [['orig', 'Original'], ...stepsAll.map(n => [n, n + ' tones']), ['all', 'All steps']];
+  const tabsEl = $('tabs');
+  tabDefs.forEach(([k, label]) => {
+    const b = document.createElement('button');
+    b.textContent = label; b.dataset.k = k;
+    b.onclick = () => { state.view = k; show(); };
+    tabsEl.appendChild(b);
+  });
+
+  /* ---------- loading ---------- */
+  function loadFromURL(url, revoke) {
+    const im = new Image();
+    im.onload = () => { if (revoke) URL.revokeObjectURL(url); setImage(im); };
+    im.onerror = () => alert('Could not read that image.');
+    im.src = url;
+  }
+  function loadFile(f) { if (f && f.type.startsWith('image/')) loadFromURL(URL.createObjectURL(f), true); }
+
+  $('file').onchange = e => loadFile(e.target.files[0]);
+  $('stage').onclick = () => { if (!state.img) $('file').click(); };
+  ['dragenter', 'dragover'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); $('stage').classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); $('stage').classList.remove('drag'); }));
+  addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
+  addEventListener('paste', e => {
+    for (const it of e.clipboardData.items) if (it.type.startsWith('image/')) { loadFile(it.getAsFile()); break; }
+  });
+
+  $('sample').onclick = () => {
+    const c = document.createElement('canvas'); c.width = c.height = 800;
+    const g = c.getContext('2d');
+    let bg = g.createRadialGradient(400, 300, 50, 400, 400, 600);
+    bg.addColorStop(0, '#9a9a9a'); bg.addColorStop(1, '#151515');
+    g.fillStyle = bg; g.fillRect(0, 0, 800, 800);
+    g.fillStyle = '#2b2b2b'; g.beginPath(); g.ellipse(430, 640, 250, 40, 0, 0, 7); g.fill();
+    let s = g.createRadialGradient(330, 300, 20, 400, 400, 260);
+    s.addColorStop(0, '#fff'); s.addColorStop(.45, '#a8a8a8'); s.addColorStop(.8, '#3a3a3a'); s.addColorStop(1, '#0c0c0c');
+    g.fillStyle = s; g.beginPath(); g.arc(400, 400, 240, 0, 7); g.fill();
+    const im = new Image(); im.onload = () => setImage(im); im.src = c.toDataURL();
+  };
+
+  function setImage(im) {
+    const k = Math.min(1, MAXDIM / Math.max(im.naturalWidth, im.naturalHeight));
+    const w = Math.max(1, Math.round(im.naturalWidth * k)), h = Math.max(1, Math.round(im.naturalHeight * k));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d', { willReadFrequently: true });
+    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); // flatten transparency onto white
+    g.drawImage(im, 0, 0, w, h);
+    const d = g.getImageData(0, 0, w, h).data;
+    const gray = new Float32Array(w * h);
+    for (let i = 0, j = 0; i < gray.length; i++, j += 4)
+      gray[i] = 0.2126 * d[j] + 0.7152 * d[j + 1] + 0.0722 * d[j + 2];
+    Object.assign(state, { img: c, w, h, gray });
+    $('stage').classList.remove('empty');
+    recompute();
+  }
+
+  /* ---------- image processing ---------- */
+  function boxBlur(src, w, h, r) {
+    if (r < 1) return src;
+    const tmp = new Float32Array(src.length), out = new Float32Array(src.length);
+    const win = 2 * r + 1;
+    for (let y = 0; y < h; y++) {
+      const row = y * w; let sum = 0;
+      for (let x = -r; x <= r; x++) sum += src[row + Math.min(w - 1, Math.max(0, x))];
+      for (let x = 0; x < w; x++) {
+        tmp[row + x] = sum / win;
+        sum += src[row + Math.min(w - 1, x + r + 1)] - src[row + Math.max(0, x - r)];
+      }
+    }
+    for (let x = 0; x < w; x++) {
+      let sum = 0;
+      for (let y = -r; y <= r; y++) sum += tmp[Math.min(h - 1, Math.max(0, y)) * w + x];
+      for (let y = 0; y < h; y++) {
+        out[y * w + x] = sum / win;
+        sum += tmp[Math.min(h - 1, y + r + 1) * w + x] - tmp[Math.max(0, y - r) * w + x];
+      }
+    }
+    return out;
+  }
+
+  let blurred = null, blurKey = '';
+  function getBlurred() {
+    const r = +$('blur').value, key = r + '|' + state.w + 'x' + state.h + '|' + (state.gray && state.gray.length);
+    if (key !== blurKey || !blurred || blurred.src !== state.gray) {
+      let g = state.gray;
+      for (let i = 0; i < 3 && r > 0; i++) g = boxBlur(g, state.w, state.h, Math.max(1, Math.round(r / 1.7)));
+      blurred = { data: g, src: state.gray }; blurKey = key;
+    }
+    return blurred.data;
+  }
+
+  function thresholds(g, n) {
+    const hist = new Uint32Array(256);
+    for (let i = 0; i < g.length; i++) hist[Math.max(0, Math.min(255, g[i] | 0))]++;
+    const total = g.length;
+    const quant = p => { let acc = 0; const t = p * total; for (let v = 0; v < 256; v++) { acc += hist[v]; if (acc >= t) return v; } return 255; };
+    const lo = quant(0.01), hi = quant(0.99);
+    const b = +$('bal').value / 100, shift = +$('shift').value;
+    const t = [];
+    for (let k = 1; k < n; k++) {
+      const uni = lo + (hi - lo) * k / n;
+      const q = quant(k / n);
+      let v = uni * (1 - b) + q * b + shift;
+      if (t.length && v <= t[t.length - 1]) v = t[t.length - 1] + 0.5;
+      t.push(v);
+    }
+    return t;
+  }
+
+  function merge(labels, w, h, n, r) {
+    if (r < 1) return labels;
+    const W = w + 1, ints = [];
+    for (let l = 0; l < n; l++) {
+      const I = new Int32Array(W * (h + 1));
+      for (let y = 1; y <= h; y++) {
+        let rowSum = 0;
+        for (let x = 1; x <= w; x++) {
+          rowSum += labels[(y - 1) * w + x - 1] === l ? 1 : 0;
+          I[y * W + x] = I[(y - 1) * W + x] + rowSum;
+        }
+      }
+      ints.push(I);
+    }
+    const out = new Uint8Array(labels.length);
+    for (let y = 0; y < h; y++) {
+      const y0 = Math.max(0, y - r), y1 = Math.min(h, y + r + 1);
+      for (let x = 0; x < w; x++) {
+        const x0 = Math.max(0, x - r), x1 = Math.min(w, x + r + 1);
+        let best = labels[y * w + x], bc = -1;
+        for (let l = 0; l < n; l++) {
+          const I = ints[l];
+          const c = I[y1 * W + x1] - I[y0 * W + x1] - I[y1 * W + x0] + I[y0 * W + x0];
+          if (c > bc || (c === bc && l === labels[y * w + x])) { bc = c; best = l; }
+        }
+        out[y * w + x] = best;
+      }
+    }
+    return out;
+  }
+
+  function hexToRgb(h) { const v = parseInt(h.slice(1), 16); return [v >> 16 & 255, v >> 8 & 255, v & 255]; }
+  function toneHex(n) {
+    if (state.tones[n]) return state.tones[n];
+    return Array.from({ length: n }, (_, i) => {
+      const v = Math.round(255 * i / (n - 1)).toString(16).padStart(2, '0');
+      return '#' + v + v + v;
+    });
+  }
+
+  function render(n) {
+    const { w, h } = state;
+    const g = getBlurred();
+    const t = thresholds(g, n);
+    let labels = new Uint8Array(w * h);
+    for (let i = 0; i < labels.length; i++) { let l = 0; while (l < t.length && g[i] >= t[l]) l++; labels[i] = l; }
+    const mr = +$('merge').value;
+    labels = merge(labels, w, h, n, mr);
+    if (mr > 4) labels = merge(labels, w, h, n, Math.round(mr / 2)); // second pass tidies jagged merge edges
+
+    const cols = toneHex(n).map(hexToRgb);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    const im = ctx.createImageData(w, h), d = im.data;
+    for (let i = 0, j = 0; i < labels.length; i++, j += 4) {
+      const col = cols[labels[i]]; d[j] = col[0]; d[j + 1] = col[1]; d[j + 2] = col[2]; d[j + 3] = 255;
+    }
+    if ($('outline').checked) {
+      const lc = hexToRgb($('lineColor').value), tk = +$('line').value;
+      let edge = new Uint8Array(w * h);
+      for (let y = 0; y < h - 1; y++) for (let x = 0; x < w - 1; x++) {
+        const i = y * w + x;
+        if (labels[i] !== labels[i + 1] || labels[i] !== labels[i + w]) edge[i] = 1;
+      }
+      if (tk > 1) {
+        const dil = new Uint8Array(w * h), r = Math.ceil(tk / 2);
+        // separable dilation by radius r
+        const tmp = new Uint8Array(w * h);
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          let v = 0; for (let k = Math.max(0, x - r); k <= Math.min(w - 1, x + r) && !v; k++) v = edge[y * w + k]; tmp[y * w + x] = v;
+        }
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          let v = 0; for (let k = Math.max(0, y - r); k <= Math.min(h - 1, y + r) && !v; k++) v = tmp[k * w + x]; dil[y * w + x] = v;
+        }
+        edge = dil;
+      }
+      for (let i = 0, j = 0; i < edge.length; i++, j += 4) if (edge[i]) { d[j] = lc[0]; d[j + 1] = lc[1]; d[j + 2] = lc[2]; }
+    }
+    ctx.putImageData(im, 0, 0);
+    return c;
+  }
+
+  /* ---------- UI plumbing ---------- */
+  function recompute() { for (const k in cache) delete cache[k]; show(); }
+  function getStep(n) { return cache[n] || (cache[n] = render(n)); }
+
+  function show() {
+    tabsEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.k == state.view));
+    renderSwatches();
+    const stage = $('stage');
+    if (!state.img) return;
+    stage.className = 'stage';
+    stage.innerHTML = '';
+    const v = state.view;
+    if (v === 'all') {
+      const grid = document.createElement('div'); grid.className = 'grid';
+      grid.appendChild(figure(state.img, 'Original'));
+      stepsAll.forEach(n => grid.appendChild(figure(getStep(n), n + ' tones', n)));
+      stage.appendChild(grid);
+    } else {
+      stage.classList.add('single');
+      stage.appendChild(copyCanvas(v === 'orig' ? state.img : getStep(v)));
+    }
+  }
+  function copyCanvas(src) {
+    const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+    c.getContext('2d').drawImage(src, 0, 0); return c;
+  }
+  function figure(src, cap, n) {
+    const f = document.createElement('figure'); f.appendChild(copyCanvas(src));
+    const fc = document.createElement('figcaption'); fc.textContent = cap; f.appendChild(fc);
+    if (n) { f.style.cursor = 'pointer'; f.onclick = () => { state.view = n; show(); }; }
+    return f;
+  }
+
+  function renderSwatches() {
+    const box = $('swatches'); box.innerHTML = '';
+    const n = typeof state.view === 'number' ? state.view : null;
+    if (!n) { box.innerHTML = '<span class="hint">Pick a single step above to recolour its tones.</span>'; return; }
+    toneHex(n).forEach((hex, i) => {
+      const inp = document.createElement('input'); inp.type = 'color'; inp.value = hex;
+      inp.onchange = () => { const a = toneHex(n).slice(); a[i] = inp.value; state.tones[n] = a; delete cache[n]; show(); };
+      box.appendChild(inp);
+    });
+  }
+  $('resetTones').onclick = () => { state.tones = {}; recompute(); };
+
+  const live = [['blur', 'vBlur'], ['merge', 'vMerge'], ['bal', 'vBal'], ['shift', 'vShift'], ['line', 'vLine']];
+  let pending = 0;
+  function schedule() { if (pending) return; pending = requestAnimationFrame(() => { pending = 0; if (state.img) recompute(); }); }
+  live.forEach(([id, out]) => $(id).addEventListener('input', () => { $(out).textContent = $(id).value; schedule(); }));
+  $('outline').onchange = schedule; $('lineColor').oninput = schedule;
+
+  /* ---------- print & save ---------- */
+  $('print').onclick = () => {
+    if (!state.img) return alert('Choose a photo first.');
+    const mode = $('printMode').value, pa = $('printArea');
+    pa.innerHTML = ''; pa.className = mode;
+    const add = (src, cap) => {
+      const f = document.createElement('figure'), im = new Image();
+      im.src = src.toDataURL('image/png');
+      const fc = document.createElement('figcaption'); fc.textContent = cap;
+      f.appendChild(im); f.appendChild(fc); pa.appendChild(f);
+    };
+    if (mode === 'single') {
+      const v = state.view;
+      add(v === 'orig' ? state.img : v === 'all' ? getStep(5) : getStep(v), v === 'orig' ? 'Original' : (v === 'all' ? 5 : v) + ' tones');
+    } else {
+      if ($('printOrig').checked) add(state.img, 'Original');
+      stepsAll.forEach(n => add(getStep(n), n + ' tones'));
+    }
+    const imgs = [...pa.querySelectorAll('img')];
+    Promise.all(imgs.map(i => i.decode ? i.decode().catch(() => {}) : 0)).then(() => setTimeout(() => window.print(), 50));
+  };
+
+  $('save').onclick = () => {
+    if (!state.img) return alert('Choose a photo first.');
+    const v = state.view, n = typeof v === 'number' ? v : 5;
+    const src = v === 'orig' ? state.img : getStep(n);
+    src.toBlob(b => {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+      a.download = v === 'orig' ? 'original.png' : 'blocks-' + n + '-tones.png';
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+  };
+})();
+</script>
+</body>
+</html>
