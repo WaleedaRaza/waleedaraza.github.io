@@ -3,8 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waleed Raza</title>
-  <meta name="description" content="Full-Stack Developer, ML/AI Engineer, Distributed Systems">
+  <title>Waleed A. Raza</title>
+  <meta name="description" content="Waleed A. Raza — a living record of what I build, write, and listen to. Building Warb, Libxndr and PokerAIO.">
+  <link rel="canonical" href="https://waleedaraza.github.io/">
+  <meta name="theme-color" content="#020204">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://waleedaraza.github.io/">
+  <meta property="og:site_name" content="Waleed A. Raza">
+  <meta property="og:title" content="Waleed A. Raza">
+  <meta property="og:description" content="A living record of what I build, write, and listen to. Building Warb, Libxndr and PokerAIO.">
+  <meta property="og:image" content="https://waleedaraza.github.io/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Waleed A. Raza — Warb, Libxndr, PokerAIO">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@walugen">
+  <meta name="twitter:creator" content="@walugen">
+  <meta name="twitter:title" content="Waleed A. Raza">
+  <meta name="twitter:description" content="A living record of what I build, write, and listen to.">
+  <meta name="twitter:image" content="https://waleedaraza.github.io/assets/img/og.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2978,313 +2995,335 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       SPOTLIGHT SECTION
+       TABS - Writing and Liked Media
        ═══════════════════════════════════════════════════════════════════════ */
-    
-    .spotlight-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: clamp(16px, 3vw, 24px);
+
+    .tabs {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
     }
-    
-    .spotlight-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 32px;
-      transition: all 0.2s ease;
-    }
-    
-    .spotlight-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--orange);
-    }
-    
-    .spotlight-title {
-      color: var(--ice-white);
-      margin-bottom: 8px;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-size: clamp(16px, 3vw, 22px);
+
+    .tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
-    
-    .spotlight-subtitle {
-      font-size: 10px;
+
+    .tab:hover { color: var(--ice-white); }
+
+    .tab.active {
       color: var(--teal);
-      margin-bottom: 16px;
-      font-family: 'Press Start 2P', monospace;
+      border-bottom-color: var(--teal);
+      text-shadow: 0 0 12px var(--teal-glow);
     }
-    
-    .spotlight-body {
-      font-size: clamp(14px, 2.5vw, 16px);
+
+    .tab-count {
+      margin-left: 8px;
+      font-weight: 400;
+      opacity: 0.6;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .empty-note {
       color: var(--text-dim);
-      line-height: 1.7;
-      font-family: 'Outfit', sans-serif;
-    }
-    
-    .spotlight-body strong {
-      color: var(--orange);
-    }
-    
-    .spotlight-body .teal {
-      color: var(--teal);
-    }
-    
-    .spotlight-images {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       READING SECTION (Books) - With optional covers
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .reading-grid {
-      display: block;
-    }
-    
-    .reading-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-    }
-    
-    .reading-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.2s;
-    }
-    
-    .reading-item:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: var(--orange);
-    }
-    
-    .reading-cover {
-      width: 60px;
-      height: 85px;
-      object-fit: cover;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-      transition: transform 0.2s ease;
-    }
-    
-    .reading-item:hover .reading-cover {
-      transform: scale(1.05);
-    }
-    
-    .reading-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-    
-    .reading-title {
-      color: var(--orange);
-      font-size: 13px;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-    }
-    
-    .reading-author {
-      color: var(--text-dim);
-      font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    
-    .reading-subtext {
-      color: var(--teal);
-      font-size: 10px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Crimson Pro', Georgia, serif;
       font-style: italic;
-      margin-top: 4px;
-    }
-    
-    .reading-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: clamp(16px, 3vw, 24px);
-      transition: border-color 0.2s ease;
-    }
-    
-    .reading-card:hover {
-      border-color: var(--orange);
-    }
-    
-    .reading-title {
-      color: var(--ice-white);
-      margin-bottom: 6px;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-size: clamp(15px, 2.8vw, 19px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-    
-    .reading-subtitle {
-      font-size: clamp(10px, 1.8vw, 12px);
-      color: var(--teal);
-      margin-bottom: 12px;
-      font-family: 'Outfit', sans-serif;
-    }
-    
-    .reading-body {
-      font-size: clamp(13px, 2.2vw, 15px);
-      color: var(--text-dim);
+      font-size: 18px;
       line-height: 1.6;
-      font-family: 'Outfit', sans-serif;
-      overflow: hidden;
+      padding: 24px 0;
     }
-    
-    .reading-body::after {
-      content: '';
-      display: table;
-      clear: both;
-    }
-    
-    .reading-image {
-      display: block;
+
+    .empty-note a { color: var(--teal); }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       LIKED MEDIA - full-width shelves
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    .section-full {
       width: 100%;
-      max-width: 140px;
-      height: auto;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-      float: left;
-      margin-right: 16px;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: clamp(40px, 8vw, 80px) clamp(16px, 4vw, 40px);
     }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       MUSIC SECTION (Albums)
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .music-grid {
+
+    .section-full .section {
+      padding: 0;
+      max-width: none;
+      margin: 0;
+    }
+
+    .shelf-arrows {
+      margin-left: auto;
       display: flex;
-      flex-direction: column;
-      gap: clamp(16px, 3vw, 24px);
+      gap: 6px;
+      padding-bottom: 6px;
     }
-    
-    .music-card {
+
+    .shelf-arrow {
+      width: 34px;
+      height: 34px;
       background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: clamp(12px, 2vw, 16px);
+      border: 1px solid var(--border);
+      color: var(--ice-white);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
-    
-    .music-card:hover {
-      background: rgba(255, 255, 255, 0.05);
+
+    .shelf-arrow:hover {
       border-color: var(--teal);
+      color: var(--teal);
     }
-    
-    .music-covers {
+
+    .shelf {
+      --card-w: 180px;
+      --ratio: 1 / 1;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      padding: 6px 2px 18px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--teal) transparent;
     }
-    
-    .music-cover {
-      width: clamp(50px, 12vw, 70px);
-      height: clamp(50px, 12vw, 70px);
+
+    .shelf[data-kind="books"] { --card-w: 150px; --ratio: 2 / 3; }
+    .shelf[data-kind="screen"] { --card-w: 260px; --ratio: 16 / 10; }
+
+    .shelf::-webkit-scrollbar { height: 6px; }
+    .shelf::-webkit-scrollbar-thumb { background: var(--teal); }
+
+    .shelf-card {
+      flex: 0 0 var(--card-w);
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .shelf-cover {
+      width: 100%;
+      aspect-ratio: var(--ratio);
       object-fit: cover;
+      background: var(--card);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    
-    .music-cover:hover {
-      transform: scale(1.05);
-      border-color: var(--teal);
-      z-index: 1;
-    }
-    
-    .music-song {
-      font-size: clamp(9px, 1.6vw, 11px);
-      color: var(--teal);
-      font-family: 'JetBrains Mono', monospace;
-      font-style: italic;
-      opacity: 0.9;
-    }
-    
-    .music-title {
+
+    .shelf-cover-text {
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+      background: linear-gradient(160deg, #1b1b2f 0%, var(--card) 70%);
       color: var(--ice-white);
-      margin-bottom: 6px;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-size: clamp(15px, 2.8vw, 19px);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .shelf-card:hover .shelf-cover,
+    .shelf-card:focus-visible .shelf-cover {
+      transform: translateY(-4px);
+      border-color: var(--teal);
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.15);
+    }
+
+    .shelf-title {
+      margin-top: 10px;
+      color: var(--ice-white);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      line-height: 1.3;
     }
-    
-    .music-subtitle {
-      font-size: clamp(10px, 1.8vw, 12px);
-      color: var(--teal);
-      margin-bottom: 12px;
+
+    .shelf-sub {
+      margin-top: 3px;
+      color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
+      font-size: 12px;
     }
-    
-    .music-body {
-      font-size: clamp(13px, 2.2vw, 15px);
+
+    .shelf-take {
+      margin-top: 6px;
       color: var(--text-dim);
-      line-height: 1.6;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .popup-cover {
+      display: block;
+      max-width: 100%;
+      max-height: 55vh;
+      margin: 0 auto 20px;
+      border: 1px solid var(--border);
+    }
+
+    .popup-take {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       ON X - styled after X's own dark profile
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    .x-shell {
+      --x-bg: #000;
+      --x-line: #2f3336;
+      --x-text: #e7e9ea;
+      --x-dim: #71767b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--x-bg);
+      border: 1px solid var(--x-line);
+      border-radius: 16px;
       overflow: hidden;
     }
-    
-    .music-body::after {
-      content: '';
-      display: table;
-      clear: both;
+
+    .x-banner {
+      height: 110px;
+      background:
+        radial-gradient(circle at 20% 30%, var(--orange-glow), transparent 55%),
+        radial-gradient(circle at 80% 70%, var(--teal-glow), transparent 55%),
+        #0b0b14;
     }
-    
-    /* .music-image - REMOVED: Replaced by .music-cover for multi-album tiles */
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       MISC MEDIA SECTION (Shows & Films)
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .media-grid {
+
+    .x-card { padding: 0 16px 16px; border-bottom: 1px solid var(--x-line); }
+    .x-card .x-banner { margin: 0 -16px; }
+
+    .x-profile-row {
       display: flex;
-      flex-direction: column;
-      gap: clamp(12px, 2.5vw, 20px);
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: -38px;
+      margin-bottom: 10px;
     }
-    
-    .media-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: clamp(16px, 3vw, 24px);
-      transition: all 0.2s ease;
+
+    .x-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      border: 4px solid var(--x-bg);
+      object-fit: cover;
+      background: #16181c;
     }
-    
-    .media-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--orange);
+
+    .x-avatar-initials,
+    .x-post-avatar.x-avatar-initials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--orange), var(--teal));
+      color: #000;
+      font-weight: 800;
     }
-    
-    .media-title { font-size: clamp(16px, 3vw, 20px); color: var(--ice-white); margin-bottom: 8px; }
-    .media-subtitle { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
-    .media-body { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-    .media-images { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-    .media-image { max-width: 100px; max-height: 80px; object-fit: cover; border: 1px solid var(--border); }
-    
-    /* .arts-* CSS - REMOVED: Never used, replaced by .media-* */
-    
-    .spotlight-image {
-      width: 120px;
-      height: auto;
-      border: 1px solid var(--border);
+
+    .x-avatar.x-avatar-initials { font-size: 24px; }
+
+    .x-follow {
+      background: var(--x-text);
+      color: #0f1419;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
     }
-    
+
+    .x-follow:hover { opacity: 0.85; }
+
+    .x-name { color: var(--x-text); font-weight: 800; font-size: 20px; line-height: 1.2; }
+    .x-handle { color: var(--x-dim); font-size: 15px; }
+    .x-bio { color: var(--x-text); font-size: 15px; line-height: 1.4; margin-top: 12px; }
+
+    .x-post {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--x-line);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .x-post:hover { background: #080808; }
+
+    .x-post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      object-fit: cover;
+      font-size: 14px;
+    }
+
+    .x-post-meta { color: var(--x-dim); font-size: 15px; }
+    .x-post-meta b { color: var(--x-text); }
+    .x-post-text { color: var(--x-text); font-size: 15px; line-height: 1.4; margin-top: 2px; white-space: pre-line; }
+
+    .x-feed { border-bottom: 1px solid var(--x-line); }
+
+    .x-feed .twitter-timeline {
+      display: block;
+      padding: 16px;
+      color: var(--x-dim);
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .x-feed-fallback { display: none; }
+    .x-feed-failed .twitter-timeline,
+    .x-feed-failed iframe { display: none !important; }
+    .x-feed-failed .x-feed-fallback {
+      display: block;
+      padding: 16px;
+      color: var(--x-dim);
+      font-size: 15px;
+    }
+
+    .x-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
+      color: var(--x-text);
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .x-cta:hover { background: #080808; }
+
     /* ═══════════════════════════════════════════════════════════════════════
        CONTACT SECTION
        ═══════════════════════════════════════════════════════════════════════ */
@@ -3380,6 +3419,61 @@
       transform: translateY(0);
     }
     
+    .contact-intro p { margin: 0 0 16px; }
+
+    .contact-rules {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-dim);
+    }
+
+    .contact-rules li {
+      padding-left: 22px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .contact-rules li::before {
+      content: '›';
+      position: absolute;
+      left: 4px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .contact-rules b { color: var(--ice-white); }
+
+    .product-status {
+      margin-top: 6px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .product-image-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 30%, var(--orange-glow), transparent 60%), var(--card);
+      color: var(--ice-white);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(14px, 1.6vw, 26px);
+      letter-spacing: 0.1em;
+      overflow: hidden;
+      text-shadow: 0 0 20px var(--orange-glow);
+    }
+
+    .product-status-text { color: var(--teal); }
+
     /* ═══════════════════════════════════════════════════════════════════════
        FOOTER
        ═══════════════════════════════════════════════════════════════════════ */
@@ -3474,145 +3568,6 @@
     /* ═══════════════════════════════════════════════════════════════════════
        MOBILE
        ═══════════════════════════════════════════════════════════════════════ */
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       EDIT SYSTEM - CLICK TO EDIT, THREE DOT MENUS
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    [data-editable] { position: relative; }
-    
-    .edit-mode [data-editable]:hover { box-shadow: 0 0 0 1px rgba(57,255,20,0.3); }
-    
-    .edit-mode [data-editable]:hover .edit-dot { opacity: 1; }
-    
-    .edit-dot {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 26px;
-      height: 26px;
-      background: rgba(0,0,0,0.9);
-      border: 1px solid #39ff14;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.15s;
-      z-index: 100;
-      font-size: 16px;
-      color: #39ff14;
-      font-weight: bold;
-    }
-    
-    .edit-dot:hover { background: #39ff14; color: #000; }
-    
-    .edit-dropdown {
-      position: absolute;
-      top: calc(100% + 4px);
-      right: 0;
-      background: #0a0a12;
-      border: 1px solid #39ff14;
-      border-radius: 4px;
-      min-width: 150px;
-      z-index: 101;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      overflow: hidden;
-    }
-    
-    .edit-dropdown-item {
-      padding: 11px 14px;
-      font-size: 12px;
-      color: #ccc;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid #222;
-    }
-    
-    .edit-dropdown-item:last-child { border-bottom: none; }
-    
-    .edit-dropdown-item:hover { background: #39ff14; color: #000; }
-    
-    .editing { outline: 2px dashed #39ff14 !important; outline-offset: 2px; }
-    
-    [data-field].editing-field {
-      background: rgba(57,255,20,0.1);
-      outline: 1px solid #39ff14;
-      padding: 4px 6px;
-      min-height: 1em;
-    }
-    
-    .edit-controls {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-    }
-    
-    .edit-controls button {
-      flex: 1;
-      padding: 8px;
-      border: none;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 3px;
-    }
-    
-    .edit-controls .save-btn { background: #39ff14; color: #000; }
-    .edit-controls .cancel-btn { background: #333; color: #fff; }
-    
-    .section-edit-dot {
-      display: inline-flex;
-      margin-left: 12px;
-      width: 24px;
-      height: 24px;
-      background: rgba(0,0,0,0.8);
-      border: 1px solid #39ff14;
-      border-radius: 4px;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.15s;
-      font-size: 14px;
-      color: #39ff14;
-      vertical-align: middle;
-    }
-    
-    .edit-mode .section-header:hover .section-edit-dot { opacity: 1; }
-    
-    .edit-indicator {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: #39ff14;
-      color: #000;
-      padding: 10px 16px;
-      font-size: 11px;
-      font-weight: bold;
-      font-family: 'Press Start 2P', monospace;
-      border-radius: 6px;
-      z-index: 9999;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(57,255,20,0.4);
-    }
-    
-    .edit-indicator button {
-      background: #000;
-      color: #39ff14;
-      border: none;
-      padding: 6px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      border-radius: 3px;
-    }
-    
-    .edit-indicator button:hover { background: #111; }
     
     /* ═══════════════════════════════════════════════════════════════════════
        PRODUCT TERMINAL POPUP
@@ -3790,10 +3745,9 @@
     <a href="index.html" class="nav-brand">WALEED A. RAZA</a>
     <div class="nav-links">
       <a href="#development" class="nav-link">DEV</a>
-      <a href="#reading" class="nav-link">READING</a>
       <a href="#writing" class="nav-link">WRITING</a>
-      <a href="#notes" class="nav-link">NOTES</a>
-      <a href="#spotlight" class="nav-link">SPOTLIGHT</a>
+      <a href="#media" class="nav-link">MEDIA</a>
+      <a href="#x" class="nav-link">X</a>
       <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="nav-link">CONTACT</a>
       <a href="https://warbspace.com" target="_blank" rel="noopener" class="nav-link nav-product">WARB</a>
       <a href="https://libxndr.com" target="_blank" rel="noopener" class="nav-link nav-product">LIBXNDR</a>
@@ -3808,8 +3762,8 @@
     
     <!-- Hero Text - Tagline + Subline -->
     <div class="hero-text">
-      <p class="hero-tagline">Progress updates on various projects across domains, some random stuff!</p>
-      <p class="hero-subline">These days: integration testing on web apps across dist. systems and layers, Dr K healthyGG podcast, The Stranger by Camus, piano.</p>
+      <p class="hero-tagline">A living record of what I build, write, and listen to.</p>
+      <p class="hero-subline">Building Warb, Libxndr and PokerAIO. Writing on software, politics, philosophy and music.</p>
     </div>
     
     <!-- Social Icons (below hero text) -->
@@ -3895,7 +3849,7 @@
         <div>
           <div class="dev-section-header" style="border-color: var(--teal);">
             <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
-            <div class="dev-section-count" style="border-color: var(--teal); color: var(--teal);">20+</div>
+            <div class="dev-section-count" id="projects-count" style="border-color: var(--teal); color: var(--teal);"></div>
           </div>
           <div class="project-grid" id="projects-grid"></div>
         </div>
@@ -3904,108 +3858,77 @@
 
     <section class="section" id="contact">
       <div class="section-header" style="border-color: var(--orange);">
-        <div class="section-tag">[6] COLLABORATE</div>
-        <h2 class="section-title" style="color: var(--orange);">▶CONTACT</h2>
+        <div class="section-tag">[5] COLLABORATE</div>
+        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
       </div>
-      
-      <p class="contact-intro">Send email via button below, it will be responded to by an llm, and I will be informed to schedule meetings if needed.<br><br>For professional inquiries, please include "job" or "startup" in the subject line.<br><br>To set up a meeting, please include "meeting" in the subject line.<br><br><b>For project related inquiries, please first refer to site FAQ's or github for questions concerns or collaborations.</b></p>
-      
-      <p class="contact-statement">Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.<br><br>In that regard, my interests beyond CS are less pursued by my present self, but I'm open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.</p>
-      
+
+      <div class="contact-intro"></div>
+      <p class="contact-statement"></p>
+
       <div class="contact-button-wrapper">
-        <a href="mailto:waleedraza1211@gmail.com" class="contact-button">✉ CONTACT ME</a>
+        <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
       </div>
     </section>
   </div>
 
-  <!-- CONTENT COLUMNS: Writing+Reading | Notes+Music | Spotlight+Arts -->
-  <div class="section-columns">
-    <!-- COLUMN 1: Writing + Reading -->
+  <!-- WRITING (+ NOTES) | ON X -->
+  <div class="section-pair">
     <div class="section-column">
       <section class="section" id="writing">
         <div class="section-header">
-          <div class="section-tag">[3] MIND · OUTPUT</div>
+          <div class="section-tag">[2] MIND · OUTPUT</div>
           <h2 class="section-title">▶ WRITING</h2>
         </div>
-        
         <div class="essays-grid">
-          <!-- Content rendered from SITE_DATA.writing via renderWriting() -->
+          <!-- Rendered from SITE_DATA.writing via renderWriting() -->
         </div>
       </section>
 
-      <!-- READING SECTION - directly below Writing -->
-      <section class="section" id="reading">
-        <div class="section-header">
-          <div class="section-tag">[2] BOOKS</div>
-          <h2 class="section-title">▶ READING</h2>
-        </div>
-        <div class="reading-grid" id="reading-grid">
-          <!-- Rendered from SITE_DATA.reading -->
-        </div>
-      </section>
-    </div>
-
-    <!-- COLUMN 2: Notes + Music -->
-    <div class="section-column">
-      <section class="section" id="notes">
+      <!-- Hidden until SITE_DATA.notes has entries -->
+      <section class="section" id="notes" hidden>
         <div class="section-header" style="border-color: var(--teal);">
-          <div class="section-tag">[4] OPEN THREADS</div>
+          <div class="section-tag">[2.1] OPEN THREADS</div>
           <h2 class="section-title" style="color: var(--teal);">▶ NOTES</h2>
         </div>
-        
         <div class="notes-grid">
-          <!-- Content rendered from SITE_DATA.notes via renderNotes() -->
-        </div>
-      </section>
-
-      <!-- MUSIC SECTION - directly below Notes -->
-      <section class="section" id="music">
-        <div class="section-header" style="border-color: var(--teal);">
-          <div class="section-tag">[2] ALBUMS</div>
-          <h2 class="section-title" style="color: var(--teal);">▶ MUSIC</h2>
-          <p class="section-desc">my stuff and random albums / songs that came to mind when making this section!</p>
-        </div>
-        
-        <div class="music-grid" id="music-grid">
-          <!-- Content rendered from SITE_DATA.music via renderMusic() -->
+          <!-- Rendered from SITE_DATA.notes via renderNotes() -->
         </div>
       </section>
     </div>
 
-    <!-- COLUMN 3: Spotlight + Arts -->
-    <div class="section-column">
-      <section class="section" id="spotlight">
-        <div class="section-header">
-          <div class="section-tag">[5] CURRENT FOCUS</div>
-          <h2 class="section-title">▶ SPOTLIGHT</h2>
-        </div>
-        
-        <div class="spotlight-grid">
-          <!-- Content rendered from SITE_DATA.spotlight via renderSpotlight() -->
-        </div>
-      </section>
+    <section class="section" id="x">
+      <div class="section-header">
+        <div class="section-tag">[4] SHORT FORM</div>
+        <h2 class="section-title">▶ ON X</h2>
+      </div>
+      <div class="x-shell">
+        <!-- Rendered from SITE_DATA.x via renderX() -->
+      </div>
+    </section>
+  </div>
 
-      <!-- MISC MEDIA SECTION - directly below Spotlight -->
-      <section class="section" id="miscMedia">
-        <div class="section-header">
-          <div class="section-tag">[2] SHOWS & FILMS</div>
-          <h2 class="section-title">▶ MISC MEDIA</h2>
-        </div>
-        
-        <div class="media-grid" id="media-grid">
-          <!-- Content rendered from SITE_DATA.miscMedia via renderMiscMedia() -->
-        </div>
-      </section>
-    </div>
+  <!-- LIKED MEDIA - full width -->
+  <div class="section-full">
+    <section class="section" id="media">
+      <div class="section-header" style="border-color: var(--teal);">
+        <div class="section-tag">[3] TASTE</div>
+        <h2 class="section-title" style="color: var(--teal);">▶ LIKED MEDIA</h2>
+        <p class="section-desc">Albums, books, film and TV I keep coming back to. Swipe through, click for more.</p>
+      </div>
+      <div class="media-body">
+        <!-- Rendered from SITE_DATA.media via renderMedia() -->
+      </div>
+    </section>
   </div>
 
   <!-- FOOTER -->
   <footer class="footer">
     <p class="footer-text">
-      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank">GitHub</a> · 
+      <a href="https://github.com/WaleedaRaza" class="footer-link" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://x.com/walugen" class="footer-link" target="_blank" rel="noopener">X</a> ·
       <a href="mailto:waleedraza1211@gmail.com" class="footer-link">Email</a>
     </p>
-    <p class="footer-text">© 2025 Waleed Raza</p>
+    <p class="footer-text">© 2026 Waleed A. Raza</p>
   </footer>
 
   <!-- POPUP -->
@@ -4031,12 +3954,8 @@
             <a href="#" id="product-site-link" class="product-link" target="_blank">—</a>
           </div>
           <div class="product-link-row">
-            <span class="product-link-label">REPO:</span>
-            <a href="#" id="product-repo-link" class="product-link" target="_blank">—</a>
-          </div>
-          <div class="product-link-row">
-            <span class="product-link-label">BLOG:</span>
-            <a href="#" id="product-blog-link" class="product-link" target="_blank">—</a>
+            <span class="product-link-label">STATUS:</span>
+            <span id="product-status-text" class="product-status-text">—</span>
           </div>
         </div>
       </div>
@@ -4629,15 +4548,15 @@
     
     // Products data - FOCUSED SHELF with links
     const PRODUCTS = [
-      { id: 'pokergeek', name: 'PokerGeek', image: 'pics/PoekrGeek.ai.png', site: 'https://pokergeek.ai', repo: 'private', blog: 'upon Q1 release' },
-      { id: 'pointer', name: 'Pointer', image: 'pics/pointer.png', site: 'https://pointer.waleedraza1211.workers.dev', repo: 'private', blog: 'Orchestration for LLM code editors. Alpha access limited.' },
-      { id: 'alexandria', name: 'Library of Alexandria', image: 'pics/libraryofalexandria.png', site: 'Site from alpha period is only accessible to alpha users via original reddit post!', repo: 'private', blog: 'upon Q1 release' }
+      { id: 'warb', name: 'Warb', image: '', site: 'https://warbspace.com', status: 'Product refinement' },
+      { id: 'libxndr', name: 'Libxndr', image: 'pics/libraryofalexandria.png', site: 'https://libxndr.com', status: 'Final deployment stages' },
+      { id: 'pokeraio', name: 'PokerAIO', image: 'pics/PoekrGeek.ai.png', site: 'https://pokeraio.com', status: 'Release maintenance' }
     ];
-    
+
     const PROJECTS = [
+      { id: 'warvis', name: 'WARVIS', repo: 'https://github.com/WaleedaRaza/WARVIS' },
       { id: 'gpuzap', name: 'GPUZap', repo: 'https://github.com/WaleedaRaza/gpuzap' },
       { id: 'handcuts', name: 'HandCuts', repo: 'https://github.com/WaleedaRaza/handcuts' },
-      { id: 'warvis', name: 'WARVIS', repo: 'https://github.com/WaleedaRaza/WARVIS' },
       { id: 'mmamania', name: 'MMAmania', repo: 'https://github.com/WaleedaRaza/mmamania' },
       { id: 'stockscouter', name: 'StockScouter', repo: 'https://github.com/WaleedaRaza/StockScouter' },
       { id: 'datadepth', name: 'DataDepth', repo: 'https://github.com/WaleedaRaza/datadepth' },
@@ -4646,11 +4565,9 @@
       { id: 'newsnet', name: 'NewsNet', repo: 'https://github.com/WaleedaRaza/newsnet' },
       { id: 'paths', name: 'Paths', repo: 'https://github.com/WaleedaRaza/paths' },
       { id: 'terminaltool', name: 'TerminalTool', repo: 'https://github.com/WaleedaRaza/terminaltool' },
-      { id: 'hackfaxsite', name: 'HackFax', repo: 'https://github.com/WaleedaRaza/hackfaxsite' },
-      { id: 'libraryofalexandria', name: 'Library of Alexandria', repo: 'https://github.com/WaleedaRaza/LibraryofAlexandria' },
-      { id: 'portfolio', name: 'WaleedOS', repo: 'https://github.com/WaleedaRaza/waleedaraza.github.io' }
+      { id: 'hackfaxsite', name: 'HackFax', repo: 'https://github.com/WaleedaRaza/hackfaxsite' }
     ];
-    
+
     // Product carousel state
     let currentProductIdx = 0;
     let productRotationInterval = null;
@@ -4664,8 +4581,11 @@
       // Render product tiles - use SITE_DATA.products (terminal is source of truth)
       grid.innerHTML = SITE_DATA.products.map((p, idx) => `
         <div class="product-tile ${idx === 0 ? 'active' : ''}" data-type="product" data-id="${p.id}" data-idx="${idx}">
-          <div class="product-image" style="background-image: url('${p.image}');"></div>
+          ${p.image
+            ? `<div class="product-image" style="background-image: url('${p.image}');"></div>`
+            : `<div class="product-image product-image-text">${p.name.toUpperCase()}</div>`}
           <div class="product-name">${p.name}</div>
+          ${p.status ? `<div class="product-status">● ${p.status}</div>` : ''}
         </div>
       `).join('');
       
@@ -4710,15 +4630,13 @@
       const popup = document.getElementById('product-popup');
       
       document.getElementById('product-popup-title').textContent = product.name.toUpperCase();
-      document.getElementById('product-popup-image').style.backgroundImage = `url('${product.image}')`;
-      
-      const siteLink = document.getElementById('product-site-link');
-      const repoLink = document.getElementById('product-repo-link');
-      const blogLink = document.getElementById('product-blog-link');
-      
-      setProductLink(siteLink, product.site, '— coming soon');
-      setProductLink(repoLink, product.repo, '— private');
-      setProductLink(blogLink, product.blog, '— coming soon');
+      const popupImage = document.getElementById('product-popup-image');
+      popupImage.style.backgroundImage = product.image ? `url('${product.image}')` : '';
+      popupImage.textContent = product.image ? '' : product.name.toUpperCase();
+      popupImage.classList.toggle('product-image-text', !product.image);
+
+      setProductLink(document.getElementById('product-site-link'), product.site, '— coming soon');
+      document.getElementById('product-status-text').textContent = product.status || '—';
 
       popup.style.display = 'flex';
     }
@@ -4772,138 +4690,218 @@
       grid.innerHTML = SITE_DATA.projects.map((p, idx) => `
         <div class="project-tile" data-type="project" data-id="${p.id}" data-idx="${idx}">
           <div class="project-name">${p.name}</div>
-          <a href="${p.repo}" target="_blank" class="project-link">GitHub →</a>
+          <a href="${p.repo}" target="_blank" rel="noopener" class="project-link">GitHub →</a>
         </div>
       `).join('');
+      const count = document.getElementById('projects-count');
+      if (count) count.textContent = `${SITE_DATA.projects.length} REPOS`;
     }
     
+    // Escape text that goes into HTML (titles, takes, post text)
+    function esc(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Tabs: a root holds `.tabs > .tab[data-tab]` and sibling `.tab-pane[data-pane]`
+    function initTabs(root) {
+      root.addEventListener('click', (e) => {
+        const tab = e.target.closest('.tab');
+        if (!tab || !root.contains(tab)) return;
+        root.querySelectorAll(':scope > .tabs .tab').forEach(t => {
+          const on = t === tab;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-selected', on);
+        });
+        root.querySelectorAll(':scope > .tab-pane').forEach(pane => {
+          pane.classList.toggle('active', pane.dataset.pane === tab.dataset.tab);
+        });
+      });
+    }
+
+    function tabBar(tabs, extra = '') {
+      return `<div class="tabs" role="tablist">
+        ${tabs.map((t, i) => `<button class="tab ${i === 0 ? 'active' : ''}" role="tab" aria-selected="${i === 0}" data-tab="${t.id}">${t.label}${t.count != null ? `<span class="tab-count">${t.count}</span>` : ''}</button>`).join('')}
+        ${extra}
+      </div>`;
+    }
+
     function renderWriting() {
       const container = document.querySelector('#writing .essays-grid');
       if (!container || !SITE_DATA.writing) return;
-      
-      // Separate by category
-      const essays = SITE_DATA.writing.filter(item => item.category !== 'systemPrompts');
-      const systemPrompts = SITE_DATA.writing.filter(item => item.category === 'systemPrompts');
-      
-      let html = '';
-      
-      // System Prompts category (displayed first as featured content)
-      if (systemPrompts.length > 0) {
-        html += `<div class="essays-category">
-          <h3 class="essays-category-title essays-category-glow">◈ System Prompts for LLM Code Editors</h3>
+
+      const prompts = SITE_DATA.writing.filter(item => item.category === 'systemPrompts');
+      const essays = SITE_DATA.writing.filter(item => item.category === 'essays');
+
+      const card = (item) => item.url
+        ? `<a href="${item.url}" target="_blank" class="essay-item essay-downloadable">
+             <span class="essay-title">${esc(item.title)}</span>
+             <p class="essay-preview">${esc(item.preview)}</p>
+             <span class="essay-download-hint">→ Read</span>
+           </a>`
+        : `<div class="essay-item">
+             <span class="essay-title">${esc(item.title)}</span>
+             <p class="essay-preview">${esc(item.preview)}</p>
+           </div>`;
+
+      container.innerHTML = `
+        ${tabBar([
+          { id: 'prompts', label: 'System Prompts for LLM Code Editors', count: prompts.length },
+          { id: 'essays', label: 'Essays', count: essays.length }
+        ])}
+        <div class="tab-pane active" data-pane="prompts" role="tabpanel">
           <p class="essays-category-desc">Use and edit at your will and discretion! Have fun! Let me know if you make improvements!</p>
-          ${systemPrompts.map((item, idx) => {
-            const realIdx = SITE_DATA.writing.indexOf(item);
-            if (item.downloadUrl) {
-              return `
-                <a href="${item.downloadUrl}" target="_blank" class="essay-item essay-downloadable" data-type="writing" data-idx="${realIdx}">
-                  <span class="essay-title">${item.title}</span>
-                  <p class="essay-preview">${item.preview}</p>
-                  <span class="essay-download-hint">→ Read</span>
-                </a>
-              `;
-            }
-            return `
-              <div class="essay-item" data-type="writing" data-idx="${realIdx}">
-                <span class="essay-title">${item.title}</span>
-                <p class="essay-preview">${item.preview}</p>
-              </div>
-            `;
-          }).join('')}
-        </div>`;
-      }
-      
-      // Essays category
-      if (essays.length > 0) {
-        html += `<div class="essays-category">
-          <h3 class="essays-category-title">◈ NONFICTION & CRITICAL ESSAYS</h3>
-          ${essays.map((item, idx) => {
-            const realIdx = SITE_DATA.writing.indexOf(item);
-            return `
-              <div class="essay-item" data-type="writing" data-idx="${realIdx}">
-                <span class="essay-title">${item.title}</span>
-                <p class="essay-preview">${item.preview}</p>
-              </div>
-            `;
-          }).join('')}
-        </div>`;
-      }
-      
-      container.innerHTML = html;
+          ${prompts.map(card).join('')}
+        </div>
+        <div class="tab-pane" data-pane="essays" role="tabpanel">
+          ${essays.length
+            ? essays.map(card).join('')
+            : `<p class="empty-note">First essays and critiques are on the way. Until then, the short-form thinking lives <a href="#x">on X</a>.</p>`}
+        </div>
+      `;
+      initTabs(container);
     }
-    
+
     function renderNotes() {
+      const section = document.getElementById('notes');
       const container = document.querySelector('#notes .notes-grid');
-      if (!container || !SITE_DATA.notes) return;
-      container.innerHTML = SITE_DATA.notes.map((item, idx) => `
-        <article class="note-card" data-type="notes" data-idx="${idx}">
-          <h3 class="note-title">${item.title}</h3>
-          ${item.image ? `<img src="${item.image}" alt="${item.title}" style="max-width:100%;margin:8px 0;border:1px solid var(--border);">` : ''}
+      if (!section || !container) return;
+      const notes = SITE_DATA.notes || [];
+      section.hidden = notes.length === 0;
+      container.innerHTML = notes.map(item => `
+        <article class="note-card">
+          <h3 class="note-title">${esc(item.title)}</h3>
+          ${item.image ? `<img src="${item.image}" alt="${esc(item.title)}" loading="lazy" style="max-width:100%;margin:8px 0;border:1px solid var(--border);">` : ''}
           <div class="note-body">${item.body}</div>
         </article>
       `).join('');
     }
-    
-    function renderSpotlight() {
-      const container = document.querySelector('#spotlight .spotlight-grid');
-      if (!container || !SITE_DATA.spotlight) return;
-      container.innerHTML = SITE_DATA.spotlight.map((item, idx) => `
-        <article class="spotlight-card" data-type="spotlight" data-idx="${idx}">
-          <h3 class="spotlight-title">${item.title}</h3>
-          <div class="spotlight-body">${item.body}</div>
-          ${item.images && item.images.length ? `<div class="spotlight-images" style="display:flex;gap:8px;margin-top:12px;">${item.images.map(img => `<img src="${img}" style="max-width:100px;max-height:80px;object-fit:cover;border:1px solid var(--border);">`).join('')}</div>` : ''}
-        </article>
-      `).join('');
-    }
-    
-    // Reading section - Books with optional covers and subtext
-    function renderReading() {
-      const container = document.querySelector('#reading .reading-grid');
-      if (!container || !SITE_DATA.reading) return;
-      
-      container.innerHTML = `<div class="reading-list">${SITE_DATA.reading.map((book, idx) => `
-        <div class="reading-item" data-type="reading" data-idx="${idx}">
-          ${book.image ? `<img src="${book.image}" alt="${book.title}" class="reading-cover">` : ''}
-          <div class="reading-info">
-            <span class="reading-title">${book.title}</span>
-            <span class="reading-author">${book.author}</span>
-            ${book.subtext ? `<span class="reading-subtext">${book.subtext}</span>` : ''}
-          </div>
-        </div>
-      `).join('')}</div>`;
-    }
-    
-    // Music section - Artist tiles with album covers
-    function renderMusic() {
-      const container = document.querySelector('#music .music-grid');
-      if (!container || !SITE_DATA.music) return;
-      
-      container.innerHTML = SITE_DATA.music.map((item, idx) => {
-        return `
-          <article class="music-card" data-type="music" data-idx="${idx}">
-            <div class="music-covers">
-              ${item.covers.map(cover => `<img src="${cover}" alt="" class="music-cover">`).join('')}
+
+    // Liked Media - one section, a tab per shelf, each shelf scrolls sideways
+    const MEDIA_SHELVES = [
+      { id: 'albums', label: 'Albums', by: 'artist' },
+      { id: 'books', label: 'Books', by: 'author' },
+      { id: 'screen', label: 'Film & TV', by: 'kind' }
+    ];
+
+    function renderMedia() {
+      const root = document.querySelector('#media .media-body');
+      if (!root || !SITE_DATA.media) return;
+      const media = SITE_DATA.media;
+
+      const cover = (item) => item.cover
+        ? `<img src="${item.cover}" alt="" class="shelf-cover" loading="lazy">`
+        : `<div class="shelf-cover shelf-cover-text">${esc(item.title)}</div>`;
+
+      root.innerHTML = `
+        ${tabBar(
+          MEDIA_SHELVES.map(sh => ({ id: sh.id, label: sh.label, count: (media[sh.id] || []).length })),
+          `<div class="shelf-arrows">
+             <button class="shelf-arrow" data-dir="-1" aria-label="Scroll left">‹</button>
+             <button class="shelf-arrow" data-dir="1" aria-label="Scroll right">›</button>
+           </div>`
+        )}
+        ${MEDIA_SHELVES.map((sh, i) => `
+          <div class="tab-pane ${i === 0 ? 'active' : ''}" data-pane="${sh.id}" role="tabpanel">
+            <div class="shelf" data-kind="${sh.id}">
+              ${(media[sh.id] || []).map((item, idx) => `
+                <button class="shelf-card" data-kind="${sh.id}" data-idx="${idx}">
+                  ${cover(item)}
+                  <span class="shelf-title">${esc(item.title)}</span>
+                  <span class="shelf-sub">${esc(item[sh.by])}</span>
+                  ${item.take ? `<span class="shelf-take">${esc(item.take)}</span>` : ''}
+                </button>
+              `).join('')}
             </div>
-            ${item.song ? `<div class="music-song">recently liking: ${item.song}</div>` : ''}
-          </article>
-        `;
-      }).join('');
+          </div>
+        `).join('')}
+      `;
+      initTabs(root);
+
+      root.addEventListener('click', (e) => {
+        const arrow = e.target.closest('.shelf-arrow');
+        if (arrow) {
+          const shelf = root.querySelector('.tab-pane.active .shelf');
+          if (shelf) shelf.scrollBy({ left: Number(arrow.dataset.dir) * shelf.clientWidth * 0.8, behavior: 'smooth' });
+          return;
+        }
+        const card = e.target.closest('.shelf-card');
+        if (!card) return;
+        const shelf = MEDIA_SHELVES.find(sh => sh.id === card.dataset.kind);
+        const item = media[card.dataset.kind][Number(card.dataset.idx)];
+        openPopup({
+          title: esc(item.title),
+          subtitle: esc(item[shelf.by]),
+          content: `${item.cover ? `<img src="${item.cover}" alt="" class="popup-cover">` : ''}
+                    ${item.take ? `<p class="popup-take">${esc(item.take)}</p>` : ''}`
+        });
+      });
     }
-    
-    // Misc Media section - Shows & Films
-    function renderMiscMedia() {
-      const container = document.querySelector('#miscMedia .media-grid');
-      if (!container || !SITE_DATA.miscMedia) return;
-      
-      container.innerHTML = SITE_DATA.miscMedia.map((item, idx) => `
-        <article class="media-card" data-type="miscMedia" data-idx="${idx}">
-          ${item.images && item.images.length ? `<img src="${item.images[0]}" alt="${item.title}" class="media-image">` : ''}
-          <h3 class="media-title">${item.title || ''}</h3>
-          <div class="media-subtitle">${item.subtitle || ''}</div>
-        </article>
-      `).join('');
+
+    // On X - profile card styled like X, hand-picked posts, and X's live timeline when it loads
+    const X_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>`;
+
+    function renderX() {
+      const root = document.querySelector('#x .x-shell');
+      if (!root || !SITE_DATA.x) return;
+      const x = SITE_DATA.x;
+      const profile = `https://x.com/${x.handle}`;
+      // unavatar returns 404 with fallback=false, so onerror swaps in initials
+      const avatar = (cls) => `<img class="${cls}" src="https://unavatar.io/x/${x.handle}?fallback=false" alt="" onerror="this.outerHTML='<div class=&quot;${cls} x-avatar-initials&quot;>${x.initials}</div>'">`;
+
+      root.innerHTML = `
+        <div class="x-card">
+          <div class="x-banner"></div>
+          <div class="x-profile-row">
+            ${avatar('x-avatar')}
+            <a class="x-follow" href="https://x.com/intent/follow?screen_name=${x.handle}" target="_blank" rel="noopener">Follow</a>
+          </div>
+          <div class="x-name">${esc(x.name)}</div>
+          <div class="x-handle">@${x.handle}</div>
+          <p class="x-bio">${esc(x.bio)}</p>
+        </div>
+
+        ${(x.posts || []).length ? `<div class="x-posts">${x.posts.map(post => `
+          <a class="x-post" href="${post.url}" target="_blank" rel="noopener">
+            ${avatar('x-post-avatar')}
+            <div class="x-post-main">
+              <div class="x-post-meta"><b>${esc(x.name)}</b> <span>@${x.handle}${post.date ? ` · ${esc(post.date)}` : ''}</span></div>
+              <div class="x-post-text">${esc(post.text)}</div>
+            </div>
+          </a>`).join('')}</div>` : ''}
+
+        <div class="x-feed" id="x-feed">
+          <a class="twitter-timeline" data-theme="dark" data-chrome="noheader nofooter noborders transparent" data-height="560" data-dnt="true" href="https://twitter.com/${x.handle}">Loading posts from @${x.handle}…</a>
+          <p class="x-feed-fallback">X didn't load the live feed here.</p>
+        </div>
+
+        <a class="x-cta" href="${profile}" target="_blank" rel="noopener">${X_ICON}<span>See all posts by @${x.handle}</span></a>
+      `;
+      initXTimeline();
     }
-    
+
+    // Load X's widget only when the section is near the screen; if no timeline appears, show the fallback
+    function initXTimeline() {
+      const feed = document.getElementById('x-feed');
+      if (!feed) return;
+      const load = () => {
+        const script = document.createElement('script');
+        script.src = 'https://platform.twitter.com/widgets.js';
+        script.async = true;
+        script.charset = 'utf-8';
+        script.onerror = () => feed.classList.add('x-feed-failed');
+        document.body.appendChild(script);
+        setTimeout(() => {
+          const frame = feed.querySelector('iframe');
+          if (!frame || frame.offsetHeight < 150) feed.classList.add('x-feed-failed');
+        }, 8000);
+      };
+      if (!('IntersectionObserver' in window)) return load();
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some(en => en.isIntersecting)) { io.disconnect(); load(); }
+      }, { rootMargin: '400px' });
+      io.observe(feed);
+    }
+
     // Social Links - Render from SITE_DATA with actual SVG logos
     const SOCIAL_SVGS = {
       instagram: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/></svg>`,
@@ -4959,8 +4957,10 @@
     // TERMINAL NAV
     // ═══════════════════════════════════════════════════════════════════════
     
-    // 15 random quotes for terminal popup
+    // Quotes the terminal cycles through
     const TERMINAL_QUOTES = [
+      '"If you know the Way broadly, you will see it in everything." — Miyamoto Musashi',
+      '"In the depths of winter, I finally learned that within me there lay an invincible summer." — Albert Camus',
       '"The world is a comedy to those that think; a tragedy to those that feel." — Horace Walpole',
       '"Man is not worried by real problems so much as by his imagined anxieties about real problems." — Epictetus',
       '"One must still have chaos in oneself to be able to give birth to a dancing star." — Friedrich Nietzsche',
@@ -4982,8 +4982,7 @@
     let quoteIdx = 0;
     
     function getNextQuote() {
-      // Cycle sequentially through all 15 quotes
-      const quote = TERMINAL_QUOTES[quoteIdx];
+const quote = TERMINAL_QUOTES[quoteIdx];
       quoteIdx = (quoteIdx + 1) % TERMINAL_QUOTES.length;
       return quote;
     }
@@ -5119,7 +5118,7 @@
       });
       
       // Watch for scroll to update active nav link only
-      const sections = ['hero', 'development', 'reading', 'writing', 'notes', 'spotlight', 'contact'];
+      const sections = ['hero', 'development', 'contact', 'writing', 'notes', 'x', 'media'];
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -5170,106 +5169,143 @@
         products: [...PRODUCTS],
         projects: [...PROJECTS],
         hero: {
-          tagline: 'Progress, Passions & random stuff!',
-          subline: 'See what I\'m coding, writing, reading, listening to, catastrophizing, romanticizing, etc.'
+          tagline: "A living record of what I build, write, and listen to.",
+          subline: "Building Warb, Libxndr and PokerAIO. Writing on software, politics, philosophy and music."
         },
         contact: {
-          intro: 'Send email via button below, it will be responded to by an llm, and I will be informed to schedule meetings if needed.\n\n<br> For professional inquiries, please include "job" or "startup" in the subject line.<br>\n<br> To set up a meeting, please include "meeting" in the subject line.<br>\n<br> <b>For project related inquiries, please first refer to site FAQ\'s or github for questions concerns or collaborations.</b>\n    ',
-          statement: 'Full stack app development is my primary pursuit as it triangulates my: passions, domain knowledge, and accessible mediums.\n<br><br>\nIn that regard, my interests beyond CS are less pursued by my present self, but I\'m open to discussing them on any level, they include: Politics, Philosophy, Literature, Music, Game Theory, History, Astronomy, Anthropology, Formal Logical Systems, Metaphysical Sciences, etc.\n'
+          intro: "<p>Every email is read by an LLM first; anything that needs me gets to me.</p><ul class=\"contact-rules\"><li>Keep <b>*AUTOMATE REPLY*</b> in the subject for an instant automated answer. The button below fills it in.</li><li>Add <b>job</b>, <b>startup</b> or <b>meeting</b> to the subject to reach me directly.</li></ul>",
+          statement: "Happy to talk software, politics, philosophy, literature, music, game theory and history."
         },
+        // category: 'systemPrompts' or 'essays'. An essay: { id, title, preview, date, url, category: 'essays' }
         writing: [
-          // System Prompts - Cognitive frameworks for human-AI synthesis
-          { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/viewer.html?doc=01' },
-          { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/viewer.html?doc=02' },
-          { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/viewer.html?doc=03' },
-          { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/viewer.html?doc=04' },
-          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', downloadUrl: 'writing/system-prompts/viewer.html?doc=05' },
+          { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=01' },
+          { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=02' },
+          { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=03' },
+          { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=04' },
+          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=05' }
         ],
-        notes: [
-          { id: 'note-1', title: 'updates .8182826811214g', preview: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure', body: 'WR V1.0 portfolio 2018-2026, reverted to core foundation expanded structure. Content overhaul and refinement biweekly, sporadic updates.', date: '2025' },
-          { id: 'note-2', title: 'Collaborate With Me', preview: 'If you\'re building something interesting...', body: 'If you\'re building something interesting, or want to contribute to what I\'m building, reach out.', date: '2025' }
-        ],
-        spotlight: [
-          { id: 'spot-1', title: 'January Quotes (rough quotes :)', body: '"when you know the way broadly, you can apply it to all things" - Miyamoto musashi "If your memory faded, and everyone you knew had to remind you who you were, could they do it?" ..."if you do your work truly and conscientiously, unknown friends will come and seek you" "What you seek is seeking you." - rumi "The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion" 4. "In the depths of winter, I finally learned that within me there lay an invincible summer" - Albert Camus' }
-        ],
-        reading: [
-          { title: 'The Book of Five Rings', author: 'Miyamoto Musashi', image: 'bookcovers/5rings.jpg' },
-          { title: 'The Almanack of Naval Ravikant', author: 'Eric Jorgenson', image: 'bookcovers/almack_naval.jpg' },
-          { title: 'An Unquiet Mind', author: 'Kay Redfield Jamison', image: 'bookcovers/An_Unquiet_Mind.jpg' },
-          { title: 'Code Complete', author: 'Steve McConnell', image: 'bookcovers/Code_Complete_1st_edition.jpg' },
-          { title: 'Code: The Hidden Language', author: 'Charles Petzold', image: 'bookcovers/Code_The_Hidden_Language_of_Computer_Hardware_and_Software.jpg' },
-          { title: 'Crime and Punishment', author: 'Fyodor Dostoevsky', image: 'bookcovers/Crimeandpunishmentcover.png' },
-          { title: 'Demons', author: 'Fyodor Dostoevsky', image: 'bookcovers/The_first_edition_of_Dostoevsky\'s_novel_Demons_Petersburg_1873.JPG' },
-          { title: 'Ego Is the Enemy', author: 'Ryan Holiday', image: 'bookcovers/Ego_Is_the_Enemy.jpg' },
-          { title: 'Game Theory and Strategy', author: 'Joel Watson', image: 'bookcovers/gametheoryandstrategy.jpg' },
-          { title: 'Infinite Jest', author: 'David Foster Wallace', image: 'bookcovers/Infinite_jest_cover.jpg' },
-          { title: 'Metaphysics', author: 'Aristotle', image: 'bookcovers/metaphysics.jpeg' },
-          { title: 'Modern Man in Search of a Soul', author: 'Carl Jung', image: 'bookcovers/Modern_Man_in_Search_of_a_Soul.jpg' },
-          { title: 'The Undiscovered Self', author: 'Carl Jung', image: 'bookcovers/The Undiscovered Self- With Symbols and the Interpretation of Dreams .jpg' },
-          { title: 'The Mythical Man-Month', author: 'Fred Brooks', image: 'bookcovers/Mythical_man-month_(book_cover).jpg' },
-          { title: 'The Perennial Philosophy', author: 'Aldous Huxley', image: 'bookcovers/PerennialPhilsophy.jpg' },
-          { title: 'The Road to Wigan Pier', author: 'George Orwell', image: 'bookcovers/Road_to_wigan_pier.jpg' },
-          { title: 'Structure and Interpretation of Computer Programs', author: 'Abelson & Sussman', image: 'bookcovers/SICP_cover.jpg' },
-          { title: 'The Moral Animal', author: 'Robert Wright', image: 'bookcovers/The_Moral_Animal,_first_edition.jpg' },
-          { title: 'The Power of Myth', author: 'Joseph Campbell', image: 'bookcovers/The_Power_of_Myth.jpg' },
-          { title: 'The Pragmatic Programmer', author: 'Hunt & Thomas', image: 'bookcovers/prag.jpg' },
-          { title: 'The Sickness Unto Death', author: 'Søren Kierkegaard', image: 'bookcovers/The_Sickness_Unto_Death.jpg' },
-          { title: 'The Stranger', author: 'Albert Camus', image: 'bookcovers/thestranger.jpg' },
-          { title: 'Thus Spoke Zarathustra', author: 'Friedrich Nietzsche', image: 'bookcovers/thusspokezarathustra.jpg' },
-          { title: 'Thinking in Systems', author: 'Donella Meadows', image: 'bookcovers/thinksys.jpg' },
-          { title: 'The Laws of Human Nature', author: 'Robert Greene', image: 'bookcovers/law.jpg' },
-          { title: 'The Road to Serfdom', author: 'F. A. Hayek', image: 'bookcovers/road.jpg' },
-          { title: 'The Missing README', author: 'Riccomini & Ryaboy', image: 'bookcovers/mreadme.jpeg' },
-          { title: 'Working Effectively with Legacy Code', author: 'Michael Feathers', image: 'bookcovers/workingwlegacy.jpg' },
-          { title: 'The Software Craftsman', author: 'Sandro Mancuso', image: 'bookcovers/swecraft.jpg' },
-          { title: 'Modern Software Engineering', author: 'David Farley', image: 'bookcovers/modernswe.jpg' },
-          { title: 'The Software Engineer\'s Guidebook', author: 'Gergely Orosz', image: 'bookcovers/sweguide.jpg' }
-        ],
-        music: [
-          { id: 'kanye', covers: ['covers/Kanyewest_collegedropout.jpg', 'covers/Late_registration_cd_cover.jpg', 'covers/Graduation_(album).jpg', 'covers/808s_&_Heartbreak.png', 'covers/My_Beautiful_Dark_Twisted_Fantasy.jpg', 'covers/Yeezus_album_cover.png', 'covers/The_life_of_pablo_alternate.jpg', 'covers/Ye_album_cover.jpg', 'covers/Ye_(Kanye_West)_-_Bully_-_Album_Cover.png'], song: 'Late' },
-          { id: 'frank-ocean', covers: ['covers/Frank_Ocean_-_Nostalgia,_Ultra.png', 'covers/Channel_ORANGE.jpg', 'covers/Blonde_-_Frank_Ocean.jpeg'], song: 'Swim Good' },
-          { id: 'lana', covers: ['covers/BornToDieAlbumCover.png', 'covers/Lana_Del_Rey_-_Lust_for_Life.png', 'covers/Lana_Del_Rey_-_Norman_Fucking_Rockwell.png'], song: 'Heroin' },
-          { id: 'radiohead', covers: ['covers/Radiohead.pablohoney.albumart.jpg', 'covers/Radioheadokcomputer.png', 'covers/Radioheadkida.png', 'covers/Radiohead_-_Amnesiac_cover.png', 'covers/Inrainbowscover.png', 'covers/Amoonshapedpool.png'], song: 'Man of War' },
-          { id: 'deftones', covers: ['covers/Deftones_-_Around_the_Fur.jpg', 'covers/Deftones_-_White_Pony-greycoverart.jpg', 'covers/Deftones-selftitled_albumcover.jpg', 'covers/Saturday_night_wrist.jpg', 'covers/Deftones_-_Diamond_Eyes.jpg', 'covers/Deftones_–_Koi_No_Yokan.jpg', 'covers/Deftones_-_private_music.jpg'], song: 'This Link Is Dead' },
-          { id: 'weeknd', covers: ['covers/The_Weeknd_-_House_of_Balloons.png', 'covers/The_Weeknd_-_Echoes_of_Silence.png', 'covers/The_Weeknd_-_Kiss_Land.png'], song: 'Montreal' },
-          { id: 'neighbourhood', covers: ['covers/The_Neighbourhood_-_The_Neighbourhood.jpg', 'covers/Chip_Chrome_&_the_Mono-Tones.jpg'], song: 'Silver Lining' },
-          { id: 'nirvana', covers: ['covers/Nirvana-Bleach.jpg', 'covers/NirvanaNevermindalbumcover.jpg', 'covers/In_Utero_(Nirvana)_album_cover.jpg'], song: 'All Apologies' },
-          { id: 'audioslave', covers: ['covers/Audioslave_-_Audioslave.jpg'], song: 'Like a Stone' },
-          { id: 'foo-fighters', covers: ['covers/FooFighters-TheColourAndTheShape.jpg', 'covers/Foo_Fighters_-_There_Is_Nothing_Left_to_Lose.jpg'], song: "Ain't It the Life" },
-          { id: 'arctic-monkeys', covers: ['covers/Arctic_Monkeys_-_AM.png', 'covers/Favourite_Worst_Nightmare.jpg', 'covers/who_thefuckarearctivcmon kets.jpg'], song: 'Despair in the Departure Lounge' },
-          { id: 'daft-punk', covers: ['covers/Daft_Punk_-_Random_Access_Memories.png', 'covers/Humanafterall.jpg'], song: 'Instant Crush' },
-          { id: 'sade', covers: ['covers/Sade_-_Diamond_Life.png', 'covers/Sade_-_Love_Deluxe.png'], song: null },
-          { id: 'fleetwood-mac', covers: ['covers/FMacRumours.png'], song: null },
-          { id: 'pearl-jam', covers: ['covers/Pearl_Jam_Ten_Alt_Cover.jpg'], song: null },
-          { id: 'coldplay', covers: ['covers/Coldplay_-_Viva_la_Vida_or_Death_and_All_His_Friends.png'], song: null },
-          { id: 'cocteau-twins', covers: ['covers/Cocteau_Twins—Heaven_or_Las_Vegas.jpg', 'covers/Treasure_cover.jpg'], song: null },
-          { id: 'travis-scott', covers: ['covers/Travis_Scott_-_Rodeo.png', 'covers/Travis_Scott_-_Birds_in_the_Trap_Sing_McKnight.png'], song: null },
-          { id: 'cigarettes-after-sex', covers: ['covers/500px-Cigarettes_After_Sex_(album).svg.png', 'covers/Cigarettes_After_Sex_-_Cry.png', 'covers/Cigarettes_After_Sex_-_X\'s.png'], song: 'The Crystal Ship' },
-          { id: 'childish-gambino', covers: ['covers/Childish_Gambino_-_Awaken,_My_Love!.png', 'covers/Childish-gambino-because-the-internet.gif', 'covers/Childish-gambino-camp.jpg'], song: 'What Kind of Love' },
-          { id: 'aphex-twin', covers: ['covers/Aphex_twin_syro.jpg', 'covers/Selected_Ambient_Works_85-92.png'], song: '180db_[130]' },
-          { id: 'muse', covers: ['covers/BlackHolesCover.jpg', 'covers/Museshowbizalbumcover.jpg'], song: null },
-          { id: 'the-1975', covers: ['covers/The_1975_-_I_Like_It_When_You_Sleep,_for_You_Are_So_Beautiful_Yet_So_Unaware_of_It.png'], song: null },
-          { id: 'the-smiths', covers: ['covers/The-Queen-is-Dead-cover.png', 'covers/The_Smiths_The_Smiths.jpg'], song: 'How Soon Is Now?' },
-          { id: 'pink-floyd', covers: ['covers/hi-res-album-cover-art-for-pink-floyd-the-dark-side-of-the-v0-knls4moz18la1.jpg'], song: null }
-        ],
-        miscMedia: [
-          { id: 'media-1', title: 'Attack on Titan', subtitle: 'Anime · Series', images: ['pics/Eren_saying_freedom.png'] },
-          { id: 'media-2', title: 'Jujutsu Kaisen', subtitle: 'Anime · Series', images: ['pics/gojo.png'] },
-          { id: 'media-3', title: '3 Body Problem', subtitle: 'Sci-Fi · Series', images: [] },
-          { id: 'media-4', title: 'Severance', subtitle: 'Thriller · Series', images: [] },
-          { id: 'media-5', title: 'Shutter Island', subtitle: 'Thriller · Film', images: [] },
-          { id: 'media-6', title: 'One Battle After Another', subtitle: 'Documentary · Film', images: ['pics/One_Battle_After_Another.jpg'] }
-        ],
-        terminalMessages: {
-          hero: ["Welcome. This is where I build things.", "Apps, passions, knowledge. All here."],
-          development: ["Check out PokerGeek — provably fair poker.", "3 active products. Click any tile."],
-          reading: ["Taste is signal. This is mine."],
-          music: ["Sound that shapes thinking."],
-          miscMedia: ["Visual stories worth watching."],
-          writing: ["Writing clarifies thinking."],
-          notes: ["Raw captures. Unfiltered thoughts."],
-          spotlight: ["Where attention is actually going."],
-          contact: ["Want to collaborate? Reach out."]
+        // { title, body, image? } - the Notes section stays hidden while this is empty
+        notes: [],
+        // Liked Media. Fill `take` with a line of critique; it shows on the card and in the popup.
+        media: {
+          albums: [
+            { artist: "Kanye West", title: "The College Dropout", cover: "covers/Kanyewest_collegedropout.jpg", take: "" },
+            { artist: "Kanye West", title: "Late Registration", cover: "covers/Late_registration_cd_cover.jpg", take: "" },
+            { artist: "Kanye West", title: "Graduation", cover: "covers/Graduation_(album).jpg", take: "" },
+            { artist: "Kanye West", title: "808s & Heartbreak", cover: "covers/808s_&_Heartbreak.png", take: "" },
+            { artist: "Kanye West", title: "My Beautiful Dark Twisted Fantasy", cover: "covers/My_Beautiful_Dark_Twisted_Fantasy.jpg", take: "" },
+            { artist: "Kanye West", title: "Yeezus", cover: "covers/Yeezus_album_cover.png", take: "" },
+            { artist: "Kanye West", title: "The Life of Pablo", cover: "covers/The_life_of_pablo_alternate.jpg", take: "" },
+            { artist: "Kanye West", title: "Ye", cover: "covers/Ye_album_cover.jpg", take: "" },
+            { artist: "Ye", title: "Bully", cover: "covers/Ye_(Kanye_West)_-_Bully_-_Album_Cover.png", take: "" },
+            { artist: "Frank Ocean", title: "Nostalgia, Ultra", cover: "covers/Frank_Ocean_-_Nostalgia,_Ultra.png", take: "" },
+            { artist: "Frank Ocean", title: "Channel Orange", cover: "covers/Channel_ORANGE.jpg", take: "" },
+            { artist: "Frank Ocean", title: "Blonde", cover: "covers/Blonde_-_Frank_Ocean.jpeg", take: "" },
+            { artist: "Lana Del Rey", title: "Born to Die", cover: "covers/BornToDieAlbumCover.png", take: "" },
+            { artist: "Lana Del Rey", title: "Lust for Life", cover: "covers/Lana_Del_Rey_-_Lust_for_Life.png", take: "" },
+            { artist: "Lana Del Rey", title: "Norman Fucking Rockwell!", cover: "covers/Lana_Del_Rey_-_Norman_Fucking_Rockwell.png", take: "" },
+            { artist: "Radiohead", title: "Pablo Honey", cover: "covers/Radiohead.pablohoney.albumart.jpg", take: "" },
+            { artist: "Radiohead", title: "OK Computer", cover: "covers/Radioheadokcomputer.png", take: "" },
+            { artist: "Radiohead", title: "Kid A", cover: "covers/Radioheadkida.png", take: "" },
+            { artist: "Radiohead", title: "Amnesiac", cover: "covers/Radiohead_-_Amnesiac_cover.png", take: "" },
+            { artist: "Radiohead", title: "In Rainbows", cover: "covers/Inrainbowscover.png", take: "" },
+            { artist: "Radiohead", title: "A Moon Shaped Pool", cover: "covers/Amoonshapedpool.png", take: "" },
+            { artist: "Deftones", title: "Around the Fur", cover: "covers/Deftones_-_Around_the_Fur.jpg", take: "" },
+            { artist: "Deftones", title: "White Pony", cover: "covers/Deftones_-_White_Pony-greycoverart.jpg", take: "" },
+            { artist: "Deftones", title: "Deftones", cover: "covers/Deftones-selftitled_albumcover.jpg", take: "" },
+            { artist: "Deftones", title: "Saturday Night Wrist", cover: "covers/Saturday_night_wrist.jpg", take: "" },
+            { artist: "Deftones", title: "Diamond Eyes", cover: "covers/Deftones_-_Diamond_Eyes.jpg", take: "" },
+            { artist: "Deftones", title: "Koi No Yokan", cover: "covers/Deftones_–_Koi_No_Yokan.jpg", take: "" },
+            { artist: "Deftones", title: "Private Music", cover: "covers/Deftones_-_private_music.jpg", take: "" },
+            { artist: "The Weeknd", title: "House of Balloons", cover: "covers/The_Weeknd_-_House_of_Balloons.png", take: "" },
+            { artist: "The Weeknd", title: "Echoes of Silence", cover: "covers/The_Weeknd_-_Echoes_of_Silence.png", take: "" },
+            { artist: "The Weeknd", title: "Kiss Land", cover: "covers/The_Weeknd_-_Kiss_Land.png", take: "" },
+            { artist: "The Neighbourhood", title: "The Neighbourhood", cover: "covers/The_Neighbourhood_-_The_Neighbourhood.jpg", take: "" },
+            { artist: "The Neighbourhood", title: "Chip Chrome & the Mono-Tones", cover: "covers/Chip_Chrome_&_the_Mono-Tones.jpg", take: "" },
+            { artist: "Nirvana", title: "Bleach", cover: "covers/Nirvana-Bleach.jpg", take: "" },
+            { artist: "Nirvana", title: "Nevermind", cover: "covers/NirvanaNevermindalbumcover.jpg", take: "" },
+            { artist: "Nirvana", title: "In Utero", cover: "covers/In_Utero_(Nirvana)_album_cover.jpg", take: "" },
+            { artist: "Audioslave", title: "Audioslave", cover: "covers/Audioslave_-_Audioslave.jpg", take: "" },
+            { artist: "Foo Fighters", title: "The Colour and the Shape", cover: "covers/FooFighters-TheColourAndTheShape.jpg", take: "" },
+            { artist: "Foo Fighters", title: "There Is Nothing Left to Lose", cover: "covers/Foo_Fighters_-_There_Is_Nothing_Left_to_Lose.jpg", take: "" },
+            { artist: "Arctic Monkeys", title: "AM", cover: "covers/Arctic_Monkeys_-_AM.png", take: "" },
+            { artist: "Arctic Monkeys", title: "Favourite Worst Nightmare", cover: "covers/Favourite_Worst_Nightmare.jpg", take: "" },
+            { artist: "Arctic Monkeys", title: "Who the Fuck Are Arctic Monkeys?", cover: "covers/who_thefuckarearctivcmon kets.jpg", take: "" },
+            { artist: "Daft Punk", title: "Random Access Memories", cover: "covers/Daft_Punk_-_Random_Access_Memories.png", take: "" },
+            { artist: "Daft Punk", title: "Human After All", cover: "covers/Humanafterall.jpg", take: "" },
+            { artist: "Sade", title: "Diamond Life", cover: "covers/Sade_-_Diamond_Life.png", take: "" },
+            { artist: "Sade", title: "Love Deluxe", cover: "covers/Sade_-_Love_Deluxe.png", take: "" },
+            { artist: "Fleetwood Mac", title: "Rumours", cover: "covers/FMacRumours.png", take: "" },
+            { artist: "Pearl Jam", title: "Ten", cover: "covers/Pearl_Jam_Ten_Alt_Cover.jpg", take: "" },
+            { artist: "Coldplay", title: "Viva la Vida or Death and All His Friends", cover: "covers/Coldplay_-_Viva_la_Vida_or_Death_and_All_His_Friends.png", take: "" },
+            { artist: "Cocteau Twins", title: "Heaven or Las Vegas", cover: "covers/Cocteau_Twins—Heaven_or_Las_Vegas.jpg", take: "" },
+            { artist: "Cocteau Twins", title: "Treasure", cover: "covers/Treasure_cover.jpg", take: "" },
+            { artist: "Travis Scott", title: "Rodeo", cover: "covers/Travis_Scott_-_Rodeo.png", take: "" },
+            { artist: "Travis Scott", title: "Birds in the Trap Sing McKnight", cover: "covers/Travis_Scott_-_Birds_in_the_Trap_Sing_McKnight.png", take: "" },
+            { artist: "Cigarettes After Sex", title: "Cigarettes After Sex", cover: "covers/500px-Cigarettes_After_Sex_(album).svg.png", take: "" },
+            { artist: "Cigarettes After Sex", title: "Cry", cover: "covers/Cigarettes_After_Sex_-_Cry.png", take: "" },
+            { artist: "Cigarettes After Sex", title: "X's", cover: "covers/Cigarettes_After_Sex_-_X's.png", take: "" },
+            { artist: "Childish Gambino", title: "Camp", cover: "covers/Childish-gambino-camp.jpg", take: "" },
+            { artist: "Childish Gambino", title: "Because the Internet", cover: "covers/Childish-gambino-because-the-internet.gif", take: "" },
+            { artist: "Childish Gambino", title: "\"Awaken, My Love!\"", cover: "covers/Childish_Gambino_-_Awaken,_My_Love!.png", take: "" },
+            { artist: "Aphex Twin", title: "Selected Ambient Works 85–92", cover: "covers/Selected_Ambient_Works_85-92.png", take: "" },
+            { artist: "Aphex Twin", title: "Syro", cover: "covers/Aphex_twin_syro.jpg", take: "" },
+            { artist: "Muse", title: "Showbiz", cover: "covers/Museshowbizalbumcover.jpg", take: "" },
+            { artist: "Muse", title: "Black Holes and Revelations", cover: "covers/BlackHolesCover.jpg", take: "" },
+            { artist: "The 1975", title: "I Like It When You Sleep, for You Are So Beautiful yet So Unaware of It", cover: "covers/The_1975_-_I_Like_It_When_You_Sleep,_for_You_Are_So_Beautiful_Yet_So_Unaware_of_It.png", take: "" },
+            { artist: "The Smiths", title: "The Smiths", cover: "covers/The_Smiths_The_Smiths.jpg", take: "" },
+            { artist: "The Smiths", title: "The Queen Is Dead", cover: "covers/The-Queen-is-Dead-cover.png", take: "" },
+            { artist: "Pink Floyd", title: "The Dark Side of the Moon", cover: "covers/hi-res-album-cover-art-for-pink-floyd-the-dark-side-of-the-v0-knls4moz18la1.jpg", take: "" }
+          ],
+          books: [
+            { title: "The Book of Five Rings", author: "Miyamoto Musashi", cover: "bookcovers/5rings.jpg", take: "" },
+            { title: "The Almanack of Naval Ravikant", author: "Eric Jorgenson", cover: "bookcovers/almack_naval.jpg", take: "" },
+            { title: "An Unquiet Mind", author: "Kay Redfield Jamison", cover: "bookcovers/An_Unquiet_Mind.jpg", take: "" },
+            { title: "Code Complete", author: "Steve McConnell", cover: "bookcovers/Code_Complete_1st_edition.jpg", take: "" },
+            { title: "Code: The Hidden Language", author: "Charles Petzold", cover: "bookcovers/Code_The_Hidden_Language_of_Computer_Hardware_and_Software.jpg", take: "" },
+            { title: "Crime and Punishment", author: "Fyodor Dostoevsky", cover: "bookcovers/Crimeandpunishmentcover.png", take: "" },
+            { title: "Demons", author: "Fyodor Dostoevsky", cover: "bookcovers/The_first_edition_of_Dostoevsky's_novel_Demons_Petersburg_1873.JPG", take: "" },
+            { title: "Ego Is the Enemy", author: "Ryan Holiday", cover: "bookcovers/Ego_Is_the_Enemy.jpg", take: "" },
+            { title: "Game Theory and Strategy", author: "Joel Watson", cover: "bookcovers/gametheoryandstrategy.jpg", take: "" },
+            { title: "Infinite Jest", author: "David Foster Wallace", cover: "bookcovers/Infinite_jest_cover.jpg", take: "" },
+            { title: "Metaphysics", author: "Aristotle", cover: "bookcovers/metaphysics.jpeg", take: "" },
+            { title: "Modern Man in Search of a Soul", author: "Carl Jung", cover: "bookcovers/Modern_Man_in_Search_of_a_Soul.jpg", take: "" },
+            { title: "The Undiscovered Self", author: "Carl Jung", cover: "bookcovers/The Undiscovered Self- With Symbols and the Interpretation of Dreams .jpg", take: "" },
+            { title: "The Mythical Man-Month", author: "Fred Brooks", cover: "bookcovers/Mythical_man-month_(book_cover).jpg", take: "" },
+            { title: "The Perennial Philosophy", author: "Aldous Huxley", cover: "bookcovers/PerennialPhilsophy.jpg", take: "" },
+            { title: "The Road to Wigan Pier", author: "George Orwell", cover: "bookcovers/Road_to_wigan_pier.jpg", take: "" },
+            { title: "Structure and Interpretation of Computer Programs", author: "Abelson & Sussman", cover: "bookcovers/SICP_cover.jpg", take: "" },
+            { title: "The Moral Animal", author: "Robert Wright", cover: "bookcovers/The_Moral_Animal,_first_edition.jpg", take: "" },
+            { title: "The Power of Myth", author: "Joseph Campbell", cover: "bookcovers/The_Power_of_Myth.jpg", take: "" },
+            { title: "The Pragmatic Programmer", author: "Hunt & Thomas", cover: "bookcovers/prag.jpg", take: "" },
+            { title: "The Sickness Unto Death", author: "Søren Kierkegaard", cover: "bookcovers/The_Sickness_Unto_Death.jpg", take: "" },
+            { title: "The Stranger", author: "Albert Camus", cover: "bookcovers/thestranger.jpg", take: "" },
+            { title: "Thus Spoke Zarathustra", author: "Friedrich Nietzsche", cover: "bookcovers/thusspokezarathustra.jpg", take: "" },
+            { title: "Thinking in Systems", author: "Donella Meadows", cover: "bookcovers/thinksys.jpg", take: "" },
+            { title: "The Laws of Human Nature", author: "Robert Greene", cover: "bookcovers/law.jpg", take: "" },
+            { title: "The Road to Serfdom", author: "F. A. Hayek", cover: "bookcovers/road.jpg", take: "" },
+            { title: "The Missing README", author: "Riccomini & Ryaboy", cover: "bookcovers/mreadme.jpeg", take: "" },
+            { title: "Working Effectively with Legacy Code", author: "Michael Feathers", cover: "bookcovers/workingwlegacy.jpg", take: "" },
+            { title: "The Software Craftsman", author: "Sandro Mancuso", cover: "bookcovers/swecraft.jpg", take: "" },
+            { title: "Modern Software Engineering", author: "David Farley", cover: "bookcovers/modernswe.jpg", take: "" },
+            { title: "The Software Engineer's Guidebook", author: "Gergely Orosz", cover: "bookcovers/sweguide.jpg", take: "" }
+          ],
+          screen: [
+            { title: "Attack on Titan", kind: "Anime · Series", cover: "pics/Eren_saying_freedom.png", take: "" },
+            { title: "Jujutsu Kaisen", kind: "Anime · Series", cover: "pics/gojo.png", take: "" },
+            { title: "One Battle After Another", kind: "Film", cover: "pics/One_Battle_After_Another.jpg", take: "" },
+            { title: "Severance", kind: "Thriller · Series", cover: "", take: "" },
+            { title: "3 Body Problem", kind: "Sci-Fi · Series", cover: "", take: "" },
+            { title: "Shutter Island", kind: "Thriller · Film", cover: "", take: "" }
+          ]
+        },
+        // Hand-picked posts: { text, date, url } - shown above the live timeline
+        x: {
+          handle: 'walugen',
+          name: 'Waleed A. Raza',
+          initials: 'WR',
+          bio: "Building Warb, Libxndr and PokerAIO. Essays, critiques and half-formed thoughts.",
+          posts: []
         },
         socialLinks: {
           instagram: { url: 'https://instagram.com/wwwaleedaraza', icon: '📸', label: 'Instagram' },
@@ -5280,7 +5316,7 @@
         }
       };
     }
-    
+
     // ═══════════════════════════════════════════════════════════════════════
     // TERMINAL THEME SYSTEM
     // ═══════════════════════════════════════════════════════════════════════
@@ -5340,65 +5376,26 @@
     // ─── DATA ───
     function loadSiteData() {
       SITE_DATA = getDefaultSiteData();
-      
-      // Sync PRODUCTS/PROJECTS arrays for backward compatibility
-      if (SITE_DATA.products) {
-        PRODUCTS.length = 0; 
-        PRODUCTS.push(...SITE_DATA.products);
-      }
-      if (SITE_DATA.projects) {
-        PROJECTS.length = 0; 
-        PROJECTS.push(...SITE_DATA.projects);
-      }
-      
-      // Render ALL sections - terminal is source of truth
-      if (SITE_DATA.products && SITE_DATA.products.length) {
-        renderProducts();
-      }
-      if (SITE_DATA.projects && SITE_DATA.projects.length) {
-        renderProjects();
-      }
-      if (SITE_DATA.writing && SITE_DATA.writing.length) {
-        renderWriting();
-      }
-      if (SITE_DATA.notes && SITE_DATA.notes.length) {
-        renderNotes();
-      }
-      if (SITE_DATA.spotlight && SITE_DATA.spotlight.length) {
-        renderSpotlight();
-      }
-      if (SITE_DATA.reading && SITE_DATA.reading.length) {
-        renderReading();
-      }
-      if (SITE_DATA.music && SITE_DATA.music.length) {
-        renderMusic();
-      }
-      if (SITE_DATA.miscMedia && SITE_DATA.miscMedia.length) {
-        renderMiscMedia();
-      }
-      
-      // Hero
-      if (SITE_DATA.hero) {
-        const tagline = document.querySelector('.hero-tagline');
-        const subline = document.querySelector('.hero-subline');
-        if (tagline) tagline.textContent = SITE_DATA.hero.tagline || '';
-        if (subline) subline.textContent = SITE_DATA.hero.subline || '';
-      }
-      
-      // Contact
-      if (SITE_DATA.contact) {
-        const intro = document.querySelector('.contact-intro');
-        const statement = document.querySelector('.contact-statement');
-        if (intro) intro.innerHTML = SITE_DATA.contact.intro || '';
-        if (statement) statement.innerHTML = SITE_DATA.contact.statement || '';
-      }
-      
-      // Apply social links
-      if (SITE_DATA.socialLinks) {
-        renderSocialLinks();
-      }
+
+      renderProducts();
+      renderProjects();
+      renderWriting();
+      renderNotes();
+      renderX();
+      renderMedia();
+
+      const tagline = document.querySelector('.hero-tagline');
+      const subline = document.querySelector('.hero-subline');
+      if (tagline) tagline.textContent = SITE_DATA.hero.tagline;
+      if (subline) subline.textContent = SITE_DATA.hero.subline;
+
+      const intro = document.querySelector('.contact-intro');
+      const statement = document.querySelector('.contact-statement');
+      if (intro) intro.innerHTML = SITE_DATA.contact.intro;
+      if (statement) statement.innerHTML = SITE_DATA.contact.statement;
+
+      renderSocialLinks();
     }
-    
   </script>
   
   <!-- Terminal Nav -->
@@ -5429,13 +5426,10 @@
     <div class="terminal-nav-links">
       <a href="#hero" class="terminal-nav-link active" data-section="hero">HOME</a>
       <a href="#development" class="terminal-nav-link" data-section="development">DEV</a>
-      <a href="#reading" class="terminal-nav-link" data-section="reading">READ</a>
-      <span class="terminal-theme-label" id="theme-name-label">XP</span>
-      <a href="#music" class="terminal-nav-link" data-section="music">MUSIC</a>
-      <a href="#miscMedia" class="terminal-nav-link" data-section="miscMedia">MEDIA</a>
       <a href="#writing" class="terminal-nav-link" data-section="writing">WRITE</a>
-      <a href="#notes" class="terminal-nav-link" data-section="notes">NOTES</a>
-      <a href="#spotlight" class="terminal-nav-link" data-section="spotlight">SPOT</a>
+      <span class="terminal-theme-label" id="theme-name-label">XP</span>
+      <a href="#media" class="terminal-nav-link" data-section="media">MEDIA</a>
+      <a href="#x" class="terminal-nav-link" data-section="x">X</a>
       <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="terminal-nav-link">CONTACT</a>
     </div>
     <div class="terminal-action-tabs">
