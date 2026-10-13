@@ -3088,27 +3088,6 @@
 
     .lib-chip .n { margin-left: 6px; opacity: 0.6; }
 
-    /* Thin line that fills over the 5 seconds before the list switches */
-    .lib-progress {
-      height: 2px;
-      background: var(--border);
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-
-    .lib-progress span {
-      display: block;
-      width: 0;
-      height: 100%;
-      background: var(--teal);
-      box-shadow: 0 0 8px var(--teal);
-    }
-
-    .lib-progress.run span { animation: lib-fill 5s linear forwards; }
-    .lib-progress.done { visibility: hidden; }
-
-    @keyframes lib-fill { to { width: 100%; } }
-
     .lib-list {
       display: flex;
       flex-direction: column;
@@ -3274,11 +3253,11 @@
       color: var(--text-dim);
       font-family: 'Crimson Pro', Georgia, serif;
       font-style: italic;
-      font-size: clamp(18px, 1.6vw, 26px);
-      line-height: 1.35;
+      font-size: clamp(22px, 2vw, 30px);
+      line-height: 1.3;
     }
 
-    .mtile:first-child .mtile-quote { font-size: clamp(24px, 2.4vw, 36px); }
+    .mtile:first-child .mtile-quote { font-size: clamp(30px, 3vw, 46px); }
     
     .mtile-label {
       position: relative;
@@ -3331,9 +3310,8 @@
 
     .contact-grid {
       display: grid;
-      grid-template-columns: 0.8fr 1fr 1fr;
-      gap: 24px;
-      align-items: stretch;
+      grid-template-columns: 1fr;
+      gap: 18px;
     }
 
     .email-card {
@@ -3341,8 +3319,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 18px;
-      padding: 32px 20px;
+      gap: 12px;
+      padding: 22px 20px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
     }
@@ -3366,6 +3344,11 @@
       border: 1px solid #2f3336;
       border-radius: 16px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .has-img {
+      background-size: cover;
+      background-position: center;
     }
 
     .x-avatar.avatar-initials,
@@ -3399,12 +3382,11 @@
     }
 
     .x-avatar {
+      flex-shrink: 0;
       width: 76px;
       height: 76px;
       border-radius: 50%;
       border: 4px solid #000;
-      object-fit: cover;
-      background: #16181c;
     }
 
     .x-follow {
@@ -3466,13 +3448,10 @@
     }
 
     .ig-avatar {
-      display: block;
       width: 78px;
       height: 78px;
       border-radius: 50%;
       border: 3px solid #000;
-      object-fit: cover;
-      background: #121212;
     }
 
     .ig-name { font-weight: 600; font-size: 15px; }
@@ -3991,8 +3970,8 @@
     </div>
   </aside>
 
-  <!-- [1] BUILD -->
-  <div class="section-full">
+  <!-- [1] BUILD | [2] CONTACT - split the row -->
+  <div class="section-pair">
     <section class="section" id="development">
       <div class="section-header">
         <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
@@ -4023,13 +4002,26 @@
       </div>
     </section>
 
+    <section class="section" id="contact">
+      <div class="section-header" style="border-color: var(--orange);">
+        <div class="section-tag">[2] REACH ME</div>
+        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
+      </div>
+      <div class="contact-grid" id="contact-grid">
+        <div class="contact-card email-card">
+          <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
+          <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
+        </div>
+        <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
+      </div>
+    </section>
   </div>
 
-  <!-- [2] MEDIA - mirrors BUILD: library list left, rotating showcase right -->
+  <!-- [3] MEDIA - mirrors BUILD: library list left, rotating showcase right -->
   <div class="section-full">
     <section class="section" id="media">
       <div class="section-header" style="border-color: var(--teal);">
-        <div class="section-tag">[2] MIND · TASTE</div>
+        <div class="section-tag">[3] MIND · TASTE</div>
         <h2 class="section-title" style="color: var(--teal);">▶ MEDIA</h2>
       </div>
 
@@ -4042,8 +4034,7 @@
           </div>
           <div class="lib-groups" id="lib-groups"></div>
           <div class="lib-filters" id="lib-filters"></div>
-          <div class="lib-progress" id="lib-progress"><span></span></div>
-          <div class="lib-list" id="lib-list"></div>
+<div class="lib-list" id="lib-list"></div>
         </div>
 
         <!-- SHOWCASE -->
@@ -4054,23 +4045,6 @@
           </div>
           <div class="media-trio" id="media-trio"></div>
         </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- [3] CONTACT -->
-  <div class="section-full">
-    <section class="section" id="contact">
-      <div class="section-header" style="border-color: var(--orange);">
-        <div class="section-tag">[3] REACH ME</div>
-        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
-      </div>
-      <div class="contact-grid" id="contact-grid">
-        <div class="contact-card email-card">
-          <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
-          <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
-        </div>
-        <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
       </div>
     </section>
   </div>
@@ -4702,7 +4676,7 @@
     
     // Products data - FOCUSED SHELF with links
     const PRODUCTS = [
-      { id: 'warb', name: 'Warb', image: '', site: 'https://warbspace.com', status: 'Product refinement' },
+      { id: 'warb', name: 'Warb', image: '', imageBase: 'pics/warb', site: 'https://warbspace.com', status: 'Product refinement' },
       { id: 'libxndr', name: 'Libxndr', image: 'pics/libraryofalexandria.png', site: 'https://libxndr.com', status: 'Final deployment stages' },
       { id: 'pokeraio', name: 'PokerAIO', image: 'pics/PoekrGeek.ai.png', site: 'https://pokeraio.com', status: 'Release maintenance' }
     ];
@@ -4858,6 +4832,53 @@
 
     const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Photos live in pics/. Give a base name ('pics/warb') and any of these extensions works.
+    const IMG_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
+    const withExts = (base) => IMG_EXTS.map(ext => `${base}.${ext}`);
+
+    function probeImage(src) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(src);
+        img.onerror = () => resolve(null);
+        img.src = src;
+      });
+    }
+
+    async function firstImage(bases) {
+      for (const src of bases.flatMap(withExts)) {
+        if (await probeImage(src)) return src;
+      }
+      return null;
+    }
+
+    // Fill an element's background with the first photo that exists; otherwise leave it as it is
+    function paintImage(el, bases) {
+      if (!el || !bases || !bases.length) return;
+      firstImage(bases).then(src => {
+        if (!src) return;
+        el.style.backgroundImage = `url('${src}')`;
+        el.classList.add('has-img');
+        el.textContent = '';
+      });
+    }
+
+    function resolveProductImages() {
+      SITE_DATA.products.forEach((p, idx) => {
+        if (p.image || !p.imageBase) return;
+        firstImage([p.imageBase]).then(src => {
+          if (!src) return;
+          p.image = src;
+          const el = document.querySelector(`.product-tile[data-idx="${idx}"] .product-image`);
+          if (el) {
+            el.style.backgroundImage = `url('${src}')`;
+            el.classList.remove('product-image-text');
+            el.textContent = '';
+          }
+        });
+      });
+    }
+
     // ═══ MEDIA LIBRARY - every item normalised to one shape ═══
     // group -> filters; each filter knows its label and how to read its items
     const LIBRARY = [
@@ -4871,9 +4892,6 @@
         { id: 'essays', label: 'Essays', kind: 'ESSAY' }
       ]}
     ];
-    // Order the list cycles through on its own, alternating media and writing
-    const LIB_CYCLE = ['albums', 'prompts', 'books', 'essays', 'screen'];
-    const LIB_CYCLE_MS = 5000;
     const SHOWCASE_MS = 3000;
 
     let LIB_ITEMS = {};   // filterId -> [item]
@@ -4906,10 +4924,8 @@
       });
     }
 
-    // ═══ LIBRARY LIST (left) ═══
+    // ═══ LIBRARY LIST (left) - opens on Liked Media › Albums and only changes when clicked ═══
     let libActive = 'albums';
-    let libCycling = !REDUCED_MOTION;
-    let libTimer = null;
 
     function renderLibrary() {
       const { group } = filterById(libActive);
@@ -4939,7 +4955,7 @@
           ${it.url ? '<span class="lib-row-go">→ Read</span>' : ''}
         </button>
       `).join('') : `<p class="empty-note">${libActive === 'essays'
-          ? 'First essays and critiques are on the way. Until then, the short-form thinking lives <a href="#contact">on X</a>.'
+          ? 'First essays and critiques are on the way.'
           : 'Nothing here yet.'}</p>`;
       list.scrollTop = 0;
     }
@@ -4949,66 +4965,21 @@
       renderLibrary();
     }
 
-    // Restart the thin progress line under the filters
-    function restartLibProgress() {
-      const bar = document.getElementById('lib-progress');
-      bar.classList.remove('run');
-      void bar.offsetWidth;
-      if (libCycling) bar.classList.add('run');
-    }
-
-    function scheduleLibCycle() {
-      clearTimeout(libTimer);
-      if (!libCycling) return;
-      restartLibProgress();
-      libTimer = setTimeout(() => {
-        // next filter in the cycle that has items
-        let i = LIB_CYCLE.indexOf(libActive);
-        for (let step = 0; step < LIB_CYCLE.length; step++) {
-          i = (i + 1) % LIB_CYCLE.length;
-          if (LIB_ITEMS[LIB_CYCLE[i]].length) break;
-        }
-        setLibrary(LIB_CYCLE[i]);
-        scheduleLibCycle();
-      }, LIB_CYCLE_MS);
-    }
-
-    // Once a visitor picks something, the list stops moving for good
-    function stopLibCycle() {
-      libCycling = false;
-      clearTimeout(libTimer);
-      document.getElementById('lib-progress').classList.add('done');
-    }
-
     function initLibrary() {
-      const lib = document.getElementById('library');
       renderLibrary();
-      if (!libCycling) document.getElementById('lib-progress').classList.add('done');
-
-      lib.addEventListener('click', (e) => {
+      document.getElementById('library').addEventListener('click', (e) => {
         const groupBtn = e.target.closest('.lib-group');
         const chip = e.target.closest('.lib-chip');
         const row = e.target.closest('.lib-row');
-        if (!groupBtn && !chip && !row) return;
-        stopLibCycle();
         if (groupBtn) {
           const g = LIBRARY.find(x => x.id === groupBtn.dataset.group);
           setLibrary((g.filters.find(f => LIB_ITEMS[f.id].length) || g.filters[0]).id);
         } else if (chip) {
           setLibrary(chip.dataset.filter);
-        } else {
+        } else if (row) {
           openLibraryItem(LIB_ITEMS[libActive][Number(row.dataset.idx)]);
         }
       });
-
-      // Hovering the list holds it still; leaving starts a fresh 5 seconds
-      lib.addEventListener('mouseenter', () => {
-        if (!libCycling) return;
-        clearTimeout(libTimer);
-        document.getElementById('lib-progress').classList.remove('run');
-      });
-      lib.addEventListener('mouseleave', scheduleLibCycle);
-      scheduleLibCycle();
     }
 
     // ═══ SHOWCASE (right) - three random pieces, all swapped every 3 seconds ═══
@@ -5037,7 +5008,7 @@
       const art = it.image
         ? `<span class="mtile-bg" style="background-image:url('${it.image}')"></span>
            <span class="mtile-art mtile-art-${it.filter}" style="background-image:url('${it.image}')"></span>`
-        : `<span class="mtile-quote">${esc(it.sub)}</span>`;
+        : `<span class="mtile-quote">${esc(it.filter === 'prompts' ? 'A system prompt for any LLM code editor.' : it.sub)}</span>`;
       return `${art}
         <span class="mtile-label mtile-label-${it.group}">${esc(it.kind)}</span>
         <span class="mtile-title">${esc(it.title)}</span>
@@ -5075,7 +5046,6 @@
         if (!tile) return;
         const item = showcaseItems[Number(tile.dataset.slot)];
         // Opening a piece also points the library at its category
-        stopLibCycle();
         setLibrary(item.filter);
         openLibraryItem(item);
       });
@@ -5089,12 +5059,6 @@
     const IG_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
     const GRID_ICON = `<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>`;
 
-    // Picture: a local file if one is set, else the live public picture, else initials
-    function avatarImg(cls, profile, service) {
-      const src = profile.avatar || `https://unavatar.io/${service}/${profile.handle}?fallback=false`;
-      return `<img class="${cls}" src="${src}" alt="" onerror="this.outerHTML='<div class=&quot;${cls} avatar-initials&quot;>${profile.initials}</div>'">`;
-    }
-
     function renderSocialCards() {
       const grid = document.getElementById('contact-grid');
       if (!grid || !SITE_DATA.social) return;
@@ -5107,7 +5071,7 @@
           <div class="x-banner"></div>
           <div class="x-body">
             <div class="x-profile-row">
-              ${avatarImg('x-avatar', x, 'x')}
+              <div class="x-avatar avatar-initials">${esc(x.initials)}</div>
               <a class="x-follow" href="https://x.com/intent/follow?screen_name=${x.handle}" target="_blank" rel="noopener">Follow</a>
             </div>
             <div class="x-name">${esc(x.name)}</div>
@@ -5123,7 +5087,7 @@
             <span class="ig-top-icon">${IG_ICON}</span>
           </div>
           <div class="ig-head">
-            <span class="ig-ring">${avatarImg('ig-avatar', ig, 'instagram')}</span>
+            <span class="ig-ring"><span class="ig-avatar avatar-initials">${esc(ig.initials)}</span></span>
             <div class="ig-meta">
               <div class="ig-name">${esc(ig.name)}</div>
               <div class="ig-user">@${ig.handle}</div>
@@ -5137,6 +5101,10 @@
           <a class="ig-tabs" href="${igUrl}" target="_blank" rel="noopener">${GRID_ICON}<span>POSTS ON INSTAGRAM</span></a>
         </div>
       `);
+
+      paintImage(grid.querySelector('.x-avatar'), x.avatar);
+      paintImage(grid.querySelector('.x-banner'), x.header ? [x.header] : []);
+      paintImage(grid.querySelector('.ig-avatar'), ig.avatar);
     }
 
     // Social Links - Render from SITE_DATA with actual SVG logos
@@ -5530,10 +5498,10 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "Shutter Island", kind: "Thriller · Film", cover: "", take: "" }
           ]
         },
-        // Contact cards. `bio` shows when filled; `avatar` (a file in pics/) overrides the live picture.
+        // Contact cards. Pictures come from pics/ (any of .jpg .jpeg .png .webp); the first name found is used.
         social: {
-          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: '' },
-          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: '' }
+          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['pics/x-avatar', 'pics/instagram'], header: 'pics/x-header' },
+          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['pics/instagram'] }
         },
         socialLinks: {
           instagram: { url: 'https://instagram.com/wwwaleedraza', icon: '📸', label: 'Instagram' },
@@ -5606,6 +5574,7 @@ const quote = TERMINAL_QUOTES[quoteIdx];
       SITE_DATA = getDefaultSiteData();
 
       renderProducts();
+      resolveProductImages();
       renderProjects();
       buildLibrary();
       initLibrary();
