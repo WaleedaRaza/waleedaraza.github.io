@@ -3346,10 +3346,15 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    .has-img {
+    /* Three classes so these beat the gradient shorthand on the initials/banner rules */
+    .x-avatar.avatar-initials.has-img,
+    .ig-avatar.avatar-initials.has-img,
+    .x-banner.has-img {
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
     }
+    
 
     .x-avatar.avatar-initials,
     .ig-avatar.avatar-initials {
@@ -3364,7 +3369,7 @@
 
     /* X */
     .x-banner {
-      height: 100px;
+      aspect-ratio: 3 / 1;
       background:
         radial-gradient(circle at 20% 30%, var(--orange-glow), transparent 55%),
         radial-gradient(circle at 80% 70%, var(--teal-glow), transparent 55%),
@@ -4833,8 +4838,9 @@
     const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Photos live in pics/. Give a base name ('pics/warb') and any of these extensions works.
+    // A full https:// address is used as given, so it can serve as a fallback.
     const IMG_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
-    const withExts = (base) => IMG_EXTS.map(ext => `${base}.${ext}`);
+    const withExts = (base) => /^https?:\/\//.test(base) ? [base] : IMG_EXTS.map(ext => `${base}.${ext}`);
 
     function probeImage(src) {
       return new Promise(resolve => {
@@ -4845,11 +4851,11 @@
       });
     }
 
+    // Checks every candidate at once and returns the first in list order that loads
     async function firstImage(bases) {
-      for (const src of bases.flatMap(withExts)) {
-        if (await probeImage(src)) return src;
-      }
-      return null;
+      const candidates = bases.flatMap(withExts);
+      const loaded = await Promise.all(candidates.map(probeImage));
+      return loaded.find(Boolean) || null;
     }
 
     // Fill an element's background with the first photo that exists; otherwise leave it as it is
@@ -5498,10 +5504,11 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "Shutter Island", kind: "Thriller · Film", cover: "", take: "" }
           ]
         },
-        // Contact cards. Pictures come from pics/ (any of .jpg .jpeg .png .webp); the first name found is used.
+        // Contact cards. Pictures come from pics/ (any of .jpg .jpeg .png .webp); .jpg is tried before .png, so a real photo overrides a generated one.
         social: {
-          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['pics/x-avatar', 'pics/instagram'], header: 'pics/x-header' },
-          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['pics/instagram'] }
+          // The X picture falls back to the live public one (the same lookup that worked before).
+          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/x-avatar', 'https://unavatar.io/x/walugen?fallback=false'], header: 'pics/x-header' },
+          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/instagram'] }
         },
         socialLinks: {
           instagram: { url: 'https://instagram.com/wwwaleedraza', icon: '📸', label: 'Instagram' },
