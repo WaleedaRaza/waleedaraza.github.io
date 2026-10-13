@@ -2995,64 +2995,7 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       TABS - Writing and Liked Media
-       ═══════════════════════════════════════════════════════════════════════ */
-
-    .tabs {
-      display: flex;
-      align-items: flex-end;
-      gap: 4px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-
-    .tab {
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      padding: 10px 14px;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .tab:hover { color: var(--ice-white); }
-
-    .tab.active {
-      color: var(--teal);
-      border-bottom-color: var(--teal);
-      text-shadow: 0 0 12px var(--teal-glow);
-    }
-
-    .tab-count {
-      margin-left: 8px;
-      font-weight: 400;
-      opacity: 0.6;
-    }
-
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
-
-    .empty-note {
-      color: var(--text-dim);
-      font-family: 'Crimson Pro', Georgia, serif;
-      font-style: italic;
-      font-size: 18px;
-      line-height: 1.6;
-      padding: 24px 0;
-    }
-
-    .empty-note a { color: var(--teal); }
-
-    /* ═══════════════════════════════════════════════════════════════════════
-       LIKED MEDIA - full-width shelves
+       FULL-WIDTH ROWS - Build, Media, Contact
        ═══════════════════════════════════════════════════════════════════════ */
 
     .section-full {
@@ -3068,93 +3011,165 @@
       margin: 0;
     }
 
-    .shelf-arrows {
-      margin-left: auto;
-      display: flex;
-      gap: 6px;
-      padding-bottom: 6px;
+    .empty-note {
+      color: var(--text-dim);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 24px 4px;
     }
 
-    .shelf-arrow {
-      width: 34px;
-      height: 34px;
+    .empty-note a { color: var(--teal); }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       MEDIA - library list (left) and rotating showcase (right)
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    .media-layout { grid-template-columns: 1fr 1.5fr; }
+
+    .lib-groups {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lib-group {
+      flex: 1;
+      padding: 12px 10px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      color: var(--ice-white);
-      font-size: 20px;
-      line-height: 1;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .shelf-arrow:hover {
-      border-color: var(--teal);
+    .lib-group:hover { color: var(--ice-white); }
+
+    .lib-group.active {
       color: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 14px rgba(0, 212, 170, 0.15);
+      text-shadow: 0 0 10px var(--teal-glow);
     }
 
-    .shelf {
-      --card-w: 180px;
-      --ratio: 1 / 1;
+    .lib-filters {
       display: flex;
-      gap: 18px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      overscroll-behavior-x: contain;
-      padding: 6px 2px 18px;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .lib-chip {
+      padding: 6px 12px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lib-chip:hover { border-color: var(--teal); color: var(--ice-white); }
+
+    .lib-chip.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #000;
+      font-weight: 700;
+    }
+
+    .lib-chip .n { margin-left: 6px; opacity: 0.6; }
+
+    /* Thin line that fills over the 5 seconds before the list switches */
+    .lib-progress {
+      height: 2px;
+      background: var(--border);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .lib-progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+    }
+
+    .lib-progress.run span { animation: lib-fill 5s linear forwards; }
+    .lib-progress.done { visibility: hidden; }
+
+    @keyframes lib-fill { to { width: 100%; } }
+
+    .lib-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 520px;
+      overflow-y: auto;
+      padding-right: 8px;
       scrollbar-width: thin;
       scrollbar-color: var(--teal) transparent;
     }
 
-    .shelf[data-kind="books"] { --card-w: 150px; --ratio: 2 / 3; }
-    .shelf[data-kind="screen"] { --card-w: 260px; --ratio: 16 / 10; }
-
-    .shelf::-webkit-scrollbar { height: 6px; }
-    .shelf::-webkit-scrollbar-thumb { background: var(--teal); }
-
-    .shelf-card {
-      flex: 0 0 var(--card-w);
+    .lib-row {
       display: flex;
-      flex-direction: column;
-      scroll-snap-align: start;
-      background: none;
-      border: none;
-      padding: 0;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: inherit;
       font: inherit;
       text-align: left;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .shelf-cover {
-      width: 100%;
-      aspect-ratio: var(--ratio);
-      object-fit: cover;
-      background: var(--card);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .shelf-cover-text {
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-      background: linear-gradient(160deg, #1b1b2f 0%, var(--card) 70%);
-      color: var(--ice-white);
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 22px;
-      line-height: 1.1;
-    }
-
-    .shelf-card:hover .shelf-cover,
-    .shelf-card:focus-visible .shelf-cover {
-      transform: translateY(-4px);
+    .lib-row:hover {
+      background: rgba(255, 255, 255, 0.05);
       border-color: var(--teal);
-      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.15);
     }
 
-    .shelf-title {
-      margin-top: 10px;
+    .lib-thumb {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lib-thumb-books { height: 66px; }
+    .lib-thumb-screen { width: 70px; height: 44px; }
+
+    .lib-thumb-glyph {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--orange);
+      font-size: 18px;
+      background: rgba(255, 107, 53, 0.08);
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+
+    .lib-row-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .lib-row-title {
       color: var(--ice-white);
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -3162,20 +3177,138 @@
       line-height: 1.3;
     }
 
-    .shelf-sub {
-      margin-top: 3px;
+    .lib-row-sub {
       color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
       font-size: 12px;
+      line-height: 1.4;
     }
 
-    .shelf-take {
-      margin-top: 6px;
+    .lib-row-take {
       color: var(--text-dim);
       font-family: 'Crimson Pro', Georgia, serif;
       font-style: italic;
       font-size: 14px;
-      line-height: 1.4;
+    }
+
+    .lib-row-go {
+      flex-shrink: 0;
+      color: var(--teal);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    /* Showcase: one tall tile and two stacked, all swapped together */
+    .media-trio {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      height: 640px;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .media-trio.swapping { opacity: 0; transform: scale(0.985); }
+
+    .mtile {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+      padding: 18px;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mtile:first-child { grid-row: span 2; }
+
+    .mtile:hover {
+      border-color: var(--teal);
+      box-shadow: 0 0 24px rgba(0, 212, 170, 0.15);
+    }
+
+    .mtile.mtile-writing:hover {
+      border-color: var(--orange);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+
+    .mtile-bg {
+      position: absolute;
+      inset: -20px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(22px) brightness(0.4) saturate(1.2);
+    }
+
+    .mtile-art {
+      position: absolute;
+      inset: 18px 18px 96px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6));
+      transition: transform 0.3s ease;
+    }
+
+    .mtile-art-screen { background-size: cover; inset: 0 0 96px; filter: none; }
+    .mtile:hover .mtile-art { transform: scale(1.03); }
+
+    .mtile.mtile-writing {
+      background:
+        radial-gradient(circle at 20% 15%, rgba(255, 107, 53, 0.16), transparent 60%),
+        var(--card);
+    }
+
+    .mtile-quote {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      color: var(--text-dim);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(18px, 1.6vw, 26px);
+      line-height: 1.35;
+    }
+
+    .mtile:first-child .mtile-quote { font-size: clamp(24px, 2.4vw, 36px); }
+    
+    .mtile-label {
+      position: relative;
+      align-self: flex-start;
+      margin-bottom: 6px;
+      padding: 4px 8px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid currentColor;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+
+    .mtile-label-media { color: var(--teal); }
+    .mtile-label-writing { color: var(--orange); }
+
+    .mtile-title {
+      position: relative;
+      color: var(--ice-white);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .mtile-sub {
+      position: relative;
+      color: var(--text-dim);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
     }
 
     .popup-cover {
@@ -3193,31 +3326,69 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       ON X - styled after X's own dark profile
+       CONTACT - email, plus cards styled after X and Instagram dark mode
        ═══════════════════════════════════════════════════════════════════════ */
 
-    .x-shell {
-      --x-bg: #000;
-      --x-line: #2f3336;
-      --x-text: #e7e9ea;
-      --x-dim: #71767b;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: var(--x-bg);
-      border: 1px solid var(--x-line);
-      border-radius: 16px;
-      overflow: hidden;
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
     }
 
+    .email-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      padding: 32px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .email-card .contact-button { width: 100%; padding: 22px 16px; }
+
+    .email-address {
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .email-address:hover { color: var(--orange); }
+
+    .x-card, .ig-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid #2f3336;
+      border-radius: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .x-avatar.avatar-initials,
+    .ig-avatar.avatar-initials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--orange), var(--teal));
+      color: #000;
+      font-weight: 800;
+      font-size: 24px;
+    }
+
+    /* X */
     .x-banner {
-      height: 110px;
+      height: 100px;
       background:
         radial-gradient(circle at 20% 30%, var(--orange-glow), transparent 55%),
         radial-gradient(circle at 80% 70%, var(--teal-glow), transparent 55%),
         #0b0b14;
     }
 
-    .x-card { padding: 0 16px 16px; border-bottom: 1px solid var(--x-line); }
-    .x-card .x-banner { margin: 0 -16px; }
+    .x-body { padding: 0 16px 16px; flex: 1; }
 
     .x-profile-row {
       display: flex;
@@ -3231,83 +3402,25 @@
       width: 76px;
       height: 76px;
       border-radius: 50%;
-      border: 4px solid var(--x-bg);
+      border: 4px solid #000;
       object-fit: cover;
       background: #16181c;
     }
 
-    .x-avatar-initials,
-    .x-post-avatar.x-avatar-initials {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--orange), var(--teal));
-      color: #000;
-      font-weight: 800;
-    }
-
-    .x-avatar.x-avatar-initials { font-size: 24px; }
-
     .x-follow {
-      background: var(--x-text);
+      background: #eff3f4;
       color: #0f1419;
       font-weight: 700;
       font-size: 15px;
       padding: 8px 18px;
       border-radius: 9999px;
       text-decoration: none;
-      transition: opacity 0.2s ease;
     }
 
-    .x-follow:hover { opacity: 0.85; }
-
-    .x-name { color: var(--x-text); font-weight: 800; font-size: 20px; line-height: 1.2; }
-    .x-handle { color: var(--x-dim); font-size: 15px; }
-    .x-bio { color: var(--x-text); font-size: 15px; line-height: 1.4; margin-top: 12px; }
-
-    .x-post {
-      display: flex;
-      gap: 12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--x-line);
-      text-decoration: none;
-      transition: background 0.2s ease;
-    }
-
-    .x-post:hover { background: #080808; }
-
-    .x-post-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      object-fit: cover;
-      font-size: 14px;
-    }
-
-    .x-post-meta { color: var(--x-dim); font-size: 15px; }
-    .x-post-meta b { color: var(--x-text); }
-    .x-post-text { color: var(--x-text); font-size: 15px; line-height: 1.4; margin-top: 2px; white-space: pre-line; }
-
-    .x-feed { border-bottom: 1px solid var(--x-line); }
-
-    .x-feed .twitter-timeline {
-      display: block;
-      padding: 16px;
-      color: var(--x-dim);
-      font-size: 15px;
-      text-decoration: none;
-    }
-
-    .x-feed-fallback { display: none; }
-    .x-feed-failed .twitter-timeline,
-    .x-feed-failed iframe { display: none !important; }
-    .x-feed-failed .x-feed-fallback {
-      display: block;
-      padding: 16px;
-      color: var(--x-dim);
-      font-size: 15px;
-    }
+    .x-follow:hover { background: #d7dbdc; }
+    .x-name { color: #e7e9ea; font-weight: 800; font-size: 20px; line-height: 1.2; }
+    .x-handle { color: #71767b; font-size: 15px; }
+    .x-bio { color: #e7e9ea; font-size: 15px; line-height: 1.4; margin-top: 12px; }
 
     .x-cta {
       display: flex;
@@ -3315,14 +3428,95 @@
       justify-content: center;
       gap: 10px;
       padding: 16px;
-      color: var(--x-text);
+      border-top: 1px solid #2f3336;
+      color: #e7e9ea;
       font-weight: 700;
       font-size: 15px;
       text-decoration: none;
-      transition: background 0.2s ease;
     }
 
     .x-cta:hover { background: #080808; }
+
+    /* Instagram */
+    .ig-card { border-color: #262626; border-radius: 12px; color: #f5f5f5; }
+
+    .ig-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid #262626;
+    }
+
+    .ig-top-handle { font-weight: 700; font-size: 18px; }
+    .ig-top-icon { display: flex; }
+
+    .ig-head {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 16px 6px;
+    }
+
+    .ig-ring {
+      padding: 3px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+      flex-shrink: 0;
+    }
+
+    .ig-avatar {
+      display: block;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      border: 3px solid #000;
+      object-fit: cover;
+      background: #121212;
+    }
+
+    .ig-name { font-weight: 600; font-size: 15px; }
+    .ig-user { color: #a8a8a8; font-size: 14px; margin-top: 2px; }
+    .ig-bio { padding: 6px 16px 0; font-size: 14px; line-height: 1.45; white-space: pre-line; }
+
+    .ig-actions {
+      display: flex;
+      gap: 8px;
+      padding: 14px 16px;
+      flex: 1;
+      align-items: flex-start;
+    }
+
+    .ig-follow, .ig-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .ig-follow { background: #0095f6; color: #fff; }
+    .ig-follow:hover { background: #1877f2; }
+    .ig-btn { background: #363636; color: #f5f5f5; }
+    .ig-btn:hover { background: #262626; }
+
+    .ig-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      border-top: 1px solid #f5f5f5;
+      color: #f5f5f5;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .ig-tabs:hover { background: #0a0a0a; }
 
     /* ═══════════════════════════════════════════════════════════════════════
        CONTACT SECTION
@@ -3419,35 +3613,6 @@
       transform: translateY(0);
     }
     
-    .contact-intro p { margin: 0 0 16px; }
-
-    .contact-rules {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-family: 'Outfit', sans-serif;
-      font-style: normal;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--text-dim);
-    }
-
-    .contact-rules li {
-      padding-left: 22px;
-      position: relative;
-      margin-bottom: 10px;
-    }
-
-    .contact-rules li::before {
-      content: '›';
-      position: absolute;
-      left: 4px;
-      color: var(--orange);
-      font-weight: 700;
-    }
-
-    .contact-rules b { color: var(--ice-white); }
-
     .product-status {
       margin-top: 6px;
       text-align: center;
@@ -3711,6 +3876,10 @@
       grid-template-columns: 1.5fr 1fr !important;
       gap: clamp(16px, 3vw, 48px) !important;
     }
+
+    .dev-showcase.media-layout {
+      grid-template-columns: 1fr 1.5fr !important;
+    }
     
     /* Nav always visible, never truncated */
     .nav {
@@ -3745,10 +3914,8 @@
     <a href="index.html" class="nav-brand">WALEED A. RAZA</a>
     <div class="nav-links">
       <a href="#development" class="nav-link">DEV</a>
-      <a href="#writing" class="nav-link">WRITING</a>
       <a href="#media" class="nav-link">MEDIA</a>
-      <a href="#x" class="nav-link">X</a>
-      <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="nav-link">CONTACT</a>
+      <a href="#contact" class="nav-link">CONTACT</a>
       <a href="https://warbspace.com" target="_blank" rel="noopener" class="nav-link nav-product">WARB</a>
       <a href="https://libxndr.com" target="_blank" rel="noopener" class="nav-link nav-product">LIBXNDR</a>
       <a href="https://pokeraio.com" target="_blank" rel="noopener" class="nav-link nav-product">POKERAIO</a>
@@ -3768,7 +3935,7 @@
     
     <!-- Social Icons (below hero text) -->
     <div class="social-icons">
-      <a href="https://instagram.com/wwwaleedaraza" target="_blank" class="social-icon" aria-label="Instagram" data-key="instagram">
+      <a href="https://instagram.com/wwwaleedraza" target="_blank" class="social-icon" aria-label="Instagram" data-key="instagram">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/></svg>
       </a>
       <a href="https://linkedin.com/in/waleedaraza" target="_blank" class="social-icon" aria-label="LinkedIn" data-key="linkedin">
@@ -3824,8 +3991,8 @@
     </div>
   </aside>
 
-  <!-- DEVELOPMENT + CONTACT (side by side) -->
-  <div class="section-pair">
+  <!-- [1] BUILD -->
+  <div class="section-full">
     <section class="section" id="development">
       <div class="section-header">
         <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
@@ -3856,67 +4023,54 @@
       </div>
     </section>
 
-    <section class="section" id="contact">
-      <div class="section-header" style="border-color: var(--orange);">
-        <div class="section-tag">[5] COLLABORATE</div>
-        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
-      </div>
-
-      <div class="contact-intro"></div>
-      <p class="contact-statement"></p>
-
-      <div class="contact-button-wrapper">
-        <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
-      </div>
-    </section>
   </div>
 
-  <!-- WRITING (+ NOTES) | ON X -->
-  <div class="section-pair">
-    <div class="section-column">
-      <section class="section" id="writing">
-        <div class="section-header">
-          <div class="section-tag">[2] MIND · OUTPUT</div>
-          <h2 class="section-title">▶ WRITING</h2>
-        </div>
-        <div class="essays-grid">
-          <!-- Rendered from SITE_DATA.writing via renderWriting() -->
-        </div>
-      </section>
-
-      <!-- Hidden until SITE_DATA.notes has entries -->
-      <section class="section" id="notes" hidden>
-        <div class="section-header" style="border-color: var(--teal);">
-          <div class="section-tag">[2.1] OPEN THREADS</div>
-          <h2 class="section-title" style="color: var(--teal);">▶ NOTES</h2>
-        </div>
-        <div class="notes-grid">
-          <!-- Rendered from SITE_DATA.notes via renderNotes() -->
-        </div>
-      </section>
-    </div>
-
-    <section class="section" id="x">
-      <div class="section-header">
-        <div class="section-tag">[4] SHORT FORM</div>
-        <h2 class="section-title">▶ ON X</h2>
-      </div>
-      <div class="x-shell">
-        <!-- Rendered from SITE_DATA.x via renderX() -->
-      </div>
-    </section>
-  </div>
-
-  <!-- LIKED MEDIA - full width -->
+  <!-- [2] MEDIA - mirrors BUILD: library list left, rotating showcase right -->
   <div class="section-full">
     <section class="section" id="media">
       <div class="section-header" style="border-color: var(--teal);">
-        <div class="section-tag">[3] TASTE</div>
-        <h2 class="section-title" style="color: var(--teal);">▶ LIKED MEDIA</h2>
-        <p class="section-desc">Albums, books, film and TV I keep coming back to. Swipe through, click for more.</p>
+        <div class="section-tag">[2] MIND · TASTE</div>
+        <h2 class="section-title" style="color: var(--teal);">▶ MEDIA</h2>
       </div>
-      <div class="media-body">
-        <!-- Rendered from SITE_DATA.media via renderMedia() -->
+
+      <div class="dev-showcase media-layout">
+        <!-- LIBRARY -->
+        <div class="library" id="library">
+          <div class="dev-section-header" style="border-color: var(--teal);">
+            <div class="dev-section-title" style="color: var(--teal);">◆ LIBRARY</div>
+            <div class="dev-section-count" id="library-count" style="border-color: var(--teal); color: var(--teal);"></div>
+          </div>
+          <div class="lib-groups" id="lib-groups"></div>
+          <div class="lib-filters" id="lib-filters"></div>
+          <div class="lib-progress" id="lib-progress"><span></span></div>
+          <div class="lib-list" id="lib-list"></div>
+        </div>
+
+        <!-- SHOWCASE -->
+        <div>
+          <div class="dev-section-header">
+            <div class="dev-section-title">★ SHOWCASE</div>
+            <div class="dev-section-count">ROTATING</div>
+          </div>
+          <div class="media-trio" id="media-trio"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- [3] CONTACT -->
+  <div class="section-full">
+    <section class="section" id="contact">
+      <div class="section-header" style="border-color: var(--orange);">
+        <div class="section-tag">[3] REACH ME</div>
+        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
+      </div>
+      <div class="contact-grid" id="contact-grid">
+        <div class="contact-card email-card">
+          <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
+          <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
+        </div>
+        <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
       </div>
     </section>
   </div>
@@ -4697,209 +4851,292 @@
       if (count) count.textContent = `${SITE_DATA.projects.length} REPOS`;
     }
     
-    // Escape text that goes into HTML (titles, takes, post text)
+    // Escape text that goes into HTML
     function esc(str) {
       return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
 
-    // Tabs: a root holds `.tabs > .tab[data-tab]` and sibling `.tab-pane[data-pane]`
-    function initTabs(root) {
-      root.addEventListener('click', (e) => {
-        const tab = e.target.closest('.tab');
-        if (!tab || !root.contains(tab)) return;
-        root.querySelectorAll(':scope > .tabs .tab').forEach(t => {
-          const on = t === tab;
-          t.classList.toggle('active', on);
-          t.setAttribute('aria-selected', on);
-        });
-        root.querySelectorAll(':scope > .tab-pane').forEach(pane => {
-          pane.classList.toggle('active', pane.dataset.pane === tab.dataset.tab);
-        });
-      });
-    }
+    const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function tabBar(tabs, extra = '') {
-      return `<div class="tabs" role="tablist">
-        ${tabs.map((t, i) => `<button class="tab ${i === 0 ? 'active' : ''}" role="tab" aria-selected="${i === 0}" data-tab="${t.id}">${t.label}${t.count != null ? `<span class="tab-count">${t.count}</span>` : ''}</button>`).join('')}
-        ${extra}
-      </div>`;
-    }
-
-    function renderWriting() {
-      const container = document.querySelector('#writing .essays-grid');
-      if (!container || !SITE_DATA.writing) return;
-
-      const prompts = SITE_DATA.writing.filter(item => item.category === 'systemPrompts');
-      const essays = SITE_DATA.writing.filter(item => item.category === 'essays');
-
-      const card = (item) => item.url
-        ? `<a href="${item.url}" target="_blank" class="essay-item essay-downloadable">
-             <span class="essay-title">${esc(item.title)}</span>
-             <p class="essay-preview">${esc(item.preview)}</p>
-             <span class="essay-download-hint">→ Read</span>
-           </a>`
-        : `<div class="essay-item">
-             <span class="essay-title">${esc(item.title)}</span>
-             <p class="essay-preview">${esc(item.preview)}</p>
-           </div>`;
-
-      container.innerHTML = `
-        ${tabBar([
-          { id: 'prompts', label: 'System Prompts for LLM Code Editors', count: prompts.length },
-          { id: 'essays', label: 'Essays', count: essays.length }
-        ])}
-        <div class="tab-pane active" data-pane="prompts" role="tabpanel">
-          <p class="essays-category-desc">Use and edit at your will and discretion! Have fun! Let me know if you make improvements!</p>
-          ${prompts.map(card).join('')}
-        </div>
-        <div class="tab-pane" data-pane="essays" role="tabpanel">
-          ${essays.length
-            ? essays.map(card).join('')
-            : `<p class="empty-note">First essays and critiques are on the way. Until then, the short-form thinking lives <a href="#x">on X</a>.</p>`}
-        </div>
-      `;
-      initTabs(container);
-    }
-
-    function renderNotes() {
-      const section = document.getElementById('notes');
-      const container = document.querySelector('#notes .notes-grid');
-      if (!section || !container) return;
-      const notes = SITE_DATA.notes || [];
-      section.hidden = notes.length === 0;
-      container.innerHTML = notes.map(item => `
-        <article class="note-card">
-          <h3 class="note-title">${esc(item.title)}</h3>
-          ${item.image ? `<img src="${item.image}" alt="${esc(item.title)}" loading="lazy" style="max-width:100%;margin:8px 0;border:1px solid var(--border);">` : ''}
-          <div class="note-body">${item.body}</div>
-        </article>
-      `).join('');
-    }
-
-    // Liked Media - one section, a tab per shelf, each shelf scrolls sideways
-    const MEDIA_SHELVES = [
-      { id: 'albums', label: 'Albums', by: 'artist' },
-      { id: 'books', label: 'Books', by: 'author' },
-      { id: 'screen', label: 'Film & TV', by: 'kind' }
+    // ═══ MEDIA LIBRARY - every item normalised to one shape ═══
+    // group -> filters; each filter knows its label and how to read its items
+    const LIBRARY = [
+      { id: 'media', label: 'Liked Media', filters: [
+        { id: 'albums', label: 'Albums', kind: 'ALBUM' },
+        { id: 'books', label: 'Books', kind: 'BOOK' },
+        { id: 'screen', label: 'Film & TV', kind: 'FILM & TV' }
+      ]},
+      { id: 'writing', label: 'Writing', filters: [
+        { id: 'prompts', label: 'System Prompts for LLM Code Editors', short: 'System Prompts', kind: 'SYSTEM PROMPT' },
+        { id: 'essays', label: 'Essays', kind: 'ESSAY' }
+      ]}
     ];
+    // Order the list cycles through on its own, alternating media and writing
+    const LIB_CYCLE = ['albums', 'prompts', 'books', 'essays', 'screen'];
+    const LIB_CYCLE_MS = 5000;
+    const SHOWCASE_MS = 3000;
 
-    function renderMedia() {
-      const root = document.querySelector('#media .media-body');
-      if (!root || !SITE_DATA.media) return;
-      const media = SITE_DATA.media;
+    let LIB_ITEMS = {};   // filterId -> [item]
 
-      const cover = (item) => item.cover
-        ? `<img src="${item.cover}" alt="" class="shelf-cover" loading="lazy">`
-        : `<div class="shelf-cover shelf-cover-text">${esc(item.title)}</div>`;
+    function buildLibrary() {
+      const m = SITE_DATA.media, w = SITE_DATA.writing;
+      const media = (list, filter, sub) => list.map(x => ({ filter, group: 'media', title: x.title, sub: x[sub], image: x.cover, take: x.take }));
+      const writing = (cat, filter) => w.filter(x => x.category === cat).map(x => ({ filter, group: 'writing', title: x.title, sub: x.preview, url: x.url }));
+      LIB_ITEMS = {
+        albums: media(m.albums, 'albums', 'artist'),
+        books: media(m.books, 'books', 'author'),
+        screen: media(m.screen, 'screen', 'kind'),
+        prompts: writing('systemPrompts', 'prompts'),
+        essays: writing('essays', 'essays')
+      };
+      LIBRARY.forEach(g => g.filters.forEach(f => LIB_ITEMS[f.id].forEach(it => { it.kind = f.kind; })));
+    }
 
-      root.innerHTML = `
-        ${tabBar(
-          MEDIA_SHELVES.map(sh => ({ id: sh.id, label: sh.label, count: (media[sh.id] || []).length })),
-          `<div class="shelf-arrows">
-             <button class="shelf-arrow" data-dir="-1" aria-label="Scroll left">‹</button>
-             <button class="shelf-arrow" data-dir="1" aria-label="Scroll right">›</button>
-           </div>`
-        )}
-        ${MEDIA_SHELVES.map((sh, i) => `
-          <div class="tab-pane ${i === 0 ? 'active' : ''}" data-pane="${sh.id}" role="tabpanel">
-            <div class="shelf" data-kind="${sh.id}">
-              ${(media[sh.id] || []).map((item, idx) => `
-                <button class="shelf-card" data-kind="${sh.id}" data-idx="${idx}">
-                  ${cover(item)}
-                  <span class="shelf-title">${esc(item.title)}</span>
-                  <span class="shelf-sub">${esc(item[sh.by])}</span>
-                  ${item.take ? `<span class="shelf-take">${esc(item.take)}</span>` : ''}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        `).join('')}
-      `;
-      initTabs(root);
+    function filterById(id) {
+      for (const g of LIBRARY) for (const f of g.filters) if (f.id === id) return { group: g, filter: f };
+    }
 
-      root.addEventListener('click', (e) => {
-        const arrow = e.target.closest('.shelf-arrow');
-        if (arrow) {
-          const shelf = root.querySelector('.tab-pane.active .shelf');
-          if (shelf) shelf.scrollBy({ left: Number(arrow.dataset.dir) * shelf.clientWidth * 0.8, behavior: 'smooth' });
-          return;
-        }
-        const card = e.target.closest('.shelf-card');
-        if (!card) return;
-        const shelf = MEDIA_SHELVES.find(sh => sh.id === card.dataset.kind);
-        const item = media[card.dataset.kind][Number(card.dataset.idx)];
-        openPopup({
-          title: esc(item.title),
-          subtitle: esc(item[shelf.by]),
-          content: `${item.cover ? `<img src="${item.cover}" alt="" class="popup-cover">` : ''}
-                    ${item.take ? `<p class="popup-take">${esc(item.take)}</p>` : ''}`
-        });
+    function openLibraryItem(item) {
+      if (item.url) { window.open(item.url, '_blank', 'noopener'); return; }
+      openPopup({
+        title: esc(item.title),
+        subtitle: `${esc(item.kind)} · ${esc(item.sub)}`,
+        content: `${item.image ? `<img src="${item.image}" alt="" class="popup-cover">` : ''}
+                  ${item.take ? `<p class="popup-take">${esc(item.take)}</p>` : ''}`
       });
     }
 
-    // On X - profile card styled like X, hand-picked posts, and X's live timeline when it loads
-    const X_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>`;
+    // ═══ LIBRARY LIST (left) ═══
+    let libActive = 'albums';
+    let libCycling = !REDUCED_MOTION;
+    let libTimer = null;
 
-    function renderX() {
-      const root = document.querySelector('#x .x-shell');
-      if (!root || !SITE_DATA.x) return;
-      const x = SITE_DATA.x;
-      const profile = `https://x.com/${x.handle}`;
-      // unavatar returns 404 with fallback=false, so onerror swaps in initials
-      const avatar = (cls) => `<img class="${cls}" src="https://unavatar.io/x/${x.handle}?fallback=false" alt="" onerror="this.outerHTML='<div class=&quot;${cls} x-avatar-initials&quot;>${x.initials}</div>'">`;
+    function renderLibrary() {
+      const { group } = filterById(libActive);
+      const total = Object.values(LIB_ITEMS).reduce((n, l) => n + l.length, 0);
+      document.getElementById('library-count').textContent = `${total} ITEMS`;
 
-      root.innerHTML = `
-        <div class="x-card">
-          <div class="x-banner"></div>
-          <div class="x-profile-row">
-            ${avatar('x-avatar')}
-            <a class="x-follow" href="https://x.com/intent/follow?screen_name=${x.handle}" target="_blank" rel="noopener">Follow</a>
-          </div>
-          <div class="x-name">${esc(x.name)}</div>
-          <div class="x-handle">@${x.handle}</div>
-          <p class="x-bio">${esc(x.bio)}</p>
-        </div>
+      document.getElementById('lib-groups').innerHTML = LIBRARY.map(g => `
+        <button class="lib-group ${g.id === group.id ? 'active' : ''}" data-group="${g.id}">${g.label}</button>
+      `).join('');
 
-        ${(x.posts || []).length ? `<div class="x-posts">${x.posts.map(post => `
-          <a class="x-post" href="${post.url}" target="_blank" rel="noopener">
-            ${avatar('x-post-avatar')}
-            <div class="x-post-main">
-              <div class="x-post-meta"><b>${esc(x.name)}</b> <span>@${x.handle}${post.date ? ` · ${esc(post.date)}` : ''}</span></div>
-              <div class="x-post-text">${esc(post.text)}</div>
-            </div>
-          </a>`).join('')}</div>` : ''}
+      document.getElementById('lib-filters').innerHTML = group.filters.map(f => `
+        <button class="lib-chip ${f.id === libActive ? 'active' : ''}" data-filter="${f.id}">${f.short || f.label}<span class="n">${LIB_ITEMS[f.id].length}</span></button>
+      `).join('');
 
-        <div class="x-feed" id="x-feed">
-          <a class="twitter-timeline" data-theme="dark" data-chrome="noheader nofooter noborders transparent" data-height="560" data-dnt="true" href="https://twitter.com/${x.handle}">Loading posts from @${x.handle}…</a>
-          <p class="x-feed-fallback">X didn't load the live feed here.</p>
-        </div>
-
-        <a class="x-cta" href="${profile}" target="_blank" rel="noopener">${X_ICON}<span>See all posts by @${x.handle}</span></a>
-      `;
-      initXTimeline();
+      const items = LIB_ITEMS[libActive];
+      const list = document.getElementById('lib-list');
+      list.innerHTML = items.length ? items.map((it, idx) => `
+        <button class="lib-row" data-idx="${idx}">
+          ${it.image
+            ? `<img src="${it.image}" alt="" class="lib-thumb lib-thumb-${it.filter}" loading="lazy">`
+            : `<span class="lib-thumb lib-thumb-glyph">${it.group === 'writing' ? '◈' : '▶'}</span>`}
+          <span class="lib-row-text">
+            <span class="lib-row-title">${esc(it.title)}</span>
+            <span class="lib-row-sub">${esc(it.sub)}</span>
+            ${it.take ? `<span class="lib-row-take">${esc(it.take)}</span>` : ''}
+          </span>
+          ${it.url ? '<span class="lib-row-go">→ Read</span>' : ''}
+        </button>
+      `).join('') : `<p class="empty-note">${libActive === 'essays'
+          ? 'First essays and critiques are on the way. Until then, the short-form thinking lives <a href="#contact">on X</a>.'
+          : 'Nothing here yet.'}</p>`;
+      list.scrollTop = 0;
     }
 
-    // Load X's widget only when the section is near the screen; if no timeline appears, show the fallback
-    function initXTimeline() {
-      const feed = document.getElementById('x-feed');
-      if (!feed) return;
-      const load = () => {
-        const script = document.createElement('script');
-        script.src = 'https://platform.twitter.com/widgets.js';
-        script.async = true;
-        script.charset = 'utf-8';
-        script.onerror = () => feed.classList.add('x-feed-failed');
-        document.body.appendChild(script);
-        setTimeout(() => {
-          const frame = feed.querySelector('iframe');
-          if (!frame || frame.offsetHeight < 150) feed.classList.add('x-feed-failed');
-        }, 8000);
-      };
-      if (!('IntersectionObserver' in window)) return load();
-      const io = new IntersectionObserver((entries) => {
-        if (entries.some(en => en.isIntersecting)) { io.disconnect(); load(); }
-      }, { rootMargin: '400px' });
-      io.observe(feed);
+    function setLibrary(filterId) {
+      libActive = filterId;
+      renderLibrary();
+    }
+
+    // Restart the thin progress line under the filters
+    function restartLibProgress() {
+      const bar = document.getElementById('lib-progress');
+      bar.classList.remove('run');
+      void bar.offsetWidth;
+      if (libCycling) bar.classList.add('run');
+    }
+
+    function scheduleLibCycle() {
+      clearTimeout(libTimer);
+      if (!libCycling) return;
+      restartLibProgress();
+      libTimer = setTimeout(() => {
+        // next filter in the cycle that has items
+        let i = LIB_CYCLE.indexOf(libActive);
+        for (let step = 0; step < LIB_CYCLE.length; step++) {
+          i = (i + 1) % LIB_CYCLE.length;
+          if (LIB_ITEMS[LIB_CYCLE[i]].length) break;
+        }
+        setLibrary(LIB_CYCLE[i]);
+        scheduleLibCycle();
+      }, LIB_CYCLE_MS);
+    }
+
+    // Once a visitor picks something, the list stops moving for good
+    function stopLibCycle() {
+      libCycling = false;
+      clearTimeout(libTimer);
+      document.getElementById('lib-progress').classList.add('done');
+    }
+
+    function initLibrary() {
+      const lib = document.getElementById('library');
+      renderLibrary();
+      if (!libCycling) document.getElementById('lib-progress').classList.add('done');
+
+      lib.addEventListener('click', (e) => {
+        const groupBtn = e.target.closest('.lib-group');
+        const chip = e.target.closest('.lib-chip');
+        const row = e.target.closest('.lib-row');
+        if (!groupBtn && !chip && !row) return;
+        stopLibCycle();
+        if (groupBtn) {
+          const g = LIBRARY.find(x => x.id === groupBtn.dataset.group);
+          setLibrary((g.filters.find(f => LIB_ITEMS[f.id].length) || g.filters[0]).id);
+        } else if (chip) {
+          setLibrary(chip.dataset.filter);
+        } else {
+          openLibraryItem(LIB_ITEMS[libActive][Number(row.dataset.idx)]);
+        }
+      });
+
+      // Hovering the list holds it still; leaving starts a fresh 5 seconds
+      lib.addEventListener('mouseenter', () => {
+        if (!libCycling) return;
+        clearTimeout(libTimer);
+        document.getElementById('lib-progress').classList.remove('run');
+      });
+      lib.addEventListener('mouseleave', scheduleLibCycle);
+      scheduleLibCycle();
+    }
+
+    // ═══ SHOWCASE (right) - three random pieces, all swapped every 3 seconds ═══
+    let showcaseItems = [];
+    let showcasePaused = false;
+
+    function pick(list, n, avoid) {
+      const pool = list.filter(x => !avoid.includes(x));
+      const src = pool.length >= n ? pool : list;
+      const out = [];
+      const copy = [...src];
+      while (out.length < n && copy.length) out.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
+      return out;
+    }
+
+    // Either 2 media + 1 writing or 1 media + 2 writing, in random order
+    function nextShowcaseSet() {
+      const media = [...LIB_ITEMS.albums, ...LIB_ITEMS.books, ...LIB_ITEMS.screen];
+      const writing = [...LIB_ITEMS.prompts, ...LIB_ITEMS.essays];
+      const mediaCount = Math.random() < 0.5 ? 2 : 1;
+      const set = [...pick(media, mediaCount, showcaseItems), ...pick(writing, 3 - mediaCount, showcaseItems)];
+      return set.sort(() => Math.random() - 0.5);
+    }
+
+    function tileHTML(it) {
+      const art = it.image
+        ? `<span class="mtile-bg" style="background-image:url('${it.image}')"></span>
+           <span class="mtile-art mtile-art-${it.filter}" style="background-image:url('${it.image}')"></span>`
+        : `<span class="mtile-quote">${esc(it.sub)}</span>`;
+      return `${art}
+        <span class="mtile-label mtile-label-${it.group}">${esc(it.kind)}</span>
+        <span class="mtile-title">${esc(it.title)}</span>
+        ${it.image ? `<span class="mtile-sub">${esc(it.sub)}</span>` : '<span class="mtile-sub">→ Read</span>'}`;
+    }
+
+    function paintShowcase(set) {
+      showcaseItems = set;
+      const tiles = document.querySelectorAll('#media-trio .mtile');
+      tiles.forEach((tile, i) => {
+        tile.className = `mtile mtile-${set[i].group}`;
+        tile.innerHTML = tileHTML(set[i]);
+      });
+    }
+
+    function rotateShowcase() {
+      if (showcasePaused) return;
+      const next = nextShowcaseSet();
+      next.forEach(it => { if (it.image) new Image().src = it.image; }); // warm the cache before the swap
+      const trio = document.getElementById('media-trio');
+      trio.classList.add('swapping');
+      setTimeout(() => {
+        paintShowcase(next);
+        trio.classList.remove('swapping');
+      }, 280);
+    }
+
+    function initShowcase() {
+      const trio = document.getElementById('media-trio');
+      trio.innerHTML = [0, 1, 2].map(i => `<button class="mtile" data-slot="${i}"></button>`).join('');
+      paintShowcase(nextShowcaseSet());
+
+      trio.addEventListener('click', (e) => {
+        const tile = e.target.closest('.mtile');
+        if (!tile) return;
+        const item = showcaseItems[Number(tile.dataset.slot)];
+        // Opening a piece also points the library at its category
+        stopLibCycle();
+        setLibrary(item.filter);
+        openLibraryItem(item);
+      });
+      trio.addEventListener('mouseenter', () => { showcasePaused = true; });
+      trio.addEventListener('mouseleave', () => { showcasePaused = false; });
+      if (!REDUCED_MOTION) setInterval(rotateShowcase, SHOWCASE_MS);
+    }
+
+    // ═══ CONTACT - profile cards styled after X and Instagram ═══
+    const X_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>`;
+    const IG_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+    const GRID_ICON = `<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>`;
+
+    // Picture: a local file if one is set, else the live public picture, else initials
+    function avatarImg(cls, profile, service) {
+      const src = profile.avatar || `https://unavatar.io/${service}/${profile.handle}?fallback=false`;
+      return `<img class="${cls}" src="${src}" alt="" onerror="this.outerHTML='<div class=&quot;${cls} avatar-initials&quot;>${profile.initials}</div>'">`;
+    }
+
+    function renderSocialCards() {
+      const grid = document.getElementById('contact-grid');
+      if (!grid || !SITE_DATA.social) return;
+      const { x, instagram: ig } = SITE_DATA.social;
+      const xUrl = `https://x.com/${x.handle}`;
+      const igUrl = `https://www.instagram.com/${ig.handle}/`;
+
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="contact-card x-card">
+          <div class="x-banner"></div>
+          <div class="x-body">
+            <div class="x-profile-row">
+              ${avatarImg('x-avatar', x, 'x')}
+              <a class="x-follow" href="https://x.com/intent/follow?screen_name=${x.handle}" target="_blank" rel="noopener">Follow</a>
+            </div>
+            <div class="x-name">${esc(x.name)}</div>
+            <div class="x-handle">@${x.handle}</div>
+            ${x.bio ? `<p class="x-bio">${esc(x.bio)}</p>` : ''}
+          </div>
+          <a class="x-cta" href="${xUrl}" target="_blank" rel="noopener">${X_ICON}<span>View posts on X</span></a>
+        </div>
+
+        <div class="contact-card ig-card">
+          <div class="ig-top">
+            <span class="ig-top-handle">${ig.handle}</span>
+            <span class="ig-top-icon">${IG_ICON}</span>
+          </div>
+          <div class="ig-head">
+            <span class="ig-ring">${avatarImg('ig-avatar', ig, 'instagram')}</span>
+            <div class="ig-meta">
+              <div class="ig-name">${esc(ig.name)}</div>
+              <div class="ig-user">@${ig.handle}</div>
+            </div>
+          </div>
+          ${ig.bio ? `<p class="ig-bio">${esc(ig.bio)}</p>` : ''}
+          <div class="ig-actions">
+            <a class="ig-follow" href="${igUrl}" target="_blank" rel="noopener">Follow</a>
+            <a class="ig-btn" href="${igUrl}" target="_blank" rel="noopener">View profile</a>
+          </div>
+          <a class="ig-tabs" href="${igUrl}" target="_blank" rel="noopener">${GRID_ICON}<span>POSTS ON INSTAGRAM</span></a>
+        </div>
+      `);
     }
 
     // Social Links - Render from SITE_DATA with actual SVG logos
@@ -5118,7 +5355,7 @@ const quote = TERMINAL_QUOTES[quoteIdx];
       });
       
       // Watch for scroll to update active nav link only
-      const sections = ['hero', 'development', 'contact', 'writing', 'notes', 'x', 'media'];
+      const sections = ['hero', 'development', 'media', 'contact'];
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -5172,10 +5409,6 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           tagline: "A living record of what I build, write, and listen to.",
           subline: "Building Warb, Libxndr and PokerAIO. Writing on software, politics, philosophy and music."
         },
-        contact: {
-          intro: "<p>Every email is read by an LLM first; anything that needs me gets to me.</p><ul class=\"contact-rules\"><li>Keep <b>*AUTOMATE REPLY*</b> in the subject for an instant automated answer. The button below fills it in.</li><li>Add <b>job</b>, <b>startup</b> or <b>meeting</b> to the subject to reach me directly.</li></ul>",
-          statement: "Happy to talk software, politics, philosophy, literature, music, game theory and history."
-        },
         // category: 'systemPrompts' or 'essays'. An essay: { id, title, preview, date, url, category: 'essays' }
         writing: [
           { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=01' },
@@ -5184,9 +5417,7 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=04' },
           { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=05' }
         ],
-        // { title, body, image? } - the Notes section stays hidden while this is empty
-        notes: [],
-        // Liked Media. Fill `take` with a line of critique; it shows on the card and in the popup.
+        // Liked Media. Fill `take` with a line of critique; it shows in the library and in the popup.
         media: {
           albums: [
             { artist: "Kanye West", title: "The College Dropout", cover: "covers/Kanyewest_collegedropout.jpg", take: "" },
@@ -5299,16 +5530,13 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "Shutter Island", kind: "Thriller · Film", cover: "", take: "" }
           ]
         },
-        // Hand-picked posts: { text, date, url } - shown above the live timeline
-        x: {
-          handle: 'walugen',
-          name: 'Waleed A. Raza',
-          initials: 'WR',
-          bio: "Building Warb, Libxndr and PokerAIO. Essays, critiques and half-formed thoughts.",
-          posts: []
+        // Contact cards. `bio` shows when filled; `avatar` (a file in pics/) overrides the live picture.
+        social: {
+          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: '' },
+          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: '' }
         },
         socialLinks: {
-          instagram: { url: 'https://instagram.com/wwwaleedaraza', icon: '📸', label: 'Instagram' },
+          instagram: { url: 'https://instagram.com/wwwaleedraza', icon: '📸', label: 'Instagram' },
           linkedin: { url: 'https://linkedin.com/in/waleedaraza', icon: '💼', label: 'LinkedIn' },
           github: { url: 'https://github.com/waleedaraza', icon: '💻', label: 'GitHub' },
           twitter: { url: 'https://x.com/walugen', icon: '🐦', label: 'X' },
@@ -5379,20 +5607,15 @@ const quote = TERMINAL_QUOTES[quoteIdx];
 
       renderProducts();
       renderProjects();
-      renderWriting();
-      renderNotes();
-      renderX();
-      renderMedia();
+      buildLibrary();
+      initLibrary();
+      initShowcase();
+      renderSocialCards();
 
       const tagline = document.querySelector('.hero-tagline');
       const subline = document.querySelector('.hero-subline');
       if (tagline) tagline.textContent = SITE_DATA.hero.tagline;
       if (subline) subline.textContent = SITE_DATA.hero.subline;
-
-      const intro = document.querySelector('.contact-intro');
-      const statement = document.querySelector('.contact-statement');
-      if (intro) intro.innerHTML = SITE_DATA.contact.intro;
-      if (statement) statement.innerHTML = SITE_DATA.contact.statement;
 
       renderSocialLinks();
     }
@@ -5426,11 +5649,9 @@ const quote = TERMINAL_QUOTES[quoteIdx];
     <div class="terminal-nav-links">
       <a href="#hero" class="terminal-nav-link active" data-section="hero">HOME</a>
       <a href="#development" class="terminal-nav-link" data-section="development">DEV</a>
-      <a href="#writing" class="terminal-nav-link" data-section="writing">WRITE</a>
-      <span class="terminal-theme-label" id="theme-name-label">XP</span>
       <a href="#media" class="terminal-nav-link" data-section="media">MEDIA</a>
-      <a href="#x" class="terminal-nav-link" data-section="x">X</a>
-      <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="terminal-nav-link">CONTACT</a>
+      <span class="terminal-theme-label" id="theme-name-label">XP</span>
+      <a href="#contact" class="terminal-nav-link" data-section="contact">CONTACT</a>
     </div>
     <div class="terminal-action-tabs">
       <button class="terminal-theme-btn" id="theme-trigger">CLICK TO TOGGLE THEME</button>
