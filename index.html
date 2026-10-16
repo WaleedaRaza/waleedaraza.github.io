@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Waleed A. Raza</title>
-  <meta name="description" content="Waleed A. Raza — a living record of what I build, write, and listen to. Building Warb, Libxndr and PokerAIO.">
+  <meta name="description" content="Waleed A. Raza. Warb, Libxndr and PokerAIO.">
   <link rel="canonical" href="https://waleedaraza.github.io/">
   <meta name="theme-color" content="#020204">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waleedaraza.github.io/">
   <meta property="og:site_name" content="Waleed A. Raza">
   <meta property="og:title" content="Waleed A. Raza">
-  <meta property="og:description" content="A living record of what I build, write, and listen to. Building Warb, Libxndr and PokerAIO.">
+  <meta property="og:description" content="Warb, Libxndr and PokerAIO.">
   <meta property="og:image" content="https://waleedaraza.github.io/assets/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -20,7 +20,7 @@
   <meta name="twitter:site" content="@walugen">
   <meta name="twitter:creator" content="@walugen">
   <meta name="twitter:title" content="Waleed A. Raza">
-  <meta name="twitter:description" content="A living record of what I build, write, and listen to.">
+  <meta name="twitter:description" content="Warb, Libxndr and PokerAIO.">
   <meta name="twitter:image" content="https://waleedaraza.github.io/assets/img/og.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3173,17 +3173,60 @@
       font-size: 11px;
     }
 
-    /* Showcase: one tall tile and two stacked, all swapped together */
-    .media-trio {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 14px;
-      height: 640px;
-      transition: opacity 0.28s ease, transform 0.28s ease;
+    /* Showcase: one TV showing one item at a time */
+    .tv {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 14px 12px;
+      background: linear-gradient(160deg, #16161f, #0a0a10);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
     }
 
-    .media-trio.swapping { opacity: 0; transform: scale(0.985); }
+    .tv-screen {
+      width: 100%;
+      height: 600px;
+      border-radius: 6px;
+      transition: opacity 0.45s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .tv.swapping .tv-screen { opacity: 0; }
+
+    .tv-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+      pointer-events: none;
+    }
+
+    .tv-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 4px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+    }
+
+    .tv-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff3b30;
+      box-shadow: 0 0 8px #ff3b30;
+      animation: tv-blink 2.4s ease-in-out infinite;
+    }
+
+    .tv-channel { margin-left: auto; color: var(--teal); }
+
+    @keyframes tv-blink { 50% { opacity: 0.35; } }
+
+    @media (max-width: 700px) { .tv-screen { height: 420px; } }
 
     .mtile {
       position: relative;
@@ -3202,9 +3245,7 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .mtile:first-child { grid-row: span 2; }
-
-    .mtile:hover {
+.mtile:hover {
       border-color: var(--teal);
       box-shadow: 0 0 24px rgba(0, 212, 170, 0.15);
     }
@@ -3324,16 +3365,7 @@
 
     .email-card .contact-button { width: 100%; padding: 22px 16px; }
 
-    .email-address {
-      color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      text-decoration: none;
-    }
-
-    .email-address:hover { color: var(--orange); }
-
-    .x-card, .ig-card {
+.x-card, .ig-card {
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -3777,13 +3809,7 @@
     <!-- THE NAME - CENTERPIECE -->
     <div class="hero-name" id="hero-name"></div>
     
-    <!-- Hero Text - Tagline + Subline -->
-    <div class="hero-text">
-      <p class="hero-tagline">A living record of what I build, write, and listen to.</p>
-      <p class="hero-subline">Building Warb, Libxndr and PokerAIO. Writing on software, politics, philosophy and music.</p>
-    </div>
-    
-    <!-- Social Icons (below hero text) -->
+    <!-- Social Icons -->
     <div class="social-icons">
       <a href="https://instagram.com/wwwaleedraza" target="_blank" class="social-icon" aria-label="Instagram" data-key="instagram">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/></svg>
@@ -3875,7 +3901,6 @@
         <div class="contact-grid" id="contact-grid">
           <div class="contact-card email-card">
             <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
-            <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
           </div>
           <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
         </div>
@@ -3909,7 +3934,10 @@
             <div class="dev-section-title">★ SHOWCASE</div>
             <div class="dev-section-count">ROTATING</div>
           </div>
-          <div class="media-trio" id="media-trio"></div>
+          <div class="tv" id="media-tv">
+            <button class="mtile tv-screen" id="tv-screen" aria-live="polite"></button>
+            <div class="tv-bar"><span class="tv-dot"></span><span>NOW SHOWING</span><span class="tv-channel" id="tv-channel"></span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -4524,7 +4552,7 @@
     const PRODUCTS = [
       {
         id: 'warb', name: 'Warb', page: 'projects/warb.html',
-        title: 'Building an Environment Around My Notes',
+        title: 'PKM tool with AI',
         copy: 'A knowledge workspace built around typed notes, domain charters, and an AI companion that can work with the context you keep. Built from my own daily use.',
         pill: '● LIVE · ABOUT 70% COMPLETE',
         status: 'Live and publicly usable, with version 2.0 in its last release stages. I use it daily. Broader adoption is not yet established.',
@@ -4532,18 +4560,18 @@
       },
       {
         id: 'libxndr', name: 'Libxndr', page: 'projects/libxndr.html',
-        title: 'The Question That Changed the Product',
-        copy: 'A library and sourcing tool: find books as PDFs, open them at their original source, and add what you find to a shared collection. It started as a way to get books onto my Kindle.',
+        title: 'Book library and source finder',
+        copy: 'A shared library of PDFs and a source finder: look up a book or author, open the strongest original sources, and add what you find to the collection.',
         pill: '● LIVE',
-        status: 'Live and publicly usable. Next: asking a question and being sent to the passage in the book that answers it.',
+        status: 'Live and publicly usable. Next: ask a question and get sent to the passage that answers it.',
         sites: [{ label: 'libxndr.com', url: 'https://libxndr.com' }]
       },
       {
         id: 'pokeraio', name: 'PokerAIO', page: 'projects/pokeraio.html', paused: true,
-        title: 'Nine Months Inside a Weekend Project',
-        copy: 'An online poker project with multiplayer and bot play, hand histories, social features, and AI hand analysis. A weekend idea that became nine months of work.',
+        title: 'Online poker with AI analysis',
+        copy: 'Multiplayer and bot play, hand histories, friends and clubs, and AI analysis of the hands you play or import.',
         pill: '● IN MAINTENANCE',
-        status: 'Previously used by friends and tested in a small university poker-club beta. Not currently presented as a publicly available game; performance and feature work remain.',
+        status: 'Used by friends and tested in a university poker-club beta. Performance and feature work remain; not presented as an open public game.',
         sites: [{ label: 'pokeraio.com', url: 'https://pokeraio.com' }, { label: 'pokergeek.ai', url: 'https://pokergeek.ai' }]
       }
     ];
@@ -4648,7 +4676,7 @@
         { id: 'essays', label: 'Essays', kind: 'ESSAY' }
       ]}
     ];
-    const SHOWCASE_MS = 3000;
+    const SHOWCASE_MS = 5000;
 
     let LIB_ITEMS = {};   // filterId -> [item]
 
@@ -4766,26 +4794,16 @@
       });
     }
 
-    // ═══ SHOWCASE (right) - three random pieces, all swapped every 3 seconds ═══
-    let showcaseItems = [];
+    // ═══ SHOWCASE (right) - one TV, one item at a time ═══
+    let showcaseItem = null;
     let showcasePaused = false;
 
-    function pick(list, n, avoid) {
-      const pool = list.filter(x => !avoid.includes(x));
-      const src = pool.length >= n ? pool : list;
-      const out = [];
-      const copy = [...src];
-      while (out.length < n && copy.length) out.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
-      return out;
-    }
-
-    // Either 2 media + 1 writing or 1 media + 2 writing, in random order
-    function nextShowcaseSet() {
+    // Taste (albums, books, film) and writing take turns being picked; never the same item twice in a row
+    function nextShowcaseItem() {
       const media = [...LIB_ITEMS.albums, ...LIB_ITEMS.books, ...LIB_ITEMS.screen];
       const writing = [...LIB_ITEMS.prompts, ...LIB_ITEMS.essays];
-      const mediaCount = Math.random() < 0.5 ? 2 : 1;
-      const set = [...pick(media, mediaCount, showcaseItems), ...pick(writing, 3 - mediaCount, showcaseItems)];
-      return set.sort(() => Math.random() - 0.5);
+      const pool = (Math.random() < 0.5 ? media : writing).filter(x => x !== showcaseItem);
+      return pool[Math.floor(Math.random() * pool.length)];
     }
 
     function tileHTML(it) {
@@ -4800,42 +4818,38 @@
         <span class="mtile-sub">${it.image ? esc(it.sub) : it.inProgress ? 'Still being written' : '→ Read'}</span>`;
     }
 
-    function paintShowcase(set) {
-      showcaseItems = set;
-      const tiles = document.querySelectorAll('#media-trio .mtile');
-      tiles.forEach((tile, i) => {
-        tile.className = `mtile mtile-${set[i].group}`;
-        tile.innerHTML = tileHTML(set[i]);
-      });
+    function paintShowcase(item) {
+      showcaseItem = item;
+      const screen = document.getElementById('tv-screen');
+      screen.className = `mtile tv-screen mtile-${item.group}`;
+      screen.innerHTML = tileHTML(item);
+      document.getElementById('tv-channel').textContent = item.kind;
     }
 
     function rotateShowcase() {
       if (showcasePaused) return;
-      const next = nextShowcaseSet();
-      next.forEach(it => { if (it.image) new Image().src = it.image; }); // warm the cache before the swap
-      const trio = document.getElementById('media-trio');
-      trio.classList.add('swapping');
+      const next = nextShowcaseItem();
+      if (next.image) new Image().src = next.image; // warm the cache before the fade
+      const tv = document.getElementById('media-tv');
+      tv.classList.add('swapping');
       setTimeout(() => {
         paintShowcase(next);
-        trio.classList.remove('swapping');
-      }, 280);
+        tv.classList.remove('swapping');
+      }, 450);
     }
 
     function initShowcase() {
-      const trio = document.getElementById('media-trio');
-      trio.innerHTML = [0, 1, 2].map(i => `<button class="mtile" data-slot="${i}"></button>`).join('');
-      paintShowcase(nextShowcaseSet());
+      const tv = document.getElementById('media-tv');
+      paintShowcase(nextShowcaseItem());
 
-      trio.addEventListener('click', (e) => {
-        const tile = e.target.closest('.mtile');
-        if (!tile) return;
-        const item = showcaseItems[Number(tile.dataset.slot)];
+      tv.addEventListener('click', (e) => {
+        if (!e.target.closest('.tv-screen')) return;
         // Opening a piece also points the library at its category
-        setLibrary(item.filter);
-        openLibraryItem(item);
+        setLibrary(showcaseItem.filter);
+        openLibraryItem(showcaseItem);
       });
-      trio.addEventListener('mouseenter', () => { showcasePaused = true; });
-      trio.addEventListener('mouseleave', () => { showcasePaused = false; });
+      tv.addEventListener('mouseenter', () => { showcasePaused = true; });
+      tv.addEventListener('mouseleave', () => { showcasePaused = false; });
       if (!REDUCED_MOTION) setInterval(rotateShowcase, SHOWCASE_MS);
     }
 
@@ -5158,10 +5172,6 @@ const quote = TERMINAL_QUOTES[quoteIdx];
       return {
         products: [...PRODUCTS],
         projects: [...PROJECTS],
-        hero: {
-          tagline: "A living record of what I build, write, and listen to.",
-          subline: "Building Warb, Libxndr and PokerAIO. Writing on software, politics, philosophy and music."
-        },
         // category: 'systemPrompts' or 'essays'. An essay: { id, title, preview, date, url, category: 'essays' }
         writing: [
           { id: 'sp-1', title: 'The Philosophical Operating System', preview: 'Deprogram your AI from token economics. Instill builder wisdom.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=01' },
@@ -5170,9 +5180,9 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=04' },
           { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=05' },
           // Essays: the product write-ups
-          { id: 'essay-warb', title: 'Warb: Building an Environment Around My Notes', preview: 'A knowledge workspace built from my own daily use.', date: '2026', category: 'essays', url: 'projects/warb.html' },
-          { id: 'essay-libxndr', title: 'Libxndr: The Question That Changed the Product', preview: 'It started as a way to get books onto my Kindle.', date: '2026', category: 'essays', url: 'projects/libxndr.html' },
-          { id: 'essay-pokeraio', title: 'PokerAIO / PokerGeek.ai: Nine Months Inside a Weekend Project', preview: 'A weekend idea that became nine months of work.', date: '2026', category: 'essays', url: 'projects/pokeraio.html' },
+          { id: 'essay-warb', title: 'Warb: PKM tool with AI', preview: 'A knowledge workspace built around typed notes, domains and an AI companion.', date: '2026', category: 'essays', url: 'projects/warb.html' },
+          { id: 'essay-libxndr', title: 'Libxndr: Book library and source finder', preview: 'A shared library of PDFs and a source finder.', date: '2026', category: 'essays', url: 'projects/libxndr.html' },
+          { id: 'essay-pokeraio', title: 'PokerAIO / PokerGeek.ai: Online poker with AI analysis', preview: 'Multiplayer and bot play, hand histories, and AI hand analysis.', date: '2026', category: 'essays', url: 'projects/pokeraio.html' },
           { id: 'essay-music', title: 'Great Software Is Like Great Music', preview: "What do Steve Jobs and Kanye have in common?", lines: ["What do Steve Jobs and Kanye have in common?", "DAWs put a studio in every bedroom. Vibe coding is doing it to software.", "Are the best ideas created, or received?", "Where does opportunity end and access begin?", "When anyone can make it, what's left is taste."], date: '2026', category: 'essays', inProgress: true }
         ],
         // Liked Media. `take`: a line of critique (library + popup). `tag`: a rating or status shown as a chip.
@@ -5299,8 +5309,8 @@ const quote = TERMINAL_QUOTES[quoteIdx];
         // Contact cards. Each picture list is tried in order; the first that loads is used.
         social: {
           // The X picture falls back to the live public one (the same lookup that worked before).
-          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['https://unavatar.io/x/walugen?fallback=false'], header: 'pics/x-header.jpg' },
-          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/instagram.png'] }
+          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['https://unavatar.io/x/walugen?fallback=false'], header: 'pics/x-header.jpg' },
+          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: '', avatar: ['pics/instagram.png']}
         },
         socialLinks: {
           instagram: { url: 'https://instagram.com/wwwaleedraza', icon: '📸', label: 'Instagram' },
@@ -5379,10 +5389,6 @@ const quote = TERMINAL_QUOTES[quoteIdx];
       initShowcase();
       renderSocialCards();
 
-      const tagline = document.querySelector('.hero-tagline');
-      const subline = document.querySelector('.hero-subline');
-      if (tagline) tagline.textContent = SITE_DATA.hero.tagline;
-      if (subline) subline.textContent = SITE_DATA.hero.subline;
 
       renderSocialLinks();
     }
