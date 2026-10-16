@@ -27,6 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="projects/gallery.css">
   
   <style>
     :root {
@@ -1240,8 +1241,7 @@
     /* iOS Safari specific fixes */
     @supports (-webkit-touch-callout: none) {
       /* Fix for iOS Safari 100vh issue */
-      .popup-overlay,
-      .product-popup {
+      .popup-overlay {
         min-height: -webkit-fill-available;
       }
       
@@ -2618,201 +2618,164 @@
     }
     
     /* ═══════════════════════════════════════════════════════════════════════
-       PRODUCT TRIANGLE CAROUSEL - Enlarged rotating display
+       PRODUCTS - three big cards with cycling screenshots
        ═══════════════════════════════════════════════════════════════════════ */
-    .product-carousel {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      perspective: 1200px;
-    }
-    
-    .product-triangle {
-      position: relative;
-      width: 100%;
-      max-width: 500px;
-      height: 340px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .product-tile {
-      position: absolute;
-      width: 180px;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 3px solid rgba(255, 255, 255, 0.08);
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.5;
-      transform: scale(0.8);
-      z-index: 1;
-    }
-    
-    /* Triangle positions - spread out more */
-    .product-tile:nth-child(1) { /* Top */
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%) scale(0.8);
-    }
-    .product-tile:nth-child(2) { /* Bottom Left */
-      bottom: 0;
-      left: 0;
-      transform: scale(0.8);
-    }
-    .product-tile:nth-child(3) { /* Bottom Right */
-      bottom: 0;
-      right: 0;
-      transform: scale(0.8);
-    }
-    
-    /* Active/highlighted product */
-    .product-tile.active {
-      opacity: 1;
-      transform: scale(1.15) translateY(-15px);
-      border-color: var(--orange);
-      box-shadow: 0 20px 60px rgba(255, 107, 53, 0.5), 0 0 40px rgba(255, 107, 53, 0.25);
-      z-index: 10;
-    }
-    .product-tile.active:nth-child(1) {
-      transform: translateX(-50%) scale(1.15) translateY(-15px);
-    }
-    
-    .product-tile:hover:not(.active) {
-      opacity: 0.85;
-      border-color: var(--teal);
-      transform: scale(0.9);
-    }
-    .product-tile:nth-child(1):hover:not(.active) {
-      transform: translateX(-50%) scale(0.9);
-    }
-    
-    .product-image {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 12px;
-      border: 2px solid var(--border);
-    }
-    
-    .product-name {
-      font-size: 16px;
-      color: var(--ice-white);
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-weight: 700;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      text-align: center;
-    }
-    
-    /* Carousel indicators */
-    .product-indicators {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    
-    .product-indicator {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--border);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .product-indicator.active {
-      background: var(--orange);
-      box-shadow: 0 0 15px var(--orange);
-    }
-    
-    .product-indicator:hover:not(.active) {
-      background: var(--teal);
-    }
-    
-    /* Project grid - fluid auto-fit with scroll */
-    .project-grid {
+
+    .pcards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-      gap: clamp(10px, 2vw, 16px);
-      width: 100%;
-      max-height: 600px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(18px, 2.4vw, 32px);
+      align-items: stretch;
     }
-    
-    .project-grid::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    .project-grid::-webkit-scrollbar-track {
-      background: var(--bg);
-      border-radius: 4px;
-    }
-    
-    .project-grid::-webkit-scrollbar-thumb {
-      background: var(--teal);
-      border-radius: 4px;
-    }
-    
-    .project-grid::-webkit-scrollbar-thumb:hover {
-      background: var(--orange);
-    }
-    
-    .project-tile {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: clamp(12px, 2.5vw, 16px);
-      transition: all 0.2s ease;
+
+    .pcard {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px 16px 20px;
       min-width: 0;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
     }
-    
-    .project-tile:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--teal);
+
+    .pcard:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(0, 212, 170, 0.6);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55), 0 0 36px rgba(0, 212, 170, 0.12);
     }
-    
-    .project-name {
-      font-size: clamp(15px, 3vw, 19px);
-      color: var(--teal);
-      margin-bottom: clamp(4px, 1vw, 6px);
-      line-height: 1.3;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-      font-weight: 600;
+
+    .pcard-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .pcard-name {
+      color: var(--ice-white);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 700;
       letter-spacing: -0.01em;
-    }
-    
-    .project-desc {
-      font-size: clamp(13px, 2.5vw, 15px);
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    
-    .project-link {
-      display: inline-block;
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--orange);
       text-decoration: none;
     }
-    
-    .project-link:hover {
-      text-decoration: underline;
+
+    .pcard-name:hover { color: var(--orange); text-shadow: 0 0 18px var(--orange-glow); }
+
+    .pcard-pill {
+      color: var(--teal);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
     }
-    
-    /* OLD ARTS GRID STYLES REMOVED - Using new reading-card, music-card, arts-card structure */
-    
+
+    .pcard-pill.is-paused { color: var(--orange); }
+
+    .pcard-title {
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+
+    .pcard-title:hover { text-decoration: underline; }
+
+    .pcard-copy {
+      color: var(--text-dim);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .pcard-status {
+      padding-left: 10px;
+      border-left: 2px solid var(--teal);
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .pcard-status.is-paused { border-left-color: var(--orange); }
+
+    .pcard-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .pcard-btn {
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .pcard-btn.primary { background: var(--orange); color: #000; }
+    .pcard-btn.primary:hover { box-shadow: 0 0 22px var(--orange-glow); }
+    .pcard-btn.ghost { border: 1px solid var(--teal); color: var(--teal); }
+    .pcard-btn.ghost:hover { background: var(--teal); color: #000; }
+
+    /* Other repos sit beside Contact */
+    .row-split {
+      display: grid;
+      grid-template-columns: 1fr 2.4fr;
+      gap: clamp(28px, 4vw, 64px);
+      align-items: start;
+    }
+
+    .row-split .section { padding: 0; max-width: none; margin: 0; min-width: 0; }
+    .section-title-sm { font-size: clamp(20px, 2.6vw, 30px); }
+
+    @media (max-width: 1100px) {
+      .row-split { grid-template-columns: 1fr; }
+    }
+
+    .repo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      columns: 1;
+    }
+
+    .repo-list li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+    }
+
+    .repo-list li::before {
+      content: '›';
+      color: var(--teal);
+      margin-right: 10px;
+    }
+
+    .repo-list a {
+      flex: 1;
+      color: var(--ice-white);
+      text-decoration: none;
+    }
+
+    .repo-list a:hover { color: var(--teal); }
+    .repo-list span { color: var(--text-muted); font-size: 11px; }
+
     /* ═══════════════════════════════════════════════════════════════════════
        WRITING SECTION
        ═══════════════════════════════════════════════════════════════════════ */
@@ -3310,8 +3273,9 @@
 
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 0.85fr 1fr 1fr;
       gap: 18px;
+      align-items: stretch;
     }
 
     .email-card {
@@ -3597,32 +3561,6 @@
       transform: translateY(0);
     }
     
-    .product-status {
-      margin-top: 6px;
-      text-align: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--teal);
-    }
-
-    .product-image-text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at 30% 30%, var(--orange-glow), transparent 60%), var(--card);
-      color: var(--ice-white);
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(14px, 1.6vw, 26px);
-      letter-spacing: 0.1em;
-      overflow: hidden;
-      text-shadow: 0 0 20px var(--orange-glow);
-    }
-
-    .product-status-text { color: var(--teal); }
-
     /* ═══════════════════════════════════════════════════════════════════════
        FOOTER
        ═══════════════════════════════════════════════════════════════════════ */
@@ -3717,111 +3655,6 @@
     /* ═══════════════════════════════════════════════════════════════════════
        MOBILE
        ═══════════════════════════════════════════════════════════════════════ */
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       PRODUCT TERMINAL POPUP
-       ═══════════════════════════════════════════════════════════════════════ */
-    .product-popup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      backdrop-filter: blur(5px);
-    }
-    
-    .product-popup-terminal {
-      background: #0a0a0a;
-      border: 3px solid var(--orange);
-      box-shadow: 0 0 60px rgba(255, 107, 53, 0.4), inset 0 0 30px rgba(0,0,0,0.8);
-      width: 90%;
-      max-width: 500px;
-      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-    }
-    
-    .product-popup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      background: linear-gradient(135deg, var(--orange), #ff8f5a);
-      border-bottom: 2px solid var(--orange);
-    }
-    
-    .product-popup-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #000;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    
-    .product-popup-close {
-      background: transparent;
-      border: 2px solid #000;
-      color: #000;
-      padding: 6px 12px;
-      font-family: inherit;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .product-popup-close:hover {
-      background: #000;
-      color: var(--orange);
-    }
-    
-    .product-popup-body {
-      padding: 24px;
-    }
-    
-    .product-popup-image {
-      width: 100%;
-      height: 150px;
-      background-size: cover;
-      background-position: center;
-      border: 2px solid var(--border);
-      margin-bottom: 20px;
-    }
-    
-    .product-popup-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .product-link-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .product-link-label {
-      font-size: 11px;
-      color: var(--orange);
-      font-weight: 700;
-      min-width: 50px;
-      text-transform: uppercase;
-    }
-    
-    .product-link {
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 13px;
-      word-break: break-all;
-      transition: color 0.2s;
-    }
-    
-    .product-link:hover {
-      color: var(--orange);
-      text-decoration: underline;
-    }
     
     /* Small screens no longer apply - fixed layout at 900px min-width */
     
@@ -3975,51 +3808,46 @@
     </div>
   </aside>
 
-  <!-- [1] BUILD | [2] CONTACT - split the row -->
-  <div class="section-pair">
+  <!-- [1] BUILD: the three products take the row -->
+  <div class="section-full">
     <section class="section" id="development">
       <div class="section-header">
-        <div class="section-tag">[1] DEVELOPMENT PORTFOLIO</div>
-        <h2 class="section-title">▶ PRODUCTS & PROJECTS</h2>
+        <div class="section-tag">[1] BUILD</div>
+        <h2 class="section-title">▶ PRODUCTS</h2>
       </div>
-      
-      <div class="dev-showcase">
-        <!-- PRODUCTS -->
-        <div>
-          <div class="dev-section-header">
-            <div class="dev-section-title">★ PRODUCTS</div>
-            <div class="dev-section-count">3 ACTIVE</div>
-          </div>
-          <div class="product-carousel">
-            <div class="product-triangle" id="products-grid"></div>
-          </div>
-          <div class="product-indicators" id="product-indicators"></div>
-        </div>
-        
-        <!-- PROJECTS -->
-        <div>
-          <div class="dev-section-header" style="border-color: var(--teal);">
-            <div class="dev-section-title" style="color: var(--teal);">◆ PROJECTS</div>
-            <div class="dev-section-count" id="projects-count" style="border-color: var(--teal); color: var(--teal);"></div>
-          </div>
-          <div class="project-grid" id="projects-grid"></div>
-        </div>
+      <div class="pcards" id="products-grid">
+        <!-- Rendered from SITE_DATA.products via renderProducts() -->
       </div>
     </section>
+  </div>
 
-    <section class="section" id="contact">
-      <div class="section-header" style="border-color: var(--orange);">
-        <div class="section-tag">[2] REACH ME</div>
-        <h2 class="section-title" style="color: var(--orange);">▶ CONTACT</h2>
-      </div>
-      <div class="contact-grid" id="contact-grid">
-        <div class="contact-card email-card">
-          <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
-          <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
+  <!-- OTHER REPOS | [2] CONTACT -->
+  <div class="section-full">
+    <div class="row-split">
+      <section class="section" id="repos">
+        <div class="section-header" style="border-color: var(--teal);">
+          <div class="section-tag">[1.1] ARCHIVE</div>
+          <h2 class="section-title section-title-sm" style="color: var(--teal);">▶ OTHER REPOS</h2>
         </div>
-        <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
-      </div>
-    </section>
+        <ul class="repo-list" id="repo-list">
+          <!-- Rendered from SITE_DATA.projects via renderProjects() -->
+        </ul>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header" style="border-color: var(--orange);">
+          <div class="section-tag">[2] REACH ME</div>
+          <h2 class="section-title section-title-sm" style="color: var(--orange);">▶ CONTACT</h2>
+        </div>
+        <div class="contact-grid" id="contact-grid">
+          <div class="contact-card email-card">
+            <a href="mailto:waleedraza1211@gmail.com?subject=*AUTOMATE%20REPLY*%20-%20Keep%20that%20for%20quick,%20safe,%20llm%20response,%20add%20tags%20via:%20*tag*&body=Hi%20Waleed,%20%20I'm%20reaching%20out%20from%20your%20portfolio%20<-(Keep%20exactly%20for%20an%20automated%20response)" class="contact-button">✉ EMAIL ME</a>
+            <a href="mailto:waleedraza1211@gmail.com" class="email-address">waleedraza1211@gmail.com</a>
+          </div>
+          <!-- X and Instagram cards rendered from SITE_DATA.social via renderSocialCards() -->
+        </div>
+      </section>
+    </div>
   </div>
 
   <!-- [3] MEDIA - mirrors BUILD: library list left, rotating showcase right -->
@@ -4072,29 +3900,9 @@
     </div>
   </div>
 
-  <!-- PRODUCT TERMINAL POPUP -->
-  <div id="product-popup" class="product-popup" style="display:none;">
-    <div class="product-popup-terminal">
-      <div class="product-popup-header">
-        <span class="product-popup-title" id="product-popup-title">PRODUCT_NAME</span>
-        <button class="product-popup-close" id="product-popup-close">× CLOSE</button>
-      </div>
-      <div class="product-popup-body">
-        <div class="product-popup-image" id="product-popup-image"></div>
-        <div class="product-popup-links">
-          <div class="product-link-row">
-            <span class="product-link-label">SITE:</span>
-            <a href="#" id="product-site-link" class="product-link" target="_blank">—</a>
-          </div>
-          <div class="product-link-row">
-            <span class="product-link-label">STATUS:</span>
-            <span id="product-status-text" class="product-status-text">—</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- Product galleries (images listed in projects/media.js, built by tools/build_media.py) -->
+  <script src="projects/media.js"></script>
+  <script src="projects/gallery.js"></script>
   <script>
     // ═══════════════════════════════════════════════════════════════════════
     // ASCII LETTER DEFINITIONS
@@ -4676,14 +4484,35 @@
     }
     
     // ═══════════════════════════════════════════════════════════════════════
-    // PRODUCTS & PROJECTS DATA
+    // PRODUCTS & OTHER REPOS
     // ═══════════════════════════════════════════════════════════════════════
-    
-    // Products data - FOCUSED SHELF with links
+
+    // The three products. Each has a write-up page in projects/ and a screenshot gallery.
     const PRODUCTS = [
-      { id: 'warb', name: 'Warb', image: '', imageBase: 'pics/warb', site: 'https://warbspace.com', status: 'Product refinement' },
-      { id: 'libxndr', name: 'Libxndr', image: 'pics/libraryofalexandria.png', site: 'https://libxndr.com', status: 'Final deployment stages' },
-      { id: 'pokeraio', name: 'PokerAIO', image: 'pics/PoekrGeek.ai.png', site: 'https://pokeraio.com', status: 'Release maintenance' }
+      {
+        id: 'warb', name: 'Warb', page: 'projects/warb.html',
+        title: 'Building an Environment Around My Notes',
+        copy: 'A knowledge workspace built around typed notes, domain charters, and an AI companion that can work with the context you keep. Built from my own daily use.',
+        pill: '● LIVE · ABOUT 70% COMPLETE',
+        status: 'Live and publicly usable, with version 2.0 in its last release stages. I use it daily. Broader adoption is not yet established.',
+        sites: [{ label: 'warbspace.com', url: 'https://warbspace.com' }]
+      },
+      {
+        id: 'libxndr', name: 'Libxndr', page: 'projects/libxndr.html',
+        title: 'The Question That Changed the Product',
+        copy: 'A library and sourcing tool: find books as PDFs, open them at their original source, and add what you find to a shared collection. It started as a way to get books onto my Kindle.',
+        pill: '● LIVE',
+        status: 'Live and publicly usable. Next: asking a question and being sent to the passage in the book that answers it.',
+        sites: [{ label: 'libxndr.com', url: 'https://libxndr.com' }]
+      },
+      {
+        id: 'pokeraio', name: 'PokerAIO', page: 'projects/pokeraio.html', paused: true,
+        title: 'Nine Months Inside a Weekend Project',
+        copy: 'An online poker project with multiplayer and bot play, hand histories, social features, and AI hand analysis. A weekend idea that became nine months of work.',
+        pill: '● IN MAINTENANCE',
+        status: 'Previously used by friends and tested in a small university poker-club beta. Not currently presented as a publicly available game; performance and feature work remain.',
+        sites: [{ label: 'pokeraio.com', url: 'https://pokeraio.com' }, { label: 'pokergeek.ai', url: 'https://pokergeek.ai' }]
+      }
     ];
 
     const PROJECTS = [
@@ -4701,135 +4530,39 @@
       { id: 'hackfaxsite', name: 'HackFax', repo: 'https://github.com/WaleedaRaza/hackfaxsite' }
     ];
 
-    // Product carousel state
-    let currentProductIdx = 0;
-    let productRotationInterval = null;
-    
-    // Render products with triangle carousel
+    // Big product cards; each gallery cycles on its own, staggered so they never flip together
     function renderProducts() {
       const grid = document.getElementById('products-grid');
-      const indicators = document.getElementById('product-indicators');
-      if (!grid || !SITE_DATA.products || !SITE_DATA.products.length) return;
-      
-      // Render product tiles - use SITE_DATA.products (terminal is source of truth)
-      grid.innerHTML = SITE_DATA.products.map((p, idx) => `
-        <div class="product-tile ${idx === 0 ? 'active' : ''}" data-type="product" data-id="${p.id}" data-idx="${idx}">
-          ${p.image
-            ? `<div class="product-image" style="background-image: url('${p.image}');"></div>`
-            : `<div class="product-image product-image-text">${p.name.toUpperCase()}</div>`}
-          <div class="product-name">${p.name}</div>
-          ${p.status ? `<div class="product-status">● ${p.status}</div>` : ''}
-        </div>
+      if (!grid) return;
+      grid.innerHTML = SITE_DATA.products.map(p => `
+        <article class="pcard">
+          <div class="pcard-gallery"></div>
+          <div class="pcard-head">
+            <a class="pcard-name" href="${p.page}">${esc(p.name)}</a>
+            <span class="pcard-pill${p.paused ? ' is-paused' : ''}">${esc(p.pill)}</span>
+          </div>
+          <a class="pcard-title" href="${p.page}">${esc(p.title)}</a>
+          <p class="pcard-copy">${esc(p.copy)}</p>
+          <p class="pcard-status${p.paused ? ' is-paused' : ''}">${esc(p.status)}</p>
+          <div class="pcard-links">
+            <a class="pcard-btn primary" href="${p.page}">Read the write-up →</a>
+            ${p.sites.map(site => `<a class="pcard-btn ghost" href="${site.url}" target="_blank" rel="noopener">${esc(site.label)} ↗</a>`).join('')}
+          </div>
+        </article>
       `).join('');
-      
-      // Render indicators
-      if (indicators) {
-        indicators.innerHTML = SITE_DATA.products.map((p, idx) => `
-          <div class="product-indicator ${idx === 0 ? 'active' : ''}" data-idx="${idx}"></div>
-        `).join('');
-        
-        // Add click handlers to indicators
-        indicators.querySelectorAll('.product-indicator').forEach(ind => {
-          ind.addEventListener('click', () => {
-            setActiveProduct(parseInt(ind.dataset.idx));
-            resetProductRotation();
-          });
-        });
-      }
-      
-      // Add click handlers to tiles - open popup on click
-      grid.querySelectorAll('.product-tile').forEach(tile => {
-        tile.addEventListener('click', () => {
-          const idx = parseInt(tile.dataset.idx);
-          setActiveProduct(idx);
-          resetProductRotation();
-          openProductPopup(idx);
-        });
+      grid.querySelectorAll('.pcard').forEach((card, i) => {
+        if (window.Gallery) Gallery.mount(card.querySelector('.pcard-gallery'), SITE_DATA.products[i].id, { interval: 3600, delay: i * 1200, hoverRoot: card });
       });
-      
-      // Start rotation
-      startProductRotation();
-      
-      // Setup product popup close
-      document.getElementById('product-popup-close').addEventListener('click', closeProductPopup);
-      document.getElementById('product-popup').addEventListener('click', (e) => {
-        if (e.target.id === 'product-popup') closeProductPopup();
-      });
-    }
-    
-    function openProductPopup(idx) {
-      if (!SITE_DATA.products || !SITE_DATA.products[idx]) return;
-      const product = SITE_DATA.products[idx];
-      const popup = document.getElementById('product-popup');
-      
-      document.getElementById('product-popup-title').textContent = product.name.toUpperCase();
-      const popupImage = document.getElementById('product-popup-image');
-      popupImage.style.backgroundImage = product.image ? `url('${product.image}')` : '';
-      popupImage.textContent = product.image ? '' : product.name.toUpperCase();
-      popupImage.classList.toggle('product-image-text', !product.image);
-
-      setProductLink(document.getElementById('product-site-link'), product.site, '— coming soon');
-      document.getElementById('product-status-text').textContent = product.status || '—';
-
-      popup.style.display = 'flex';
     }
 
-    // A real URL becomes a link; anything else (a status, "private") shows as plain text.
-    function setProductLink(el, value, fallback) {
-      const isUrl = /^https?:\/\//.test(value || '');
-      if (isUrl) {
-        el.href = value;
-        el.textContent = value.replace(/^https?:\/\/(github\.com\/)?/, '');
-      } else {
-        el.removeAttribute('href');
-      }
-      if (!isUrl) el.textContent = value || fallback;
-    }
-    
-    function closeProductPopup() {
-      document.getElementById('product-popup').style.display = 'none';
-    }
-    
-    function setActiveProduct(idx) {
-      currentProductIdx = idx;
-      const tiles = document.querySelectorAll('.product-tile');
-      const indicators = document.querySelectorAll('.product-indicator');
-      
-      tiles.forEach((tile, i) => {
-        tile.classList.toggle('active', i === idx);
-      });
-      
-      indicators.forEach((ind, i) => {
-        ind.classList.toggle('active', i === idx);
-      });
-    }
-    
-    function startProductRotation() {
-      if (productRotationInterval) clearInterval(productRotationInterval);
-      if (!SITE_DATA.products || !SITE_DATA.products.length) return;
-      productRotationInterval = setInterval(() => {
-        currentProductIdx = (currentProductIdx + 1) % SITE_DATA.products.length;
-        setActiveProduct(currentProductIdx);
-      }, 3000); // Rotate every 3 seconds
-    }
-    
-    function resetProductRotation() {
-      startProductRotation();
-    }
-    
     function renderProjects() {
-      const grid = document.getElementById('projects-grid');
-      if (!grid || !SITE_DATA.projects || !SITE_DATA.projects.length) return;
-      grid.innerHTML = SITE_DATA.projects.map((p, idx) => `
-        <div class="project-tile" data-type="project" data-id="${p.id}" data-idx="${idx}">
-          <div class="project-name">${p.name}</div>
-          <a href="${p.repo}" target="_blank" rel="noopener" class="project-link">GitHub →</a>
-        </div>
+      const list = document.getElementById('repo-list');
+      if (!list) return;
+      list.innerHTML = SITE_DATA.projects.map(p => `
+        <li><a href="${p.repo}" target="_blank" rel="noopener">${esc(p.name)}</a><span>GitHub ↗</span></li>
       `).join('');
-      const count = document.getElementById('projects-count');
-      if (count) count.textContent = `${SITE_DATA.projects.length} REPOS`;
     }
-    
+
     // Escape text that goes into HTML
     function esc(str) {
       return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -4837,10 +4570,10 @@
 
     const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Photos live in pics/. Give a base name ('pics/warb') and any of these extensions works.
-    // A full https:// address is used as given, so it can serve as a fallback.
+    // Photos live in pics/. A path with an extension (or a full https:// address) is used as given;
+    // a bare name ('pics/warb') tries each of these extensions.
     const IMG_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
-    const withExts = (base) => /^https?:\/\//.test(base) ? [base] : IMG_EXTS.map(ext => `${base}.${ext}`);
+    const withExts = (base) => /^https?:\/\/|\.[a-z0-9]{3,4}$/i.test(base) ? [base] : IMG_EXTS.map(ext => `${base}.${ext}`);
 
     function probeImage(src) {
       return new Promise(resolve => {
@@ -4869,22 +4602,6 @@
       });
     }
 
-    function resolveProductImages() {
-      SITE_DATA.products.forEach((p, idx) => {
-        if (p.image || !p.imageBase) return;
-        firstImage([p.imageBase]).then(src => {
-          if (!src) return;
-          p.image = src;
-          const el = document.querySelector(`.product-tile[data-idx="${idx}"] .product-image`);
-          if (el) {
-            el.style.backgroundImage = `url('${src}')`;
-            el.classList.remove('product-image-text');
-            el.textContent = '';
-          }
-        });
-      });
-    }
-
     // ═══ MEDIA LIBRARY - every item normalised to one shape ═══
     // group -> filters; each filter knows its label and how to read its items
     const LIBRARY = [
@@ -4905,7 +4622,7 @@
     function buildLibrary() {
       const m = SITE_DATA.media, w = SITE_DATA.writing;
       const media = (list, filter, sub) => list.map(x => ({ filter, group: 'media', title: x.title, sub: x[sub], image: x.cover, take: x.take }));
-      const writing = (cat, filter) => w.filter(x => x.category === cat).map(x => ({ filter, group: 'writing', title: x.title, sub: x.preview, url: x.url }));
+      const writing = (cat, filter) => w.filter(x => x.category === cat).map(x => ({ filter, group: 'writing', title: x.title, sub: x.preview, url: x.url, newTab: cat === 'systemPrompts' }));
       LIB_ITEMS = {
         albums: media(m.albums, 'albums', 'artist'),
         books: media(m.books, 'books', 'author'),
@@ -4921,7 +4638,11 @@
     }
 
     function openLibraryItem(item) {
-      if (item.url) { window.open(item.url, '_blank', 'noopener'); return; }
+      if (item.url) {
+        if (item.newTab) window.open(item.url, '_blank', 'noopener');
+        else location.href = item.url;
+        return;
+      }
       openPopup({
         title: esc(item.title),
         subtitle: `${esc(item.kind)} · ${esc(item.sub)}`,
@@ -5389,7 +5110,11 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           { id: 'sp-2', title: 'The Learning Protocol', preview: 'Actually learn while vibe coding. Teaching over solving.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=02' },
           { id: 'sp-3', title: 'Vision-Based Planning', preview: 'See the whole system before touching the parts. 90% planning.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=03' },
           { id: 'sp-4', title: 'The Flowchart Mind', preview: 'Think in flows, not features. Illuminate causality.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=04' },
-          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=05' }
+          { id: 'sp-5', title: 'The 90/10 Doctrine', preview: 'The discipline of strategic restraint. Code less, ship more.', date: '2026', category: 'systemPrompts', url: 'writing/system-prompts/viewer.html?doc=05' },
+          // Essays: the product write-ups
+          { id: 'essay-warb', title: 'Warb: Building an Environment Around My Notes', preview: 'A knowledge workspace built from my own daily use.', date: '2026', category: 'essays', url: 'projects/warb.html' },
+          { id: 'essay-libxndr', title: 'Libxndr: The Question That Changed the Product', preview: 'It started as a way to get books onto my Kindle.', date: '2026', category: 'essays', url: 'projects/libxndr.html' },
+          { id: 'essay-pokeraio', title: 'PokerAIO / PokerGeek.ai: Nine Months Inside a Weekend Project', preview: 'A weekend idea that became nine months of work.', date: '2026', category: 'essays', url: 'projects/pokeraio.html' }
         ],
         // Liked Media. Fill `take` with a line of critique; it shows in the library and in the popup.
         media: {
@@ -5504,11 +5229,11 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "Shutter Island", kind: "Thriller · Film", cover: "", take: "" }
           ]
         },
-        // Contact cards. Pictures come from pics/ (any of .jpg .jpeg .png .webp); .jpg is tried before .png, so a real photo overrides a generated one.
+        // Contact cards. Each picture list is tried in order; the first that loads is used.
         social: {
           // The X picture falls back to the live public one (the same lookup that worked before).
-          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/x-avatar', 'https://unavatar.io/x/walugen?fallback=false'], header: 'pics/x-header' },
-          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/instagram'] }
+          x: { handle: 'walugen', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['https://unavatar.io/x/walugen?fallback=false'], header: 'pics/x-header.jpg' },
+          instagram: { handle: 'wwwaleedraza', name: 'Waleed A. Raza', initials: 'WR', bio: 'Amor Fati', avatar: ['pics/instagram.png'] }
         },
         socialLinks: {
           instagram: { url: 'https://instagram.com/wwwaleedraza', icon: '📸', label: 'Instagram' },
@@ -5581,7 +5306,6 @@ const quote = TERMINAL_QUOTES[quoteIdx];
       SITE_DATA = getDefaultSiteData();
 
       renderProducts();
-      resolveProductImages();
       renderProjects();
       buildLibrary();
       initLibrary();
