@@ -190,7 +190,7 @@
        ═══════════════════════════════════════════════════════════════════════ */
     
     .hero {
-      min-height: clamp(400px, 50vh, 600px);
+      min-height: clamp(260px, 34vh, 400px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -225,7 +225,7 @@
       gap: 8px;
       margin-bottom: clamp(16px, 3vw, 32px);
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(20px, 3vw, 28px);
+      font-size: clamp(8px, 0.8vw, 11px);
       line-height: 1.1;
       white-space: pre;
       position: relative;
@@ -242,7 +242,7 @@
     /* Desktop - keep name on one line, bigger size */
     @media (min-width: 768px) {
       .hero-name {
-        font-size: clamp(20px, 3vw, 28px);
+        font-size: clamp(8px, 0.8vw, 11px);
         flex-wrap: wrap;
       }
     }
@@ -3126,6 +3126,39 @@
       line-height: 1.4;
     }
 
+    .lib-row-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 6px;
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      vertical-align: 2px;
+      white-space: nowrap;
+    }
+    
+    [data-lines] { transition: opacity 0.3s ease; }
+    [data-lines].line-out { opacity: 0; }
+    
+    .popup-lines {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px;
+      display: grid;
+      gap: 10px;
+    }
+    
+    .popup-lines li {
+      padding-left: 16px;
+      border-left: 2px solid var(--orange);
+      color: var(--ice-white);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.4;
+    }
+    
     .lib-row-take {
       color: var(--text-dim);
       font-family: 'Crimson Pro', Georgia, serif;
@@ -3813,7 +3846,7 @@
     <section class="section" id="development">
       <div class="section-header">
         <div class="section-tag">[1] BUILD</div>
-        <h2 class="section-title">▶ PRODUCTS</h2>
+        <h2 class="section-title">▶ PROJECTS</h2>
       </div>
       <div class="pcards" id="products-grid">
         <!-- Rendered from SITE_DATA.products via renderProducts() -->
@@ -4621,8 +4654,11 @@
 
     function buildLibrary() {
       const m = SITE_DATA.media, w = SITE_DATA.writing;
-      const media = (list, filter, sub) => list.map(x => ({ filter, group: 'media', title: x.title, sub: x[sub], image: x.cover, take: x.take }));
-      const writing = (cat, filter) => w.filter(x => x.category === cat).map(x => ({ filter, group: 'writing', title: x.title, sub: x.preview, url: x.url, newTab: cat === 'systemPrompts' }));
+      const media = (list, filter, sub) => list.map(x => ({ filter, group: 'media', title: x.title, sub: x[sub], image: x.cover, take: x.take, tag: x.tag }));
+      const writing = (cat, filter) => w.filter(x => x.category === cat).map(x => ({
+        filter, group: 'writing', title: x.title, sub: x.preview, url: x.url, newTab: cat === 'systemPrompts',
+        lines: x.lines, inProgress: x.inProgress, tag: x.inProgress ? 'IN PROGRESS' : undefined
+      }));
       LIB_ITEMS = {
         albums: media(m.albums, 'albums', 'artist'),
         books: media(m.books, 'books', 'author'),
@@ -4643,9 +4679,18 @@
         else location.href = item.url;
         return;
       }
+      if (item.inProgress) {
+        openPopup({
+          title: esc(item.title),
+          subtitle: 'ESSAY · IN PROGRESS',
+          content: `<ul class="popup-lines">${item.lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+                    <p class="popup-take">Still being written.</p>`
+        });
+        return;
+      }
       openPopup({
         title: esc(item.title),
-        subtitle: `${esc(item.kind)} · ${esc(item.sub)}`,
+        subtitle: `${esc(item.kind)}${item.tag ? ' · ' + esc(item.tag) : ''} · ${esc(item.sub)}`,
         content: `${item.image ? `<img src="${item.image}" alt="" class="popup-cover">` : ''}
                   ${item.take ? `<p class="popup-take">${esc(item.take)}</p>` : ''}`
       });
@@ -4673,10 +4718,10 @@
         <button class="lib-row" data-idx="${idx}">
           ${it.image
             ? `<img src="${it.image}" alt="" class="lib-thumb lib-thumb-${it.filter}" loading="lazy">`
-            : `<span class="lib-thumb lib-thumb-glyph">${it.group === 'writing' ? '◈' : '▶'}</span>`}
+            : `<span class="lib-thumb lib-thumb-glyph">${it.inProgress ? '◌' : it.group === 'writing' ? '◈' : '▶'}</span>`}
           <span class="lib-row-text">
-            <span class="lib-row-title">${esc(it.title)}</span>
-            <span class="lib-row-sub">${esc(it.sub)}</span>
+            <span class="lib-row-title">${esc(it.title)}${it.tag ? ` <span class="lib-row-tag">${esc(it.tag)}</span>` : ''}</span>
+            <span class="lib-row-sub"${it.lines ? ` data-lines="${esc(JSON.stringify(it.lines))}"` : ''}>${esc(it.sub)}</span>
             ${it.take ? `<span class="lib-row-take">${esc(it.take)}</span>` : ''}
           </span>
           ${it.url ? '<span class="lib-row-go">→ Read</span>' : ''}
@@ -4692,8 +4737,20 @@
       renderLibrary();
     }
 
+    // Pieces still being written cycle through their lines
+    function rotateLines() {
+      document.querySelectorAll('[data-lines]').forEach(el => {
+        const lines = JSON.parse(el.dataset.lines);
+        const i = (Number(el.dataset.i || 0) + 1) % lines.length;
+        el.dataset.i = i;
+        el.classList.add('line-out');
+        setTimeout(() => { el.textContent = lines[i]; el.classList.remove('line-out'); }, 300);
+      });
+    }
+    
     function initLibrary() {
       renderLibrary();
+      if (!REDUCED_MOTION) setInterval(rotateLines, 3200);
       document.getElementById('library').addEventListener('click', (e) => {
         const groupBtn = e.target.closest('.lib-group');
         const chip = e.target.closest('.lib-chip');
@@ -4735,11 +4792,12 @@
       const art = it.image
         ? `<span class="mtile-bg" style="background-image:url('${it.image}')"></span>
            <span class="mtile-art mtile-art-${it.filter}" style="background-image:url('${it.image}')"></span>`
-        : `<span class="mtile-quote">${esc(it.filter === 'prompts' ? 'A system prompt for any LLM code editor.' : it.sub)}</span>`;
+        : `<span class="mtile-quote">${esc(it.filter === 'prompts' ? 'A system prompt for any LLM code editor.'
+            : it.lines ? it.lines[Math.floor(Math.random() * it.lines.length)] : it.sub)}</span>`;
       return `${art}
-        <span class="mtile-label mtile-label-${it.group}">${esc(it.kind)}</span>
+        <span class="mtile-label mtile-label-${it.group}">${esc(it.kind)}${it.tag ? ' · ' + esc(it.tag) : ''}</span>
         <span class="mtile-title">${esc(it.title)}</span>
-        ${it.image ? `<span class="mtile-sub">${esc(it.sub)}</span>` : '<span class="mtile-sub">→ Read</span>'}`;
+        <span class="mtile-sub">${it.image ? esc(it.sub) : it.inProgress ? 'Still being written' : '→ Read'}</span>`;
     }
 
     function paintShowcase(set) {
@@ -5114,9 +5172,10 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           // Essays: the product write-ups
           { id: 'essay-warb', title: 'Warb: Building an Environment Around My Notes', preview: 'A knowledge workspace built from my own daily use.', date: '2026', category: 'essays', url: 'projects/warb.html' },
           { id: 'essay-libxndr', title: 'Libxndr: The Question That Changed the Product', preview: 'It started as a way to get books onto my Kindle.', date: '2026', category: 'essays', url: 'projects/libxndr.html' },
-          { id: 'essay-pokeraio', title: 'PokerAIO / PokerGeek.ai: Nine Months Inside a Weekend Project', preview: 'A weekend idea that became nine months of work.', date: '2026', category: 'essays', url: 'projects/pokeraio.html' }
+          { id: 'essay-pokeraio', title: 'PokerAIO / PokerGeek.ai: Nine Months Inside a Weekend Project', preview: 'A weekend idea that became nine months of work.', date: '2026', category: 'essays', url: 'projects/pokeraio.html' },
+          { id: 'essay-music', title: 'Great Software Is Like Great Music', preview: "What do Steve Jobs and Kanye have in common?", lines: ["What do Steve Jobs and Kanye have in common?", "DAWs put a studio in every bedroom. Vibe coding is doing it to software.", "Are the best ideas created, or received?", "Where does opportunity end and access begin?", "When anyone can make it, what's left is taste."], date: '2026', category: 'essays', inProgress: true }
         ],
-        // Liked Media. Fill `take` with a line of critique; it shows in the library and in the popup.
+        // Liked Media. `take`: a line of critique (library + popup). `tag`: a rating or status shown as a chip.
         media: {
           albums: [
             { artist: "Kanye West", title: "The College Dropout", cover: "covers/Kanyewest_collegedropout.jpg", take: "" },
@@ -5188,7 +5247,9 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { artist: "Pink Floyd", title: "The Dark Side of the Moon", cover: "covers/hi-res-album-cover-art-for-pink-floyd-the-dark-side-of-the-v0-knls4moz18la1.jpg", take: "" }
           ],
           books: [
-            { title: "The Book of Five Rings", author: "Miyamoto Musashi", cover: "bookcovers/5rings.jpg", take: "" },
+            { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", cover: "pics/made/slaughterhouse-five.webp", tag: "READING NOW", take: "" },
+            { title: "The Creative Act", author: "Rick Rubin", cover: "pics/made/the-creative-act.webp", take: "" },
+{ title: "The Book of Five Rings", author: "Miyamoto Musashi", cover: "bookcovers/5rings.jpg", take: "" },
             { title: "The Almanack of Naval Ravikant", author: "Eric Jorgenson", cover: "bookcovers/almack_naval.jpg", take: "" },
             { title: "An Unquiet Mind", author: "Kay Redfield Jamison", cover: "bookcovers/An_Unquiet_Mind.jpg", take: "" },
             { title: "Code Complete", author: "Steve McConnell", cover: "bookcovers/Code_Complete_1st_edition.jpg", take: "" },
@@ -5221,7 +5282,13 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "The Software Engineer's Guidebook", author: "Gergely Orosz", cover: "bookcovers/sweguide.jpg", take: "" }
           ],
           screen: [
-            { title: "Attack on Titan", kind: "Anime · Series", cover: "pics/Eren_saying_freedom.png", take: "" },
+            { title: "Dune", kind: "Film · 2021", cover: "pics/made/dune.webp", tag: "★ 5/5", take: "" },
+            { title: "Dune: Part Two", kind: "Film · 2024", cover: "pics/made/dune-part-two.webp", tag: "★ 5/5", take: "" },
+            { title: "The Fellowship of the Ring", kind: "Film · 2001", cover: "pics/made/fellowship-of-the-ring.webp", tag: "★ 4.5/5", take: "" },
+            { title: "The American War Machine, Explained", kind: "YouTube · Johnny Harris", cover: "pics/made/american-war-machine.webp", take: "" },
+            { title: "The Greatest Season in Baseball History", kind: "YouTube · Baseball Doesn't Exist", cover: "pics/made/greatest-season-baseball.webp", take: "" },
+            { title: "Dr. K", kind: "YouTube · HealthyGamerGG", cover: "pics/made/dr-k.webp", take: "" },
+{ title: "Attack on Titan", kind: "Anime · Series", cover: "pics/Eren_saying_freedom.png", take: "" },
             { title: "Jujutsu Kaisen", kind: "Anime · Series", cover: "pics/gojo.png", take: "" },
             { title: "One Battle After Another", kind: "Film", cover: "pics/One_Battle_After_Another.jpg", take: "" },
             { title: "Severance", kind: "Thriller · Series", cover: "", take: "" },
