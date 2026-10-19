@@ -4,7 +4,7 @@ Turn the screenshot folders into web-ready gallery images for the product pages.
     python tools/build_media.py
 
 Reads the source folders (left untouched), crops browser chrome where listed,
-writes WebP images to pics/products/<product>/ and the gallery list to
+writes JPEG images to pics/products/<product>/ and the gallery list to
 projects/media.js. Add a screenshot to a source folder, give it a caption
 below (optional), and run this again.
 """
@@ -99,14 +99,16 @@ def build():
             max_w = MAX_LANDSCAPE_W if im.width >= im.height else MAX_PORTRAIT_W
             if im.width > max_w:
                 im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
-            name = f'{len(images) + 1:02d}-{slug(os.path.splitext(os.path.basename(rel))[0])}.webp'
-            im.save(os.path.join(out_dir, name), 'WEBP', quality=82, method=6)
+            name = f'{len(images) + 1:02d}-{slug(os.path.splitext(os.path.basename(rel))[0])}.jpg'
+            im.save(os.path.join(out_dir, name), 'JPEG', quality=84, optimize=True, progressive=True)
             src = f'pics/products/{product}/{name}'
             images.append({'src': src, 'w': im.width, 'h': im.height, 'caption': CAPTIONS.get(rel, '')})
             if os.path.basename(rel).upper().startswith('PREVIEW'):
                 previews.append(len(images) - 1)
             print(f'{product:9s} {src:60s} {im.width}x{im.height}')
         media[product] = {'previews': previews, 'images': images}
+        # a fixed name the home page can use if the gallery script ever fails to load
+        shutil.copyfile(os.path.join(ROOT, images[previews[0] if previews else 0]['src']), os.path.join(out_dir, 'cover.jpg'))
 
         og = Image.open(os.path.join(ROOT, OG_SOURCE[product])).convert('RGB')
         l, t, r, b = CROPS.get(OG_SOURCE[product], (0, 0, 0, 0))

@@ -153,7 +153,10 @@
         const src = base + im.src;
         const fg = slide.querySelector('.gal-fg');
         slide.dataset.fit = fitFor(im, stage);
-        fg.onload = fg.onerror = () => resolve();
+        slide.classList.remove('failed');
+        slide.dataset.caption = im.caption || 'Screenshot unavailable';
+        fg.onload = () => resolve();
+        fg.onerror = () => { slide.classList.add('failed'); resolve(); };
         slide.querySelector('.gal-bg').src = src;
         fg.alt = im.caption || '';
         fg.src = src;

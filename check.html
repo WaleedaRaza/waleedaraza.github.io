@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Site check</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 20px 60px; background: #020204; color: #e8e8ee; font: 15px/1.5 Consolas, 'Courier New', monospace; }
+    main { max-width: 820px; margin: 0 auto; }
+    h1 { margin: 0 0 6px; font-size: 22px; color: #ff6b35; }
+    h2 { margin: 28px 0 10px; font-size: 13px; letter-spacing: 0.14em; color: #00d4aa; }
+    p { margin: 0 0 12px; color: #a8a8b4; }
+    #summary { margin: 18px 0; padding: 14px 16px; border: 1px solid #2a2a36; background: #0b0b12; font-size: 16px; }
+    #summary.ok { border-color: #1f8f6b; color: #6ff0c0; }
+    #summary.bad { border-color: #b3402a; color: #ff9b84; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 7px 8px; border-bottom: 1px solid #1a1a24; vertical-align: top; word-break: break-all; }
+    td:first-child { width: 28px; font-weight: 700; }
+    .ok-mark { color: #35e0a1; } .bad-mark { color: #ff5a3c; } .wait { color: #777; }
+    .note { color: #8a8a96; font-size: 13px; }
+    a { color: #00d4aa; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Site check</h1>
+  <p>Open this page on the computer where the photos didn't show. It tests what that browser and network can load from the portfolio. If anything shows <b class="bad-mark">✗</b>, take a screenshot of the whole page and send it over.</p>
+  <div id="summary">Running…</div>
+
+  <h2>THIS BROWSER</h2>
+  <table id="env"></table>
+
+  <h2>IMAGE FORMATS</h2>
+  <table id="formats"></table>
+
+  <h2>FILES ON THE PORTFOLIO</h2>
+  <table id="files"></table>
+
+  <h2>OUTSIDE SERVICES</h2>
+  <p class="note">The X profile picture and the fonts come from other websites. A work network often blocks these; the site still works without them.</p>
+  <table id="external"></table>
+
+  <p style="margin-top:28px"><a href="index.html">← back to the portfolio</a></p>
+</main>
+<script>
+  const fails = [];
+  const row = (tableId, ok, label, detail) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="${ok ? 'ok-mark' : 'bad-mark'}">${ok ? '✓' : '✗'}</td><td>${label}${detail ? `<div class="note">${detail}</div>` : ''}</td>`;
+    document.getElementById(tableId).appendChild(tr);
+    if (!ok) fails.push(label);
+  };
+  const info = (label, value) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="wait">·</td><td>${label}: ${value}</td>`;
+    document.getElementById('env').appendChild(tr);
+  };
+  const loadImage = (src) => new Promise(res => { const i = new Image(); i.onload = () => res(true); i.onerror = () => res(false); i.src = src; });
+
+  // ── environment ──
+  info('Browser', navigator.userAgent);
+  info('Screen', `${screen.width}×${screen.height} at ${window.devicePixelRatio}x, window ${innerWidth}×${innerHeight}`);
+  info('Online', navigator.onLine);
+  info('Address', location.href);
+  info('backdrop-filter / blur', `${CSS.supports('backdrop-filter', 'blur(1px)')} / ${CSS.supports('filter', 'blur(1px)')}`);
+
+  const WEBP = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+  const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+  const JPG = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=';
+
+  (async () => {
+    // ── formats (decoded from inline data, so no network involved) ──
+    row('formats', await loadImage(PNG), 'PNG images');
+    row('formats', await loadImage(JPG), 'JPEG images');
+    row('formats', await loadImage(WEBP), 'WebP images', 'The site no longer depends on WebP.');
+
+    // ── the portfolio's own files ──
+    const files = [
+      ['Product screenshot (Warb)', 'pics/products/warb/cover.jpg'],
+      ['Product screenshot (Libxndr)', 'pics/products/libxndr/cover.jpg'],
+      ['Product screenshot (PokerAIO)', 'pics/products/pokeraio/cover.jpg'],
+      ['Album cover', 'covers/Yeezus_album_cover.png'],
+      ['Book cover', 'bookcovers/thinksys.jpg'],
+      ['Title card', 'pics/made/dune.jpg'],
+      ['Instagram picture', 'pics/instagram.png'],
+      ['X header', 'pics/x-header.jpg'],
+      ['Gallery list (script)', 'projects/media.js'],
+      ['Gallery (script)', 'projects/gallery.js'],
+      ['Gallery (styles)', 'projects/gallery.css'],
+    ];
+    for (const [label, path] of files) {
+      let detail = path;
+      let ok = false;
+      try {
+        const res = await fetch(path, { cache: 'no-store' });
+        const type = res.headers.get('content-type') || 'unknown type';
+        if (!res.ok) detail += ` — the server answered ${res.status}`;
+        else {
+          ok = true;
+          if (/\.(png|jpe?g)$/.test(path)) ok = await loadImage(path);
+          if (!ok) detail += ` — downloaded (${type}) but the browser could not show it`;
+        }
+      } catch (e) {
+        detail += ' — the request was blocked or failed (a network filter or extension)';
+      }
+      row('files', ok, label, detail);
+    }
+
+    // ── outside services ──
+    const outside = [
+      ['X profile picture', 'https://unavatar.io/x/walugen?fallback=false'],
+    ];
+    for (const [label, url] of outside) row('external', await loadImage(url), label, url);
+    const fontOk = await fetch('https://fonts.googleapis.com/css2?family=Outfit', { mode: 'no-cors' }).then(() => true, () => false);
+    row('external', fontOk, 'Google Fonts', 'If this is ✗ the site uses plain fonts instead.');
+
+    const core = fails.filter(f => !/X profile|Google Fonts|WebP/.test(f));
+    const box = document.getElementById('summary');
+    if (!fails.length) { box.className = 'ok'; box.textContent = '✓ Everything loads on this computer.'; }
+    else if (!core.length) { box.className = 'ok'; box.textContent = '✓ The portfolio itself loads fine here. Only outside services were blocked (listed below); the site works without them.'; }
+    else { box.className = 'bad'; box.textContent = `✗ ${core.length} problem${core.length > 1 ? 's' : ''} on this computer: ${core.join(', ')}. Screenshot this page and send it over.`; }
+  })();
+</script>
+</body>
+</html>

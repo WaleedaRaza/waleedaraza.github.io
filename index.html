@@ -2645,6 +2645,16 @@
       box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55), 0 0 36px rgba(0, 212, 170, 0.12);
     }
 
+    .pcard-static {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: 50% 0%;
+      background: #07070c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
     .pcard-head {
       display: flex;
       align-items: baseline;
@@ -4597,7 +4607,7 @@
       if (!grid) return;
       grid.innerHTML = SITE_DATA.products.map(p => `
         <article class="pcard">
-          <div class="pcard-gallery"></div>
+          <div class="pcard-gallery"><img class="pcard-static" src="pics/products/${p.id}/cover.jpg" alt="${esc(p.name)} screenshot"></div>
           <div class="pcard-head">
             <a class="pcard-name" href="${p.page}">${esc(p.name)}</a>
             <span class="pcard-pill${p.paused ? ' is-paused' : ''}">${esc(p.pill)}</span>
@@ -4631,7 +4641,11 @@
 
     const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Photos live in pics/. A path with an extension (or a full https:// address) is used as given;
+    // Image paths are percent-encoded so unusual characters can never break a src or a CSS url()
+    const imgSrc = (p) => encodeURI(p);
+    const cssUrl = (p) => `url(${imgSrc(p).replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29')})`;
+    
+    // Photos live in pics/. A path with an extension(or a full https:// address) is used as given;
     // a bare name ('pics/warb') tries each of these extensions.
     const IMG_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
     const withExts = (base) => /^https?:\/\/|\.[a-z0-9]{3,4}$/i.test(base) ? [base] : IMG_EXTS.map(ext => `${base}.${ext}`);
@@ -4719,7 +4733,7 @@
       openPopup({
         title: esc(item.title),
         subtitle: `${esc(item.kind)}${item.tag ? ' · ' + esc(item.tag) : ''} · ${esc(item.sub)}`,
-        content: `${item.image ? `<img src="${item.image}" alt="" class="popup-cover">` : ''}
+        content: `${item.image ? `<img src="${esc(imgSrc(item.image))}" alt="" class="popup-cover" onerror="this.remove()">` : ''}
                   ${item.take ? `<p class="popup-take">${esc(item.take)}</p>` : ''}`
       });
     }
@@ -4745,7 +4759,7 @@
       list.innerHTML = items.length ? items.map((it, idx) => `
         <button class="lib-row" data-idx="${idx}">
           ${it.image
-            ? `<img src="${it.image}" alt="" class="lib-thumb lib-thumb-${it.filter}" loading="lazy">`
+            ? `<img src="${esc(imgSrc(it.image))}" alt="" class="lib-thumb lib-thumb-${it.filter}" loading="lazy">`
             : `<span class="lib-thumb lib-thumb-glyph">${it.inProgress ? '◌' : it.group === 'writing' ? '◈' : '▶'}</span>`}
           <span class="lib-row-text">
             <span class="lib-row-title">${esc(it.title)}${it.tag ? ` <span class="lib-row-tag">${esc(it.tag)}</span>` : ''}</span>
@@ -4778,6 +4792,15 @@
     
     function initLibrary() {
       renderLibrary();
+      // a thumbnail that fails to load becomes a plain glyph instead of a blank box
+      document.getElementById('lib-list').addEventListener('error', (e) => {
+        const img = e.target;
+        if (!(img instanceof HTMLImageElement) || !img.classList.contains('lib-thumb')) return;
+        const glyph = document.createElement('span');
+        glyph.className = 'lib-thumb lib-thumb-glyph';
+        glyph.textContent = '▶';
+        img.replaceWith(glyph);
+      }, true);
       if (!REDUCED_MOTION) setInterval(rotateLines, 3200);
       document.getElementById('library').addEventListener('click', (e) => {
         const groupBtn = e.target.closest('.lib-group');
@@ -4808,8 +4831,8 @@
 
     function tileHTML(it) {
       const art = it.image
-        ? `<span class="mtile-bg" style="background-image:url('${it.image}')"></span>
-           <span class="mtile-art mtile-art-${it.filter}" style="background-image:url('${it.image}')"></span>`
+        ? `<span class="mtile-bg" style="background-image:${cssUrl(it.image)}"></span>
+           <span class="mtile-art mtile-art-${it.filter}" style="background-image:${cssUrl(it.image)}"></span>`
         : `<span class="mtile-quote">${esc(it.filter === 'prompts' ? 'A system prompt for any LLM code editor.'
             : it.lines ? it.lines[Math.floor(Math.random() * it.lines.length)] : it.sub)}</span>`;
       return `${art}
@@ -4829,21 +4852,27 @@
     function rotateShowcase() {
       if (showcasePaused) return;
       const next = nextShowcaseItem();
-      if (next.image) new Image().src = next.image; // warm the cache before the fade
       const tv = document.getElementById('media-tv');
-      tv.classList.add('swapping');
-      setTimeout(() => {
-        paintShowcase(next);
-        tv.classList.remove('swapping');
-      }, 450);
+      const show = (item) => {
+        tv.classList.add('swapping');
+        setTimeout(() => {
+          paintShowcase(item);
+          tv.classList.remove('swapping');
+        }, 450);
+      };
+      // load the picture first; if it can't be loaded, show the item as text rather than an empty screen
+      if (!next.image) return show(next);
+      probeImage(imgSrc(next.image)).then(ok => show(ok ? next : { ...next, image: null }));
     }
 
     function initShowcase() {
       const tv = document.getElementById('media-tv');
-      paintShowcase(nextShowcaseItem());
-
+      const first = nextShowcaseItem();
+      (first.image ? probeImage(imgSrc(first.image)) : Promise.resolve(true))
+        .then(ok => paintShowcase(ok ? first : { ...first, image: null }));
+      
       tv.addEventListener('click', (e) => {
-        if (!e.target.closest('.tv-screen')) return;
+        if (!e.target.closest('.tv-screen') || !showcaseItem) return;
         // Opening a piece also points the library at its category
         setLibrary(showcaseItem.filter);
         openLibraryItem(showcaseItem);
@@ -5190,14 +5219,14 @@ const quote = TERMINAL_QUOTES[quoteIdx];
           albums: [
             { artist: "Kanye West", title: "The College Dropout", cover: "covers/Kanyewest_collegedropout.jpg", take: "" },
             { artist: "Kanye West", title: "Late Registration", cover: "covers/Late_registration_cd_cover.jpg", take: "" },
-            { artist: "Kanye West", title: "Graduation", cover: "covers/Graduation_(album).jpg", take: "" },
-            { artist: "Kanye West", title: "808s & Heartbreak", cover: "covers/808s_&_Heartbreak.png", take: "" },
+            { artist: "Kanye West", title: "Graduation", cover: "covers/Graduation_album.jpg", take: "" },
+            { artist: "Kanye West", title: "808s & Heartbreak", cover: "covers/808s_and_Heartbreak.png", take: "" },
             { artist: "Kanye West", title: "My Beautiful Dark Twisted Fantasy", cover: "covers/My_Beautiful_Dark_Twisted_Fantasy.jpg", take: "" },
             { artist: "Kanye West", title: "Yeezus", cover: "covers/Yeezus_album_cover.png", take: "" },
             { artist: "Kanye West", title: "The Life of Pablo", cover: "covers/The_life_of_pablo_alternate.jpg", take: "" },
             { artist: "Kanye West", title: "Ye", cover: "covers/Ye_album_cover.jpg", take: "" },
-            { artist: "Ye", title: "Bully", cover: "covers/Ye_(Kanye_West)_-_Bully_-_Album_Cover.png", take: "" },
-            { artist: "Frank Ocean", title: "Nostalgia, Ultra", cover: "covers/Frank_Ocean_-_Nostalgia,_Ultra.png", take: "" },
+            { artist: "Ye", title: "Bully", cover: "covers/Ye_Kanye_West_-_Bully_-_Album_Cover.png", take: "" },
+            { artist: "Frank Ocean", title: "Nostalgia, Ultra", cover: "covers/Frank_Ocean_-_Nostalgia_Ultra.png", take: "" },
             { artist: "Frank Ocean", title: "Channel Orange", cover: "covers/Channel_ORANGE.jpg", take: "" },
             { artist: "Frank Ocean", title: "Blonde", cover: "covers/Blonde_-_Frank_Ocean.jpeg", take: "" },
             { artist: "Lana Del Rey", title: "Born to Die", cover: "covers/BornToDieAlbumCover.png", take: "" },
@@ -5214,22 +5243,22 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { artist: "Deftones", title: "Deftones", cover: "covers/Deftones-selftitled_albumcover.jpg", take: "" },
             { artist: "Deftones", title: "Saturday Night Wrist", cover: "covers/Saturday_night_wrist.jpg", take: "" },
             { artist: "Deftones", title: "Diamond Eyes", cover: "covers/Deftones_-_Diamond_Eyes.jpg", take: "" },
-            { artist: "Deftones", title: "Koi No Yokan", cover: "covers/Deftones_–_Koi_No_Yokan.jpg", take: "" },
+            { artist: "Deftones", title: "Koi No Yokan", cover: "covers/Deftones_-_Koi_No_Yokan.jpg", take: "" },
             { artist: "Deftones", title: "Private Music", cover: "covers/Deftones_-_private_music.jpg", take: "" },
             { artist: "The Weeknd", title: "House of Balloons", cover: "covers/The_Weeknd_-_House_of_Balloons.png", take: "" },
             { artist: "The Weeknd", title: "Echoes of Silence", cover: "covers/The_Weeknd_-_Echoes_of_Silence.png", take: "" },
             { artist: "The Weeknd", title: "Kiss Land", cover: "covers/The_Weeknd_-_Kiss_Land.png", take: "" },
             { artist: "The Neighbourhood", title: "The Neighbourhood", cover: "covers/The_Neighbourhood_-_The_Neighbourhood.jpg", take: "" },
-            { artist: "The Neighbourhood", title: "Chip Chrome & the Mono-Tones", cover: "covers/Chip_Chrome_&_the_Mono-Tones.jpg", take: "" },
+            { artist: "The Neighbourhood", title: "Chip Chrome & the Mono-Tones", cover: "covers/Chip_Chrome_and_the_Mono-Tones.jpg", take: "" },
             { artist: "Nirvana", title: "Bleach", cover: "covers/Nirvana-Bleach.jpg", take: "" },
             { artist: "Nirvana", title: "Nevermind", cover: "covers/NirvanaNevermindalbumcover.jpg", take: "" },
-            { artist: "Nirvana", title: "In Utero", cover: "covers/In_Utero_(Nirvana)_album_cover.jpg", take: "" },
+            { artist: "Nirvana", title: "In Utero", cover: "covers/In_Utero_Nirvana_album_cover.jpg", take: "" },
             { artist: "Audioslave", title: "Audioslave", cover: "covers/Audioslave_-_Audioslave.jpg", take: "" },
             { artist: "Foo Fighters", title: "The Colour and the Shape", cover: "covers/FooFighters-TheColourAndTheShape.jpg", take: "" },
             { artist: "Foo Fighters", title: "There Is Nothing Left to Lose", cover: "covers/Foo_Fighters_-_There_Is_Nothing_Left_to_Lose.jpg", take: "" },
             { artist: "Arctic Monkeys", title: "AM", cover: "covers/Arctic_Monkeys_-_AM.png", take: "" },
             { artist: "Arctic Monkeys", title: "Favourite Worst Nightmare", cover: "covers/Favourite_Worst_Nightmare.jpg", take: "" },
-            { artist: "Arctic Monkeys", title: "Who the Fuck Are Arctic Monkeys?", cover: "covers/who_thefuckarearctivcmon kets.jpg", take: "" },
+            { artist: "Arctic Monkeys", title: "Who the Fuck Are Arctic Monkeys?", cover: "covers/who_thefuckarearctivcmon_kets.jpg", take: "" },
             { artist: "Daft Punk", title: "Random Access Memories", cover: "covers/Daft_Punk_-_Random_Access_Memories.png", take: "" },
             { artist: "Daft Punk", title: "Human After All", cover: "covers/Humanafterall.jpg", take: "" },
             { artist: "Sade", title: "Diamond Life", cover: "covers/Sade_-_Diamond_Life.png", take: "" },
@@ -5237,46 +5266,46 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { artist: "Fleetwood Mac", title: "Rumours", cover: "covers/FMacRumours.png", take: "" },
             { artist: "Pearl Jam", title: "Ten", cover: "covers/Pearl_Jam_Ten_Alt_Cover.jpg", take: "" },
             { artist: "Coldplay", title: "Viva la Vida or Death and All His Friends", cover: "covers/Coldplay_-_Viva_la_Vida_or_Death_and_All_His_Friends.png", take: "" },
-            { artist: "Cocteau Twins", title: "Heaven or Las Vegas", cover: "covers/Cocteau_Twins—Heaven_or_Las_Vegas.jpg", take: "" },
+            { artist: "Cocteau Twins", title: "Heaven or Las Vegas", cover: "covers/Cocteau_Twins-Heaven_or_Las_Vegas.jpg", take: "" },
             { artist: "Cocteau Twins", title: "Treasure", cover: "covers/Treasure_cover.jpg", take: "" },
             { artist: "Travis Scott", title: "Rodeo", cover: "covers/Travis_Scott_-_Rodeo.png", take: "" },
             { artist: "Travis Scott", title: "Birds in the Trap Sing McKnight", cover: "covers/Travis_Scott_-_Birds_in_the_Trap_Sing_McKnight.png", take: "" },
-            { artist: "Cigarettes After Sex", title: "Cigarettes After Sex", cover: "covers/500px-Cigarettes_After_Sex_(album).svg.png", take: "" },
+            { artist: "Cigarettes After Sex", title: "Cigarettes After Sex", cover: "covers/500px-Cigarettes_After_Sex_album.svg.png", take: "" },
             { artist: "Cigarettes After Sex", title: "Cry", cover: "covers/Cigarettes_After_Sex_-_Cry.png", take: "" },
-            { artist: "Cigarettes After Sex", title: "X's", cover: "covers/Cigarettes_After_Sex_-_X's.png", take: "" },
+            { artist: "Cigarettes After Sex", title: "X's", cover: "covers/Cigarettes_After_Sex_-_Xs.png", take: "" },
             { artist: "Childish Gambino", title: "Camp", cover: "covers/Childish-gambino-camp.jpg", take: "" },
             { artist: "Childish Gambino", title: "Because the Internet", cover: "covers/Childish-gambino-because-the-internet.gif", take: "" },
-            { artist: "Childish Gambino", title: "\"Awaken, My Love!\"", cover: "covers/Childish_Gambino_-_Awaken,_My_Love!.png", take: "" },
+            { artist: "Childish Gambino", title: "\"Awaken, My Love!\"", cover: "covers/Childish_Gambino_-_Awaken_My_Love.png", take: "" },
             { artist: "Aphex Twin", title: "Selected Ambient Works 85–92", cover: "covers/Selected_Ambient_Works_85-92.png", take: "" },
             { artist: "Aphex Twin", title: "Syro", cover: "covers/Aphex_twin_syro.jpg", take: "" },
             { artist: "Muse", title: "Showbiz", cover: "covers/Museshowbizalbumcover.jpg", take: "" },
             { artist: "Muse", title: "Black Holes and Revelations", cover: "covers/BlackHolesCover.jpg", take: "" },
-            { artist: "The 1975", title: "I Like It When You Sleep, for You Are So Beautiful yet So Unaware of It", cover: "covers/The_1975_-_I_Like_It_When_You_Sleep,_for_You_Are_So_Beautiful_Yet_So_Unaware_of_It.png", take: "" },
+            { artist: "The 1975", title: "I Like It When You Sleep, for You Are So Beautiful yet So Unaware of It", cover: "covers/The_1975_-_I_Like_It_When_You_Sleep_for_You_Are_So_Beautiful_Yet_So_Unaware_of_It.png", take: "" },
             { artist: "The Smiths", title: "The Smiths", cover: "covers/The_Smiths_The_Smiths.jpg", take: "" },
             { artist: "The Smiths", title: "The Queen Is Dead", cover: "covers/The-Queen-is-Dead-cover.png", take: "" },
             { artist: "Pink Floyd", title: "The Dark Side of the Moon", cover: "covers/hi-res-album-cover-art-for-pink-floyd-the-dark-side-of-the-v0-knls4moz18la1.jpg", take: "" }
           ],
           books: [
-            { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", cover: "pics/made/slaughterhouse-five.webp", tag: "READING NOW", take: "" },
-            { title: "The Creative Act", author: "Rick Rubin", cover: "pics/made/the-creative-act.webp", take: "" },
+            { title: "Slaughterhouse-Five", author: "Kurt Vonnegut", cover: "pics/made/slaughterhouse-five.jpg", tag: "READING NOW", take: "" },
+            { title: "The Creative Act", author: "Rick Rubin", cover: "pics/made/the-creative-act.jpg", take: "" },
 { title: "The Book of Five Rings", author: "Miyamoto Musashi", cover: "bookcovers/5rings.jpg", take: "" },
             { title: "The Almanack of Naval Ravikant", author: "Eric Jorgenson", cover: "bookcovers/almack_naval.jpg", take: "" },
             { title: "An Unquiet Mind", author: "Kay Redfield Jamison", cover: "bookcovers/An_Unquiet_Mind.jpg", take: "" },
             { title: "Code Complete", author: "Steve McConnell", cover: "bookcovers/Code_Complete_1st_edition.jpg", take: "" },
             { title: "Code: The Hidden Language", author: "Charles Petzold", cover: "bookcovers/Code_The_Hidden_Language_of_Computer_Hardware_and_Software.jpg", take: "" },
             { title: "Crime and Punishment", author: "Fyodor Dostoevsky", cover: "bookcovers/Crimeandpunishmentcover.png", take: "" },
-            { title: "Demons", author: "Fyodor Dostoevsky", cover: "bookcovers/The_first_edition_of_Dostoevsky's_novel_Demons_Petersburg_1873.JPG", take: "" },
+            { title: "Demons", author: "Fyodor Dostoevsky", cover: "bookcovers/The_first_edition_of_Dostoevskys_novel_Demons_Petersburg_1873.jpg", take: "" },
             { title: "Ego Is the Enemy", author: "Ryan Holiday", cover: "bookcovers/Ego_Is_the_Enemy.jpg", take: "" },
             { title: "Game Theory and Strategy", author: "Joel Watson", cover: "bookcovers/gametheoryandstrategy.jpg", take: "" },
             { title: "Infinite Jest", author: "David Foster Wallace", cover: "bookcovers/Infinite_jest_cover.jpg", take: "" },
             { title: "Metaphysics", author: "Aristotle", cover: "bookcovers/metaphysics.jpeg", take: "" },
             { title: "Modern Man in Search of a Soul", author: "Carl Jung", cover: "bookcovers/Modern_Man_in_Search_of_a_Soul.jpg", take: "" },
-            { title: "The Undiscovered Self", author: "Carl Jung", cover: "bookcovers/The Undiscovered Self- With Symbols and the Interpretation of Dreams .jpg", take: "" },
-            { title: "The Mythical Man-Month", author: "Fred Brooks", cover: "bookcovers/Mythical_man-month_(book_cover).jpg", take: "" },
+            { title: "The Undiscovered Self", author: "Carl Jung", cover: "bookcovers/The_Undiscovered_Self-_With_Symbols_and_the_Interpretation_of_Dreams.jpg", take: "" },
+            { title: "The Mythical Man-Month", author: "Fred Brooks", cover: "bookcovers/Mythical_man-month_book_cover.jpg", take: "" },
             { title: "The Perennial Philosophy", author: "Aldous Huxley", cover: "bookcovers/PerennialPhilsophy.jpg", take: "" },
             { title: "The Road to Wigan Pier", author: "George Orwell", cover: "bookcovers/Road_to_wigan_pier.jpg", take: "" },
             { title: "Structure and Interpretation of Computer Programs", author: "Abelson & Sussman", cover: "bookcovers/SICP_cover.jpg", take: "" },
-            { title: "The Moral Animal", author: "Robert Wright", cover: "bookcovers/The_Moral_Animal,_first_edition.jpg", take: "" },
+            { title: "The Moral Animal", author: "Robert Wright", cover: "bookcovers/The_Moral_Animal_first_edition.jpg", take: "" },
             { title: "The Power of Myth", author: "Joseph Campbell", cover: "bookcovers/The_Power_of_Myth.jpg", take: "" },
             { title: "The Pragmatic Programmer", author: "Hunt & Thomas", cover: "bookcovers/prag.jpg", take: "" },
             { title: "The Sickness Unto Death", author: "Søren Kierkegaard", cover: "bookcovers/The_Sickness_Unto_Death.jpg", take: "" },
@@ -5292,12 +5321,12 @@ const quote = TERMINAL_QUOTES[quoteIdx];
             { title: "The Software Engineer's Guidebook", author: "Gergely Orosz", cover: "bookcovers/sweguide.jpg", take: "" }
           ],
           screen: [
-            { title: "Dune", kind: "Film · 2021", cover: "pics/made/dune.webp", tag: "★ 5/5", take: "" },
-            { title: "Dune: Part Two", kind: "Film · 2024", cover: "pics/made/dune-part-two.webp", tag: "★ 5/5", take: "" },
-            { title: "The Fellowship of the Ring", kind: "Film · 2001", cover: "pics/made/fellowship-of-the-ring.webp", tag: "★ 4.5/5", take: "" },
-            { title: "The American War Machine, Explained", kind: "YouTube · Johnny Harris", cover: "pics/made/american-war-machine.webp", take: "" },
-            { title: "The Greatest Season in Baseball History", kind: "YouTube · Baseball Doesn't Exist", cover: "pics/made/greatest-season-baseball.webp", take: "" },
-            { title: "Dr. K", kind: "YouTube · HealthyGamerGG", cover: "pics/made/dr-k.webp", take: "" },
+            { title: "Dune", kind: "Film · 2021", cover: "pics/made/dune.jpg", tag: "★ 5/5", take: "" },
+            { title: "Dune: Part Two", kind: "Film · 2024", cover: "pics/made/dune-part-two.jpg", tag: "★ 5/5", take: "" },
+            { title: "The Fellowship of the Ring", kind: "Film · 2001", cover: "pics/made/fellowship-of-the-ring.jpg", tag: "★ 4.5/5", take: "" },
+            { title: "The American War Machine, Explained", kind: "YouTube · Johnny Harris", cover: "pics/made/american-war-machine.jpg", take: "" },
+            { title: "The Greatest Season in Baseball History", kind: "YouTube · Baseball Doesn't Exist", cover: "pics/made/greatest-season-baseball.jpg", take: "" },
+            { title: "Dr. K", kind: "YouTube · HealthyGamerGG", cover: "pics/made/dr-k.jpg", take: "" },
 { title: "Attack on Titan", kind: "Anime · Series", cover: "pics/Eren_saying_freedom.png", take: "" },
             { title: "Jujutsu Kaisen", kind: "Anime · Series", cover: "pics/gojo.png", take: "" },
             { title: "One Battle After Another", kind: "Film", cover: "pics/One_Battle_After_Another.jpg", take: "" },
