@@ -1,6 +1,6 @@
 # Blog ideas (unpublished)
 
-Not linked from the site. GitHub Pages skips folders whose names start with `_`,
+The blog subjects below are now listed as SOON cards in `blawg/posts.js`. The outline sections further down are still drafts only. This file isn't linked from the site. GitHub Pages skips folders whose names start with `_`,
 so this page isn't served, but anyone browsing the repository can still read it.
 When a post is ready, move it into `blog/posts.js`.
 

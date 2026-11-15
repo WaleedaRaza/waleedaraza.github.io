@@ -26,17 +26,23 @@
     moonDark: { color: '#2a2c38', glow: 0 },
     far:      { color: '#18332f', glow: 0 },
     mid:      { color: '#25524a', glow: 0.15 },
-    barkLit:  { color: '#e0a46a', glow: 0.45 },
-    bark:     { color: '#a8703f', glow: 0.3 },
-    barkDark: { color: '#5e3b22', glow: 0.15 },
-    groove:   { color: '#3b2415', glow: 0 },
-    knot:     { color: '#2c1a0f', glow: 0 },
-    heart:    { color: '#f6d7a7', glow: 0.7, blur: 7 },
+    barkLit:  { color: '#ec8a5c', glow: 0.45 },
+    bark:     { color: '#b5532f', glow: 0.32 },
+    barkDark: { color: '#6e2a17', glow: 0.15 },
+    groove:   { color: '#36120a', glow: 0 },
+    knot:     { color: '#2a0d06', glow: 0 },
+    heart:    { color: '#ffd9b5', glow: 0.7, blur: 7 },
     moss:     { color: '#00d4aa', glow: 0.55 },
-    leaf1:    { color: '#ffc04d', glow: 0.55 },
-    leaf2:    { color: '#ff6b35', glow: 0.55 },
-    leaf3:    { color: '#e2402b', glow: 0.45 },
-    leaf4:    { color: '#8c301a', glow: 0.25 },
+    leaf1:    { color: '#a6ec84', glow: 0.55 },   // redwood foliage, moonlit
+    leaf2:    { color: '#4cbf72', glow: 0.45 },
+    leaf3:    { color: '#2a8358', glow: 0.3 },
+    leaf4:    { color: '#16503a', glow: 0.1 },
+    mtnFar:   { color: '#1d2538', glow: 0 },
+    mtnNear:  { color: '#28324b', glow: 0 },
+    ridge:    { color: '#465378', glow: 0.2 },
+    snow:     { color: '#cdd8f2', glow: 0.4 },
+    snowDim:  { color: '#6d7894', glow: 0.1 },
+    milky:    { color: '#363b58', glow: 0 },
     grass:    { color: '#3a8f69', glow: 0.3 },
     grassDim: { color: '#22553f', glow: 0 },
     soil:     { color: '#5a4332', glow: 0 },
@@ -51,14 +57,14 @@
   /* ── World constants ────────────────────────────────────────────────── */
   var WX = 150, WY = 82;
   var GROUND = 70;
-  var SX = 30;                 // stump centre x
-  var STOP = 56;               // stump top (break line)
+  var SX = 24;                 // stump centre x
+  var STOP = 54;               // stump top (break line)
   var PIV0 = { x: SX + 0.5, y: STOP };   // the break, where the oak pivots
-  var L = 84;                  // trunk length above the break
-  var R0 = 5.1, R1 = 1.6;      // trunk radius at base / tip
+  var L = 104;                 // trunk length above the break
+  var R0 = 5.8, R1 = 1.3;      // trunk radius at base / tip
   var REST = { x: SX + 4, y: GROUND - R0 + 0.7 }; // where the butt end lands
   var LIGHT = norm(0.55, -0.83); // moonlight comes from upper right
-  var MOON = { x: 127, y: 15, r: 8 };
+  var MOON = { x: 124, y: 13, r: 7.5 };
 
   function norm(x, y) { var l = Math.sqrt(x * x + y * y) || 1; return { x: x / l, y: y / l }; }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
@@ -80,61 +86,46 @@
     var segs = [];   // { au, av, bu, bv, r0, r1 }
     var blobs = [];  // { u, v, R }
 
-    function branch(u0, v0, ang, len, rad, depth) {
-      // ang: direction in local frame (0 = along +u)
-      var steps = depth === 0 ? 3 : 2;
-      var cu = u0, cv = v0, a = ang;
+    /* Coast redwood: a long clear bole, then short, drooping limbs in the
+       top ~45%, shortening toward the spire, each carrying flat sprays of
+       foliage. Negative v = the side facing the sky once fallen. */
+    function limb(u0, side, len, rad) {
+      var a = side * (1.2 + rnd() * 0.3);   // near-perpendicular to the trunk
+      var cu = u0, cv = side * trunkR(u0) * 0.7;
       var pts = [{ u: cu, v: cv }];
-      for (var s = 0; s < steps; s++) {
-        a += (rnd() - 0.5) * 0.35;           // a little crookedness
-        cu += Math.cos(a) * len / steps;
-        cv += Math.sin(a) * len / steps;
+      for (var s = 0; s < 3; s++) {
+        a -= side * (0.18 + rnd() * 0.12);  // droop back toward the base
+        cu += Math.cos(a) * len / 3;
+        cv += Math.sin(a) * len / 3;
         pts.push({ u: cu, v: cv });
       }
-      for (var k = 0; k < steps; k++) {
-        var t0 = k / steps, t1 = (k + 1) / steps;
+      for (var k = 0; k < 3; k++) {
         segs.push({ au: pts[k].u, av: pts[k].v, bu: pts[k + 1].u, bv: pts[k + 1].v,
-          r0: rad * (1 - 0.6 * t0), r1: rad * (1 - 0.6 * t1) });
+          r0: rad * (1 - 0.3 * k), r1: rad * (1 - 0.3 * (k + 1)) });
       }
-      if (depth < 2) {
-        var kids = depth === 0 ? 3 : 2;
-        for (var c = 0; c < kids; c++) {
-          var t = 0.45 + 0.5 * (c + rnd() * 0.6) / kids;
-          var idx = Math.min(steps - 1, Math.floor(t * steps));
-          var f = t * steps - idx;
-          var bu = pts[idx].u + (pts[idx + 1].u - pts[idx].u) * f;
-          var bv = pts[idx].v + (pts[idx + 1].v - pts[idx].v) * f;
-          var side = (c % 2 === 0 ? 1 : -1);
-          branch(bu, bv, a + side * (0.45 + rnd() * 0.45), len * (0.48 + rnd() * 0.14), rad * 0.5, depth + 1);
-        }
+      // foliage sprays hang along the outer two thirds of the limb
+      for (var f = 1; f <= 3; f++) {
+        var pp = pts[f];
+        blobs.push({ u: pp.u - 1.2, v: pp.v + side * 0.5, R: (2.6 + rnd() * 1.6) * (0.75 + 0.25 * f) });
       }
-      var leafR = depth === 0 ? 7.5 : depth === 1 ? 6.2 : 5;
-      blobs.push({ u: cu, v: cv, R: leafR * (0.85 + rnd() * 0.3) });
     }
-
-    // Primary limbs. Negative v = the side facing the sky once fallen,
-    // so the crown is weighted that way.
-    var limbs = [
-      { u: 0.42, side: -1, ang: 0.50, len: 20 },
-      { u: 0.48, side:  1, ang: 0.70, len: 22 },
-      { u: 0.56, side: -1, ang: 0.46, len: 22 },
-      { u: 0.63, side:  1, ang: 0.62, len: 19 },
-      { u: 0.71, side: -1, ang: 0.42, len: 19 },
-      { u: 0.78, side:  1, ang: 0.52, len: 15 },
-      { u: 0.86, side: -1, ang: 0.40, len: 14 }
-    ];
-    for (var i = 0; i < limbs.length; i++) {
-      var lb = limbs[i];
-      var uu = lb.u * L;
-      var vv = lb.side * trunkR(uu) * 0.6;
-      branch(uu, vv, lb.side * lb.ang, lb.len, 2.1 - lb.u * 1.0, 0);
+    var N = 26;
+    for (var i = 0; i < N; i++) {
+      var t = i / (N - 1);
+      var uu = L * (0.5 + 0.5 * t) + (rnd() - 0.5) * 2;
+      var side = (i % 2 === 0) ? -1 : 1;
+      if (rnd() < 0.18) side = -side;
+      var len = (15 - 10 * t) * (0.75 + rnd() * 0.5);
+      limb(uu, side, len, 1.0 - 0.5 * t);
     }
-    // Crown at the tip of the trunk
-    blobs.push({ u: L + 2, v: -2, R: 9 });
-    blobs.push({ u: L - 6, v: 4, R: 7 });
+    // the spire
+    blobs.push({ u: L + 1.5, v: 0, R: 3.2 });
+    blobs.push({ u: L - 3, v: -1.5, R: 3.4 });
+    blobs.push({ u: L - 3, v: 1.8, R: 3.0 });
 
-    // Knots on the trunk
-    var knots = [{ u: 18, v: -1.8, r: 1.3 }, { u: 31, v: 2.2, r: 1.1 }, { u: 46, v: -0.6, r: 0.9 }];
+    // burls and old branch scars on the bole
+    var knots = [{ u: 9, v: -2.6, r: 1.8 }, { u: 22, v: 2.4, r: 1.2 }, { u: 34, v: -1.0, r: 1.0 },
+                 { u: 44, v: 2.9, r: 0.9 }, { u: 50, v: -3.0, r: 0.8 }];
 
     // Bounding radius from pivot (for culling)
     var reach = L + 12;
@@ -161,9 +152,9 @@
 
   /* Static roots around the stump base (world coords). */
   var ROOTS = [
-    [{ x: SX - 6, y: GROUND - 2.4 }, { x: SX - 11, y: GROUND - 0.6 }, { x: SX - 17, y: GROUND + 0.6 }],
+    [{ x: SX - 9, y: GROUND - 2.4 }, { x: SX - 14, y: GROUND - 0.6 }, { x: SX - 20, y: GROUND + 0.6 }],
     [{ x: SX - 4, y: GROUND - 1.2 }, { x: SX - 8, y: GROUND + 0.4 }],
-    [{ x: SX + 6, y: GROUND - 2.6 }, { x: SX + 11, y: GROUND - 0.8 }, { x: SX + 16, y: GROUND + 0.5 }],
+    [{ x: SX + 9, y: GROUND - 2.6 }, { x: SX + 14, y: GROUND - 0.8 }, { x: SX + 19, y: GROUND + 0.5 }],
     [{ x: SX + 4, y: GROUND - 1.0 }, { x: SX + 9, y: GROUND + 0.6 }]
   ];
 
@@ -214,9 +205,11 @@
      grain, so the bark reads as texture instead of noise. */
   function barkCell(s, u, lightN, groove) {
     var b = 0.18 + 0.5 * Math.sqrt(Math.max(0, 1 - s * s)) + 0.45 * Math.max(0, s * lightN);
-    var lane = Math.floor((s + 1) * 2.2);
-    var fis = AF.noise(u * 0.22 + lane * 7.3, lane * 3.1, 3);
-    if (fis > 0.68) return { ch: groove, key: b > 0.55 ? 'bark' : 'groove' };
+    // redwood bark: deep, long, fibrous furrows running with the grain
+    var lane = Math.floor((s + 1) * 3.4);
+    var fis = AF.noise(u * 0.09 + lane * 7.3, lane * 3.1, 3);
+    if (fis > 0.6) return { ch: groove, key: b > 0.6 ? 'bark' : 'groove' };
+    if (fis > 0.54) return { ch: groove, key: 'barkDark' };
     if (b > 0.74) return { ch: '█', key: 'barkLit' };
     if (b > 0.56) return { ch: '▓', key: 'barkLit' };
     if (b > 0.4) return { ch: '▓', key: 'bark' };
@@ -388,7 +381,7 @@
               var hs = AF.hash(cx, 1, 11);
               ch = hs < 0.18 ? ',' : hs < 0.36 ? '.' : hs < 0.5 ? '`' : hs < 0.75 ? '_' : '\'';
               key = hs < 0.6 ? 'grass' : 'grassDim';
-              if (AF.hash(cx, 2, 31) < 0.07) { ch = ','; key = AF.hash(cx, 3, 31) < 0.5 ? 'leaf2' : 'leaf4'; }
+              if (AF.hash(cx, 2, 31) < 0.07) { ch = ','; key = AF.hash(cx, 3, 31) < 0.5 ? 'bark' : 'barkDark'; }
             } else {
               var n = AF.fbm(wx * 0.18, wy * 0.25, 4);
               if (depth < 2) { ch = n > 0.55 ? '▓' : '▒'; key = 'soil'; }
@@ -427,10 +420,18 @@
               var mn = moonAt(wx, wy, cx, cy);
               if (mn) { ch = mn.ch; key = mn.key; lay = 7; }
             }
+            /* ── mountains ── */
+            if (lay === 9) {
+              var mt = mountainAt(wx, wy, cx, cy);
+              if (mt) { ch = mt.ch; key = mt.key; lay = 6; }
+            }
             /* ── stars ── */
             if (lay === 9 && wy < GROUND - 22) {
               var hst = AF.hash(cx, cy, 77);
-              if (hst < 0.016) {
+              var band = milkyWay(wx, wy);
+              if (hst >= 0.016 && hst < 0.016 + band * 0.07) {
+                ch = AF.hash(cx, cy, 79) < 0.7 ? '·' : '.'; key = band > 0.6 && AF.hash(cx, cy, 80) < 0.3 ? 'starDim' : 'milky'; lay = 8;
+              } else if (hst < 0.016) {
                 var big = AF.hash(cx, cy, 78);
                 ch = big < 0.55 ? '.' : big < 0.8 ? '·' : big < 0.93 ? '+' : '*';
                 key = 'star';
@@ -559,8 +560,8 @@
           var lit = 0.5 + 0.5 * (wxo * LIGHT.x + wyo * LIGHT.y) / bestB.R + nz * 0.5;
           var hsh = AF.hash(cx, cy, 19 + bi);
           var chs;
-          if (dd > 0.55) chs = hsh < 0.3 ? '@' : hsh < 0.55 ? '&' : hsh < 0.8 ? '%' : '#';
-          else if (dd > 0.3) chs = hsh < 0.35 ? '*' : hsh < 0.6 ? '%' : hsh < 0.8 ? '&' : '+';
+          if (dd > 0.55) chs = hsh < 0.3 ? '#' : hsh < 0.55 ? '%' : hsh < 0.8 ? '*' : '&';
+          else if (dd > 0.3) chs = hsh < 0.35 ? '*' : hsh < 0.6 ? '^' : hsh < 0.8 ? '"' : ';';
           else chs = hsh < 0.3 ? '\'' : hsh < 0.55 ? ',' : hsh < 0.8 ? '.' : '`';
           var lk = lit > 0.72 ? 'leaf1' : lit > 0.5 ? 'leaf2' : lit > 0.3 ? 'leaf3' : 'leaf4';
           return { ch: chs, key: lk };
@@ -579,8 +580,8 @@
     }
 
     function stumpAt(wx, wy, broken, gy) {
-      var flare = clamp((wy - (GROUND - 6)) / 6, 0, 1);
-      var hw = 5.6 + 3.4 * flare * flare;
+      var flare = clamp((wy - (GROUND - 8)) / 8, 0, 1);
+      var hw = 6.4 + 6.5 * flare * flare * (0.8 + 0.4 * AF.noise(wx * 0.4, 1, 21)); // buttress
       var off = wx - SX;
       if (Math.abs(off) > hw) return null;
       var top = STOP - (broken ? breakJag(off + 40) : 0);
@@ -638,6 +639,50 @@
         return { ch: h < 0.25 ? '^' : h < 0.45 ? ':' : h < 0.6 ? '\'' : '.', key: 'mid' };
       }
       return null;
+    }
+
+    /* Two mountain ranges behind the forest: ridgelines from fractal
+       noise, snow on the high slopes, faint texture on the faces. */
+    // Peaks as (x, height above ground, slope); ridge = upper envelope + jag
+    var PEAKS_FAR = [[6, 42, 1.0], [34, 56, 0.85], [62, 44, 1.1], [86, 60, 0.8], [112, 46, 1.0], [146, 50, 0.9]];
+    var PEAKS_NEAR = [[18, 36, 1.3], [48, 40, 1.1], [74, 33, 1.4], [98, 38, 1.2], [136, 35, 1.3]];
+    function ridgeY(x, far) {
+      var P = far ? PEAKS_FAR : PEAKS_NEAR, best = 0;
+      for (var i = 0; i < P.length; i++) best = Math.max(best, P[i][1] - Math.abs(x - P[i][0]) * P[i][2]);
+      var jag = (AF.fbm(x * 0.22, far ? 3 : 7, far ? 31 : 37) - 0.5) * 4;
+      return GROUND - Math.max(far ? 26 : 22, best + jag);
+    }
+    function mountainAt(wx, wy, cx, cy) {
+      var near = ridgeY(wx, false), far = ridgeY(wx, true);
+      var ry, isFar;
+      if (wy >= near) { ry = near; isFar = false; }
+      else if (wy >= far) { ry = far; isFar = true; }
+      else return null;
+      var row = S * A;
+      var h = AF.hash(cx, cy, isFar ? 91 : 92);
+      if (wy - ry < row) { // the ridgeline
+        var sl = (ridgeY(wx + S * 0.5, isFar) - ridgeY(wx - S * 0.5, isFar)) / S; // dy per column
+        var peakHere = ry <= ridgeY(wx - S, isFar) && ry <= ridgeY(wx + S, isFar);
+        var ch = peakHere ? '^' : Math.abs(sl) < 0.35 ? '_' : sl > 0 ? '\\' : '/';
+        var snowy = ry < (isFar ? GROUND - 46 : GROUND - 33);
+        return { ch: ch, key: snowy ? 'snow' : 'ridge' };
+      }
+      var snowLine = isFar ? GROUND - 44 : GROUND - 31;
+      if (wy < snowLine && wy - ry < 6 + 4 * AF.noise(wx * 0.3, 1, 93)) { // snow caps, streaked
+        var streak = AF.noise(wx * 0.9, wy * 0.15, 94);
+        if (streak > 0.38) return { ch: streak > 0.62 ? ':' : '.', key: streak > 0.55 ? 'snow' : 'snowDim' };
+        return { ch: ' ', key: null };
+      }
+      // rock faces: faint diagonal strata and grit
+      var strata = frac(wx * 0.11 + wy * 0.16 + 0.6 * AF.noise(wx * 0.08, wy * 0.08, 95));
+      if (!isFar && strata < 0.07 && h < 0.7) return { ch: '/', key: 'mtnNear' };
+      if (h < (isFar ? 0.2 : 0.26)) return { ch: h < 0.04 ? ':' : '.', key: isFar ? 'mtnFar' : 'mtnNear' };
+      return { ch: ' ', key: null };
+    }
+    // A faint band of the Milky Way across the sky
+    function milkyWay(wx, wy) {
+      var d = (wy - (4 + wx * 0.32)) / 9;
+      return Math.exp(-d * d) * (0.4 + 0.9 * AF.fbm(wx * 0.06, wy * 0.12, 61));
     }
 
     function moonAt(wx, wy, cx, cy) {

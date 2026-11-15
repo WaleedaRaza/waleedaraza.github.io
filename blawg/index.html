@@ -99,32 +99,44 @@
     }
     .blog-title b { color: var(--teal); font-weight: 600; }
 
-    /* ── post list ── */
-    .posts {
-      max-width: 860px;
-      margin: 48px auto 120px;
-      padding: 0 16px;
-    }
+    /* ── post grid ── */
+    .posts { max-width: 1240px; margin: 48px auto 120px; padding: 0 16px; }
     .section-tag { font-size: 11px; color: var(--orange); letter-spacing: .15em; margin-bottom: 6px; }
-    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; margin-bottom: 24px; }
-    .post-list { list-style: none; border-top: 1px solid var(--border); }
-    .post-item a {
-      display: grid;
-      grid-template-columns: 56px 1fr auto;
-      gap: 16px;
-      align-items: baseline;
-      padding: 22px 4px;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      transition: background .2s;
+    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; margin-bottom: 18px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .filter {
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 6px 12px; cursor: pointer; transition: color .2s, border-color .2s, box-shadow .2s;
     }
-    .post-item a:hover { background: rgba(255,107,53,0.05); }
-    .post-item a:hover .post-title { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,53,.45); }
-    .post-num { color: var(--text-muted); font-size: 13px; }
-    .post-title { font-family: 'Outfit', sans-serif; font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; transition: color .2s, text-shadow .2s; }
-    .post-summary { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+    .filter:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
+    .filter.on { color: var(--teal); border-color: rgba(0,212,170,.5); box-shadow: 0 0 10px rgba(0,212,170,.15); }
+    .grid > li { display: flex; }
+    .grid > li > .card { flex: 1; }
+    .grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+    .card {
+      position: relative; display: flex; flex-direction: column; gap: 12px;
+      min-height: 150px; padding: 18px 18px 16px;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.015);
+      text-decoration: none; color: inherit;
+      transition: border-color .25s, background .25s, box-shadow .25s, transform .25s;
+    }
+    .card-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: .1em; }
+    .post-num { color: var(--text-muted); }
+    .card-tag { color: var(--orange); text-transform: uppercase; }
+    .post-title { font-family: 'Outfit', sans-serif; font-size: 19px; line-height: 1.25; font-weight: 500; transition: color .2s, text-shadow .2s; }
+    .post-summary { color: var(--text-muted); font-size: 12.5px; line-height: 1.5; }
+    .card-foot { margin-top: auto; font-size: 11px; letter-spacing: .1em; color: var(--text-muted); }
+    a.card:hover { border-color: rgba(255,107,53,.5); background: rgba(255,107,53,0.05); box-shadow: 0 0 22px rgba(255,107,53,.12); transform: translateY(-2px); }
+    a.card:hover .post-title { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,53,.45); }
+    .card.soon .post-title { color: rgba(255,255,255,.62); }
+    .card.soon:hover { border-color: rgba(255,255,255,.16); }
+    .card.soon:hover .post-title { color: rgba(255,255,255,.85); }
+    .card.launch { border-color: rgba(0,212,170,.28); }
     .post-meta { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); white-space: nowrap; }
     .tag-draft { color: var(--teal); border: 1px solid rgba(0,212,170,.35); padding: 2px 8px; }
+    .tag-soon { color: var(--text-muted); }
+    .grid-note { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
 
     /* ── single post ── */
     .article { max-width: 720px; margin: 40px auto 120px; padding: 0 16px; display: none; }
@@ -155,8 +167,9 @@
       .nav { padding: 10px 16px; }
       .nav-links { gap: 16px; }
       .nav-link { font-size: 10px; }
-      .post-item a { grid-template-columns: 36px 1fr; }
-      .post-meta.list { grid-column: 2; }
+      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .card { min-height: 120px; padding: 14px 12px; }
+      .post-title { font-size: 16px; }
     }
   </style>
 </head>
@@ -180,9 +193,10 @@
     </header>
 
     <section class="posts" id="posts">
-      <div class="section-tag">[&#8734;] LAUNCH PIECES</div>
+      <div class="section-tag" id="post-count">[&#8734;] THE BOARD</div>
       <h2 class="section-title">&#9654; POSTS</h2>
-      <ul class="post-list" id="post-list"></ul>
+      <div class="filters" id="filters"></div>
+      <ul class="grid" id="post-grid"></ul>
     </section>
 
     <article class="article" id="article">
@@ -195,6 +209,7 @@
 
   <script src="../assets/ascii/ascii-field.js"></script>
   <script src="../assets/ascii/fallen-tree.js"></script>
+  <script src="../assets/ascii/fallen-oak.js"></script>
   <script src="crypt.js"></script>
   <script src="posts.js"></script>
   <script>
@@ -216,7 +231,9 @@
       }
 
       var hint = document.getElementById('replay');
-      var scene = FallenTree.mount(document.getElementById('tree-scene'), {
+      // ?tree=oak shows the original autumn oak; the redwood is the default
+      var Scene = /[?&]tree=oak\b/.test(location.search) ? FallenOak : FallenTree;
+      var scene = Scene.mount(document.getElementById('tree-scene'), {
         onImpact: function () { setTimeout(function () { typeKoan(AsciiField.reducedMotion); }, AsciiField.reducedMotion ? 0 : 1600); },
         onSettled: function () { hint.classList.add('on'); }
       });
@@ -235,14 +252,39 @@
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
       function meta(p) { return p.status === 'draft' ? '<span class="tag-draft">DRAFT</span>' : esc(p.date); }
 
-      var list = document.getElementById('post-list');
-      list.innerHTML = posts.map(function (p, i) {
-        return '<li class="post-item"><a href="#' + esc(p.slug) + '">' +
-          '<span class="post-num">' + ('00' + i).slice(-3) + '</span>' +
-          '<span><div class="post-title">' + esc(p.title) + (p.encrypted ? '<span class="lock" title="password protected">&#9679; locked</span>' : '') + '</div>' +
-          '<div class="post-summary">' + esc(p.summary || '') + '</div></span>' +
-          '<span class="post-meta list">' + meta(p) + '</span></a></li>';
-      }).join('');
+      var grid = document.getElementById('post-grid');
+      var filtersEl = document.getElementById('filters');
+      var current = 'All';
+      var tags = ['All'];
+      posts.forEach(function (p) { if (p.tag && tags.indexOf(p.tag) < 0) tags.push(p.tag); });
+
+      function card(p, i) {
+        var num = ('00' + i).slice(-3);
+        var lock = p.encrypted ? ' <span class="lock" title="password protected">&#9679; locked</span>' : '';
+        var foot = p.status === 'soon' ? '<span class="tag-soon">SOON</span>' : meta(p);
+        var inner =
+          '<div class="card-top"><span class="post-num">' + num + '</span><span class="card-tag">' + esc(p.tag || '') + '</span></div>' +
+          '<div class="post-title">' + esc(p.title) + lock + '</div>' +
+          (p.summary ? '<div class="post-summary">' + esc(p.summary) + '</div>' : '') +
+          '<div class="card-foot">' + foot + '</div>';
+        if (p.status === 'soon') return '<li><div class="card soon">' + inner + '</div></li>';
+        return '<li><a class="card' + (i < 3 ? ' launch' : '') + '" href="#' + esc(p.slug) + '">' + inner + '</a></li>';
+      }
+      function renderGrid() {
+        grid.innerHTML = posts.map(function (p, i) {
+          return (current === 'All' || p.tag === current) ? card(p, i) : '';
+        }).join('');
+        filtersEl.innerHTML = tags.map(function (t) {
+          return '<button type="button" class="filter' + (t === current ? ' on' : '') + '" data-tag="' + esc(t) + '">' + esc(t) + '</button>';
+        }).join('');
+      }
+      filtersEl.addEventListener('click', function (e) {
+        var b = e.target.closest('.filter'); if (!b) return;
+        current = b.getAttribute('data-tag'); renderGrid();
+      });
+      var written = posts.filter(function (p) { return p.status !== 'soon'; }).length;
+      document.getElementById('post-count').textContent = '[' + posts.length + '] ON THE BOARD · ' + written + ' OPEN';
+      renderGrid();
 
       var unlocked = {}; // slug -> plaintext, for this page view only
       function renderBody(post) {
