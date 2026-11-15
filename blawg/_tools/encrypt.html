@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lock a post</title>
+  <!--
+    Offline tool. Double-click this file to open it in your browser.
+    Nothing is uploaded: encryption happens on your computer.
+    GitHub Pages does not serve folders starting with "_", so this page is
+    not on the live site.
+  -->
+  <style>
+    :root { --orange: #ff6b35; --teal: #00d4aa; --border: rgba(255,255,255,.14); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #eee; font: 14px/1.6 "IBM Plex Mono", Consolas, monospace; }
+    main { max-width: 820px; margin: 0 auto; padding: 40px 16px 80px; }
+    h1 { font-size: 18px; color: var(--orange); letter-spacing: .08em; margin: 0 0 6px; }
+    .sub { color: #888; margin: 0 0 28px; }
+    label { display: block; color: #aaa; font-size: 12px; letter-spacing: .1em; margin: 18px 0 6px; text-transform: uppercase; }
+    input, textarea { width: 100%; background: #0a0a0a; color: #eee; border: 1px solid var(--border); padding: 10px 12px; font: inherit; outline: none; }
+    input:focus, textarea:focus { border-color: var(--teal); }
+    textarea { min-height: 260px; resize: vertical; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > div { flex: 1 1 240px; }
+    button { margin-top: 20px; background: var(--orange); color: #000; border: 0; padding: 12px 20px; font: inherit; font-weight: 700; letter-spacing: .1em; cursor: pointer; }
+    button.ghost { background: none; color: var(--teal); border: 1px solid var(--teal); }
+    button[disabled] { opacity: .5; cursor: wait; }
+    .note { color: #888; font-size: 12px; margin-top: 6px; }
+    .out { margin-top: 28px; display: none; }
+    .out.on { display: block; }
+    .out textarea { min-height: 200px; color: var(--teal); }
+    .ok { color: var(--teal); }
+    .bad { color: #ff5a5a; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>LOCK A POST</h1>
+  <p class="sub">Paste an essay and a password. You get an entry for <code>blawg/posts.js</code> that holds only scrambled text. Readers on the site type the password to read it.</p>
+
+  <div class="row">
+    <div><label for="title">Title</label><input id="title" placeholder="My Way: Here and Forward"></div>
+    <div><label for="date">Date</label><input id="date" type="date"></div>
+  </div>
+  <label for="summary">Summary (public, optional)</label>
+  <input id="summary" placeholder="Shown in the post list even while locked">
+
+  <label for="body">Essay</label>
+  <textarea id="body" placeholder="Plain text works: blank lines become paragraphs. HTML works too."></textarea>
+  <p class="note">If the text has no HTML tags, blank lines become &lt;p&gt; paragraphs and lines starting with "## " become headings.</p>
+
+  <div class="row">
+    <div><label for="pw">Password</label><input id="pw" type="password" autocomplete="new-password"></div>
+    <div><label for="pw2">Password again</label><input id="pw2" type="password" autocomplete="new-password"></div>
+  </div>
+  <p class="note">This is the only protection. Use a long passphrase (four or more random words). If you lose it, the post can't be recovered from the site.</p>
+
+  <button id="go" type="button">ENCRYPT</button>
+  <div id="msg" class="note"></div>
+
+  <div class="out" id="out">
+    <label for="result">Paste this into the BLOG_POSTS list in blawg/posts.js</label>
+    <textarea id="result" readonly></textarea>
+    <button class="ghost" id="copy" type="button">COPY</button>
+    <p class="note">Checked: it decrypts back to your text with this password. Keep your plain essay somewhere outside the repo (or in a private note).</p>
+  </div>
+</main>
+
+<script src="../crypt.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  $('date').value = new Date().toISOString().slice(0, 10);
+
+  function slugify(t) {
+    return t.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'post';
+  }
+  function escHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function toHtml(text) {
+    if (/<[a-z][\s\S]*>/i.test(text)) return text.trim();
+    return text.trim().split(/\n\s*\n/).map(function (block) {
+      block = block.trim();
+      if (block.indexOf('## ') === 0) return '<h2>' + escHtml(block.slice(3)) + '</h2>';
+      return '<p>' + escHtml(block).replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+  }
+  function js(s) { return JSON.stringify(s); }
+
+  if (!BlawgCrypt.available()) {
+    $('msg').innerHTML = '<span class="bad">This browser has no WebCrypto here. Try Chrome, Edge or Firefox.</span>';
+    $('go').disabled = true;
+  }
+
+  $('go').addEventListener('click', function () {
+    var title = $('title').value.trim(), body = $('body').value, pw = $('pw').value;
+    if (!title || !body.trim()) { $('msg').innerHTML = '<span class="bad">Add a title and the essay.</span>'; return; }
+    if (pw.length < 8) { $('msg').innerHTML = '<span class="bad">Use a password of at least 8 characters (longer is better).</span>'; return; }
+    if (pw !== $('pw2').value) { $('msg').innerHTML = '<span class="bad">The two passwords don\'t match.</span>'; return; }
+    var html = toHtml(body);
+    $('go').disabled = true; $('msg').textContent = 'encrypting…';
+    BlawgCrypt.encrypt(html, pw).then(function (payload) {
+      return BlawgCrypt.decrypt(payload, pw).then(function (back) {
+        if (back !== html) throw new Error('round trip failed');
+        return payload;
+      });
+    }).then(function (payload) {
+      var entry =
+        '  {\n' +
+        '    slug: ' + js(slugify(title)) + ',\n' +
+        '    title: ' + js(title) + ',\n' +
+        '    date: ' + js($('date').value) + ',\n' +
+        '    status: \'published\',\n' +
+        '    summary: ' + js($('summary').value.trim()) + ',\n' +
+        '    encrypted: ' + JSON.stringify(payload) + '\n' +
+        '  },';
+      $('result').value = entry;
+      $('out').classList.add('on');
+      $('msg').innerHTML = '<span class="ok">Done.</span>';
+    }).catch(function (e) {
+      $('msg').innerHTML = '<span class="bad">Failed: ' + escHtml(String(e && e.message || e)) + '</span>';
+    }).then(function () { $('go').disabled = false; });
+  });
+
+  $('copy').addEventListener('click', function () {
+    $('result').select();
+    try { navigator.clipboard.writeText($('result').value); } catch (e) { document.execCommand('copy'); }
+    $('copy').textContent = 'COPIED';
+    setTimeout(function () { $('copy').textContent = 'COPY'; }, 1500);
+  });
+})();
+</script>
+</body>
+</html>

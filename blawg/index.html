@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blawg | Waleed A. Raza</title>
+  <meta name="description" content="If a tree falls in the forest and no one hears it, does it make a sound? Writing by Waleed A. Raza.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <style>
+    :root {
+      --void: #000;
+      --card: #0a0a12;
+      --border: rgba(255,255,255,0.08);
+      --orange: #ff6b35;
+      --teal: #00d4aa;
+      --text: #fff;
+      --text-dim: rgba(255,255,255,0.7);
+      --text-muted: rgba(255,255,255,0.4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--void);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    /* same grain as the home page */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    a { color: inherit; }
+
+    /* ── nav (matches index.html) ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-brand { font-size: 10px; color: var(--orange); text-decoration: none; letter-spacing: 0.05em; font-weight: 600; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link { color: var(--text-dim); text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; transition: color .2s; }
+    .nav-link:hover { color: var(--orange); }
+    .nav-link.active { color: var(--teal); }
+
+    main { position: relative; z-index: 10; }
+
+    /* ── hero: the fallen tree ── */
+    .blog-hero {
+      padding: 84px 16px 24px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .scene-wrap {
+      width: 100%;
+      max-width: 1240px;
+      position: relative;
+      cursor: pointer;
+    }
+    .scene-wrap pre { display: block; }
+    .scene-hint {
+      position: absolute; right: 4px; bottom: -22px;
+      font-size: 11px; color: var(--text-muted); letter-spacing: .08em;
+      background: none; border: 0; cursor: pointer; font-family: inherit;
+      opacity: 0; transition: opacity .6s;
+    }
+    .scene-hint.on { opacity: 1; }
+    .scene-hint:hover { color: var(--orange); }
+
+    .koan {
+      margin-top: 36px;
+      max-width: 760px;
+      text-align: center;
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(18px, 2.4vw, 26px);
+      color: var(--text-dim);
+      min-height: 2.6em;
+    }
+    .koan .cursor { display: inline-block; width: .5em; animation: blink 1s steps(1) infinite; color: var(--orange); font-style: normal; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .blog-title {
+      margin-top: 22px;
+      font-size: 12px;
+      letter-spacing: .32em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .blog-title b { color: var(--teal); font-weight: 600; }
+
+    /* ── post list ── */
+    .posts {
+      max-width: 860px;
+      margin: 48px auto 120px;
+      padding: 0 16px;
+    }
+    .section-tag { font-size: 11px; color: var(--orange); letter-spacing: .15em; margin-bottom: 6px; }
+    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; margin-bottom: 24px; }
+    .post-list { list-style: none; border-top: 1px solid var(--border); }
+    .post-item a {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 16px;
+      align-items: baseline;
+      padding: 22px 4px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .post-item a:hover { background: rgba(255,107,53,0.05); }
+    .post-item a:hover .post-title { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,53,.45); }
+    .post-num { color: var(--text-muted); font-size: 13px; }
+    .post-title { font-family: 'Outfit', sans-serif; font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; transition: color .2s, text-shadow .2s; }
+    .post-summary { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+    .post-meta { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); white-space: nowrap; }
+    .tag-draft { color: var(--teal); border: 1px solid rgba(0,212,170,.35); padding: 2px 8px; }
+
+    /* ── single post ── */
+    .article { max-width: 720px; margin: 40px auto 120px; padding: 0 16px; display: none; }
+    .article.on { display: block; }
+    .back { font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: .1em; }
+    .back:hover { color: var(--orange); }
+    .article h1 { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 20px 0 10px; }
+    .article .post-meta { margin-bottom: 36px; display: block; }
+    .article-body { font-family: 'Crimson Pro', Georgia, serif; font-size: 21px; line-height: 1.7; color: rgba(255,255,255,.86); }
+    .article-body p { margin-bottom: 1.1em; }
+    .article-body h2 { font-family: 'Outfit', sans-serif; font-size: 24px; margin: 1.6em 0 .6em; }
+    .article-body blockquote { border-left: 2px solid var(--orange); padding-left: 18px; color: var(--text-dim); font-style: italic; margin: 1.4em 0; }
+    .placeholder-note { color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+
+    .lock { color: var(--orange); margin-left: 8px; font-size: .8em; }
+    .unlock { border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 28px; font-family: 'IBM Plex Mono', monospace; }
+    .unlock p { color: var(--text-dim); font-size: 14px; margin-bottom: 16px; }
+    .unlock form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .unlock input { flex: 1 1 220px; background: #000; border: 1px solid rgba(255,255,255,.18); color: var(--text); padding: 10px 12px; font: inherit; font-size: 14px; outline: none; }
+    .unlock input:focus { border-color: var(--teal); box-shadow: 0 0 10px rgba(0,212,170,.25); }
+    .unlock button { background: var(--orange); color: #000; border: 0; padding: 10px 18px; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .1em; cursor: pointer; }
+    .unlock button[disabled] { opacity: .5; cursor: wait; }
+    .unlock .err { color: #ff5a5a; font-size: 12px; margin-top: 12px; min-height: 1em; }
+
+    body.reading .posts { display: none; }
+
+    @media (max-width: 600px) {
+      .nav { padding: 10px 16px; }
+      .nav-links { gap: 16px; }
+      .nav-link { font-size: 10px; }
+      .post-item a { grid-template-columns: 36px 1fr; }
+      .post-meta.list { grid-column: 2; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-brand">WALEED A. RAZA</a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">HOME</a>
+      <a href="./" class="nav-link active">BLAWG</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="blog-hero">
+      <div class="scene-wrap" id="scene-wrap" title="Let it fall again">
+        <pre id="tree-scene" aria-hidden="true"></pre>
+        <button class="scene-hint" id="replay" type="button">&#8635; let it fall again</button>
+      </div>
+      <p class="koan" id="koan" aria-label="If a tree falls in a forest and no one is around to hear it, does it make a sound?"></p>
+      <h1 class="blog-title"><b>BLAWG</b> &middot; writing that may or may not make a sound</h1>
+    </header>
+
+    <section class="posts" id="posts">
+      <div class="section-tag">[&#8734;] LAUNCH PIECES</div>
+      <h2 class="section-title">&#9654; POSTS</h2>
+      <ul class="post-list" id="post-list"></ul>
+    </section>
+
+    <article class="article" id="article">
+      <a class="back" href="./">&larr; ALL POSTS</a>
+      <h1 id="article-title"></h1>
+      <span class="post-meta" id="article-meta"></span>
+      <div class="article-body" id="article-body"></div>
+    </article>
+  </main>
+
+  <script src="../assets/ascii/ascii-field.js"></script>
+  <script src="../assets/ascii/fallen-tree.js"></script>
+  <script src="crypt.js"></script>
+  <script src="posts.js"></script>
+  <script>
+    (function () {
+      var KOAN = 'If a tree falls in a forest and no one is around to hear it, does it make a sound?';
+      var koanEl = document.getElementById('koan');
+      var typingTimer = null;
+
+      function typeKoan(instant) {
+        clearTimeout(typingTimer);
+        if (instant) { koanEl.textContent = KOAN; return; }
+        var i = 0;
+        koanEl.innerHTML = '';
+        (function tick() {
+          koanEl.innerHTML = KOAN.slice(0, i).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="cursor">&#9612;</span>';
+          if (i++ < KOAN.length) typingTimer = setTimeout(tick, 38);
+          else typingTimer = setTimeout(function () { koanEl.textContent = KOAN; }, 2400);
+        })();
+      }
+
+      var hint = document.getElementById('replay');
+      var scene = FallenTree.mount(document.getElementById('tree-scene'), {
+        onImpact: function () { setTimeout(function () { typeKoan(AsciiField.reducedMotion); }, AsciiField.reducedMotion ? 0 : 1600); },
+        onSettled: function () { hint.classList.add('on'); }
+      });
+      function replay(e) {
+        if (e) e.stopPropagation();
+        hint.classList.remove('on');
+        koanEl.innerHTML = '';
+        clearTimeout(typingTimer);
+        scene.replay();
+      }
+      hint.addEventListener('click', replay);
+      document.getElementById('scene-wrap').addEventListener('click', replay);
+
+      /* ── posts ── */
+      var posts = (window.BLOG_POSTS || []).slice();
+      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function meta(p) { return p.status === 'draft' ? '<span class="tag-draft">DRAFT</span>' : esc(p.date); }
+
+      var list = document.getElementById('post-list');
+      list.innerHTML = posts.map(function (p, i) {
+        return '<li class="post-item"><a href="#' + esc(p.slug) + '">' +
+          '<span class="post-num">' + ('00' + i).slice(-3) + '</span>' +
+          '<span><div class="post-title">' + esc(p.title) + (p.encrypted ? '<span class="lock" title="password protected">&#9679; locked</span>' : '') + '</div>' +
+          '<div class="post-summary">' + esc(p.summary || '') + '</div></span>' +
+          '<span class="post-meta list">' + meta(p) + '</span></a></li>';
+      }).join('');
+
+      var unlocked = {}; // slug -> plaintext, for this page view only
+      function renderBody(post) {
+        var bodyEl = document.getElementById('article-body');
+        if (!post.encrypted) { bodyEl.innerHTML = post.body || ''; return; }
+        if (unlocked[post.slug]) { bodyEl.innerHTML = unlocked[post.slug]; return; }
+        if (!window.BlawgCrypt || !BlawgCrypt.available()) {
+          bodyEl.innerHTML = '<div class="unlock"><p>This piece is locked, and this browser can\'t unlock it (it needs WebCrypto over https).</p></div>';
+          return;
+        }
+        bodyEl.innerHTML = '<div class="unlock"><p>This one is password protected.</p>' +
+          '<form autocomplete="off"><input type="password" placeholder="password" aria-label="Password" required>' +
+          '<button type="submit">UNLOCK</button></form><div class="err" aria-live="polite"></div></div>';
+        var form = bodyEl.querySelector('form'), input = form.querySelector('input'),
+            btn = form.querySelector('button'), err = bodyEl.querySelector('.err');
+        input.focus();
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          btn.disabled = true; err.textContent = 'unlocking…';
+          BlawgCrypt.decrypt(post.encrypted, input.value).then(function (html) {
+            unlocked[post.slug] = html;
+            bodyEl.innerHTML = html;
+          }, function () {
+            btn.disabled = false; err.textContent = 'Wrong password.'; input.select();
+          });
+        });
+      }
+
+      function route() {
+        var slug = decodeURIComponent(location.hash.replace('#', ''));
+        var post = posts.filter(function (p) { return p.slug === slug; })[0];
+        var art = document.getElementById('article');
+        if (!post) { art.classList.remove('on'); document.body.classList.remove('reading'); document.title = 'Blawg | Waleed A. Raza'; return; }
+        document.getElementById('article-title').textContent = post.title;
+        document.getElementById('article-meta').innerHTML = meta(post) + (post.status === 'draft' ? '' : '');
+        renderBody(post);
+        art.classList.add('on');
+        document.body.classList.add('reading');
+        document.title = post.title + ' | Waleed A. Raza';
+        art.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      window.addEventListener('hashchange', route);
+      route();
+    })();
+  </script>
+</body>
+</html>
