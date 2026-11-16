@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>lab | blawg</title>
+  <!-- Unlinked prototype bench for ASCII pieces. Click any piece to pause it. -->
+  <style>
+    :root { --orange: #ff6b35; --teal: #00d4aa; --border: rgba(255,255,255,.08); --dim: rgba(255,255,255,.55); --muted: rgba(255,255,255,.35); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; color: #fff; font-family: 'IBM Plex Mono', Consolas, monospace; line-height: 1.6; }
+    header { max-width: 1100px; margin: 0 auto; padding: 48px 16px 8px; }
+    header a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: .12em; }
+    header a:hover { color: var(--teal); }
+    h1 { font-size: 13px; letter-spacing: .3em; color: var(--orange); margin-top: 18px; font-weight: 600; }
+    header p { color: var(--dim); font-size: 12px; margin-top: 6px; max-width: 640px; }
+    main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 28px; display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); }
+    section { border: 1px solid var(--border); background: #030306; position: relative; display: flex; flex-direction: column; }
+    section.wide { grid-column: 1 / -1; }
+    .stage { padding: 14px; cursor: pointer; position: relative; flex: 1; display: flex; align-items: center; }
+    .stage pre { width: 100%; margin: 0; }
+    .stage canvas { width: 100%; display: block; }
+    .meta { border-top: 1px solid var(--border); padding: 12px 14px 14px; font-size: 11px; }
+    .meta h2 { font-size: 11px; letter-spacing: .2em; color: var(--teal); font-weight: 600; }
+    .meta h2 span { color: var(--muted); letter-spacing: .1em; font-weight: 400; margin-left: 8px; }
+    .meta p { color: var(--dim); margin-top: 4px; }
+    .paused-tag { position: absolute; top: 8px; right: 10px; font-size: 10px; letter-spacing: .2em; color: var(--muted); display: none; }
+    section.is-paused .paused-tag { display: block; }
+    /* LUCKYBLOCK.EXE fake error */
+    .err { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); width: min(300px, 86%); background: #c0c0c0; color: #000; border: 2px solid; border-color: #fff #404040 #404040 #fff; font: 12px/1.4 Tahoma, 'MS Sans Serif', sans-serif; display: none; z-index: 2; cursor: default; }
+    .err.on { display: block; }
+    .err .bar { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; font-weight: 700; padding: 3px 6px; display: flex; justify-content: space-between; }
+    .err .body { padding: 12px 12px 8px; display: flex; gap: 10px; }
+    .err .ico { width: 28px; height: 28px; border-radius: 50%; background: #e00; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+    .err .btns { text-align: center; padding: 0 0 10px; }
+    .err button { font: inherit; padding: 2px 22px; background: #c0c0c0; border: 2px solid; border-color: #fff #404040 #404040 #fff; cursor: pointer; }
+    .err button:active { border-color: #404040 #fff #fff #404040; }
+    .credit { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="./">&larr; BLAWG</a>
+    <h1>LAB</h1>
+    <p>First prototypes from the reference bank. Nothing here is linked from the site. Click a piece to pause it.</p>
+  </header>
+
+  <main id="v2"></main>
+
+  <main>
+    <section class="wide" id="s-dragons">
+      <div class="stage"><pre id="dragons" aria-label="Two dragons, orange and teal, circling a dark clearing"></pre><span class="paused-tag">PAUSED</span></div>
+      <div class="meta">
+        <h2>WARMPOP <span>background · 30 s orbit</span></h2>
+        <p>ESPRIT's "Warmpop" heard against the Zuko and Aang dragon scene. Two serpents in the site's own orange and teal circle a dark clearing; where they cross, the light goes white.</p>
+      </div>
+    </section>
+
+    <section id="s-lucky">
+      <div class="stage"><pre id="lucky" aria-label="A spinning Minecraft-style lucky block"></pre><span class="paused-tag">PAUSED</span>
+        <div class="err" id="err" role="dialog" aria-label="LUCKYBLOCK.EXE">
+          <div class="bar"><span>LUCKYBLOCK.EXE</span><span>×</span></div>
+          <div class="body"><div class="ico">×</div><div>LUCKYBLOCK.EXE has performed an illegal operation and will be opened.</div></div>
+          <div class="btns"><button type="button" id="err-ok">OK</button></div>
+        </div>
+      </div>
+      <div class="meta">
+        <h2>LUCKYBLOCK.EXE <span>standalone · click it</span></h2>
+        <p>The first modifiable Minecraft world. A lucky block that spins until someone opens it.</p>
+      </div>
+    </section>
+
+    <section id="s-yin">
+      <div class="stage"><pre id="yin" aria-label="A breathing yin yang"></pre><span class="paused-tag">PAUSED</span></div>
+      <div class="meta">
+        <h2>YIN YANG <span>standalone · 12 s breath</span></h2>
+        <p>Plain and breathing, with a boundary that never quite settles. The base for the mantis version once there's a photo of the tee.</p>
+      </div>
+    </section>
+
+    <section class="wide" id="s-paths">
+      <div class="stage"><pre id="paths" aria-label="A figure under a column of light, from the Paths image"></pre><span class="paused-tag">PAUSED</span></div>
+      <div class="meta">
+        <h2>PATHS <span>image to ASCII · light pulse</span></h2>
+        <p>pics/Paths.png converted to characters. The light breathes, the stars drift, the figure stays still. <span class="credit">Source image from the site's own pics folder.</span></p>
+      </div>
+    </section>
+  </main>
+  <main id="more"></main>
+
+  <script src="../assets/ascii/ascii-field.js"></script>
+  <script src="../assets/ascii/paths-luma.js"></script>
+  <script src="../assets/ascii/lab-scenes.js"></script>
+  <script src="../assets/ascii/lab-objects.js"></script>
+  <script src="../assets/ascii/lab-backgrounds.js"></script>
+  <script src="../assets/ascii/lab-headers.js"></script>
+  <script src="../assets/ascii/ascii-canvas.js"></script>
+  <script src="../assets/ascii/lab-v2.js"></script>
+  <script src="../assets/ascii/lab-v2-batch.js"></script>
+  <script>
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    function bind(sectionId, scene) {
+      var sec = $(sectionId);
+      sec.querySelector('.stage').addEventListener('click', function (e) {
+        if (e.target.closest('.err')) return;
+        if (scene.onClick && scene.onClick()) return;
+        sec.classList.toggle('is-paused', scene.toggle());
+      });
+    }
+    bind('s-dragons', LabScenes.dragons($('dragons')));
+    bind('s-yin', LabScenes.yinYang($('yin')));
+    if (window.PATHS_LUMA) bind('s-paths', LabScenes.paths($('paths')));
+
+    var lucky = LabScenes.luckyBlock($('lucky'));
+    var err = $('err'), opened = false;
+    lucky.onClick = function () {
+      if (opened) return false;        // after the pop, clicks pause like the others
+      err.classList.add('on');
+      return true;
+    };
+    $('err-ok').addEventListener('click', function () {
+      err.classList.remove('on');
+      opened = true;
+      lucky.pop();
+      setTimeout(function () { opened = false; }, 3600);
+    });
+    bind('s-lucky', lucky);
+
+    // the rest are built from this list: [id, maker, title, kind, note, wide]
+    var O = window.LabObjects, B = window.LabBackgrounds, HD = window.LabHeaders;
+    var MORE = [
+      ['forever', HD.forever, 'WE WILL LIVE FOREVER', 'essay header', 'An orange line is drawn and gone within seconds. A teal copy redraws it on the right and stays. The feeling goes, the record remains.', true],
+      ['camus', HD.sisyphus, 'CAMUS', 'essay header · 16 s', 'The stone goes up, the stone comes down, and the figure walks back down after it.', true],
+      ['seq', HD.sequencer, 'MUSIC AND SOFTWARE', 'essay header · 120 bpm', 'One pattern read two ways: as a step sequencer and as code. Every four bars a step changes, and it changes in both at once.', true],
+      ['rivers', HD.rivers, 'POKER', 'essay header · one action, many rivers', 'One bet branches into sixteen rivers. Each time, one path lights up and the rest stay possible.', true],
+      ['sim', HD.simulation, 'SIMULATION', 'essay header · endless zoom', 'Frames inside frames with the same stars in each one, and every frame is marked with a question mark.', true],
+      ['bridge', HD.bridge, 'NVIDIA', 'essay header · one narrow bridge', 'Everything on the left has to cross by the same narrow bridge to get anywhere on the right.', true],
+      ['agents', HD.agents, 'AI AGENTS', 'essay header · reorganises every 9 s', 'An org chart of agents. Messages run down the lines, and every nine seconds the teams shuffle themselves.', true],
+      ['market', HD.market, 'PREDICTION MARKETS', 'essay header · 14 s round', 'A price wandering between 0¢ and 100¢, pulled harder toward the answer as the deadline gets close.', true],
+      ['free', HD.current, 'FREE WILL', 'essay header · a bent current', 'Everything rides the current. One orange point leans against it for a while, then rejoins it.', true],
+      ['cutscene', HD.cutscene, 'WALEED IS EXPLAINING', 'standalone · try skipping it', 'The unskippable cutscene. The skip button is there for show.'],
+      ['warb', HD.warb, 'WARB', 'standalone · a returning note', 'A small planet with a ring, and a note that keeps coming back round.'],
+      ['helmet', HD.helmet, 'HELMET', 'standalone · road in the visor', 'Chrome, with a sunset road running through the visor.'],
+      ['boat', O.paperBoat, 'HTML-PAPER BOAT', 'standalone · bobbing', 'A page of early HTML folded into a boat. Tags in orange, attributes in teal, the text runs across the folds.'],
+      ['vinyl', O.vinyl, 'VINYL', 'standalone · 33⅓ rpm', 'The label turns, the shine stays put, and the arm creeps inward over forty seconds.'],
+      ['underwater', B.underwater, 'SEXTAPE', 'background · underwater light', 'Under the surface with light coming down in sheets and caustics on the floor. Deftones by way of the bank.', true],
+      ['ball', O.dragonBall, 'SEVEN-STAR BALL', 'standalone · float', 'Glass-orange with seven stars under the surface, turning a little as it floats.'],
+      ['chip', O.pokerChip, 'HAND-HISTORY CHIP', 'standalone · spins on edge', 'A chip that flips through edge-on while the hand plays out underneath it, one action at a time.'],
+      ['dunes', B.dunes, 'ARRAKIS', 'background · 40 s worm', 'Dunes at dusk under two moons, sand lifting off the crests. Something passes under the near dune every forty seconds.', true],
+      ['heart', O.heart808, '808s', 'standalone · split heart', 'A heart in two halves that drift apart and come back together. The crack only glows when they are close.'],
+      ['bolt', O.lightning, 'LIGHTNING → BATTERY', 'standalone · 12 s cycle', 'Five strikes to full, a moment held, then it drains and starts again.'],
+      ['glass', B.neonGlass, 'HEAVEN OR LAS VEGAS', 'background · through glass', 'City light out of focus in Cocteau Twins colours, with rain sitting on the glass and running down it.', true],
+      ['eleven', O.elevenSum, '1 + 1 → 11', 'typography · 9 s', 'The family saying. The plus goes, the ones slide together, in the same two-tone as the name at the top of the site.'],
+      ['enso', O.enso, 'ENSŌ', 'standalone · 10 s stroke', 'One brushstroke, drawn, held, then let go. The seal stays. A start on the Musashi header.'],
+      ['room', B.orangeRoom, 'CHANNEL ORANGE', 'background · hallway', 'A dark hallway with the orange room at the end of it. The light spills down the floor toward you.', true],
+      ['f117', O.nighthawk, 'F-117', 'standalone · glint', 'Faceted and almost invisible. A glint crosses the plates and the leading edges catch a little orange.'],
+      ['ridge', B.ridgeline, 'KID A', 'background · red weather', 'Sharp ridgeline under slow red weather and falling snow. A treatment after Stanley Donwood\'s Kid A cover.', true]
+    ];
+    // renderer v2 pieces: true colour on a canvas, [id, maker, title, kind, note, wide]
+    var V = window.LabV2, V2 = [
+      ['v-dragons', V.dragons, 'WARMPOP v2', 'renderer v2 · lit, scaled bodies', 'The two dragons again, now with scales, belly plates, manes, horns, teeth and legs, lit from the upper left and warmed by the fire they circle. Where they cross, the edge goes white.', true],
+      ['v-garg', V.gargantua, 'GARGANTUA', 'renderer v2 · Interstellar orbit', 'The disc around a black hole, with the far side of it bent up over the top. The side turning toward you burns brighter.', true],
+      ['v-helmet', V.helmet, 'HELMET v2', 'renderer v2 · real reflection', 'Chrome that mirrors a dusk sky and a strip light sliding across it, with the road running through the visor.'],
+      ['v-ball', V.ball, 'SEVEN-STAR BALL v2', 'renderer v2 · glass', 'Lit from behind like glass, with the stars floating inside and light pooled underneath.'],
+      ['v-water', V.underwater, 'SEXTAPE v2', 'renderer v2 · underwater light', 'Light folding into seams on the way down and again on the sand.', true]
+    ];
+    var BT = window.LabBatch, BATCH = [
+      ['b-name', BT.name, 'WALEED', 'typography · flowing colour', 'The name, poured full of slow orange and teal.', true],
+      ['b-rainbows', BT.rainbows, 'IN RAINBOWS', 'music · running colour', 'Colour running down the page, after the Radiohead sleeve by Stanley Donwood.', true],
+      ['b-pyramid', BT.pyramid, 'PYRAMID', 'music · a stage of light', 'A pyramid built from panels of light, beams leaving the top.', false],
+      ['b-scope', BT.scope, 'OSCILLOSCOPE', 'music · phosphor trace', 'A slowly drifting Lissajous figure on a green phosphor screen.', false],
+      ['b-equalizer', BT.equalizer, 'EQUALIZER', 'music · 50 bands', 'Fifty bands with falling peak caps.', true],
+      ['b-smoke', BT.smoke, 'SMOKE', 'mood · one thread', 'A single thread of smoke off an ember.', false],
+      ['b-lava', BT.lava, 'LAVA LAMP', 'ambient · two fluids', 'Orange and teal blobs merging and splitting.', false],
+      ['b-bokeh', BT.bokeh, 'HEAVEN OR LAS VEGAS v2', 'background · out of focus', 'City light out of focus, in Cocteau Twins colours.', true],
+      ['b-train', BT.train, 'THE TRAIN', 'film · Spirited Away', 'A lit train crossing flooded tracks at dusk, with its reflection underneath.', true],
+      ['b-corridor', BT.corridor, 'THE CORRIDOR', 'show · Severance', 'A white corridor that keeps going, one panel flickering, a door at the end.', true],
+      ['b-clouds', BT.clouds, 'FREEDOM', 'sky · one bird', 'Above the clouds at the end of the day, with one bird.', true],
+      ['b-dunes', BT.dunes, 'ARRAKIS v2', 'background · dunes', 'Dunes under two moons, with smooth light and creeping crests.', true],
+      ['b-ship', BT.ship, 'SHIP AT SEA', 'background · moon path', 'A small ship on a night sea, riding the path the moon lays on the water.', true],
+      ['b-aurora', BT.aurora, 'AURORA', 'background · curtains', 'Green curtains going violet at the top, over a snow ridge.', true],
+      ['b-eclipse', BT.eclipse, 'ECLIPSE', 'space · corona', 'Totality, with the corona streaming and one bead of light on the rim.', false],
+      ['b-galaxy', BT.galaxy, 'GALAXY', 'space · two arms', 'A tilted spiral turning slowly.', false],
+      ['b-paleDot', BT.paleDot, 'PALE BLUE DOT', 'space · Voyager', 'Sunbeams across the frame and one pale blue pixel in them.', true],
+      ['b-warp', BT.warp, 'WARP', 'space · streaks', 'Stars pulled into streaks.', false],
+      ['b-tunnel', BT.tunnel, 'TUNNEL', 'space · flythrough', 'A tunnel in orange and teal panels.', false],
+      ['b-gpu', BT.gpu, 'GPU', 'hardware · three fans', 'Three fans spinning under a strip of cycling light.', true],
+      ['b-circuit', BT.circuit, 'CIRCUIT', 'hardware · traces', 'Signals leaving a chip along its traces.', true],
+      ['b-donut', BT.donut, 'DONUT', 'classic · lit torus', 'The old terminal donut, lit properly.', false],
+      ['b-julia', BT.julia, 'JULIA SET', 'maths · never settles', 'A Julia set whose constant keeps moving, so the shape never settles.', false],
+      ['b-lorenz', BT.lorenz, 'LORENZ', 'maths · chaos', 'The Lorenz attractor turning, one wing orange and one teal, with a bright point tracing the path.', false],
+      ['b-life', BT.life, 'LIFE', 'maths · Conway', 'The Game of Life. New cells are orange and old ones turn teal.', false],
+      ['b-dna', BT.dna, 'DNA', 'biology · helix', 'A double helix turning, one strand orange and one teal.', true],
+      ['b-currents', BT.currents, 'FREE WILL v2', 'essay header · currents', 'Hundreds of teal points follow the current. One orange point leans its own way.', true],
+      ['b-roots', BT.roots, 'GENEALOGY', 'essay header · roots', 'A tree grows up while its roots grow down, in two colours, then it starts again.', false],
+      ['b-yinyang', BT.yinyang, 'YIN YANG v2', 'symbol · smooth', 'Smooth, shaded, slowly turning, with a teal glow at the rim.', false],
+      ['b-heart', BT.heart, '808s v2', 'symbol · beating', 'A shaded heart that beats, splits and closes. The crack glows when the halves are close.', false],
+      ['b-watch', BT.watch, 'WATCH', 'object · your time', 'A watch showing your actual time, with a sweeping orange second hand.', false],
+      ['b-rings', BT.rings, 'RINGS', 'symbol · a sound leaving', 'Rings leaving a point and fading.', false],
+    ];
+    var v2 = $('v2');
+    V2.concat(BATCH).forEach(function (m) {
+      if (!m[1]) return;
+      var sec = document.createElement('section');
+      sec.id = 's-' + m[0]; if (m[5]) sec.className = 'wide';
+      sec.innerHTML = '<div class="stage"><canvas role="img" aria-label="' + m[2] + '"></canvas><span class="paused-tag">PAUSED</span></div>' +
+        '<div class="meta"><h2>' + m[2] + ' <span>' + m[3] + '</span></h2><p>' + m[4] + '</p></div>';
+      v2.appendChild(sec);
+      bind(sec.id, m[1](sec.querySelector('canvas')));
+    });
+
+    var more = $('more');
+    MORE.forEach(function (m) {
+      var sec = document.createElement('section');
+      sec.id = 's-' + m[0]; if (m[5]) sec.className = 'wide';
+      sec.innerHTML = '<div class="stage"><pre aria-label="' + m[2] + '"></pre><span class="paused-tag">PAUSED</span></div>' +
+        '<div class="meta"><h2>' + m[2] + ' <span>' + m[3] + '</span></h2><p>' + m[4] + '</p></div>';
+      more.appendChild(sec);
+      bind(sec.id, m[1](sec.querySelector('pre')));
+    });
+  })();
+  </script>
+</body>
+</html>

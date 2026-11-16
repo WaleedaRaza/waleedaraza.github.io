@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blawg | Waleed A. Raza</title>
+  <meta name="description" content="If a tree falls in the forest and no one hears it, does it make a sound? Writing by Waleed A. Raza.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <style>
+    :root {
+      --void: #000;
+      --card: #0a0a12;
+      --border: rgba(255,255,255,0.08);
+      --orange: #ff6b35;
+      --teal: #00d4aa;
+      --text: #fff;
+      --text-dim: rgba(255,255,255,0.7);
+      --text-muted: rgba(255,255,255,0.4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--void);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    /* same grain as the home page */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    a { color: inherit; }
+
+    /* ── nav (matches index.html) ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-brand { font-size: 10px; color: var(--orange); text-decoration: none; letter-spacing: 0.05em; font-weight: 600; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link { color: var(--text-dim); text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; transition: color .2s; }
+    .nav-link:hover { color: var(--orange); }
+    .nav-link.active { color: var(--teal); }
+
+    main { position: relative; z-index: 10; }
+
+    /* ── hero: the fallen tree ── */
+    .blog-hero {
+      padding: 84px 16px 24px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .scene-wrap {
+      width: 100%;
+      max-width: 1240px;
+      position: relative;
+      cursor: pointer;
+    }
+    .scene-wrap pre { display: block; }
+    .scene-hint {
+      position: absolute; right: 4px; bottom: -22px;
+      font-size: 11px; color: var(--text-muted); letter-spacing: .08em;
+      background: none; border: 0; cursor: pointer; font-family: inherit;
+      opacity: 0; transition: opacity .6s;
+    }
+    .scene-hint.on { opacity: 1; }
+    .scene-hint:hover { color: var(--orange); }
+
+    .koan {
+      margin-top: 36px;
+      max-width: 760px;
+      text-align: center;
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(18px, 2.4vw, 26px);
+      color: var(--text-dim);
+      min-height: 2.6em;
+    }
+    .koan .cursor { display: inline-block; width: .5em; animation: blink 1s steps(1) infinite; color: var(--orange); font-style: normal; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .blog-title {
+      margin-top: 22px;
+      font-size: 12px;
+      letter-spacing: .32em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .blog-title b { color: var(--teal); font-weight: 600; }
+
+    /* ── tree arrows: an easter egg that walks through every piece ── */
+    .hero-stage { position: relative; width: 100%; max-width: 1240px; }
+    .egg-box { display: none; width: 100%; margin: 0 auto; }
+    .egg-box { justify-content: center; }
+    .egg-box > * { width: 100%; display: block; flex: none; }
+    .egg-box pre { margin: 0; }
+    .hero-stage.egg .egg-box { display: flex; }
+    .hero-stage.egg #tree-scene, .hero-stage.egg .scene-hint { display: none; }
+    .hero-arrow {
+      position: absolute; top: 50%; z-index: 5; transform: translateY(-50%);
+      width: 52px; height: 92px; border: 1px solid rgba(255,107,53,.55); background: rgba(0,0,0,.55);
+      color: var(--orange); font: 600 34px/1 'IBM Plex Mono', monospace; cursor: pointer;
+      box-shadow: 0 0 18px rgba(255,107,53,.25); transition: background .2s, box-shadow .2s, opacity .3s;
+      animation: beckon 1.6s ease-in-out infinite;
+    }
+    .hero-arrow:hover { background: rgba(255,107,53,.15); box-shadow: 0 0 28px rgba(255,107,53,.55); animation: none; }
+    .hero-arrow.l { left: 4px; } .hero-arrow.r { right: 4px; }
+    .hero-stage.used .hero-arrow { animation: none; opacity: .75; }
+    @keyframes beckon { 0%, 100% { opacity: .35; box-shadow: 0 0 6px rgba(255,107,53,.15); } 50% { opacity: 1; box-shadow: 0 0 30px rgba(255,107,53,.6); } }
+    .egg-cap { margin-top: 10px; min-height: 1.4em; font-size: 11px; letter-spacing: .14em; color: var(--text-muted); text-align: center; text-transform: uppercase; }
+    .egg-cap b { color: var(--teal); font-weight: 600; }
+    .egg-cap a, .egg-cap button { color: var(--orange); background: none; border: 0; font: inherit; letter-spacing: inherit; cursor: pointer; text-decoration: none; text-transform: uppercase; }
+    .egg-cap a:hover, .egg-cap button:hover { text-decoration: underline; }
+
+    /* ── under the tree: read on request | five at random ── */
+    .front { max-width: 1240px; margin: 44px auto 0; padding: 0 16px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: stretch; }
+    .section-tag { font-size: 11px; color: var(--orange); letter-spacing: .15em; margin-bottom: 6px; }
+    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
+    .ror { border: 1px solid var(--border); background: rgba(255,255,255,.015); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .how { color: var(--text-dim); font-size: 13px; line-height: 1.65; }
+    .how.muted { color: var(--text-muted); font-size: 12.5px; }
+    .how button, .linkish { background: none; border: 0; font: inherit; color: var(--teal); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; display: inline; text-align: left; white-space: normal; }
+    .linkish { white-space: nowrap; }
+    .key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11.5px; color: var(--text-dim); letter-spacing: .04em; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; margin-right: 7px; flex: none; }
+    .dot.d-art { background: var(--teal); box-shadow: 0 0 8px rgba(0,212,170,.7); }
+    .dot.d-pick { background: var(--orange); box-shadow: 0 0 8px rgba(255,107,53,.7); }
+    .codebox label { display: block; font-size: 11px; letter-spacing: .12em; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .codebox form, .unlock form { display: flex; gap: 8px; }
+    input.field, select.field, .panel input, .panel textarea, .unlock input {
+      flex: 1 1 auto; min-width: 0; background: #000; border: 1px solid rgba(255,255,255,.18); color: var(--text);
+      padding: 9px 12px; font: inherit; font-size: 13px; outline: none; border-radius: 0;
+    }
+    #code { letter-spacing: .06em; }
+    input.field:focus, select.field:focus, .panel input:focus, .panel textarea:focus, .unlock input:focus { border-color: var(--teal); box-shadow: 0 0 10px rgba(0,212,170,.25); }
+    select.field { appearance: none; -webkit-appearance: none; padding-right: 30px; cursor: pointer;
+      background: #000 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 12px center; }
+    .btn { background: var(--orange); color: #000; border: 0; padding: 9px 16px; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .1em; cursor: pointer; white-space: nowrap; text-decoration: none; display: inline-block; }
+    .btn[disabled] { opacity: .5; cursor: wait; }
+    .btn.ghost { background: none; color: var(--teal); border: 1px solid rgba(0,212,170,.5); }
+    .btn.on { background: none; color: var(--orange); border: 1px solid rgba(255,107,53,.6); }
+    .code-msg { font-size: 12px; margin-top: 8px; min-height: 1.3em; color: var(--text-muted); }
+    .code-msg.ok { color: var(--teal); }
+    .code-msg.bad { color: #ff5a5a; }
+    .code-msg button { background: none; border: 0; font: inherit; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
+
+    .pv { border: 1px solid var(--border); background: #030306; display: flex; flex-direction: column; min-width: 0; }
+    .pv-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 18px 0; font-size: 11px; letter-spacing: .14em; color: var(--text-muted); }
+    .pv-head b { color: var(--orange); font-weight: 600; }
+    .pv-stage { position: relative; flex: 1; overflow: hidden; touch-action: pan-y; min-height: 360px; }
+    .pv-track { display: flex; height: 100%; transition: transform .5s cubic-bezier(.2,.75,.2,1); }
+    .pv-card { flex: 0 0 100%; min-width: 0; padding: 14px 18px 4px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+    .pv-card.text::before { content: attr(data-n); position: absolute; right: -6px; bottom: 34px; font: 700 clamp(120px, 16vw, 210px)/1 'IBM Plex Mono', monospace; color: transparent; -webkit-text-stroke: 1px rgba(255,107,53,.16); pointer-events: none; letter-spacing: -.04em; }
+    .pv-card.text .pv-meta, .pv-card.text .pv-title, .pv-card.text .pv-text, .pv-card.text .pv-acts { position: relative; }
+    .pv-art { height: 230px; border: 1px solid var(--border); background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .pv-art > * { width: 100%; flex: none; display: block; }
+    .pv-art pre { margin: 0; }
+    .pv-meta { font-size: 10.5px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .pv-title { font-family: 'Outfit', sans-serif; font-size: 24px; line-height: 1.2; font-weight: 500; }
+    .pv-card.text .pv-title { font-size: clamp(26px, 3.4vw, 36px); margin-top: 16px; }
+    .pv-text { font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.55; color: var(--text-dim); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .pv-card.text .pv-text { -webkit-line-clamp: 8; font-size: 20px; }
+    .pv-acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+    .pv-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px 14px; }
+    .pv-dots { display: flex; gap: 8px; }
+    .pv-dots button { width: 22px; height: 4px; border: 0; padding: 0; background: rgba(255,255,255,.18); cursor: pointer; }
+    .pv-dots button.on { background: var(--orange); }
+    .pv-nav { display: flex; gap: 6px; }
+    .pv-nav button { background: none; border: 1px solid var(--border); color: var(--text-dim); font: inherit; font-size: 15px; width: 34px; height: 30px; cursor: pointer; }
+    .pv-nav button:hover { color: var(--orange); border-color: rgba(255,107,53,.6); }
+    .pv-note { padding: 0 18px 16px; font-size: 11.5px; color: var(--text-muted); line-height: 1.5; }
+    .pv-note a { color: var(--teal); }
+
+    /* ── the board: filters and the table ── */
+    .board { max-width: 1240px; margin: 56px auto 0; padding: 0 16px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 10px; }
+    .chip {
+      background: none; border: 1px solid var(--border); color: var(--text-muted); display: inline-flex; align-items: center;
+      font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; transition: color .2s, border-color .2s, box-shadow .2s;
+    }
+    .chip:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
+    .chip.on { color: var(--teal); border-color: rgba(0,212,170,.5); box-shadow: 0 0 10px rgba(0,212,170,.15); }
+    .controls .grow { flex: 1 1 160px; }
+    .controls select.field { flex: 0 1 auto; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding-top: 8px; padding-bottom: 8px; }
+    .controls input.field { font-size: 12px; padding-top: 8px; padding-bottom: 8px; }
+    .shown { font-size: 11px; letter-spacing: .12em; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+    .rows { list-style: none; border-top: 1px solid var(--border); }
+    .row { border-bottom: 1px solid var(--border); }
+    .row-head {
+      width: 100%; display: grid; grid-template-columns: 46px 28px minmax(0, 1fr) 230px 112px 18px; align-items: center; gap: 10px;
+      background: none; border: 0; color: inherit; font: inherit; text-align: left; padding: 12px 8px; cursor: pointer; transition: background .2s;
+    }
+    .row-head:hover { background: rgba(255,107,53,.05); }
+    .row.open > .row-head { background: rgba(255,255,255,.03); }
+    .r-num { font-size: 11px; color: var(--text-muted); letter-spacing: .08em; }
+    .r-dots { display: flex; gap: 3px; }
+    .r-dots .dot { margin: 0; width: 7px; height: 7px; }
+    .r-title { font-family: 'Outfit', sans-serif; font-size: 16.5px; line-height: 1.3; color: rgba(255,255,255,.86); }
+    .row-head:hover .r-title { color: var(--orange); }
+    .r-cat { font-size: 10.5px; letter-spacing: .1em; color: var(--text-muted); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .r-st { font-size: 10.5px; letter-spacing: .1em; text-align: right; white-space: nowrap; }
+    .st-open, .st-unlocked { color: var(--teal); }
+    .st-ready { color: var(--text-muted); }
+    .r-chev { color: var(--text-muted); transition: transform .25s; font-size: 12px; text-align: center; }
+    .row.open .r-chev { transform: rotate(90deg); color: var(--orange); }
+    .row.picked .r-title::after { content: ' \2713'; color: var(--orange); font-size: .8em; }
+    .row-body { display: none; padding: 6px 8px 26px 92px; }
+    .row.open > .row-body { display: block; }
+    .rb-art { border: 1px solid var(--border); background: #000; margin-bottom: 18px; max-width: 980px; overflow: hidden; cursor: pointer; display: flex; justify-content: center; }
+    .rb-art > * { width: 100%; display: block; flex: none; }
+    .rb-art pre { margin: 0; }
+    .rb-art-cap { font-size: 10.5px; letter-spacing: .14em; color: var(--text-muted); margin: -12px 0 16px; text-transform: uppercase; }
+    .rb-art-cap b { color: var(--teal); font-weight: 600; }
+    .rb-text { font-family: 'Crimson Pro', Georgia, serif; font-size: 19px; line-height: 1.6; color: var(--text-dim); max-width: 720px; margin-bottom: 16px; }
+    .rb-text p { margin-bottom: .8em; }
+    .rb-acts { display: flex; gap: 10px; flex-wrap: wrap; }
+    .none-here { padding: 28px 8px; color: var(--text-muted); font-size: 13px; }
+
+    /* ── gallery ── */
+    .gallery { max-width: 1240px; margin: 90px auto 140px; padding: 0 16px; }
+    .gallery .how { margin: 8px 0 18px; max-width: 680px; }
+    .g-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 14px; }
+    .g-card { border: 1px solid var(--border); background: #030306; display: flex; flex-direction: column; }
+    .g-art { aspect-ratio: 16 / 9; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .g-art > * { width: 100%; flex: none; display: block; }
+    .g-art pre { margin: 0; }
+    .g-meta { border-top: 1px solid var(--border); padding: 10px 12px 12px; font-size: 11px; }
+    .g-meta h3 { font-size: 11px; letter-spacing: .18em; color: var(--teal); font-weight: 600; }
+    .g-meta h3 span { color: var(--text-muted); font-weight: 400; letter-spacing: .08em; margin-left: 8px; }
+    .g-meta .with { margin-top: 4px; color: var(--text-muted); }
+    .g-meta .with a { color: var(--text-dim); text-decoration: none; margin-right: 10px; }
+    .g-meta .with a:hover { color: var(--orange); }
+
+    /* ── single essay ── */
+    .article { max-width: 720px; margin: 40px auto 140px; padding: 0 16px; display: none; }
+    .article.on { display: block; }
+    .art { margin: 0 0 28px; cursor: pointer; border: 1px solid var(--border); background: #030306; overflow: hidden; display: flex; justify-content: center; }
+    .art:empty { display: none; }
+    .art > * { width: 100%; display: block; flex: none; }
+    .art pre { margin: 0; }
+    .back { font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: .1em; }
+    .back:hover { color: var(--orange); }
+    .article h1 { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 20px 0 10px; }
+    .post-meta { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); margin-bottom: 32px; display: block; text-transform: uppercase; }
+    .tag-draft { color: var(--teal); border: 1px solid rgba(0,212,170,.35); padding: 2px 8px; }
+    .article-body { font-family: 'Crimson Pro', Georgia, serif; font-size: 21px; line-height: 1.7; color: rgba(255,255,255,.86); }
+    .article-body p { margin-bottom: 1.1em; }
+    .article-body h2 { font-family: 'Outfit', sans-serif; font-size: 24px; margin: 1.6em 0 .6em; }
+    .article-body blockquote { border-left: 2px solid var(--orange); padding-left: 18px; color: var(--text-dim); font-style: italic; margin: 1.4em 0; }
+    .article-body a { color: var(--teal); }
+    .placeholder-note { color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    .excerpt { -webkit-mask-image: linear-gradient(#000 45%, rgba(0,0,0,.25)); mask-image: linear-gradient(#000 45%, rgba(0,0,0,.25)); }
+    .unlock { border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 24px; font-family: 'IBM Plex Mono', monospace; margin-top: 8px; }
+    .unlock p { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; }
+    .unlock .row2 { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+    .unlock .or { font-size: 11px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .unlock .err { color: #ff5a5a; font-size: 12px; margin-top: 10px; min-height: 1em; }
+
+    /* ── request tray and panel ── */
+    .tray {
+      position: fixed; left: 50%; bottom: 18px; transform: translate(-50%, 140%); z-index: 900;
+      display: flex; align-items: center; gap: 14px; padding: 10px 12px 10px 18px; max-width: calc(100vw - 24px);
+      background: rgba(8,8,14,.96); border: 1px solid rgba(255,107,53,.55); box-shadow: 0 0 28px rgba(255,107,53,.22);
+      font-size: 12px; letter-spacing: .08em; transition: transform .3s;
+    }
+    .tray.on { transform: translate(-50%, 0); }
+    .tray b { color: var(--orange); }
+    .tray .clear { background: none; border: 0; color: var(--text-muted); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    .veil { position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,.78); display: none; align-items: flex-start; justify-content: center; padding: 8vh 12px 12px; overflow-y: auto; }
+    .veil.on { display: flex; }
+    .panel { width: min(600px, 100%); background: #07070c; border: 1px solid rgba(255,255,255,.16); padding: 24px; }
+    .panel h3 { font-size: 13px; letter-spacing: .2em; color: var(--orange); font-weight: 600; margin-bottom: 6px; }
+    .panel > p { font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; }
+    .panel ul { list-style: none; margin-bottom: 16px; max-height: 32vh; overflow-y: auto; }
+    .panel li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .panel li span b { color: var(--text-muted); font-weight: 400; margin-right: 8px; }
+    .panel li button { background: none; border: 0; color: var(--text-muted); font: inherit; cursor: pointer; }
+    .panel li button:hover { color: #ff5a5a; }
+    .panel .none { color: var(--text-muted); font-size: 12.5px; margin-bottom: 16px; }
+    .panel label { display: block; font-size: 11px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; margin: 14px 0 6px; }
+    .panel input, .panel textarea { width: 100%; }
+    .panel textarea { min-height: 96px; resize: vertical; }
+    .panel .acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; align-items: center; }
+    .panel .close { margin-left: auto; background: none; border: 0; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; letter-spacing: .1em; }
+    .panel .sent { font-size: 12px; color: var(--teal); margin-top: 12px; min-height: 1.3em; }
+
+    body.reading .front, body.reading .board, body.reading .gallery { display: none; }
+
+    @media (prefers-reduced-motion: reduce) { .hero-arrow { animation: none; opacity: .85; } .pv-track { transition: none; } }
+    @media (max-width: 900px) {
+      .front { grid-template-columns: 1fr; }
+      .row-head { grid-template-columns: 40px 22px minmax(0, 1fr) 96px 16px; }
+      .r-cat { display: none; }
+      .row-body { padding-left: 8px; }
+    }
+    @media (max-width: 600px) {
+      .nav { padding: 10px 16px; }
+      .nav-links { gap: 16px; }
+      .nav-link { font-size: 10px; }
+      .hero-arrow { width: 34px; height: 58px; font-size: 24px; }
+      .ror { padding: 18px; }
+      .pv-art { height: 190px; }
+      .pv-title { font-size: 20px; }
+      .row-head { grid-template-columns: 34px 20px minmax(0, 1fr) 16px; gap: 8px; }
+      .r-st { display: none; }
+      .r-title { font-size: 15px; }
+      .controls .grow { flex-basis: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-brand">WALEED A. RAZA</a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">HOME</a>
+      <a href="./" class="nav-link active">BLAWG</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="blog-hero">
+      <div class="hero-stage" id="hero-stage">
+        <div class="scene-wrap" id="scene-wrap" title="Let it fall again">
+          <pre id="tree-scene" aria-hidden="true"></pre>
+          <button class="scene-hint" id="replay" type="button">&#8635; let it fall again</button>
+        </div>
+        <div class="egg-box" id="egg-box" title="Click to pause"></div>
+        <button class="hero-arrow l" id="egg-prev" type="button" aria-label="Previous piece">&#8249;</button>
+        <button class="hero-arrow r" id="egg-next" type="button" aria-label="Next piece">&#8250;</button>
+      </div>
+      <div class="egg-cap" id="egg-cap" aria-live="polite"></div>
+      <p class="koan" id="koan" aria-label="If a tree falls in a forest and no one is around to hear it, does it make a sound?"></p>
+      <h1 class="blog-title"><b>BLAWG</b> &middot; writing that may or may not make a sound</h1>
+    </header>
+
+    <section class="front" id="front">
+      <div class="ror">
+        <div>
+          <div class="section-tag" id="post-count">THE BOARD</div>
+          <h2 class="section-title">&#9654; READ ON REQUEST</h2>
+        </div>
+        <p class="how">One essay is open to everyone. The rest are read on request: pick the ones you want, send the list, and you get a code that opens them. You can also <button type="button" id="ask">ask a question or ask for something written</button>.</p>
+        <p class="how muted">Some of these are still being written. Every one of them has had undivided, deliberate attention and care.</p>
+        <div class="key"><span><i class="dot d-art"></i>has art</span><span><i class="dot d-pick"></i>Waleed's pick</span></div>
+        <div class="codebox">
+          <label for="code">Have a code?</label>
+          <form id="code-form" autocomplete="off">
+            <input class="field" id="code" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" autocapitalize="characters" aria-label="Access code">
+            <button class="btn" type="submit">OPEN</button>
+          </form>
+          <div class="code-msg" id="code-msg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="pv" id="pv" aria-roledescription="carousel" aria-label="Five essays at random">
+        <div class="pv-head"><span><b>FIVE AT RANDOM</b> &middot; a different five every visit</span><button type="button" class="linkish" id="pv-shuffle">shuffle &#8635;</button></div>
+        <div class="pv-stage" id="pv-stage"><div class="pv-track" id="pv-track"></div></div>
+        <div class="pv-foot"><div class="pv-dots" id="pv-dots"></div><div class="pv-nav"><button type="button" id="pv-prev" aria-label="Previous">&#8249;</button><button type="button" id="pv-next" aria-label="Next">&#8250;</button></div></div>
+        <p class="pv-note">Not every essay has an art piece. The pieces are suggested by agents on <a href="https://warbspace.com" target="_blank" rel="noopener">warbspace.com</a> and made there too.</p>
+      </div>
+    </section>
+
+    <section class="board" id="board">
+      <div class="section-tag">EVERY ESSAY</div>
+      <h2 class="section-title">&#9654; THE BOARD</h2>
+      <div class="controls" id="controls">
+        <button type="button" class="chip on" data-f="all">All</button>
+        <button type="button" class="chip" data-f="pick"><i class="dot d-pick"></i>Waleed's picks</button>
+        <button type="button" class="chip" data-f="nq">N &middot; NQB8 list</button>
+        <button type="button" class="chip" data-f="art"><i class="dot d-art"></i>Has art</button>
+        <button type="button" class="chip" data-f="unlocked" id="chip-unlocked" hidden>Unlocked</button>
+        <select class="field" id="cat" aria-label="Category"><option value="">Every category</option></select>
+        <input class="field grow" id="q" type="search" placeholder="search titles" aria-label="Search titles">
+      </div>
+      <div class="shown" id="shown"></div>
+      <ol class="rows" id="rows"></ol>
+    </section>
+
+    <section class="gallery" id="gallery">
+      <div class="section-tag" id="g-tag">ART</div>
+      <h2 class="section-title">&#9654; GALLERY</h2>
+      <p class="how muted">Every piece made so far, including the ones that don't sit on an essay. Click one to pause it.</p>
+      <div class="g-grid" id="g-grid"></div>
+    </section>
+
+    <article class="article" id="article">
+      <div class="art" id="article-art" title="Click to pause"></div>
+      <a class="back" href="./">&larr; THE BOARD</a>
+      <h1 id="article-title"></h1>
+      <span class="post-meta" id="article-meta"></span>
+      <div class="article-body" id="article-body"></div>
+    </article>
+  </main>
+
+  <div class="tray" id="tray" role="status">
+    <span><b id="tray-n">0</b> <span id="tray-word">essays</span> picked</span>
+    <button class="btn" type="button" id="tray-go">REQUEST</button>
+    <button class="clear" type="button" id="tray-clear">clear</button>
+  </div>
+
+  <div class="veil" id="veil">
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <h3 id="panel-title">REQUEST</h3>
+      <p>This goes to Waleed as an email. He reads it and replies with a code.</p>
+      <ul id="panel-list"></ul>
+      <div class="none" id="panel-none">No essays picked. That's fine: ask a question or ask for something written for you.</div>
+      <label for="req-name">Your name</label>
+      <input id="req-name" autocomplete="name">
+      <label for="req-note">A note, a question, or something you'd like written</label>
+      <textarea id="req-note"></textarea>
+      <div class="acts">
+        <button class="btn" type="button" id="req-mail">OPEN EMAIL</button>
+        <button class="btn ghost" type="button" id="req-copy">COPY INSTEAD</button>
+        <button class="close" type="button" id="req-close">CLOSE</button>
+      </div>
+      <div class="sent" id="req-sent" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <script src="../assets/ascii/ascii-field.js"></script>
+  <script src="../assets/ascii/fallen-tree.js"></script>
+  <script src="../assets/ascii/fallen-oak.js"></script>
+  <script src="../assets/ascii/catalog.js"></script>
+  <script src="crypt.js"></script>
+  <script src="posts.js"></script>
+  <script src="sealed/index.js"></script>
+  <script src="sealed/keys.js"></script>
+  <script src="blawg.js"></script>
+</body>
+</html>
