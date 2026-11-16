@@ -344,9 +344,10 @@
   $('all').addEventListener('click', function () { var m = {}; readyPosts().forEach(function (p) { m[p.slug] = true; }); renderPicks(m); });
   $('none').addEventListener('click', function () { renderPicks({}); });
   $('req').addEventListener('input', function () {
-    var m = {}, hit = 0, miss = [], re = /#(\d{1,3})\b/g, x;
+    var m = {}, hit = 0, miss = [], re = /#(\d{1,3})[ \t]*([^\n]*)/g, x;
     while ((x = re.exec($('req').value))) {
-      var n = +x[1], p = posts.filter(function (q) { return q.n === n; })[0];
+      var n = +x[1], t = x[2].trim().toLowerCase();
+      var p = (t && posts.filter(function (q) { return q.title.toLowerCase() === t; })[0]) || posts.filter(function (q) { return q.n === n; })[0];
       if (!p) continue;
       if (READY[p.slug]) { m[p.slug] = true; hit++; } else miss.push('#' + num(p) + ' ' + p.title);
     }
@@ -510,7 +511,7 @@
   $('bd').addEventListener('change', function (e) {
     var el = e.target, f = el.getAttribute('data-f'); if (!f) return;
     var p = find(el.getAttribute('data-slug') || el.closest('tr').getAttribute('data-slug')); if (!p) return;
-    if (f === 'title') { if (!el.value.trim()) { el.value = p.title; return; } p.title = el.value.trim(); }
+    if (f === 'title') { if (!el.value.trim()) { el.value = p.title; return; } p.title = el.value.trim(); markDirty(); renumber(); renderBoard(); return; }
     if (f === 'pick' || f === 'nq') { if (el.checked) p[f] = true; else delete p[f]; }
     if (f === 'tag') {
       if (el.value === '__new') {
@@ -536,19 +537,26 @@
   });
   $('add-title').addEventListener('click', function () {
     var t = $('new-title').value.trim(); if (!t) return say('m-board', 'Type a title first.', 'bad');
-    var n = posts.reduce(function (m, p) { return Math.max(m, p.n); }, 0) + 1;
-    posts.push({ n: n, slug: slugify(t), title: t, tag: $('new-cat').value });
+    var np = { n: 0, slug: slugify(t), title: t, tag: $('new-cat').value };
+    posts.push(np); renumber();
     $('new-title').value = ''; $('bd-q').value = '';
     renderBoard(); markDirty();
-    say('m-board', 'Added as #' + ('00' + n).slice(-3) + '. It goes on the board when you save.', 'ok');
-    var last = $('bd').lastElementChild; if (last) last.scrollIntoView({ block: 'center' });
+    say('m-board', 'Added as #' + num(np) + '. The essays after it moved down one number. It goes on the board when you save.', 'ok');
+    var row = $('bd').querySelector('tr[data-slug="' + np.slug + '"]'); if (row) row.scrollIntoView({ block: 'center' });
   });
   $('new-title').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('add-title').click(); });
+  /* numbers always run A to Z by title; call after any add or rename */
+  function alphaKey(t) { return t.replace(/^[^A-Za-z0-9]+/, '').toLowerCase(); }
+  function renumber() {
+    posts.sort(function (a, b) { return alphaKey(a.title).localeCompare(alphaKey(b.title), 'en', { numeric: true }); });
+    posts.forEach(function (p, i) { p.n = i + 1; });
+  }
   function postsFile() {
+    renumber();
     var head = '/* ═══════════════════════════════════════════════════════════════════════\n' +
       '   BLAWG BOARD  (served at /blawg). Written by blawg/_tools/studio.html.\n' +
       '   ───────────────────────────────────────────────────────────────────────\n' +
-      '     n       number on the board (readers quote it when they request)\n' +
+      '     n       number on the board: A to Z by title. The studio renumbers on save.\n' +
       '     slug    URL and key name. Never change it after the essay is sealed.\n' +
       '     title, tag (category), art (a piece from assets/ascii/catalog.js)\n' +
       '     pick    Waleed\'s pick (orange dot)   nq   on the N list (NQB8)\n' +
