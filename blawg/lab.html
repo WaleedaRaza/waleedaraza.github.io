@@ -20,6 +20,7 @@
     section.wide { grid-column: 1 / -1; }
     .stage { padding: 14px; cursor: pointer; position: relative; flex: 1; display: flex; align-items: center; }
     .stage pre { width: 100%; margin: 0; }
+    .stage canvas { width: 100%; display: block; }
     .meta { border-top: 1px solid var(--border); padding: 12px 14px 14px; font-size: 11px; }
     .meta h2 { font-size: 11px; letter-spacing: .2em; color: var(--teal); font-weight: 600; }
     .meta h2 span { color: var(--muted); letter-spacing: .1em; font-weight: 400; margin-left: 8px; }
@@ -44,6 +45,8 @@
     <h1>LAB</h1>
     <p>First prototypes from the reference bank. Nothing here is linked from the site. Click a piece to pause it.</p>
   </header>
+
+  <main id="v2"></main>
 
   <main>
     <section class="wide" id="s-dragons">
@@ -92,6 +95,8 @@
   <script src="../assets/ascii/lab-objects.js"></script>
   <script src="../assets/ascii/lab-backgrounds.js"></script>
   <script src="../assets/ascii/lab-headers.js"></script>
+  <script src="../assets/ascii/ascii-canvas.js"></script>
+  <script src="../assets/ascii/lab-v2.js"></script>
   <script>
   (function () {
     var $ = function (id) { return document.getElementById(id); };
@@ -152,6 +157,25 @@
       ['f117', O.nighthawk, 'F-117', 'standalone · glint', 'Faceted and almost invisible. A glint crosses the plates and the leading edges catch a little orange.'],
       ['ridge', B.ridgeline, 'KID A', 'background · red weather', 'Sharp ridgeline under slow red weather and falling snow. A treatment after Stanley Donwood\'s Kid A cover.', true]
     ];
+    // renderer v2 pieces: true colour on a canvas, [id, maker, title, kind, note, wide]
+    var V = window.LabV2, V2 = [
+      ['v-dragons', V.dragons, 'WARMPOP v2', 'renderer v2 · lit, scaled bodies', 'The two dragons again, now with scales, belly plates, manes, horns, teeth and legs, lit from the upper left and warmed by the fire they circle. Where they cross, the edge goes white.', true],
+      ['v-garg', V.gargantua, 'GARGANTUA', 'renderer v2 · Interstellar orbit', 'The disc around a black hole, with the far side of it bent up over the top. The side turning toward you burns brighter.', true],
+      ['v-helmet', V.helmet, 'HELMET v2', 'renderer v2 · real reflection', 'Chrome that mirrors a dusk sky and a strip light sliding across it, with the road running through the visor.'],
+      ['v-ball', V.ball, 'SEVEN-STAR BALL v2', 'renderer v2 · glass', 'Lit from behind like glass, with the stars floating inside and light pooled underneath.'],
+      ['v-water', V.underwater, 'SEXTAPE v2', 'renderer v2 · underwater light', 'Light folding into seams on the way down and again on the sand.', true]
+    ];
+    var v2 = $('v2');
+    V2.forEach(function (m) {
+      if (!m[1]) return;
+      var sec = document.createElement('section');
+      sec.id = 's-' + m[0]; if (m[5]) sec.className = 'wide';
+      sec.innerHTML = '<div class="stage"><canvas role="img" aria-label="' + m[2] + '"></canvas><span class="paused-tag">PAUSED</span></div>' +
+        '<div class="meta"><h2>' + m[2] + ' <span>' + m[3] + '</span></h2><p>' + m[4] + '</p></div>';
+      v2.appendChild(sec);
+      bind(sec.id, m[1](sec.querySelector('canvas')));
+    });
+
     var more = $('more');
     MORE.forEach(function (m) {
       var sec = document.createElement('section');
