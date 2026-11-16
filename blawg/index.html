@@ -214,6 +214,49 @@
     .panel .close { margin-left: auto; background: none; border: 0; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; letter-spacing: .1em; }
     .panel .sent { font-size: 12px; color: var(--teal); margin-top: 12px; min-height: 1.3em; }
 
+    /* ── the art reel: every piece that heads an essay, as an accordion ── */
+    .reel { max-width: 1240px; margin: 36px auto 0; padding: 0 16px; }
+    .reel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 12px; }
+    .reel-head .section-tag { margin: 0; }
+    .reel-nav { display: flex; align-items: center; gap: 10px; white-space: nowrap; flex: none; font-size: 11px; letter-spacing: .12em; color: var(--text-muted); }
+    .reel-nav button { background: none; border: 1px solid var(--border); color: var(--text-dim); font: inherit; font-size: 15px; width: 34px; height: 30px; cursor: pointer; transition: color .2s, border-color .2s; }
+    .reel-nav button:hover { color: var(--orange); border-color: rgba(255,107,53,.6); }
+    .reel-strip { --rh: 430px; --cw: 46px; position: relative; overflow: hidden; height: var(--rh); touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
+    .reel-strip:focus-visible { box-shadow: 0 0 0 1px rgba(0,212,170,.5); }
+    .reel-track { display: flex; gap: 4px; height: 100%; transition: transform .55s cubic-bezier(.2,.75,.2,1); will-change: transform; }
+    .slab {
+      flex: 0 0 var(--cw); height: 100%; position: relative; overflow: hidden; cursor: pointer;
+      border: 1px solid var(--border); background: #030306;
+      transition: flex-basis .55s cubic-bezier(.2,.75,.2,1), border-color .3s;
+    }
+    .slab.on { flex-basis: var(--aw); cursor: default; border-color: rgba(255,107,53,.4); }
+    .slab:hover:not(.on) { border-color: rgba(255,255,255,.22); }
+    .slab .box { position: absolute; top: 0; left: 50%; width: var(--aw); bottom: var(--caph, 86px); transform: translateX(-50%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .slab .box > * { width: 100%; flex: none; }
+    .slab .box pre { margin: 0; }
+    .slab .box canvas { display: block; }
+    .slab::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.8)); transition: opacity .45s; }
+    .slab.on::after { opacity: 0; }
+    .slab .tab {
+      position: absolute; z-index: 2; left: 0; right: 0; top: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      font-size: 10.5px; letter-spacing: .18em; color: var(--text-muted); transition: opacity .3s; pointer-events: none;
+    }
+    .slab .tab span:last-child { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; overflow: hidden; max-height: calc(100% - 30px); }
+    .slab:hover .tab { color: var(--text); }
+    .slab.on .tab { opacity: 0; }
+    .slab .cap {
+      position: absolute; z-index: 2; left: 0; bottom: 0; width: var(--aw); height: var(--caph, 86px); padding: 10px 16px 0;
+      border-top: 1px solid var(--border); background: rgba(3,3,6,.92); opacity: 0; transition: opacity .35s .15s; pointer-events: none;
+    }
+    .slab.on .cap { opacity: 1; pointer-events: auto; }
+    .cap h3 { font-size: 11px; letter-spacing: .2em; color: var(--teal); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cap h3 span { color: var(--text-muted); font-weight: 400; letter-spacing: .1em; margin-left: 8px; }
+    .cap .heads { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; max-height: 3.2em; overflow: hidden; }
+    .cap .heads a { color: var(--text-dim); text-decoration: none; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+    .cap .heads a b { color: var(--orange); font-weight: 400; margin-right: 6px; }
+    .cap .heads a:hover { color: var(--orange); }
+    body.reading .reel { display: none; }
+
     body.reading .posts { display: none; }
 
     @media (max-width: 600px) {
@@ -247,6 +290,14 @@
       <p class="koan" id="koan" aria-label="If a tree falls in a forest and no one is around to hear it, does it make a sound?"></p>
       <h1 class="blog-title"><b>BLAWG</b> &middot; writing that may or may not make a sound</h1>
     </header>
+
+    <section class="reel" id="reel" aria-label="The art on the essays">
+      <div class="reel-head">
+        <div class="section-tag" id="reel-tag">THE ART</div>
+        <div class="reel-nav"><button type="button" id="reel-prev" aria-label="Previous piece">&#8249;</button><span id="reel-pos"></span><button type="button" id="reel-next" aria-label="Next piece">&#8250;</button></div>
+      </div>
+      <div class="reel-strip" id="reel-strip" tabindex="0" aria-roledescription="carousel"><div class="reel-track" id="reel-track"></div></div>
+    </section>
 
     <section class="posts" id="posts">
       <div class="board-head">
@@ -562,8 +613,20 @@
         LabV2: ['canvas', [A + 'ascii-canvas.js', A + 'lab-v2.js']],
         LabHeaders: ['pre', [A + 'lab-scenes.js', A + 'lab-headers.js']],
         LabObjects: ['pre', [A + 'lab-scenes.js', A + 'lab-objects.js']],
-        LabBackgrounds: ['pre', [A + 'lab-scenes.js', A + 'lab-backgrounds.js']]
+        LabBackgrounds: ['pre', [A + 'lab-scenes.js', A + 'lab-backgrounds.js']],
+        LabScenes: ['pre', [A + 'paths-luma.js', A + 'lab-scenes.js']]
       };
+      function makeArt(key) {          /* -> Promise of { el, sc } */
+        var parts = key.split('.'), src = ART_SRC[parts[0]];
+        if (!src) return Promise.reject(new Error('no ' + key));
+        return src[1].reduce(function (p, s) { return p.then(function () { return once(s); }); }, Promise.resolve()).then(function () {
+          var make = window[parts[0]] && window[parts[0]][parts[1]];
+          if (!make) throw new Error('no ' + key);
+          var el = document.createElement(src[0]);
+          el.setAttribute('aria-hidden', 'true');
+          return { el: el, make: make };
+        });
+      }
       var scriptOnce = {}, artNodes = {}, artWanted = '';
       function once(src) { return scriptOnce[src] || (scriptOnce[src] = loadScript(src)); }
       function mountArt(post) {
@@ -662,6 +725,176 @@
         document.body.classList.add('reading');
         document.title = post.title + ' | Waleed A. Raza';
         if (keepScroll !== true) art.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      /* ── the art reel ─────────────────────────────────────────────────
+         One slab per piece. The open slab runs its piece; the slabs next to
+         it are rendered and held still, so the collapsed edges show art. */
+      var PIECES = {
+        'LabV2.gargantua': ['GARGANTUA', 'the disc and its bent far side'],
+        'LabV2.dragons': ['WARMPOP', 'two dragons circling a fire'],
+        'LabBatch.train': ['THE TRAIN', 'flooded tracks at dusk'],
+        'LabBatch.corridor': ['THE CORRIDOR', 'one panel flickering'],
+        'LabHeaders.sisyphus': ['SISYPHUS', 'the stone, the hill, the walk down'],
+        'LabBatch.paleDot': ['PALE BLUE DOT', 'one pixel in the sunbeams'],
+        'LabBackgrounds.orangeRoom': ['THE ORANGE ROOM', 'light at the end of the hall'],
+        'LabHeaders.forever': ['FOREVER', 'the feeling goes, the record stays'],
+        'LabHeaders.rivers': ['RIVERS', 'one bet, sixteen rivers'],
+        'LabBatch.dunes': ['ARRAKIS', 'dunes under two moons'],
+        'LabHeaders.simulation': ['FRAMES', 'frames inside frames'],
+        'LabBatch.warp': ['WARP', 'stars pulled into streaks'],
+        'LabBackgrounds.neonGlass': ['THROUGH GLASS', 'city light and rain'],
+        'LabBatch.currents': ['THE CURRENT', 'one point leans its own way'],
+        'LabBatch.roots': ['GENEALOGY', 'up and down at once'],
+        'LabBatch.name': ['WALEED', 'the name, poured full of colour'],
+        'LabBatch.ship': ['SHIP AT SEA', 'riding the moon path'],
+        'LabScenes.paths': ['PATHS', 'a figure under a column of light'],
+        'LabBatch.watch': ['WATCH', 'your time, right now'],
+        'LabBatch.eclipse': ['ECLIPSE', 'totality and its corona'],
+        'LabBatch.aurora': ['AURORA', 'curtains over a snow ridge'],
+        'LabObjects.paperBoat': ['PAPER BOAT', 'early HTML, folded'],
+        'LabScenes.luckyBlock': ['LUCKY BLOCK', 'spins until someone opens it'],
+        'LabBatch.tunnel': ['TUNNEL', 'a flythrough'],
+        'LabBatch.rings': ['RINGS', 'a sound leaving a point'],
+        'LabObjects.lightning': ['LIGHTNING', 'five strikes to full'],
+        'LabBatch.clouds': ['ABOVE THE CLOUDS', 'one bird'],
+        'LabBatch.lava': ['LAVA', 'two fluids finding each other'],
+        'LabHeaders.current': ['AGAINST THE CURRENT', 'leaning, then rejoining'],
+        'LabBatch.gpu': ['GPU', 'three fans and a light strip'],
+        'LabHeaders.sequencer': ['SEQUENCER', 'one pattern, read two ways'],
+        'LabObjects.vinyl': ['VINYL', '33 and a third'],
+        'LabHeaders.cutscene': ['THE CUTSCENE', 'try skipping it'],
+        'LabBatch.circuit': ['CIRCUIT', 'signals leaving a chip'],
+        'LabBatch.julia': ['JULIA SET', 'never settles'],
+        'LabHeaders.agents': ['AGENTS', 'teams that reshuffle themselves'],
+        'LabObjects.nighthawk': ['F-117', 'a glint across the plates'],
+        'LabBatch.lorenz': ['LORENZ', 'two wings of chaos'],
+        'LabBatch.dna': ['DNA', 'two strands'],
+        'LabHeaders.warb': ['WARB', 'a returning note'],
+        'LabObjects.pokerChip': ['THE CHIP', 'a hand playing out'],
+        'LabHeaders.bridge': ['THE BRIDGE', 'everything crosses here'],
+        'LabHeaders.market': ['THE MARKET', 'a price pulled toward the answer'],
+        'LabV2.underwater': ['UNDER THE SURFACE', 'light folding into seams'],
+        'LabObjects.enso': ['ENSO', 'one stroke'],
+        'LabBackgrounds.ridgeline': ['RED WEATHER', 'a ridge under snow'],
+        'LabScenes.yinYang': ['YIN YANG', 'breathing'],
+        'LabBatch.life': ['LIFE', 'Conway, in two colours'],
+        'LabBatch.yinyang': ['YIN YANG II', 'turning, with a glow at the rim'],
+        'LabBatch.bokeh': ['OUT OF FOCUS', 'the lens decides'],
+        'LabBatch.pyramid': ['PYRAMID', 'a stage of light'],
+        'LabObjects.heart808': ['808s', 'a heart in two halves'],
+        'LabBatch.equalizer': ['EQUALIZER', 'fifty bands'],
+        'LabBatch.donut': ['DONUT', 'the terminal classic, lit'],
+        'LabBatch.heart': ['HEART', 'beats, splits, closes'],
+        'LabBackgrounds.dunes': ['DUNES', 'something under the near dune'],
+        'LabBatch.galaxy': ['GALAXY', 'two arms turning'],
+        'LabBatch.smoke': ['SMOKE', 'one thread off an ember'],
+        'LabBatch.scope': ['OSCILLOSCOPE', 'a phosphor trace'],
+        'LabScenes.dragons': ['DRAGONS', 'the first pair'],
+        'LabV2.ball': ['SEVEN STARS', 'glass, lit from behind']
+      };
+      var reel = [];                       // { key, posts[], slab, box, sc, paused, wait }
+      (function () {
+        var at = {};
+        posts.forEach(function (p) {
+          if (!p.art || !PIECES[p.art] || !ART_SRC[p.art.split('.')[0]]) return;
+          if (!at[p.art]) { at[p.art] = { key: p.art, posts: [] }; }
+          at[p.art].posts.push(p);
+        });
+        Object.keys(PIECES).forEach(function (k) { if (at[k]) reel.push(at[k]); });   // curated order
+      })();
+      var track = $('reel-track'), strip = $('reel-strip'), active = 0;
+      if (!reel.length) $('reel').style.display = 'none';
+      var nHeaded = reel.reduce(function (n, r) { return n + r.posts.length; }, 0);
+      $('reel-tag').textContent = 'THE ART · ' + reel.length + ' PIECES ON ' + nHeaded + ' ESSAYS';
+      track.innerHTML = reel.map(function (r, i) {
+        var info = PIECES[r.key];
+        var heads = r.posts.map(function (p) { return '<a href="#' + esc(p.slug) + '" class="post-title-link" data-slug="' + esc(p.slug) + '"><b>' + num(p) + '</b>' + esc(p.title) + '</a>'; }).join('');
+        return '<div class="slab" data-i="' + i + '" role="group" aria-label="' + esc(info[0]) + '">' +
+          '<div class="box"></div>' +
+          '<div class="tab"><span>' + ('0' + (i + 1)).slice(-2) + '</span><span>' + esc(info[0]) + '</span></div>' +
+          '<div class="cap"><h3>' + esc(info[0]) + '<span>' + esc(info[1]) + '</span></h3><div class="heads">' + heads + '</div></div></div>';
+      }).join('');
+      reel.forEach(function (r, i) { r.slab = track.children[i]; r.box = r.slab.querySelector('.box'); });
+
+      function pauseTo(r, want) {          // want = true to hold still
+        if (!r.sc || r.paused === want) return;
+        var res = r.sc.toggle();
+        r.paused = typeof res === 'boolean' ? res : want;
+      }
+      function ensure(i, run) {
+        var r = reel[i]; if (!r) return;
+        if (r.sc) { pauseTo(r, !run); return; }
+        r.run = run;
+        if (r.wait) return;
+        r.wait = makeArt(r.key).then(function (m) {
+          r.box.appendChild(m.el);
+          r.sc = m.make(m.el); r.paused = false;
+          // a held slab still needs a first frame before it stops
+          setTimeout(function () { if (!r.run) pauseTo(r, true); }, AsciiField.reducedMotion ? 0 : 450);
+        }).catch(function () {});
+      }
+      function layout() {
+        var W = strip.clientWidth, mobile = W < 640;
+        var cw = mobile ? 30 : 46, gap = 4, side = mobile ? 2 : 3;
+        var aw = Math.max(240, Math.min(820, W - side * 2 * (cw + gap)));
+        strip.style.setProperty('--cw', cw + 'px');
+        strip.style.setProperty('--aw', aw + 'px');
+        strip.style.setProperty('--rh', Math.round(Math.min(470, Math.max(300, aw * 0.5 + 92))) + 'px');
+        strip.style.setProperty('--caph', (mobile ? 96 : 86) + 'px');
+        var left = active * (cw + gap), total = reel.length * (cw + gap) - gap + (aw - cw);
+        var x = W / 2 - (left + aw / 2);
+        x = Math.min(0, Math.max(W - total, x));
+        track.style.transform = 'translateX(' + Math.round(x) + 'px)';
+      }
+      function show(i) {
+        i = Math.max(0, Math.min(reel.length - 1, i));
+        if (reel[active] && i !== active) { reel[active].run = false; pauseTo(reel[active], true); reel[active].slab.classList.remove('on'); }
+        active = i;
+        reel[i].slab.classList.add('on');
+        $('reel-pos').textContent = (i + 1) + ' / ' + reel.length;
+        layout();
+        ensure(i, true);
+        for (var d = 1; d <= 4; d++) { ensure(i - d, false); ensure(i + d, false); }
+      }
+      $('reel-prev').addEventListener('click', function () { show(active - 1); });
+      $('reel-next').addEventListener('click', function () { show(active + 1); });
+      strip.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') { show(active - 1); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { show(active + 1); e.preventDefault(); }
+      });
+      var downX = null, swiped = false;
+      strip.addEventListener('pointerdown', function (e) { downX = e.clientX; swiped = false; });
+      strip.addEventListener('pointerup', function (e) {
+        if (downX === null) return;
+        var dx = e.clientX - downX; downX = null;
+        if (Math.abs(dx) > 40) { swiped = true; show(active + (dx < 0 ? 1 : -1)); }
+      });
+      var wheelAcc = 0, wheelT = 0;
+      strip.addEventListener('wheel', function (e) {
+        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+        e.preventDefault();
+        var now = Date.now(); if (now - wheelT > 400) wheelAcc = 0;
+        wheelT = now; wheelAcc += e.deltaX;
+        if (Math.abs(wheelAcc) > 70) { show(active + (wheelAcc > 0 ? 1 : -1)); wheelAcc = 0; wheelT = now + 250; }
+      }, { passive: false });
+      track.addEventListener('click', function (e) {
+        if (swiped) { swiped = false; e.preventDefault(); e.stopPropagation(); return; }
+        var a = e.target.closest('.heads a');
+        if (a) { e.preventDefault(); e.stopPropagation(); go(a.getAttribute('data-slug')); return; }
+        var slab = e.target.closest('.slab'); if (!slab) return;
+        var i = +slab.getAttribute('data-i');
+        if (i !== active) { show(i); return; }
+        var r = reel[i]; if (r.sc && e.target.closest('.box')) { r.run = r.paused; pauseTo(r, !r.paused); }
+      }, true);
+      window.addEventListener('resize', layout);
+      // start when the reel first comes near the screen, so the tree gets the page to itself
+      if (reel.length) {
+        if (window.IntersectionObserver) {
+          var io = new IntersectionObserver(function (es) { if (es.some(function (x) { return x.isIntersecting; })) { io.disconnect(); show(active); } }, { rootMargin: '200px' });
+          io.observe(strip);
+        } else show(0);
+        layout();
       }
 
       /* ── start: a code in the link (#k=CODE), codes remembered on this device, then the page ── */
