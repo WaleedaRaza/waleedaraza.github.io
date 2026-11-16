@@ -254,6 +254,7 @@
           <div class="section-tag" id="post-count">THE BOARD</div>
           <h2 class="section-title">&#9654; READ ON REQUEST</h2>
           <p class="how">One essay is open. The rest are read on request: pick the ones you want, send the list, and you get a code that opens them. Or <button type="button" id="ask">ask for something that isn't here</button>.</p>
+          <p class="how">Some of these are still being written. Every one of them has had undivided, deliberate attention and care.</p>
         </div>
         <div class="codebox">
           <label for="code">Have a code?</label>
@@ -366,13 +367,13 @@
           localStorage.setItem(k, JSON.stringify(v));
         } catch (e) { return null; }
       }
-      /* open = anyone can read · unlocked = your code opens it · ready = sealed, ask for it · works = not sealed yet */
+      /* open = anyone can read · unlocked = your code opens it · ready = read on request.
+         An essay that is not sealed yet looks the same as one that is: the board never says "unwritten". */
       function state(p) {
         if (p.body) return 'open';
-        if (READY[p.slug]) return keys[p.slug] ? 'unlocked' : 'ready';
-        return 'works';
+        return READY[p.slug] && keys[p.slug] ? 'unlocked' : 'ready';
       }
-      var LABEL = { open: 'OPEN', unlocked: 'UNLOCKED', ready: 'READY', works: 'IN THE WORKS' };
+      var LABEL = { open: 'OPEN', unlocked: 'UNLOCKED', ready: 'ON REQUEST' };
       function words(p) { var r = READY[p.slug]; return r && r.words ? ' · ' + Math.max(1, Math.round(r.words / 230)) + ' MIN' : ''; }
 
       /* ── grid ── */
@@ -396,15 +397,12 @@
       function match(p) {
         if (current === 'All') return true;
         if (current === 'Unlocked') return state(p) === 'unlocked' || state(p) === 'open';
-        if (current === 'Ready') return state(p) === 'ready';
         return p.tag === current;
       }
       function renderGrid() {
         var nUnlocked = posts.filter(function (p) { return state(p) === 'unlocked'; }).length;
-        var nReady = posts.filter(function (p) { return state(p) === 'ready'; }).length;
         var chips = ['All'];
         if (nUnlocked) chips.push('Unlocked');
-        if (nReady) chips.push('Ready');
         chips = chips.concat(tags);
         if (chips.indexOf(current) < 0) current = 'All';
         grid.innerHTML = posts.filter(match).map(card).join('');
@@ -413,7 +411,7 @@
         }).join('');
         var nOpen = posts.filter(function (p) { return state(p) === 'open'; }).length;
         $('post-count').textContent = '[' + posts.length + '] ON THE BOARD · ' + nOpen + ' OPEN' +
-          (nReady + nUnlocked ? ' · ' + (nReady + nUnlocked) + ' READY' : '') + (nUnlocked ? ' · ' + nUnlocked + ' UNLOCKED' : '');
+          ' · ' + (posts.length - nOpen) + ' ON REQUEST' + (nUnlocked ? ' · ' + nUnlocked + ' UNLOCKED' : '');
       }
       filtersEl.addEventListener('click', function (e) {
         var b = e.target.closest('.filter'); if (!b) return;
@@ -590,14 +588,12 @@
 
       /* ── single essay ── */
       function lockedBody(post, bodyEl) {
-        var st = state(post), r = READY[post.slug], on = picked.indexOf(post.slug) >= 0;
+        var r = READY[post.slug], on = picked.indexOf(post.slug) >= 0;
         var html = r && r.excerpt ? '<div class="excerpt">' + r.excerpt + '</div>' : '';
-        html += '<div class="unlock"><p>' + (st === 'ready'
-          ? 'This essay is read on request. Add it to your list and send the list, and you get a code that opens it.'
-          : "This one isn't sealed yet. You can still ask for it, and it gets sent to you when it's ready.") + '</p>' +
+        html += '<div class="unlock"><p>This essay is read on request. Add it to your list and send the list, and you get a code that opens it.</p>' +
           '<div class="row"><button type="button" class="btn" id="a-pick">' + (on ? '&#10003; ON YOUR LIST' : '+ ADD TO REQUEST') + '</button>' +
           (on ? '<button type="button" class="btn ghost" id="a-send">REVIEW AND SEND</button>' : '') + '</div>' +
-          (st === 'ready' ? '<div class="or">Already have a code?</div><form autocomplete="off"><input placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" aria-label="Access code"><button class="btn ghost" type="submit">OPEN</button></form><div class="err" aria-live="polite"></div>' : '') +
+          '<div class="or">Already have a code?</div><form autocomplete="off"><input placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" aria-label="Access code"><button class="btn ghost" type="submit">OPEN</button></form><div class="err" aria-live="polite"></div>' +
           '</div>';
         bodyEl.innerHTML = html;
         $('a-pick').addEventListener('click', function () { togglePick(post.slug); });
@@ -622,7 +618,7 @@
         bodyEl.innerHTML = '<p class="placeholder-note">opening…</p>';
         loadSealed(post.slug).then(function (box) { return BlawgCrypt.open(box, keys[post.slug]); }).then(function (html) {
           plain[post.slug] = html;
-          if (decodeURIComponent(location.hash.slice(1)) === post.slug) bodyEl.innerHTML = html;
+          if (here === post.slug) bodyEl.innerHTML = html;
         }, function () {
           bodyEl.innerHTML = '<p class="placeholder-note">This essay was updated after your code was made. Ask Waleed for a fresh code.</p>';
         });
@@ -635,9 +631,23 @@
         else bits.push(LABEL[st] + words(p) + (r && r.date ? ' · ' + esc(r.date) : ''));
         return bits.join(' · ');
       }
+      var here = '';     // slug of the essay being read, '' on the board
+      function fromHash() { try { return decodeURIComponent(location.hash.replace('#', '')); } catch (e) { return ''; } }
+      function go(slug) {
+        here = slug;
+        try { history.pushState(null, '', slug ? '#' + encodeURIComponent(slug) : location.pathname + location.search); } catch (e) {}
+        route();
+        if (!slug) $('posts').scrollIntoView({ block: 'start' });
+      }
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+        var a = e.target.closest && e.target.closest('a.post-title, a.back');
+        if (!a) return;
+        e.preventDefault();
+        go(a.classList.contains('back') ? '' : decodeURIComponent(a.getAttribute('href').slice(1)));
+      });
       function route(keepScroll) {
-        var slug = decodeURIComponent(location.hash.replace('#', ''));
-        var post = bySlug[slug];
+        var post = bySlug[here];
         var art = $('article');
         if (!post) {
           art.classList.remove('on'); document.body.classList.remove('reading'); document.title = 'Blawg | Waleed A. Raza';
@@ -670,8 +680,10 @@
           if (ok) $('posts').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       }).then(function () {
-        window.addEventListener('hashchange', function () { route(); });
-        route();
+        function sync() { here = fromHash(); route(); }
+        window.addEventListener('hashchange', sync);
+        window.addEventListener('popstate', sync);
+        sync();
       });
     })();
   </script>
