@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blawg studio</title>
+  <!--
+    Offline tool. Double-click this file to open it in your browser.
+    Nothing is uploaded: sealing happens on your computer, and the plain
+    essay never leaves this page. GitHub Pages does not serve folders that
+    start with "_", so this page is not on the live site.
+  -->
+  <style>
+    :root { --orange: #ff6b35; --teal: #00d4aa; --border: rgba(255,255,255,.14); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #eee; font: 14px/1.6 "IBM Plex Mono", Consolas, monospace; }
+    main { max-width: 900px; margin: 0 auto; padding: 36px 16px 100px; }
+    h1 { font-size: 18px; color: var(--orange); letter-spacing: .08em; margin: 0 0 6px; }
+    h2 { font-size: 13px; color: var(--teal); letter-spacing: .2em; margin: 0 0 4px; }
+    .sub { color: #888; margin: 0 0 22px; }
+    section { border: 1px solid var(--border); padding: 20px; margin-top: 22px; }
+    section.off { opacity: .35; pointer-events: none; }
+    label { display: block; color: #aaa; font-size: 12px; letter-spacing: .1em; margin: 16px 0 6px; text-transform: uppercase; }
+    input[type=text], input[type=password], input[type=date], textarea, select {
+      width: 100%; background: #0a0a0a; color: #eee; border: 1px solid var(--border); padding: 9px 12px; font: inherit; outline: none; }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal); }
+    textarea { min-height: 110px; resize: vertical; }
+    #body { min-height: 260px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > div { flex: 1 1 240px; }
+    button { margin-top: 16px; background: var(--orange); color: #000; border: 0; padding: 10px 18px; font: inherit; font-weight: 700; letter-spacing: .1em; cursor: pointer; }
+    button.ghost { background: none; color: var(--teal); border: 1px solid var(--teal); }
+    button.small { margin: 0; padding: 3px 10px; font-size: 11px; font-weight: 400; }
+    button[disabled] { opacity: .5; cursor: wait; }
+    .note { color: #888; font-size: 12px; margin-top: 6px; }
+    .ok { color: var(--teal); }
+    .bad { color: #ff5a5a; }
+    .msg { font-size: 12.5px; margin-top: 12px; min-height: 1.3em; white-space: pre-wrap; }
+    .picks { max-height: 260px; overflow-y: auto; border: 1px solid var(--border); padding: 8px 12px; }
+    .picks label { margin: 0; padding: 3px 0; text-transform: none; letter-spacing: 0; font-size: 13px; color: #ddd; display: flex; gap: 10px; cursor: pointer; }
+    .picks label b { color: #777; font-weight: 400; }
+    .picks .empty { color: #777; font-size: 12.5px; }
+    .out { margin-top: 16px; border: 1px solid rgba(0,212,170,.4); padding: 14px; display: none; }
+    .out.on { display: block; }
+    .code { font-size: 20px; letter-spacing: .12em; color: var(--teal); user-select: all; }
+    #out-reply { min-height: 220px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px; }
+    td { border-top: 1px solid var(--border); padding: 7px 6px; vertical-align: top; }
+    td.act { white-space: nowrap; text-align: right; }
+    code { color: var(--teal); }
+    .todo { margin-top: 22px; border: 1px solid rgba(255,107,53,.5); padding: 14px 18px; display: none; }
+    .todo.on { display: block; }
+    .todo ul { margin: 6px 0 0 18px; padding: 0; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>BLAWG STUDIO</h1>
+  <p class="sub">Seal essays and hand out the codes that open them. Everything happens on this computer. The site only ever gets scrambled text.</p>
+
+  <section id="s-master">
+    <h2>1 · YOUR MASTER PASSPHRASE</h2>
+    <p class="note">One passphrase for the whole blog. Every essay's key comes from it, so nothing else needs to be stored. It is never saved and never goes in the repo. Use five or more random words and keep it in a password manager: if it is lost, every essay has to be sealed again and every code remade.</p>
+    <div class="row">
+      <div><label for="pass">Master passphrase</label><input id="pass" type="password" autocomplete="off"></div>
+      <div id="pass2-wrap"><label for="pass2">Again (first time only)</label><input id="pass2" type="password" autocomplete="off"></div>
+    </div>
+    <button id="unlock" type="button">UNLOCK STUDIO</button>
+    <button id="folder" type="button" class="ghost">CONNECT THE BLAWG FOLDER</button>
+    <div class="msg" id="m-master"></div>
+    <p class="note">Connecting the folder (Chrome or Edge) lets the studio write its files straight into <code>blawg/sealed/</code>. Without it, files are downloaded and you move them there yourself.</p>
+  </section>
+
+  <section id="s-seal" class="off">
+    <h2>2 · SEAL AN ESSAY</h2>
+    <label for="post">Which essay</label>
+    <select id="post"></select>
+    <p class="note">The list is the board in <code>blawg/posts.js</code>. Sealing an essay again replaces it, and codes already handed out keep working.</p>
+    <div class="row">
+      <div><label for="date">Date</label><input id="date" type="date"></div>
+      <div><label for="blurb">Card line (public, optional)</label><input id="blurb" type="text" placeholder="One line shown on the card"></div>
+    </div>
+    <label for="excerpt">Preview (public, optional)</label>
+    <textarea id="excerpt" placeholder="The opening paragraph or two that anyone can read before asking. Leave empty to show only the title."></textarea>
+    <label for="body">Essay (private)</label>
+    <textarea id="body" placeholder="Plain text works: blank lines become paragraphs. HTML works too."></textarea>
+    <p class="note">If the text has no HTML tags, blank lines become paragraphs, lines starting with "## " become headings and lines starting with "> " become quotes.</p>
+    <button id="seal" type="button">SEAL</button>
+    <div class="msg" id="m-seal"></div>
+  </section>
+
+  <section id="s-issue" class="off">
+    <h2>3 · MAKE A CODE</h2>
+    <label for="req">Paste their request email here to tick what they asked for (optional)</label>
+    <textarea id="req" placeholder="Hi Waleed, I'd like to read: #066 Camus ..."></textarea>
+    <div class="row">
+      <div><label for="who">Who it's for (they see "unlocked for ...")</label><input id="who" type="text" placeholder="Dom"></div>
+      <div><label for="custom">Code (leave empty for a random one)</label><input id="custom" type="text" placeholder="random"></div>
+    </div>
+    <label>Essays this code opens <button type="button" class="ghost small" id="all">all</button> <button type="button" class="ghost small" id="none">none</button></label>
+    <div class="picks" id="picks"></div>
+    <button id="issue" type="button">MAKE CODE</button>
+    <div class="msg" id="m-issue"></div>
+    <div class="out" id="out">
+      <div class="note">Send them this code</div>
+      <div class="code" id="out-code"></div>
+      <label for="out-reply">Or copy this reply</label>
+      <textarea id="out-reply" readonly></textarea>
+      <button type="button" class="ghost" id="copy-reply">COPY REPLY</button>
+    </div>
+  </section>
+
+  <section id="s-rings" class="off">
+    <h2>4 · CODES YOU'VE HANDED OUT</h2>
+    <p class="note">Revoking stops a code from opening anything from then on. It can't take back what someone already read.</p>
+    <table id="rings"></table>
+  </section>
+
+  <div class="todo" id="todo">
+    <b class="ok">To make this live</b>
+    <ul id="todo-list"></ul>
+  </div>
+</main>
+
+<script src="../crypt.js"></script>
+<script src="../posts.js"></script>
+<script src="../sealed/index.js"></script>
+<script src="../sealed/keys.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var C = window.BlawgCrypt;
+  var SITE = 'https://waleedaraza.github.io/blawg/';
+  var posts = window.BLOG_POSTS || [];
+  var READY = window.BLOG_READY || {};
+  var RINGS = (window.BLOG_RINGS || []).slice();
+  var CHECK = window.BLOG_KEYCHECK || null;
+  var master = null, dir = null, notes = {};   // notes: ring id -> { name, slugs, date, code }
+  var changed = {};                            // files written this session
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function num(p) { return ('00' + p.n).slice(-3); }
+  function say(id, text, cls) { var el = $(id); el.className = 'msg ' + (cls || ''); el.textContent = text; }
+  function toHtml(text) {
+    text = text.trim();
+    if (!text) return '';
+    if (/<[a-z][\s\S]*>/i.test(text)) return text;
+    return text.split(/\n\s*\n/).map(function (block) {
+      block = block.trim();
+      if (block.indexOf('## ') === 0) return '<h2>' + esc(block.slice(3)) + '</h2>';
+      if (block.indexOf('> ') === 0) return '<blockquote>' + esc(block.replace(/^> ?/gm, '')).replace(/\n/g, '<br>') + '</blockquote>';
+      return '<p>' + esc(block).replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+  }
+
+  if (!C.available()) { say('m-master', 'This browser has no WebCrypto here. Open this file in Chrome, Edge or Firefox.', 'bad'); $('unlock').disabled = true; }
+  if (CHECK) $('pass2-wrap').style.display = 'none';
+  if (!window.showDirectoryPicker) $('folder').style.display = 'none';
+  $('date').value = new Date().toISOString().slice(0, 10);
+
+  /* ── writing files: straight into blawg/sealed/ when the folder is connected, else a download ── */
+  function save(name, text) {
+    changed[name] = true;
+    if (dir) {
+      return dir.getDirectoryHandle('sealed', { create: true })
+        .then(function (d) { return d.getFileHandle(name, { create: true }); })
+        .then(function (f) { return f.createWritable(); })
+        .then(function (w) { return w.write(text).then(function () { return w.close(); }); })
+        .then(function () { return 'written'; });
+    }
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/javascript' }));
+    a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    return Promise.resolve('downloaded');
+  }
+  function todo() {
+    var names = Object.keys(changed);
+    if (!names.length) return;
+    $('todo').classList.add('on');
+    var files = names.map(function (n) { return '<code>' + esc(n) + '</code>'; }).join(', ');
+    $('todo-list').innerHTML = (dir
+      ? '<li>These files in <code>blawg/sealed/</code> were updated: ' + files + '</li>'
+      : '<li>Move the downloaded files into <code>blawg/sealed/</code>, replacing the old ones: ' + files +
+        '. If your browser named one like <code>keys (1).js</code>, rename it back. Do this before closing this page.</li>') +
+      '<li>Commit and push. The site updates a minute or so later.</li>';
+  }
+  function indexFile() {
+    return '/* Written by blawg/_tools/studio.html. Lists the essays that are sealed and\n' +
+      '   ready to be opened with a code: slug -> { words, date, blurb, excerpt }.\n' +
+      '   blurb and excerpt are public. Do not edit by hand. */\n' +
+      'window.BLOG_READY = ' + JSON.stringify(READY, null, 1) + ';\n';
+  }
+  function keysFile() {
+    return '/* Written by blawg/_tools/studio.html. Each ring is opened by one reader\n' +
+      '   code and holds the keys of the essays granted to it. Everything in here\n' +
+      '   is scrambled. Delete a ring (in the studio) to stop its code working.\n' +
+      '   Do not edit by hand. */\n' +
+      'window.BLOG_KEYCHECK = ' + JSON.stringify(CHECK) + ';\n' +
+      'window.BLOG_RINGS = [\n' + RINGS.map(function (r) { return '  ' + JSON.stringify(r); }).join(',\n') + '\n];\n';
+  }
+
+  $('folder').addEventListener('click', function () {
+    window.showDirectoryPicker({ mode: 'readwrite' }).then(function (h) {
+      return h.getFileHandle('posts.js').then(function () { dir = h; say('m-master', 'Folder connected: ' + h.name + '. Files will be written into its sealed/ folder.', 'ok'); },
+        function () { say('m-master', 'That folder has no posts.js in it. Pick the blawg folder itself.', 'bad'); });
+    }).catch(function () {});
+  });
+
+  /* ── 1 · master ── */
+  $('unlock').addEventListener('click', function () {
+    var pass = $('pass').value;
+    if (!CHECK) {
+      if (pass.length < 16) return say('m-master', 'Use at least 16 characters. Five random words is a good passphrase.', 'bad');
+      if (pass !== $('pass2').value) return say('m-master', "The two entries don't match.", 'bad');
+    }
+    $('unlock').disabled = true; say('m-master', 'working…');
+    C.master(pass).then(function (m) {
+      return C.masterCheck(m).then(function (chk) {
+        if (CHECK && chk !== CHECK) throw new Error('wrong');
+        master = m;
+        if (!CHECK) { CHECK = chk; return save('keys.js', keysFile()); }
+      });
+    }).then(function (first) {
+      $('pass').value = ''; $('pass2').value = '';
+      ['s-seal', 's-issue', 's-rings'].forEach(function (id) { $(id).classList.remove('off'); });
+      say('m-master', first ? 'Studio unlocked. This is now the passphrase for the blog. keys.js was ' + first + ' so the studio can check it next time.' : 'Studio unlocked.', 'ok');
+      $('pass2-wrap').style.display = 'none';
+      todo();
+      return loadNotes();
+    }).catch(function (e) {
+      say('m-master', e && e.message === 'wrong' ? "That isn't the passphrase this blog was set up with." : 'Failed: ' + (e && e.message || e), 'bad');
+    }).then(function () { $('unlock').disabled = false; renderPicks(); renderRings(); });
+  });
+
+  /* ── 2 · seal ── */
+  $('post').innerHTML = posts.filter(function (p) { return !p.body; }).map(function (p) {
+    return '<option value="' + esc(p.slug) + '">' + num(p) + ' · ' + esc(p.title) + (READY[p.slug] ? '  (sealed)' : '') + '</option>';
+  }).join('');
+  function fillFromReady() {
+    var r = READY[$('post').value];
+    $('blurb').value = r && r.blurb || ''; $('excerpt').value = r && r.excerpt || '';
+  }
+  $('post').addEventListener('change', fillFromReady);
+  fillFromReady();
+  $('seal').addEventListener('click', function () {
+    var slug = $('post').value, text = $('body').value;
+    if (!text.trim()) return say('m-seal', 'Paste the essay first.', 'bad');
+    var html = toHtml(text);
+    $('seal').disabled = true; say('m-seal', 'sealing…');
+    var key;
+    C.essayKey(master, slug).then(function (k) { key = k; return C.seal(html, k); }).then(function (box) {
+      return C.open(box, key).then(function (back) {
+        if (back !== html) throw new Error('round trip failed');
+        box.v = 2;
+        return save(slug + '.js', '/* sealed essay, written by blawg/_tools/studio.html */\nBLOG_SEALED(' + JSON.stringify(slug) + ', ' + JSON.stringify(box) + ');\n');
+      });
+    }).then(function (how) {
+      var plainWords = html.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+      READY[slug] = { words: plainWords, date: $('date').value };
+      if ($('blurb').value.trim()) READY[slug].blurb = $('blurb').value.trim();
+      if ($('excerpt').value.trim()) READY[slug].excerpt = toHtml($('excerpt').value);
+      return save('index.js', indexFile()).then(function () {
+        say('m-seal', 'Sealed and checked: ' + slug + '.js and index.js ' + how + ' (' + plainWords + ' words). Any code that includes it will open it.', 'ok');
+        $('body').value = '';
+        var opt = $('post').options[$('post').selectedIndex];
+        if (!/\(sealed\)$/.test(opt.textContent)) opt.textContent += '  (sealed)';
+        renderPicks(); todo();
+      });
+    }).catch(function (e) { say('m-seal', 'Failed: ' + (e && e.message || e), 'bad'); })
+      .then(function () { $('seal').disabled = false; });
+  });
+
+  /* ── 3 · codes ── */
+  function readyPosts() { return posts.filter(function (p) { return READY[p.slug]; }); }
+  function renderPicks(checked) {
+    var list = readyPosts(), keep = checked || {};
+    if (!checked) Array.prototype.forEach.call($('picks').querySelectorAll('input:checked'), function (i) { keep[i.value] = true; });
+    $('picks').innerHTML = list.length ? list.map(function (p) {
+      return '<label><input type="checkbox" value="' + esc(p.slug) + '"' + (keep[p.slug] ? ' checked' : '') + '><span><b>' + num(p) + '</b> ' + esc(p.title) + '</span></label>';
+    }).join('') : '<div class="empty">No essays are sealed yet. Seal one above first.</div>';
+  }
+  $('all').addEventListener('click', function () { var m = {}; readyPosts().forEach(function (p) { m[p.slug] = true; }); renderPicks(m); });
+  $('none').addEventListener('click', function () { renderPicks({}); });
+  $('req').addEventListener('input', function () {
+    var m = {}, hit = 0, miss = [], re = /#(\d{1,3})\b/g, x;
+    while ((x = re.exec($('req').value))) {
+      var n = +x[1], p = posts.filter(function (q) { return q.n === n; })[0];
+      if (!p) continue;
+      if (READY[p.slug]) { m[p.slug] = true; hit++; } else miss.push('#' + num(p) + ' ' + p.title);
+    }
+    renderPicks(m);
+    say('m-issue', (hit ? hit + ' ticked from the request.' : '') + (miss.length ? '\nAsked for but not sealed yet:\n  ' + miss.join('\n  ') : ''), miss.length ? 'bad' : 'ok');
+  });
+  function loadNotes() {
+    return C.notesKey(master).then(function (k) {
+      return Promise.all(RINGS.map(function (r) {
+        if (!r.note) return null;
+        return C.open(r.note, k).then(function (j) { notes[r.id] = JSON.parse(j); }, function () {});
+      }));
+    });
+  }
+  $('issue').addEventListener('click', function () {
+    var slugs = Array.prototype.map.call($('picks').querySelectorAll('input:checked'), function (i) { return i.value; });
+    if (!slugs.length) return say('m-issue', 'Tick at least one essay.', 'bad');
+    var custom = C.normCode($('custom').value), code = custom ? $('custom').value.trim().toUpperCase() : C.newCode();
+    if (custom && custom.length < 12) return say('m-issue', 'A code you choose needs at least 12 letters or digits, because anyone can try guesses against the public files. Leave it empty for a random one.', 'bad');
+    var name = $('who').value.trim();
+    $('issue').disabled = true; say('m-issue', 'working…');
+    var ck, ringKeys = {};
+    C.codeKeys(code).then(function (k) {
+      ck = k;
+      return slugs.reduce(function (p, s) {
+        return p.then(function () { return C.essayKey(master, s); }).then(function (key) { ringKeys[s] = C.b64(key); });
+      }, Promise.resolve());
+    }).then(function () {
+      return C.seal(JSON.stringify({ name: name, keys: ringKeys }), ck.key);
+    }).then(function (box) {
+      var note = { name: name, slugs: slugs, date: new Date().toISOString().slice(0, 10), code: code };
+      return C.notesKey(master).then(function (nk) { return C.seal(JSON.stringify(note), nk); }).then(function (nbox) {
+        var replaced = RINGS.some(function (r) { return r.id === ck.id; });
+        RINGS = RINGS.filter(function (r) { return r.id !== ck.id; });
+        RINGS.push({ id: ck.id, iv: box.iv, ct: box.ct, note: nbox });
+        notes[ck.id] = note;
+        return C.openRing(code, RINGS).then(function (back) {
+          if (Object.keys(back.keys).length !== slugs.length) throw new Error('check failed');
+          return save('keys.js', keysFile()).then(function (how) { return [how, replaced]; });
+        });
+      });
+    }).then(function (res) {
+      var titles = slugs.map(function (s) { var p = posts.filter(function (q) { return q.slug === s; })[0]; return '  #' + num(p) + ' ' + p.title; });
+      $('out-code').textContent = code;
+      $('out-reply').value = (name ? 'Hi ' + name + ',' : 'Hi,') + '\n\nHere is your code:\n\n  ' + code +
+        '\n\nOpen ' + SITE + ' and type it into "Have a code?", or use this link, which enters it for you:\n\n  ' + SITE + '#k=' + C.normCode(code) +
+        '\n\nIt opens:\n' + titles.join('\n') + '\n\nWaleed';
+      $('out').classList.add('on');
+      say('m-issue', (res[1] ? 'Code updated' : 'Code made') + ' and checked. keys.js ' + res[0] + '. It works on the site once that file is pushed.', 'ok');
+      $('custom').value = '';
+      renderRings(); todo();
+    }).catch(function (e) { say('m-issue', 'Failed: ' + (e && e.message || e), 'bad'); })
+      .then(function () { $('issue').disabled = false; });
+  });
+  $('copy-reply').addEventListener('click', function () {
+    $('out-reply').select();
+    try { navigator.clipboard.writeText($('out-reply').value); } catch (e) { document.execCommand('copy'); }
+    $('copy-reply').textContent = 'COPIED';
+    setTimeout(function () { $('copy-reply').textContent = 'COPY REPLY'; }, 1500);
+  });
+
+  /* ── 4 · rings ── */
+  function renderRings() {
+    if (!master) return;
+    $('rings').innerHTML = RINGS.length ? RINGS.map(function (r) {
+      var n = notes[r.id];
+      return '<tr><td>' + (n ? '<b>' + esc(n.name || 'no name') + '</b><br><span class="note">' + esc(n.date) + '</span>' : '<span class="note">made with another passphrase</span>') + '</td>' +
+        '<td>' + (n ? '<code>' + esc(n.code) + '</code><br><span class="note">' + n.slugs.length + (n.slugs.length === 1 ? ' essay' : ' essays') + '</span>' : esc(r.id)) + '</td>' +
+        '<td class="act">' + (n ? '<button type="button" class="ghost small" data-edit="' + r.id + '">change</button> ' : '') +
+        '<button type="button" class="ghost small" data-revoke="' + r.id + '">revoke</button></td></tr>';
+    }).join('') : '<tr><td class="note">No codes yet.</td></tr>';
+  }
+  $('rings').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var id = b.getAttribute('data-revoke') || b.getAttribute('data-edit'), n = notes[id];
+    if (b.hasAttribute('data-edit')) {
+      var m = {}; n.slugs.forEach(function (s) { m[s] = true; });
+      renderPicks(m); $('who').value = n.name || ''; $('custom').value = n.code;
+      say('m-issue', 'Loaded. Change the ticks and press MAKE CODE. The same code will then open the new set.', 'ok');
+      $('s-issue').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (b.getAttribute('data-sure') !== '1') { b.setAttribute('data-sure', '1'); b.textContent = 'sure?'; return; }
+    RINGS = RINGS.filter(function (r) { return r.id !== id; }); delete notes[id];
+    save('keys.js', keysFile()).then(function () { renderRings(); todo(); });
+  });
+})();
+</script>
+</body>
+</html>

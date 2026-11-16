@@ -99,10 +99,29 @@
     }
     .blog-title b { color: var(--teal); font-weight: 600; }
 
-    /* ── post grid ── */
-    .posts { max-width: 1240px; margin: 48px auto 120px; padding: 0 16px; }
+    /* ── board ── */
+    .posts { max-width: 1240px; margin: 48px auto 140px; padding: 0 16px; }
+    .board-head { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
     .section-tag { font-size: 11px; color: var(--orange); letter-spacing: .15em; margin-bottom: 6px; }
-    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; margin-bottom: 18px; }
+    .section-title { font-size: clamp(20px, 3vw, 28px); font-weight: 600; }
+    .how { color: var(--text-muted); font-size: 12.5px; max-width: 560px; margin-top: 8px; }
+    .how button { background: none; border: 0; font: inherit; color: var(--teal); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+    .codebox { flex: 0 1 380px; min-width: 260px; }
+    .codebox label { display: block; font-size: 11px; letter-spacing: .12em; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .codebox form, .unlock form { display: flex; gap: 8px; }
+    .codebox input, .unlock input, .panel input, .panel textarea {
+      flex: 1 1 auto; min-width: 0; background: #000; border: 1px solid rgba(255,255,255,.18); color: var(--text);
+      padding: 9px 12px; font: inherit; font-size: 13px; outline: none; letter-spacing: .06em;
+    }
+    .codebox input:focus, .unlock input:focus, .panel input:focus, .panel textarea:focus { border-color: var(--teal); box-shadow: 0 0 10px rgba(0,212,170,.25); }
+    .btn { background: var(--orange); color: #000; border: 0; padding: 9px 16px; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .1em; cursor: pointer; white-space: nowrap; }
+    .btn[disabled] { opacity: .5; cursor: wait; }
+    .btn.ghost { background: none; color: var(--teal); border: 1px solid rgba(0,212,170,.5); }
+    .code-msg { font-size: 12px; margin-top: 8px; min-height: 1.3em; color: var(--text-muted); }
+    .code-msg.ok { color: var(--teal); }
+    .code-msg.bad { color: #ff5a5a; }
+    .code-msg button { background: none; border: 0; font: inherit; color: var(--text-muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
+
     .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
     .filter {
       background: none; border: 1px solid var(--border); color: var(--text-muted);
@@ -111,55 +130,89 @@
     }
     .filter:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
     .filter.on { color: var(--teal); border-color: rgba(0,212,170,.5); box-shadow: 0 0 10px rgba(0,212,170,.15); }
+    .grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
     .grid > li { display: flex; }
-    .grid > li > .card { flex: 1; }
-    .grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
     .card {
-      position: relative; display: flex; flex-direction: column; gap: 12px;
-      min-height: 150px; padding: 18px 18px 16px;
+      position: relative; flex: 1; display: flex; flex-direction: column; gap: 10px;
+      min-height: 132px; padding: 16px 16px 12px;
       border: 1px solid var(--border); background: rgba(255,255,255,0.015);
-      text-decoration: none; color: inherit;
       transition: border-color .25s, background .25s, box-shadow .25s, transform .25s;
     }
-    .card-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: .1em; }
+    .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 10.5px; letter-spacing: .1em; }
     .post-num { color: var(--text-muted); }
-    .card-tag { color: var(--orange); text-transform: uppercase; }
-    .post-title { font-family: 'Outfit', sans-serif; font-size: 19px; line-height: 1.25; font-weight: 500; transition: color .2s, text-shadow .2s; }
-    .post-summary { color: var(--text-muted); font-size: 12.5px; line-height: 1.5; }
-    .card-foot { margin-top: auto; font-size: 11px; letter-spacing: .1em; color: var(--text-muted); }
-    a.card:hover { border-color: rgba(255,107,53,.5); background: rgba(255,107,53,0.05); box-shadow: 0 0 22px rgba(255,107,53,.12); transform: translateY(-2px); }
-    a.card:hover .post-title { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,53,.45); }
-    .card.soon .post-title { color: rgba(255,255,255,.62); }
-    .card.soon:hover { border-color: rgba(255,255,255,.16); }
-    .card.soon:hover .post-title { color: rgba(255,255,255,.85); }
-    .card.launch { border-color: rgba(0,212,170,.28); }
-    .post-meta { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); white-space: nowrap; }
-    .tag-draft { color: var(--teal); border: 1px solid rgba(0,212,170,.35); padding: 2px 8px; }
-    .tag-soon { color: var(--text-muted); }
+    .card-tag { color: var(--orange); text-transform: uppercase; text-align: right; }
+    .post-title { font-family: 'Outfit', sans-serif; font-size: 17px; line-height: 1.25; font-weight: 500; color: rgba(255,255,255,.78); text-decoration: none; transition: color .2s, text-shadow .2s; }
+    .post-title::after { content: ''; position: absolute; inset: 0; }           /* the whole card opens the essay */
+    .post-summary { color: var(--text-muted); font-size: 12px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 10.5px; letter-spacing: .1em; color: var(--text-muted); }
+    .card:hover { border-color: rgba(255,107,53,.5); background: rgba(255,107,53,0.05); box-shadow: 0 0 22px rgba(255,107,53,.12); transform: translateY(-2px); }
+    .card:hover .post-title { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,53,.45); }
+    .card.can-read { border-color: rgba(0,212,170,.32); }
+    .card.can-read .post-title { color: #fff; }
+    .card.picked { border-color: rgba(255,107,53,.6); background: rgba(255,107,53,0.06); }
+    .st-open, .st-unlocked { color: var(--teal); }
+    .st-ready { color: rgba(255,255,255,.62); }
+    .pick {
+      position: relative; z-index: 2; background: none; border: 1px solid var(--border); color: var(--text-muted);
+      font: inherit; font-size: 10.5px; letter-spacing: .1em; padding: 4px 9px; cursor: pointer; transition: color .2s, border-color .2s;
+    }
+    .pick:hover { color: var(--orange); border-color: rgba(255,107,53,.6); }
+    .pick.on { color: #000; background: var(--orange); border-color: var(--orange); }
     .grid-note { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+    .grid-note a { color: var(--text-muted); }
 
-    /* ── single post ── */
-    .article { max-width: 720px; margin: 40px auto 120px; padding: 0 16px; display: none; }
+    /* ── single essay ── */
+    .article { max-width: 720px; margin: 40px auto 140px; padding: 0 16px; display: none; }
     .article.on { display: block; }
+    .art { margin: 0 0 28px; cursor: pointer; border: 1px solid var(--border); background: #030306; padding: 10px; overflow: hidden; }
+    .art:empty { display: none; }
+    .art pre { width: 100%; margin: 0; }
+    .art canvas { width: 100%; display: block; }
     .back { font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: .1em; }
     .back:hover { color: var(--orange); }
     .article h1 { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 20px 0 10px; }
-    .article .post-meta { margin-bottom: 36px; display: block; }
+    .post-meta { font-size: 11px; letter-spacing: .1em; color: var(--text-muted); margin-bottom: 32px; display: block; text-transform: uppercase; }
+    .tag-draft { color: var(--teal); border: 1px solid rgba(0,212,170,.35); padding: 2px 8px; }
     .article-body { font-family: 'Crimson Pro', Georgia, serif; font-size: 21px; line-height: 1.7; color: rgba(255,255,255,.86); }
     .article-body p { margin-bottom: 1.1em; }
     .article-body h2 { font-family: 'Outfit', sans-serif; font-size: 24px; margin: 1.6em 0 .6em; }
     .article-body blockquote { border-left: 2px solid var(--orange); padding-left: 18px; color: var(--text-dim); font-style: italic; margin: 1.4em 0; }
+    .article-body a { color: var(--teal); }
     .placeholder-note { color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    .excerpt { -webkit-mask-image: linear-gradient(#000 45%, rgba(0,0,0,.25)); mask-image: linear-gradient(#000 45%, rgba(0,0,0,.25)); }
+    .unlock { border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 24px; font-family: 'IBM Plex Mono', monospace; margin-top: 8px; }
+    .unlock p { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; }
+    .unlock .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+    .unlock .or { font-size: 11px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .unlock .err { color: #ff5a5a; font-size: 12px; margin-top: 10px; min-height: 1em; }
 
-    .lock { color: var(--orange); margin-left: 8px; font-size: .8em; }
-    .unlock { border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 28px; font-family: 'IBM Plex Mono', monospace; }
-    .unlock p { color: var(--text-dim); font-size: 14px; margin-bottom: 16px; }
-    .unlock form { display: flex; gap: 10px; flex-wrap: wrap; }
-    .unlock input { flex: 1 1 220px; background: #000; border: 1px solid rgba(255,255,255,.18); color: var(--text); padding: 10px 12px; font: inherit; font-size: 14px; outline: none; }
-    .unlock input:focus { border-color: var(--teal); box-shadow: 0 0 10px rgba(0,212,170,.25); }
-    .unlock button { background: var(--orange); color: #000; border: 0; padding: 10px 18px; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .1em; cursor: pointer; }
-    .unlock button[disabled] { opacity: .5; cursor: wait; }
-    .unlock .err { color: #ff5a5a; font-size: 12px; margin-top: 12px; min-height: 1em; }
+    /* ── request tray and panel ── */
+    .tray {
+      position: fixed; left: 50%; bottom: 18px; transform: translate(-50%, 140%); z-index: 900;
+      display: flex; align-items: center; gap: 14px; padding: 10px 12px 10px 18px; max-width: calc(100vw - 24px);
+      background: rgba(8,8,14,.96); border: 1px solid rgba(255,107,53,.55); box-shadow: 0 0 28px rgba(255,107,53,.22);
+      font-size: 12px; letter-spacing: .08em; transition: transform .3s;
+    }
+    .tray.on { transform: translate(-50%, 0); }
+    .tray b { color: var(--orange); }
+    .tray .clear { background: none; border: 0; color: var(--text-muted); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    .veil { position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,.78); display: none; align-items: flex-start; justify-content: center; padding: 8vh 12px 12px; overflow-y: auto; }
+    .veil.on { display: flex; }
+    .panel { width: min(600px, 100%); background: #07070c; border: 1px solid rgba(255,255,255,.16); padding: 24px; }
+    .panel h3 { font-size: 13px; letter-spacing: .2em; color: var(--orange); font-weight: 600; margin-bottom: 6px; }
+    .panel > p { font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; }
+    .panel ul { list-style: none; margin-bottom: 16px; max-height: 32vh; overflow-y: auto; }
+    .panel li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .panel li span b { color: var(--text-muted); font-weight: 400; margin-right: 8px; }
+    .panel li button { background: none; border: 0; color: var(--text-muted); font: inherit; cursor: pointer; }
+    .panel li button:hover { color: #ff5a5a; }
+    .panel .none { color: var(--text-muted); font-size: 12.5px; margin-bottom: 16px; }
+    .panel label { display: block; font-size: 11px; letter-spacing: .12em; color: var(--text-muted); text-transform: uppercase; margin: 14px 0 6px; }
+    .panel input, .panel textarea { width: 100%; letter-spacing: 0; }
+    .panel textarea { min-height: 96px; resize: vertical; }
+    .panel .acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; align-items: center; }
+    .panel .close { margin-left: auto; background: none; border: 0; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; letter-spacing: .1em; }
+    .panel .sent { font-size: 12px; color: var(--teal); margin-top: 12px; min-height: 1.3em; }
 
     body.reading .posts { display: none; }
 
@@ -168,8 +221,11 @@
       .nav-links { gap: 16px; }
       .nav-link { font-size: 10px; }
       .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .card { min-height: 120px; padding: 14px 12px; }
-      .post-title { font-size: 16px; }
+      .card { min-height: 116px; padding: 12px 10px 10px; }
+      .post-title { font-size: 15px; }
+      .card-tag { display: none; }
+      .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; }
+      .filter { flex: none; }
     }
   </style>
 </head>
@@ -193,29 +249,71 @@
     </header>
 
     <section class="posts" id="posts">
-      <div class="section-tag" id="post-count">[&#8734;] THE BOARD</div>
-      <h2 class="section-title">&#9654; POSTS</h2>
+      <div class="board-head">
+        <div>
+          <div class="section-tag" id="post-count">THE BOARD</div>
+          <h2 class="section-title">&#9654; READ ON REQUEST</h2>
+          <p class="how">One essay is open. The rest are read on request: pick the ones you want, send the list, and you get a code that opens them. Or <button type="button" id="ask">ask for something that isn't here</button>.</p>
+        </div>
+        <div class="codebox">
+          <label for="code">Have a code?</label>
+          <form id="code-form" autocomplete="off">
+            <input id="code" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" autocapitalize="characters" aria-label="Access code">
+            <button class="btn" type="submit">OPEN</button>
+          </form>
+          <div class="code-msg" id="code-msg" aria-live="polite"></div>
+        </div>
+      </div>
       <div class="filters" id="filters"></div>
       <ul class="grid" id="post-grid"></ul>
     </section>
 
     <article class="article" id="article">
-      <a class="back" href="./">&larr; ALL POSTS</a>
+      <div class="art" id="article-art" title="Click to pause"></div>
+      <a class="back" href="./">&larr; THE BOARD</a>
       <h1 id="article-title"></h1>
       <span class="post-meta" id="article-meta"></span>
       <div class="article-body" id="article-body"></div>
     </article>
   </main>
 
+  <div class="tray" id="tray" role="status">
+    <span><b id="tray-n">0</b> <span id="tray-word">essays</span> picked</span>
+    <button class="btn" type="button" id="tray-go">REQUEST</button>
+    <button class="clear" type="button" id="tray-clear">clear</button>
+  </div>
+
+  <div class="veil" id="veil">
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <h3 id="panel-title">REQUEST</h3>
+      <p>This goes to Waleed as an email. He reads it and replies with a code.</p>
+      <ul id="panel-list"></ul>
+      <div class="none" id="panel-none">No essays picked. That's fine: ask a question or ask for something written for you.</div>
+      <label for="req-name">Your name</label>
+      <input id="req-name" autocomplete="name">
+      <label for="req-note">A note, a question, or something you'd like written</label>
+      <textarea id="req-note"></textarea>
+      <div class="acts">
+        <button class="btn" type="button" id="req-mail">OPEN EMAIL</button>
+        <button class="btn ghost" type="button" id="req-copy">COPY INSTEAD</button>
+        <button class="close" type="button" id="req-close">CLOSE</button>
+      </div>
+      <div class="sent" id="req-sent" aria-live="polite"></div>
+    </div>
+  </div>
+
   <script src="../assets/ascii/ascii-field.js"></script>
   <script src="../assets/ascii/fallen-tree.js"></script>
   <script src="../assets/ascii/fallen-oak.js"></script>
   <script src="crypt.js"></script>
   <script src="posts.js"></script>
+  <script src="sealed/index.js"></script>
+  <script src="sealed/keys.js"></script>
   <script>
     (function () {
+      var $ = function (id) { return document.getElementById(id); };
       var KOAN = 'If a tree falls in a forest and no one is around to hear it, does it make a sound?';
-      var koanEl = document.getElementById('koan');
+      var koanEl = $('koan');
       var typingTimer = null;
 
       function typeKoan(instant) {
@@ -230,10 +328,10 @@
         })();
       }
 
-      var hint = document.getElementById('replay');
+      var hint = $('replay');
       // ?tree=oak shows the original autumn oak; the redwood is the default
       var Scene = /[?&]tree=oak\b/.test(location.search) ? FallenOak : FallenTree;
-      var scene = Scene.mount(document.getElementById('tree-scene'), {
+      var scene = Scene.mount($('tree-scene'), {
         onImpact: function () { setTimeout(function () { typeKoan(AsciiField.reducedMotion); }, AsciiField.reducedMotion ? 0 : 1600); },
         onSettled: function () { hint.classList.add('on'); }
       });
@@ -245,89 +343,336 @@
         scene.replay();
       }
       hint.addEventListener('click', replay);
-      document.getElementById('scene-wrap').addEventListener('click', replay);
+      $('scene-wrap').addEventListener('click', replay);
 
-      /* ── posts ── */
+      /* ══ the board ══════════════════════════════════════════════════════ */
+      var REQUEST_TO = 'waleedraza1211@gmail.com';   // same address as the contact link on the home page
       var posts = (window.BLOG_POSTS || []).slice();
-      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-      function meta(p) { return p.status === 'draft' ? '<span class="tag-draft">DRAFT</span>' : esc(p.date); }
+      var READY = window.BLOG_READY || {};           // slug -> { words, date, excerpt }: sealed and openable
+      var RINGS = window.BLOG_RINGS || [];
+      var bySlug = {};
+      posts.forEach(function (p) { bySlug[p.slug] = p; });
 
-      var grid = document.getElementById('post-grid');
-      var filtersEl = document.getElementById('filters');
+      var keys = {};        // slug -> key bytes, from the codes entered
+      var opened = [];      // rings opened: { id, name, n }
+      var plain = {};       // slug -> decrypted html, this page view only
+      var picked = [];      // slugs in the request tray
+
+      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+      function num(p) { return ('00' + p.n).slice(-3); }
+      function store(k, v) {
+        try {
+          if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null');
+          localStorage.setItem(k, JSON.stringify(v));
+        } catch (e) { return null; }
+      }
+      /* open = anyone can read · unlocked = your code opens it · ready = sealed, ask for it · works = not sealed yet */
+      function state(p) {
+        if (p.body) return 'open';
+        if (READY[p.slug]) return keys[p.slug] ? 'unlocked' : 'ready';
+        return 'works';
+      }
+      var LABEL = { open: 'OPEN', unlocked: 'UNLOCKED', ready: 'READY', works: 'IN THE WORKS' };
+      function words(p) { var r = READY[p.slug]; return r && r.words ? ' · ' + Math.max(1, Math.round(r.words / 230)) + ' MIN' : ''; }
+
+      /* ── grid ── */
+      var grid = $('post-grid'), filtersEl = $('filters');
       var current = 'All';
-      var tags = ['All'];
+      var tags = [];
       posts.forEach(function (p) { if (p.tag && tags.indexOf(p.tag) < 0) tags.push(p.tag); });
 
-      function card(p, i) {
-        var num = ('00' + i).slice(-3);
-        var lock = p.encrypted ? ' <span class="lock" title="password protected">&#9679; locked</span>' : '';
-        var foot = p.status === 'soon' ? '<span class="tag-soon">SOON</span>' : meta(p);
-        var inner =
-          '<div class="card-top"><span class="post-num">' + num + '</span><span class="card-tag">' + esc(p.tag || '') + '</span></div>' +
-          '<div class="post-title">' + esc(p.title) + lock + '</div>' +
-          (p.summary ? '<div class="post-summary">' + esc(p.summary) + '</div>' : '') +
-          '<div class="card-foot">' + foot + '</div>';
-        if (p.status === 'soon') return '<li><div class="card soon">' + inner + '</div></li>';
-        return '<li><a class="card' + (i < 3 ? ' launch' : '') + '" href="#' + esc(p.slug) + '">' + inner + '</a></li>';
+      function card(p) {
+        var st = state(p), on = picked.indexOf(p.slug) >= 0;
+        var blurb = p.summary || (READY[p.slug] && READY[p.slug].blurb) || '';
+        var canRead = st === 'open' || st === 'unlocked';
+        return '<li><div class="card' + (canRead ? ' can-read' : '') + (on ? ' picked' : '') + '">' +
+          '<div class="card-top"><span class="post-num">' + num(p) + (p.art ? ' &#10022;' : '') + '</span><span class="card-tag">' + esc(p.tag || '') + '</span></div>' +
+          '<a class="post-title" href="#' + esc(p.slug) + '">' + esc(p.title) + '</a>' +
+          (blurb ? '<div class="post-summary">' + esc(blurb) + '</div>' : '') +
+          '<div class="card-foot"><span class="st-' + st + '">' + LABEL[st] + words(p) + '</span>' +
+          (canRead ? '' : '<button type="button" class="pick' + (on ? ' on' : '') + '" data-slug="' + esc(p.slug) + '" aria-pressed="' + on + '">' + (on ? '&#10003; PICKED' : '+ REQUEST') + '</button>') +
+          '</div></div></li>';
+      }
+      function match(p) {
+        if (current === 'All') return true;
+        if (current === 'Unlocked') return state(p) === 'unlocked' || state(p) === 'open';
+        if (current === 'Ready') return state(p) === 'ready';
+        return p.tag === current;
       }
       function renderGrid() {
-        grid.innerHTML = posts.map(function (p, i) {
-          return (current === 'All' || p.tag === current) ? card(p, i) : '';
-        }).join('');
-        filtersEl.innerHTML = tags.map(function (t) {
+        var nUnlocked = posts.filter(function (p) { return state(p) === 'unlocked'; }).length;
+        var nReady = posts.filter(function (p) { return state(p) === 'ready'; }).length;
+        var chips = ['All'];
+        if (nUnlocked) chips.push('Unlocked');
+        if (nReady) chips.push('Ready');
+        chips = chips.concat(tags);
+        if (chips.indexOf(current) < 0) current = 'All';
+        grid.innerHTML = posts.filter(match).map(card).join('');
+        filtersEl.innerHTML = chips.map(function (t) {
           return '<button type="button" class="filter' + (t === current ? ' on' : '') + '" data-tag="' + esc(t) + '">' + esc(t) + '</button>';
         }).join('');
+        var nOpen = posts.filter(function (p) { return state(p) === 'open'; }).length;
+        $('post-count').textContent = '[' + posts.length + '] ON THE BOARD · ' + nOpen + ' OPEN' +
+          (nReady + nUnlocked ? ' · ' + (nReady + nUnlocked) + ' READY' : '') + (nUnlocked ? ' · ' + nUnlocked + ' UNLOCKED' : '');
       }
       filtersEl.addEventListener('click', function (e) {
         var b = e.target.closest('.filter'); if (!b) return;
         current = b.getAttribute('data-tag'); renderGrid();
       });
-      var written = posts.filter(function (p) { return p.status !== 'soon'; }).length;
-      document.getElementById('post-count').textContent = '[' + posts.length + '] ON THE BOARD · ' + written + ' OPEN';
-      renderGrid();
+      grid.addEventListener('click', function (e) {
+        var b = e.target.closest('.pick'); if (!b) return;
+        e.preventDefault(); togglePick(b.getAttribute('data-slug'));
+      });
 
-      var unlocked = {}; // slug -> plaintext, for this page view only
-      function renderBody(post) {
-        var bodyEl = document.getElementById('article-body');
-        if (!post.encrypted) { bodyEl.innerHTML = post.body || ''; return; }
-        if (unlocked[post.slug]) { bodyEl.innerHTML = unlocked[post.slug]; return; }
-        if (!window.BlawgCrypt || !BlawgCrypt.available()) {
-          bodyEl.innerHTML = '<div class="unlock"><p>This piece is locked, and this browser can\'t unlock it (it needs WebCrypto over https).</p></div>';
-          return;
+      /* ── request tray ── */
+      function togglePick(slug) {
+        var i = picked.indexOf(slug);
+        if (i >= 0) picked.splice(i, 1); else picked.push(slug);
+        store('blawg.picked', picked);
+        renderGrid(); renderTray();
+        if (document.body.classList.contains('reading')) route(true);
+      }
+      function renderTray() {
+        $('tray-n').textContent = picked.length;
+        $('tray-word').textContent = picked.length === 1 ? 'essay' : 'essays';
+        $('tray').classList.toggle('on', picked.length > 0 && !$('veil').classList.contains('on'));
+      }
+      function renderPanel() {
+        var list = picked.map(function (s) { return bySlug[s]; }).filter(Boolean);
+        $('panel-list').innerHTML = list.map(function (p) {
+          return '<li><span><b>' + num(p) + '</b>' + esc(p.title) + '</span><button type="button" data-slug="' + esc(p.slug) + '" aria-label="Remove">&times;</button></li>';
+        }).join('');
+        $('panel-list').style.display = list.length ? '' : 'none';
+        $('panel-none').style.display = list.length ? 'none' : '';
+        $('panel-title').textContent = list.length ? 'REQUEST ' + list.length + (list.length === 1 ? ' ESSAY' : ' ESSAYS') : 'ASK';
+      }
+      function openPanel() { renderPanel(); $('req-sent').textContent = ''; $('veil').classList.add('on'); renderTray(); $('req-name').focus(); }
+      function closePanel() { $('veil').classList.remove('on'); renderTray(); }
+      function requestText() {
+        var list = picked.map(function (s) { return bySlug[s]; }).filter(Boolean);
+        var name = $('req-name').value.trim(), note = $('req-note').value.trim();
+        var lines = ['Hi Waleed,', ''];
+        if (list.length) {
+          lines.push("I'd like to read:");
+          list.forEach(function (p) { lines.push('  #' + num(p) + ' ' + p.title); });
+          lines.push('');
         }
-        bodyEl.innerHTML = '<div class="unlock"><p>This one is password protected.</p>' +
-          '<form autocomplete="off"><input type="password" placeholder="password" aria-label="Password" required>' +
-          '<button type="submit">UNLOCK</button></form><div class="err" aria-live="polite"></div></div>';
-        var form = bodyEl.querySelector('form'), input = form.querySelector('input'),
-            btn = form.querySelector('button'), err = bodyEl.querySelector('.err');
-        input.focus();
-        form.addEventListener('submit', function (e) {
+        if (note) { lines.push(note); lines.push(''); }
+        if (name) lines.push(name);
+        return {
+          subject: 'Blawg request' + (list.length ? ': ' + list.length + (list.length === 1 ? ' essay' : ' essays') : '') + (name ? ' from ' + name : ''),
+          body: lines.join('\n')
+        };
+      }
+      $('tray-go').addEventListener('click', openPanel);
+      $('ask').addEventListener('click', openPanel);
+      $('tray-clear').addEventListener('click', function () { picked = []; store('blawg.picked', picked); renderGrid(); renderTray(); });
+      $('req-close').addEventListener('click', closePanel);
+      $('veil').addEventListener('click', function (e) { if (e.target === $('veil')) closePanel(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+      $('panel-list').addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        togglePick(b.getAttribute('data-slug')); renderPanel();
+      });
+      $('req-mail').addEventListener('click', function () {
+        var r = requestText();
+        if (!picked.length && !$('req-note').value.trim()) { $('req-sent').textContent = 'Pick an essay or write a note first.'; return; }
+        location.href = 'mailto:' + REQUEST_TO + '?subject=' + encodeURIComponent(r.subject) + '&body=' + encodeURIComponent(r.body);
+        $('req-sent').textContent = 'Your mail app should have opened. If nothing happened, use COPY INSTEAD and send it to ' + REQUEST_TO + '.';
+      });
+      $('req-copy').addEventListener('click', function () {
+        var r = requestText(), text = r.subject + '\n\n' + r.body;
+        function done() { $('req-sent').textContent = 'Copied. Send it to ' + REQUEST_TO + '.'; }
+        function fallback() {
+          var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); done(); } catch (e) { $('req-sent').textContent = 'Could not copy. Email ' + REQUEST_TO + ' with the titles you want.'; }
+          document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+      });
+
+      /* ── codes ── */
+      var codeMsg = $('code-msg');
+      function showOpened(note) {
+        if (!opened.length) { codeMsg.className = 'code-msg'; codeMsg.textContent = note || ''; return; }
+        var n = Object.keys(keys).filter(function (s) { return READY[s]; }).length;
+        var who = opened.map(function (r) { return r.name; }).filter(Boolean)[0];
+        codeMsg.className = 'code-msg ok';
+        codeMsg.innerHTML = '&#10003; ' + n + (n === 1 ? ' essay' : ' essays') + ' unlocked' + (who ? ' for ' + esc(who) : '') +
+          '<button type="button" id="forget">forget on this device</button>';
+      }
+      /* Resolves true when the code opened something. remember=false for codes already stored. */
+      function tryCode(code, remember) {
+        if (!window.BlawgCrypt || !BlawgCrypt.available()) return Promise.reject(new Error('nocrypto'));
+        return BlawgCrypt.openRing(code, RINGS).then(function (ring) {
+          Object.keys(ring.keys).forEach(function (s) { keys[s] = ring.keys[s]; });
+          if (!opened.some(function (r) { return r.id === ring.id; })) opened.push({ id: ring.id, name: ring.name });
+          if (remember) {
+            var saved = store('blawg.codes') || [], norm = BlawgCrypt.normCode(code);
+            if (saved.indexOf(norm) < 0) { saved.push(norm); store('blawg.codes', saved); }
+          }
+          return true;
+        });
+      }
+      function submitCode(code, where) {
+        var msg = where || codeMsg;
+        if (!BlawgCrypt.normCode(code)) return Promise.resolve(false);
+        msg.className = msg === codeMsg ? 'code-msg' : 'err'; msg.textContent = 'opening…';
+        return tryCode(code, true).then(function () {
+          current = 'Unlocked';
+          renderGrid(); showOpened();
+          if (document.body.classList.contains('reading')) route(true);
+          return true;
+        }, function (e) {
+          var text = e && e.message === 'nocrypto' ? "This browser can't open codes here (it needs https)." : "That code doesn't open anything. Check it for typos.";
+          if (msg === codeMsg) { codeMsg.className = 'code-msg bad'; codeMsg.textContent = text; } else msg.textContent = text;
+          return false;
+        });
+      }
+      $('code-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitCode($('code').value).then(function (ok) { if (ok) $('code').value = ''; });
+      });
+      codeMsg.addEventListener('click', function (e) {
+        if (e.target.id !== 'forget') return;
+        keys = {}; opened = []; plain = {}; store('blawg.codes', []);
+        renderGrid(); showOpened('Forgotten on this device.');
+      });
+
+      /* ── sealed essays load on demand: sealed/<slug>.js calls BLOG_SEALED(slug, box) ── */
+      var sealedBox = {}, sealedWait = {};
+      window.BLOG_SEALED = function (slug, box) { sealedBox[slug] = box; };
+      function loadScript(src) {
+        return new Promise(function (ok, fail) {
+          var s = document.createElement('script');
+          s.src = src; s.onload = ok; s.onerror = function () { fail(new Error('load ' + src)); };
+          document.head.appendChild(s);
+        });
+      }
+      function loadSealed(slug) {
+        if (sealedBox[slug]) return Promise.resolve(sealedBox[slug]);
+        if (!sealedWait[slug]) sealedWait[slug] = loadScript('sealed/' + slug + '.js').then(function () {
+          if (!sealedBox[slug]) throw new Error('empty'); return sealedBox[slug];
+        });
+        return sealedWait[slug];
+      }
+
+      /* ── header art: pieces from the lab, loaded only when an essay that has one is opened ── */
+      var A = '../assets/ascii/';
+      var ART_SRC = {
+        LabBatch: ['canvas', [A + 'ascii-canvas.js', A + 'lab-v2-batch.js']],
+        LabV2: ['canvas', [A + 'ascii-canvas.js', A + 'lab-v2.js']],
+        LabHeaders: ['pre', [A + 'lab-scenes.js', A + 'lab-headers.js']],
+        LabObjects: ['pre', [A + 'lab-scenes.js', A + 'lab-objects.js']],
+        LabBackgrounds: ['pre', [A + 'lab-scenes.js', A + 'lab-backgrounds.js']]
+      };
+      var scriptOnce = {}, artNodes = {}, artWanted = '';
+      function once(src) { return scriptOnce[src] || (scriptOnce[src] = loadScript(src)); }
+      function mountArt(post) {
+        var box = $('article-art');
+        while (box.firstChild) box.removeChild(box.firstChild);
+        artWanted = post.art || '';
+        if (!post.art) return;
+        if (artNodes[post.art]) { box.appendChild(artNodes[post.art]); return; }
+        var parts = post.art.split('.'), src = ART_SRC[parts[0]];
+        if (!src) return;
+        src[1].reduce(function (p, s) { return p.then(function () { return once(s); }); }, Promise.resolve()).then(function () {
+          var make = window[parts[0]] && window[parts[0]][parts[1]];
+          if (!make || artNodes[post.art]) return;
+          var el = document.createElement(src[0]);
+          el.setAttribute('aria-hidden', 'true');
+          artNodes[post.art] = el;
+          if (artWanted === post.art) box.appendChild(el);
+          var sc = make(el);
+          el.addEventListener('click', function () { if (!(sc.onClick && sc.onClick())) sc.toggle(); });
+        }).catch(function () {});
+      }
+
+      /* ── single essay ── */
+      function lockedBody(post, bodyEl) {
+        var st = state(post), r = READY[post.slug], on = picked.indexOf(post.slug) >= 0;
+        var html = r && r.excerpt ? '<div class="excerpt">' + r.excerpt + '</div>' : '';
+        html += '<div class="unlock"><p>' + (st === 'ready'
+          ? 'This essay is read on request. Add it to your list and send the list, and you get a code that opens it.'
+          : "This one isn't sealed yet. You can still ask for it, and it gets sent to you when it's ready.") + '</p>' +
+          '<div class="row"><button type="button" class="btn" id="a-pick">' + (on ? '&#10003; ON YOUR LIST' : '+ ADD TO REQUEST') + '</button>' +
+          (on ? '<button type="button" class="btn ghost" id="a-send">REVIEW AND SEND</button>' : '') + '</div>' +
+          (st === 'ready' ? '<div class="or">Already have a code?</div><form autocomplete="off"><input placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" aria-label="Access code"><button class="btn ghost" type="submit">OPEN</button></form><div class="err" aria-live="polite"></div>' : '') +
+          '</div>';
+        bodyEl.innerHTML = html;
+        $('a-pick').addEventListener('click', function () { togglePick(post.slug); });
+        if ($('a-send')) $('a-send').addEventListener('click', openPanel);
+        var form = bodyEl.querySelector('form');
+        if (form) form.addEventListener('submit', function (e) {
           e.preventDefault();
-          btn.disabled = true; err.textContent = 'unlocking…';
-          BlawgCrypt.decrypt(post.encrypted, input.value).then(function (html) {
-            unlocked[post.slug] = html;
-            bodyEl.innerHTML = html;
-          }, function () {
-            btn.disabled = false; err.textContent = 'Wrong password.'; input.select();
+          var err = bodyEl.querySelector('.err');
+          submitCode(form.querySelector('input').value, err).then(function (ok) {
+            if (ok && state(post) !== 'unlocked') {
+              var e2 = $('article-body').querySelector('.err');
+              if (e2) e2.textContent = "That code works, but it doesn't include this essay.";
+            }
           });
         });
       }
-
-      function route() {
+      function renderBody(post) {
+        var bodyEl = $('article-body'), st = state(post);
+        if (st === 'open') { bodyEl.innerHTML = post.body; return; }
+        if (st !== 'unlocked') { lockedBody(post, bodyEl); return; }
+        if (plain[post.slug]) { bodyEl.innerHTML = plain[post.slug]; return; }
+        bodyEl.innerHTML = '<p class="placeholder-note">opening…</p>';
+        loadSealed(post.slug).then(function (box) { return BlawgCrypt.open(box, keys[post.slug]); }).then(function (html) {
+          plain[post.slug] = html;
+          if (decodeURIComponent(location.hash.slice(1)) === post.slug) bodyEl.innerHTML = html;
+        }, function () {
+          bodyEl.innerHTML = '<p class="placeholder-note">This essay was updated after your code was made. Ask Waleed for a fresh code.</p>';
+        });
+      }
+      function metaLine(p) {
+        var st = state(p), r = READY[p.slug];
+        var bits = ['№ ' + num(p), esc(p.tag || '')];
+        if (p.status === 'draft') bits.push('<span class="tag-draft">DRAFT</span>');
+        else if (st === 'open' && p.date) bits.push(esc(p.date));
+        else bits.push(LABEL[st] + words(p) + (r && r.date ? ' · ' + esc(r.date) : ''));
+        return bits.join(' · ');
+      }
+      function route(keepScroll) {
         var slug = decodeURIComponent(location.hash.replace('#', ''));
-        var post = posts.filter(function (p) { return p.slug === slug; })[0];
-        var art = document.getElementById('article');
-        if (!post) { art.classList.remove('on'); document.body.classList.remove('reading'); document.title = 'Blawg | Waleed A. Raza'; return; }
-        document.getElementById('article-title').textContent = post.title;
-        document.getElementById('article-meta').innerHTML = meta(post) + (post.status === 'draft' ? '' : '');
+        var post = bySlug[slug];
+        var art = $('article');
+        if (!post) {
+          art.classList.remove('on'); document.body.classList.remove('reading'); document.title = 'Blawg | Waleed A. Raza';
+          mountArt({});
+          return;
+        }
+        $('article-title').textContent = post.title;
+        $('article-meta').innerHTML = metaLine(post);
+        if (keepScroll !== true) mountArt(post);
         renderBody(post);
         art.classList.add('on');
         document.body.classList.add('reading');
         document.title = post.title + ' | Waleed A. Raza';
-        art.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (keepScroll !== true) art.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      window.addEventListener('hashchange', route);
-      route();
+
+      /* ── start: a code in the link (#k=CODE), codes remembered on this device, then the page ── */
+      picked = (store('blawg.picked') || []).filter(function (s) { return bySlug[s]; });
+      renderGrid(); renderTray();
+      var linked = /^#k=(.+)$/.exec(location.hash), start = Promise.resolve();
+      if (linked) {
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
+      }
+      (store('blawg.codes') || []).forEach(function (c) {
+        start = start.then(function () { return tryCode(c, false).catch(function () {}); });
+      });
+      start.then(function () {
+        if (opened.length) { renderGrid(); showOpened(); }
+        if (linked) return submitCode(decodeURIComponent(linked[1])).then(function (ok) {
+          if (ok) $('posts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }).then(function () {
+        window.addEventListener('hashchange', function () { route(); });
+        route();
+      });
     })();
   </script>
 </body>
