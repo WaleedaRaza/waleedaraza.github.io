@@ -14,7 +14,7 @@
     :root { --orange: #ff6b35; --teal: #00d4aa; --border: rgba(255,255,255,.14); }
     * { box-sizing: border-box; }
     body { margin: 0; background: #000; color: #eee; font: 14px/1.6 "IBM Plex Mono", Consolas, monospace; }
-    main { max-width: 900px; margin: 0 auto; padding: 36px 16px 100px; }
+    main { max-width: 1280px; margin: 0 auto; padding: 36px 16px 100px; }
     h1 { font-size: 18px; color: var(--orange); letter-spacing: .08em; margin: 0 0 6px; }
     h2 { font-size: 13px; color: var(--teal); letter-spacing: .2em; margin: 0 0 4px; }
     .sub { color: #888; margin: 0 0 22px; }
@@ -48,6 +48,40 @@
     td { border-top: 1px solid var(--border); padding: 7px 6px; vertical-align: top; }
     td.act { white-space: nowrap; text-align: right; }
     code { color: var(--teal); }
+    /* board editor */
+    .bd-wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; margin-top: 14px; }
+    .palette { position: sticky; top: 10px; align-self: start; max-height: calc(100vh - 20px); display: flex; flex-direction: column; gap: 8px; }
+    .pv-box { border: 1px solid var(--border); background: #000; height: 150px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .pv-box > * { width: 100%; flex: none; display: block; }
+    .pv-box pre { margin: 0; }
+    .pv-name { font-size: 11px; color: #888; min-height: 1.4em; }
+    .chips { overflow-y: auto; border: 1px solid var(--border); padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .pc { font-size: 11.5px; padding: 5px 8px; border: 1px solid rgba(0,212,170,.3); color: #ccc; cursor: grab; background: #050a09; user-select: none; display: flex; justify-content: space-between; gap: 6px; }
+    .pc:hover, .pc.sel { border-color: var(--teal); color: #fff; }
+    .pc.sel { background: rgba(0,212,170,.12); }
+    .pc i { color: #666; font-style: normal; }
+    .bd-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .bd-tools input, .bd-tools select { width: auto; flex: 1 1 160px; }
+    .bd { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .bd td { border-top: 1px solid var(--border); padding: 5px 4px; vertical-align: middle; }
+    .bd td.n { color: #777; width: 34px; }
+    .bd td.t { width: 100%; min-width: 240px; }
+    .bd td.t input { width: 100%; background: none; border: 1px solid transparent; color: #eee; padding: 4px 6px; font: inherit; }
+    .bd td.t input:hover { border-color: var(--border); }
+    .bd td.t input:focus { border-color: var(--teal); background: #0a0a0a; }
+    .bd td.c select { width: 150px; padding: 4px 6px; font-size: 11px; }
+    .bd td.f { white-space: nowrap; width: 70px; }
+    .bd td.f label { display: inline-flex; margin: 0 6px 0 0; font-size: 10.5px; gap: 3px; align-items: center; letter-spacing: 0; color: #aaa; text-transform: none; cursor: pointer; }
+    .drop { min-width: 150px; width: 170px; min-height: 28px; border: 1px dashed rgba(255,255,255,.18); padding: 3px 6px; font-size: 11px; color: #666; display: flex; justify-content: space-between; align-items: center; gap: 4px; cursor: pointer; }
+    .drop.has { border-style: solid; border-color: rgba(0,212,170,.5); color: var(--teal); }
+    .drop.over { border-color: var(--orange); background: rgba(255,107,53,.12); }
+    .drop button { margin: 0; padding: 0 4px; background: none; color: #888; border: 0; font-weight: 400; }
+    .bd .pvbtn { margin: 0; padding: 3px 8px; font-size: 10.5px; font-weight: 400; background: none; border: 1px solid var(--border); color: #aaa; }
+    .bd .pvbtn.has { color: var(--orange); border-color: rgba(255,107,53,.5); }
+    .bd tr.pvrow td { border-top: 0; padding: 0 4px 10px 38px; }
+    .bd tr.pvrow textarea { min-height: 90px; }
+    .dirty { color: var(--orange); font-size: 12px; margin-left: 10px; }
+    @media (max-width: 760px) { .bd-wrap { grid-template-columns: 1fr; } .palette { position: static; max-height: none; } .chips { max-height: 200px; } }
     .todo { margin-top: 22px; border: 1px solid rgba(255,107,53,.5); padding: 14px 18px; display: none; }
     .todo.on { display: block; }
     .todo ul { margin: 6px 0 0 18px; padding: 0; }
@@ -116,12 +150,39 @@
     <table id="rings"></table>
   </section>
 
+  <section id="s-board" class="off">
+    <h2>5 · THE BOARD</h2>
+    <p class="note">Everything readers see in the list. Drag a piece from the left onto an essay's art slot (or click a piece, then click a slot). Hover a piece to see it. Rename titles in place, tick picks and N, write the public preview, add new titles at the top. Then press SAVE BOARD: it writes <code>blawg/posts.js</code>.</p>
+    <div class="bd-wrap">
+      <div class="palette">
+        <div class="pv-box" id="pv-box"></div>
+        <div class="pv-name" id="pv-name">hover a piece</div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div>
+        <div class="bd-tools">
+          <input type="text" id="new-title" placeholder="New title">
+          <select id="new-cat"></select>
+          <button type="button" class="ghost small" id="add-title">ADD TITLE</button>
+        </div>
+        <div class="bd-tools">
+          <input type="text" id="bd-q" placeholder="find an essay">
+          <button type="button" id="save-board" style="margin:0">SAVE BOARD</button><span class="dirty" id="dirty"></span>
+        </div>
+        <div class="msg" id="m-board"></div>
+        <table class="bd" id="bd"></table>
+      </div>
+    </div>
+  </section>
+
   <div class="todo" id="todo">
     <b class="ok">To make this live</b>
     <ul id="todo-list"></ul>
   </div>
 </main>
 
+<script src="../../assets/ascii/ascii-field.js"></script>
+<script src="../../assets/ascii/catalog.js"></script>
 <script src="../crypt.js"></script>
 <script src="../posts.js"></script>
 <script src="../sealed/index.js"></script>
@@ -160,10 +221,10 @@
   $('date').value = new Date().toISOString().slice(0, 10);
 
   /* ── writing files: straight into blawg/sealed/ when the folder is connected, else a download ── */
-  function save(name, text) {
-    changed[name] = true;
+  function save(name, text, top) {
+    changed[(top ? '' : 'sealed/') + name] = true;
     if (dir) {
-      return dir.getDirectoryHandle('sealed', { create: true })
+      return (top ? Promise.resolve(dir) : dir.getDirectoryHandle('sealed', { create: true }))
         .then(function (d) { return d.getFileHandle(name, { create: true }); })
         .then(function (f) { return f.createWritable(); })
         .then(function (w) { return w.write(text).then(function () { return w.close(); }); })
@@ -178,10 +239,10 @@
     var names = Object.keys(changed);
     if (!names.length) return;
     $('todo').classList.add('on');
-    var files = names.map(function (n) { return '<code>' + esc(n) + '</code>'; }).join(', ');
+    var files = names.map(function (n) { return '<code>blawg/' + esc(n) + '</code>'; }).join(', ');
     $('todo-list').innerHTML = (dir
-      ? '<li>These files in <code>blawg/sealed/</code> were updated: ' + files + '</li>'
-      : '<li>Move the downloaded files into <code>blawg/sealed/</code>, replacing the old ones: ' + files +
+      ? '<li>Updated: ' + files + '</li>'
+      : '<li>Move the downloaded files to these places, replacing the old ones: ' + files +
         '. If your browser named one like <code>keys (1).js</code>, rename it back. Do this before closing this page.</li>') +
       '<li>Commit and push. The site updates a minute or so later.</li>';
   }
@@ -223,14 +284,14 @@
       });
     }).then(function (first) {
       $('pass').value = ''; $('pass2').value = '';
-      ['s-seal', 's-issue', 's-rings'].forEach(function (id) { $(id).classList.remove('off'); });
+      ['s-seal', 's-issue', 's-rings', 's-board'].forEach(function (id) { $(id).classList.remove('off'); });
       say('m-master', first ? 'Studio unlocked. This is now the passphrase for the blog. keys.js was ' + first + ' so the studio can check it next time.' : 'Studio unlocked.', 'ok');
       $('pass2-wrap').style.display = 'none';
       todo();
       return loadNotes();
     }).catch(function (e) {
       say('m-master', e && e.message === 'wrong' ? "That isn't the passphrase this blog was set up with." : 'Failed: ' + (e && e.message || e), 'bad');
-    }).then(function () { $('unlock').disabled = false; renderPicks(); renderRings(); });
+    }).then(function () { $('unlock').disabled = false; renderPicks(); renderRings(); if (master) renderBoard(); });
   });
 
   /* ── 2 · seal ── */
@@ -346,6 +407,171 @@
     $('copy-reply').textContent = 'COPIED';
     setTimeout(function () { $('copy-reply').textContent = 'COPY REPLY'; }, 1500);
   });
+
+  /* ── 5 · the board ── */
+  var BASE = '../../assets/ascii/', AC = window.AsciiCatalog, dirtyBoard = false, selPiece = '';
+  var CATS = [];
+  posts.forEach(function (p) { if (CATS.indexOf(p.tag) < 0) CATS.push(p.tag); });
+  function catOptions(sel) {
+    return CATS.map(function (c) { return '<option' + (c === sel ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '<option value="__new">+ new category…</option>';
+  }
+  function markDirty() { dirtyBoard = true; $('dirty').textContent = 'unsaved changes'; }
+  function slugify(t) {
+    var s = t.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'essay';
+    var base = s, i = 2;
+    while (posts.some(function (p) { return p.slug === s; })) s = base + '-' + i++;
+    return s;
+  }
+  /* palette with a live look at whatever is hovered */
+  var live = null, liveKey = '';
+  function look(key) {
+    if (!key || key === liveKey) return;
+    liveKey = key;
+    var e = AC.get(key);
+    $('pv-name').textContent = e.title + ' · ' + e.note;
+    if (live && live.toggle) try { live.toggle(); } catch (x) {}
+    live = null;
+    var box = $('pv-box'); box.innerHTML = '';
+    AC.mount(key, BASE).then(function (m) {
+      if (liveKey !== key) return;
+      box.appendChild(m.el); live = m.start();
+      setTimeout(function () {
+        var r = m.el.getBoundingClientRect();
+        if (r.height > box.clientHeight + 4) { m.el.style.width = Math.floor(r.width * box.clientHeight / r.height) + 'px'; window.dispatchEvent(new Event('resize')); }
+      }, 120);
+    }).catch(function () { $('pv-name').textContent = e.title + ' (preview needs the site folder next to this tool)'; });
+  }
+  function uses(key) { return posts.filter(function (p) { return p.art === key; }).length; }
+  function renderChips() {
+    $('chips').innerHTML = AC.list.filter(function (e) { return !/^Tree\./.test(e.key); }).map(function (e) {
+      var u = uses(e.key);
+      return '<div class="pc' + (selPiece === e.key ? ' sel' : '') + '" draggable="true" data-key="' + e.key + '">' + esc(e.title) + '<i>' + (u ? u : '') + '</i></div>';
+    }).join('');
+  }
+  $('chips').addEventListener('mouseover', function (e) { var c = e.target.closest('.pc'); if (c) look(c.getAttribute('data-key')); });
+  $('chips').addEventListener('click', function (e) {
+    var c = e.target.closest('.pc'); if (!c) return;
+    var k = c.getAttribute('data-key'); selPiece = selPiece === k ? '' : k; look(k); renderChips();
+    say('m-board', selPiece ? 'Now click an essay\'s art slot to put ' + AC.get(k).title + ' on it.' : '', 'ok');
+  });
+  $('chips').addEventListener('dragstart', function (e) {
+    var c = e.target.closest('.pc'); if (!c) return;
+    e.dataTransfer.setData('text/plain', c.getAttribute('data-key')); e.dataTransfer.effectAllowed = 'copy';
+  });
+  function dropCell(p) {
+    var e = p.art && AC.get(p.art);
+    return '<div class="drop' + (e ? ' has' : '') + '" data-slug="' + esc(p.slug) + '">' + (e ? '<span>' + esc(e.title) + '</span><button type="button" data-clear="1" title="Remove">&times;</button>' : '<span>drop art</span>') + '</div>';
+  }
+  function boardRow(p) {
+    return '<tr data-slug="' + esc(p.slug) + '"><td class="n">' + num(p) + '</td>' +
+      '<td class="t"><input type="text" value="' + esc(p.title) + '" data-f="title"></td>' +
+      '<td class="c"><select data-f="tag">' + catOptions(p.tag) + '</select></td>' +
+      '<td class="f"><label><input type="checkbox" data-f="pick"' + (p.pick ? ' checked' : '') + '>pick</label><label><input type="checkbox" data-f="nq"' + (p.nq ? ' checked' : '') + '>N</label></td>' +
+      '<td>' + dropCell(p) + '</td>' +
+      '<td><button type="button" class="pvbtn' + (p.preview ? ' has' : '') + '" data-pv="1">preview</button></td></tr>';
+  }
+  function renderBoard() {
+    var q = $('bd-q').value.trim().toLowerCase();
+    $('bd').innerHTML = posts.filter(function (p) { return !q || p.title.toLowerCase().indexOf(q) >= 0 || num(p).indexOf(q) >= 0; }).map(boardRow).join('');
+    $('new-cat').innerHTML = catOptions(CATS[0]);
+    renderChips();
+  }
+  function find(slug) { return posts.filter(function (p) { return p.slug === slug; })[0]; }
+  function setArt(slug, key) {
+    var p = find(slug); if (!p) return;
+    if (key) p.art = key; else delete p.art;
+    var cell = $('bd').querySelector('.drop[data-slug="' + slug + '"]');
+    if (cell) cell.outerHTML = dropCell(p);
+    markDirty(); renderChips();
+  }
+  $('bd-q').addEventListener('input', renderBoard);
+  $('bd').addEventListener('dragover', function (e) { var d = e.target.closest('.drop'); if (d) { e.preventDefault(); d.classList.add('over'); } });
+  $('bd').addEventListener('dragleave', function (e) { var d = e.target.closest('.drop'); if (d) d.classList.remove('over'); });
+  $('bd').addEventListener('drop', function (e) {
+    var d = e.target.closest('.drop'); if (!d) return;
+    e.preventDefault(); setArt(d.getAttribute('data-slug'), e.dataTransfer.getData('text/plain'));
+  });
+  $('bd').addEventListener('click', function (e) {
+    var d = e.target.closest('.drop'), tr = e.target.closest('tr');
+    if (d && e.target.closest('[data-clear]')) { setArt(d.getAttribute('data-slug'), ''); return; }
+    if (d && selPiece) { setArt(d.getAttribute('data-slug'), selPiece); return; }
+    if (d) { var p = find(d.getAttribute('data-slug')); if (p && p.art) look(p.art); return; }
+    if (e.target.closest('[data-pv]') && tr) {
+      var next = tr.nextElementSibling;
+      if (next && next.classList.contains('pvrow')) { next.parentNode.removeChild(next); return; }
+      var p2 = find(tr.getAttribute('data-slug'));
+      var row = document.createElement('tr'); row.className = 'pvrow';
+      row.innerHTML = '<td colspan="6"><textarea data-f="preview" data-slug="' + esc(p2.slug) + '" placeholder="Public preview: the opening paragraph or two anyone can read. Plain text; blank lines make paragraphs.">' + esc(p2.previewSrc || toText(p2.preview || '')) + '</textarea></td>';
+      tr.parentNode.insertBefore(row, tr.nextSibling);
+      row.querySelector('textarea').focus();
+    }
+  });
+  function toText(html) { var d = document.createElement('div'); d.innerHTML = html.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<br\s*\/?>/g, '\n'); return d.textContent; }
+  $('bd').addEventListener('change', function (e) {
+    var el = e.target, f = el.getAttribute('data-f'); if (!f) return;
+    var p = find(el.getAttribute('data-slug') || el.closest('tr').getAttribute('data-slug')); if (!p) return;
+    if (f === 'title') { if (!el.value.trim()) { el.value = p.title; return; } p.title = el.value.trim(); }
+    if (f === 'pick' || f === 'nq') { if (el.checked) p[f] = true; else delete p[f]; }
+    if (f === 'tag') {
+      if (el.value === '__new') {
+        var c = (prompt('New category name') || '').trim();
+        if (!c) { el.value = p.tag; return; }
+        if (CATS.indexOf(c) < 0) CATS.push(c);
+        p.tag = c; renderBoard(); markDirty(); return;
+      }
+      p.tag = el.value;
+    }
+    if (f === 'preview') {
+      var html = toHtml(el.value);
+      if (html) p.preview = html; else delete p.preview;
+      var b = el.closest('tr').previousElementSibling.querySelector('.pvbtn'); if (b) b.classList.toggle('has', !!html);
+    }
+    markDirty();
+  });
+  $('new-cat').addEventListener('change', function () {
+    if (this.value !== '__new') return;
+    var c = (prompt('New category name') || '').trim();
+    if (c && CATS.indexOf(c) < 0) CATS.push(c);
+    this.innerHTML = catOptions(c || CATS[0]);
+  });
+  $('add-title').addEventListener('click', function () {
+    var t = $('new-title').value.trim(); if (!t) return say('m-board', 'Type a title first.', 'bad');
+    var n = posts.reduce(function (m, p) { return Math.max(m, p.n); }, 0) + 1;
+    posts.push({ n: n, slug: slugify(t), title: t, tag: $('new-cat').value });
+    $('new-title').value = ''; $('bd-q').value = '';
+    renderBoard(); markDirty();
+    say('m-board', 'Added as #' + ('00' + n).slice(-3) + '. It goes on the board when you save.', 'ok');
+    var last = $('bd').lastElementChild; if (last) last.scrollIntoView({ block: 'center' });
+  });
+  $('new-title').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('add-title').click(); });
+  function postsFile() {
+    var head = '/* ═══════════════════════════════════════════════════════════════════════\n' +
+      '   BLAWG BOARD  (served at /blawg). Written by blawg/_tools/studio.html.\n' +
+      '   ───────────────────────────────────────────────────────────────────────\n' +
+      '     n       number on the board (readers quote it when they request)\n' +
+      '     slug    URL and key name. Never change it after the essay is sealed.\n' +
+      '     title, tag (category), art (a piece from assets/ascii/catalog.js)\n' +
+      '     pick    Waleed\'s pick (orange dot)   nq   on the N list (NQB8)\n' +
+      '     preview public text anyone can read before requesting (HTML)\n' +
+      '     body    only for essays open to everyone\n' +
+      '   Edit it in the studio; hand edits are fine too. Keep plain essays that\n' +
+      '   are read on request out of this file: seal them in the studio.\n' +
+      '   ═══════════════════════════════════════════════════════════════════════ */\n';
+    var order = ['n', 'slug', 'title', 'tag', 'art', 'pick', 'nq', 'date', 'status', 'summary', 'preview', 'body'];
+    return head + 'window.BLOG_POSTS = [\n' + posts.map(function (p) {
+      var o = {};
+      order.forEach(function (k) { if (p[k] !== undefined && p[k] !== '') o[k] = p[k]; });
+      Object.keys(p).forEach(function (k) { if (o[k] === undefined && p[k] !== undefined && k !== 'previewSrc') o[k] = p[k]; });
+      return '  ' + JSON.stringify(o);
+    }).join(',\n') + '\n];\n';
+  }
+  $('save-board').addEventListener('click', function () {
+    save('posts.js', postsFile(), true).then(function (how) {
+      dirtyBoard = false; $('dirty').textContent = '';
+      say('m-board', 'posts.js ' + how + '. Push it and the board updates.', 'ok'); todo();
+    }, function (e) { say('m-board', 'Failed: ' + (e && e.message || e), 'bad'); });
+  });
+  window.addEventListener('beforeunload', function (e) { if (dirtyBoard) { e.preventDefault(); e.returnValue = ''; } });
 
   /* ── 4 · rings ── */
   function renderRings() {

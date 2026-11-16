@@ -92,9 +92,8 @@
       this._fitNow();
       if (global.ResizeObserver) {
         new ResizeObserver(function () { self._fitNow(); }).observe(el.parentElement || el);
-      } else {
-        global.addEventListener('resize', function () { self._fitNow(); });
       }
+      global.addEventListener('resize', function () { self._fitNow(); });
     }
   }
 
@@ -108,7 +107,7 @@
   /* Size the font so exactly `cols` glyphs span the parent's width. */
   Field.prototype._fitNow = function () {
     var parent = this.el.parentElement || this.el;
-    var w = parent.clientWidth;
+    var w = parseFloat(this.el.style.width) || parent.clientWidth;   // a set width wins (used to fit a box's height)
     if (!w) return;
     var probe = document.createElement('span');
     probe.textContent = 'MMMMMMMMMM';
