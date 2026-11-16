@@ -424,5 +424,5 @@
     return run(el, C, R, pal, fill, { stillAt: 1 });
   }
 
-  global.LabScenes = { dragons: dragons, luckyBlock: luckyBlock, yinYang: yinYang, paths: paths };
+  global.LabScenes = { dragons: dragons, luckyBlock: luckyBlock, yinYang: yinYang, paths: paths, run: run };
 })(window);
