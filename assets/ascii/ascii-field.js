@@ -243,7 +243,8 @@
   function animate(el, render, opts) {
     opts = opts || {};
     var fps = opts.fps || 30, interval = 1000 / fps;
-    var start = null, last = 0, visible = true, raf = 0, stopped = false;
+    // nothing is drawn until the observer says the element is on screen, so a page of many scenes stays cheap
+    var start = null, last = 0, visible = !global.IntersectionObserver, raf = 0, stopped = false;
     var elapsedBeforePause = 0;
     function loop(now) {
       if (stopped) return;

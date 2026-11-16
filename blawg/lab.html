@@ -97,6 +97,7 @@
   <script src="../assets/ascii/lab-headers.js"></script>
   <script src="../assets/ascii/ascii-canvas.js"></script>
   <script src="../assets/ascii/lab-v2.js"></script>
+  <script src="../assets/ascii/lab-v2-batch.js"></script>
   <script>
   (function () {
     var $ = function (id) { return document.getElementById(id); };
@@ -165,8 +166,42 @@
       ['v-ball', V.ball, 'SEVEN-STAR BALL v2', 'renderer v2 · glass', 'Lit from behind like glass, with the stars floating inside and light pooled underneath.'],
       ['v-water', V.underwater, 'SEXTAPE v2', 'renderer v2 · underwater light', 'Light folding into seams on the way down and again on the sand.', true]
     ];
+    var BT = window.LabBatch, BATCH = [
+      ['b-name', BT.name, 'WALEED', 'typography · flowing colour', 'The name, poured full of slow orange and teal.', true],
+      ['b-rainbows', BT.rainbows, 'IN RAINBOWS', 'music · running colour', 'Colour running down the page, after the Radiohead sleeve by Stanley Donwood.', true],
+      ['b-pyramid', BT.pyramid, 'PYRAMID', 'music · a stage of light', 'A pyramid built from panels of light, beams leaving the top.', false],
+      ['b-scope', BT.scope, 'OSCILLOSCOPE', 'music · phosphor trace', 'A slowly drifting Lissajous figure on a green phosphor screen.', false],
+      ['b-equalizer', BT.equalizer, 'EQUALIZER', 'music · 50 bands', 'Fifty bands with falling peak caps.', true],
+      ['b-smoke', BT.smoke, 'SMOKE', 'mood · one thread', 'A single thread of smoke off an ember.', false],
+      ['b-lava', BT.lava, 'LAVA LAMP', 'ambient · two fluids', 'Orange and teal blobs merging and splitting.', false],
+      ['b-bokeh', BT.bokeh, 'HEAVEN OR LAS VEGAS v2', 'background · out of focus', 'City light out of focus, in Cocteau Twins colours.', true],
+      ['b-train', BT.train, 'THE TRAIN', 'film · Spirited Away', 'A lit train crossing flooded tracks at dusk, with its reflection underneath.', true],
+      ['b-corridor', BT.corridor, 'THE CORRIDOR', 'show · Severance', 'A white corridor that keeps going, one panel flickering, a door at the end.', true],
+      ['b-clouds', BT.clouds, 'FREEDOM', 'sky · one bird', 'Above the clouds at the end of the day, with one bird.', true],
+      ['b-dunes', BT.dunes, 'ARRAKIS v2', 'background · dunes', 'Dunes under two moons, with smooth light and creeping crests.', true],
+      ['b-ship', BT.ship, 'SHIP AT SEA', 'background · moon path', 'A small ship on a night sea, riding the path the moon lays on the water.', true],
+      ['b-aurora', BT.aurora, 'AURORA', 'background · curtains', 'Green curtains going violet at the top, over a snow ridge.', true],
+      ['b-eclipse', BT.eclipse, 'ECLIPSE', 'space · corona', 'Totality, with the corona streaming and one bead of light on the rim.', false],
+      ['b-galaxy', BT.galaxy, 'GALAXY', 'space · two arms', 'A tilted spiral turning slowly.', false],
+      ['b-paleDot', BT.paleDot, 'PALE BLUE DOT', 'space · Voyager', 'Sunbeams across the frame and one pale blue pixel in them.', true],
+      ['b-warp', BT.warp, 'WARP', 'space · streaks', 'Stars pulled into streaks.', false],
+      ['b-tunnel', BT.tunnel, 'TUNNEL', 'space · flythrough', 'A tunnel in orange and teal panels.', false],
+      ['b-gpu', BT.gpu, 'GPU', 'hardware · three fans', 'Three fans spinning under a strip of cycling light.', true],
+      ['b-circuit', BT.circuit, 'CIRCUIT', 'hardware · traces', 'Signals leaving a chip along its traces.', true],
+      ['b-donut', BT.donut, 'DONUT', 'classic · lit torus', 'The old terminal donut, lit properly.', false],
+      ['b-julia', BT.julia, 'JULIA SET', 'maths · never settles', 'A Julia set whose constant keeps moving, so the shape never settles.', false],
+      ['b-lorenz', BT.lorenz, 'LORENZ', 'maths · chaos', 'The Lorenz attractor turning, one wing orange and one teal, with a bright point tracing the path.', false],
+      ['b-life', BT.life, 'LIFE', 'maths · Conway', 'The Game of Life. New cells are orange and old ones turn teal.', false],
+      ['b-dna', BT.dna, 'DNA', 'biology · helix', 'A double helix turning, one strand orange and one teal.', true],
+      ['b-currents', BT.currents, 'FREE WILL v2', 'essay header · currents', 'Hundreds of teal points follow the current. One orange point leans its own way.', true],
+      ['b-roots', BT.roots, 'GENEALOGY', 'essay header · roots', 'A tree grows up while its roots grow down, in two colours, then it starts again.', false],
+      ['b-yinyang', BT.yinyang, 'YIN YANG v2', 'symbol · smooth', 'Smooth, shaded, slowly turning, with a teal glow at the rim.', false],
+      ['b-heart', BT.heart, '808s v2', 'symbol · beating', 'A shaded heart that beats, splits and closes. The crack glows when the halves are close.', false],
+      ['b-watch', BT.watch, 'WATCH', 'object · your time', 'A watch showing your actual time, with a sweeping orange second hand.', false],
+      ['b-rings', BT.rings, 'RINGS', 'symbol · a sound leaving', 'Rings leaving a point and fading.', false],
+    ];
     var v2 = $('v2');
-    V2.forEach(function (m) {
+    V2.concat(BATCH).forEach(function (m) {
       if (!m[1]) return;
       var sec = document.createElement('section');
       sec.id = 's-' + m[0]; if (m[5]) sec.className = 'wide';
