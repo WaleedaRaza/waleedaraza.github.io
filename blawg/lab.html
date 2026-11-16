@@ -91,6 +91,7 @@
   <script src="../assets/ascii/lab-scenes.js"></script>
   <script src="../assets/ascii/lab-objects.js"></script>
   <script src="../assets/ascii/lab-backgrounds.js"></script>
+  <script src="../assets/ascii/lab-headers.js"></script>
   <script>
   (function () {
     var $ = function (id) { return document.getElementById(id); };
@@ -122,8 +123,20 @@
     bind('s-lucky', lucky);
 
     // the rest are built from this list: [id, maker, title, kind, note, wide]
-    var O = window.LabObjects, B = window.LabBackgrounds;
+    var O = window.LabObjects, B = window.LabBackgrounds, HD = window.LabHeaders;
     var MORE = [
+      ['forever', HD.forever, 'WE WILL LIVE FOREVER', 'essay header', 'An orange line is drawn and gone within seconds. A teal copy redraws it on the right and stays. The feeling goes, the record remains.', true],
+      ['camus', HD.sisyphus, 'CAMUS', 'essay header · 16 s', 'The stone goes up, the stone comes down, and the figure walks back down after it.', true],
+      ['seq', HD.sequencer, 'MUSIC AND SOFTWARE', 'essay header · 120 bpm', 'One pattern read two ways: as a step sequencer and as code. Every four bars a step changes, and it changes in both at once.', true],
+      ['rivers', HD.rivers, 'POKER', 'essay header · one action, many rivers', 'One bet branches into sixteen rivers. Each time, one path lights up and the rest stay possible.', true],
+      ['sim', HD.simulation, 'SIMULATION', 'essay header · endless zoom', 'Frames inside frames with the same stars in each one, and every frame is marked with a question mark.', true],
+      ['bridge', HD.bridge, 'NVIDIA', 'essay header · one narrow bridge', 'Everything on the left has to cross by the same narrow bridge to get anywhere on the right.', true],
+      ['agents', HD.agents, 'AI AGENTS', 'essay header · reorganises every 9 s', 'An org chart of agents. Messages run down the lines, and every nine seconds the teams shuffle themselves.', true],
+      ['market', HD.market, 'PREDICTION MARKETS', 'essay header · 14 s round', 'A price wandering between 0¢ and 100¢, pulled harder toward the answer as the deadline gets close.', true],
+      ['free', HD.current, 'FREE WILL', 'essay header · a bent current', 'Everything rides the current. One orange point leans against it for a while, then rejoins it.', true],
+      ['cutscene', HD.cutscene, 'WALEED IS EXPLAINING', 'standalone · try skipping it', 'The unskippable cutscene. The skip button is there for show.'],
+      ['warb', HD.warb, 'WARB', 'standalone · a returning note', 'A small planet with a ring, and a note that keeps coming back round.'],
+      ['helmet', HD.helmet, 'HELMET', 'standalone · road in the visor', 'Chrome, with a sunset road running through the visor.'],
       ['boat', O.paperBoat, 'HTML-PAPER BOAT', 'standalone · bobbing', 'A page of early HTML folded into a boat. Tags in orange, attributes in teal, the text runs across the folds.'],
       ['vinyl', O.vinyl, 'VINYL', 'standalone · 33⅓ rpm', 'The label turns, the shine stays put, and the arm creeps inward over forty seconds.'],
       ['underwater', B.underwater, 'SEXTAPE', 'background · underwater light', 'Under the surface with light coming down in sheets and caustics on the floor. Deftones by way of the bank.', true],
