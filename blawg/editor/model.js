@@ -24,7 +24,7 @@ export const PATHS = {
 };
 
 const PIECE_FIELDS = ['title', 'desc', 'group', 'type', 'state', 'body', 'img', 'art'];
-const CONN_FIELDS = ['ends', 'text', 'label', 'state'];
+const CONN_FIELDS = ['ends', 'text', 'label', 'state', 'quotes'];
 const ART_FIELDS = ['name', 'kind', 'src'];
 
 export const clone = (x) => JSON.parse(JSON.stringify(x));
@@ -89,7 +89,7 @@ export function docFromFiles({ groups, pieces, connections, art, bodies = {}, dr
     if (p.cipher) q.cipher = p.cipher;
     doc.pieces.push(q);
   }
-  doc.connections = (connections || []).map((c) => ({ id: c.id, ends: [...c.ends], text: c.text || '', label: c.label || '', state: 'live' }));
+  doc.connections = (connections || []).map((c) => ({ id: c.id, ends: [...c.ends], text: c.text || '', label: c.label || '', state: 'live', quotes: { ...(c.quotes || {}) } }));
   if (drafts) {
     for (const p of drafts.pieces || []) {
       const have = piece(doc, p.id);
@@ -103,7 +103,7 @@ export function docFromFiles({ groups, pieces, connections, art, bodies = {}, dr
       doc.pieces.push(q);
     }
     for (const c of drafts.connections || []) {
-      if (!conn(doc, c.id)) doc.connections.push({ id: c.id, ends: [...c.ends], text: c.text || '', label: c.label || '', state: 'draft' });
+      if (!conn(doc, c.id)) doc.connections.push({ id: c.id, ends: [...c.ends], text: c.text || '', label: c.label || '', state: 'draft', quotes: { ...(c.quotes || {}) } });
     }
   }
   return doc;
@@ -145,6 +145,25 @@ function checkConnSet(doc, set, errs, isCreate) {
   if ('text' in set && typeof set.text !== 'string') errs.push('text must be text (empty is allowed)');
   if ('label' in set && typeof set.label !== 'string') errs.push('label must be text');
   if ('state' in set && !CONN_STATES.includes(set.state)) errs.push(`bad connection state "${set.state}" (draft or live)`);
+  if ('quotes' in set && (typeof set.quotes !== 'object' || set.quotes === null || Array.isArray(set.quotes))) errs.push('quotes must be an object {pieceId: "exact passage"}');
+}
+
+// Anchored passages: each quote must occur verbatim in that end's current body.
+// Blocks (errors) when the body is live and the text is not in it; warns when the body is a draft, locked or missing.
+export function quoteCheck(doc, c) {
+  const errors = [], warnings = [];
+  for (const [pid, q] of Object.entries(c.quotes || {})) {
+    if (!c.ends.includes(pid)) { errors.push(`quote for "${pid}", which is not an end of ${c.id}`); continue; }
+    if (typeof q !== 'string' || !q.trim()) { errors.push(`quote for "${pid}" must be non-empty text`); continue; }
+    const p = piece(doc, pid);
+    if (!p) continue;
+    const body = p.bodyText || '';
+    if (p.locked) warnings.push(`quote for "${pid}" can't be checked: the essay is locked`);
+    else if (p.state === 'live' && body.trim()) { if (!body.includes(q)) errors.push(`quote for "${pid}" is not found verbatim in its live body`); }
+    else if (!body.trim()) warnings.push(`quote for "${pid}" can't be checked yet: the piece has no body`);
+    else warnings.push(`quote for "${pid}" is checked against a ${p.state} body${body.includes(q) ? '' : ' and is not in it'}; it must match once the piece is live`);
+  }
+  return { errors, warnings };
 }
 function liveConnToDraft(doc, c) {
   if (c.state !== 'live') return null;
@@ -154,7 +173,7 @@ function liveConnToDraft(doc, c) {
 
 // Apply one op to doc in place. Returns {errors, cascaded:[{kind,id,what}]}. Nothing changes when there are errors.
 export function applyOp(doc, op, files = {}) {
-  const errors = [], cascaded = [];
+  const errors = [], cascaded = [], warnings = [];
   if (!op || typeof op !== 'object') return { errors: ['op is not an object'], cascaded };
   const { kind } = op;
   const set = op.set || {};
@@ -200,7 +219,14 @@ export function applyOp(doc, op, files = {}) {
       if (set.state === 'draft') for (const c of doc.connections) if (c.state === 'live' && c.ends.includes(op.id)) errors.push(`piece is in live connection ${c.id}; a draft can't be in a live connection`);
       if ('body' in set && have.locked) errors.push('piece is locked; its body is ciphertext and is not edited here');
       if (errors.length) return { errors, cascaded };
+      const trial = { ...clone(have) }; assignPiece(trial, set);
+      const d2 = { ...doc, pieces: doc.pieces.map((p) => (p === have ? trial : p)) };
+      for (const c of doc.connections) if (c.quotes && c.quotes[op.id]) {
+        const qc = quoteCheck(d2, { ...c, quotes: { [op.id]: c.quotes[op.id] } });
+        for (const m of qc.errors) warnings.push(`connection ${c.id}: ${m} (fix the passage before publishing it)`);
+      }
       assignPiece(have, set);
+      return { errors, cascaded, warnings };
     } else {
       if (!have) return { errors: [`unknown piece id "${op.id}" (already deleted?)`], cascaded };
       doc.pieces = doc.pieces.filter((p) => p !== have);
@@ -208,7 +234,7 @@ export function applyOp(doc, op, files = {}) {
         if (!c.ends.includes(op.id)) continue;
         const ends = c.ends.filter((e) => e !== op.id);
         if (ends.length < 2) { doc.connections = doc.connections.filter((x) => x !== c); cascaded.push({ kind: 'connection', id: c.id, what: 'deleted' }); }
-        else { c.ends = ends; cascaded.push({ kind: 'connection', id: c.id, what: 'end removed' }); }
+        else { c.ends = ends; if (c.quotes) delete c.quotes[op.id]; cascaded.push({ kind: 'connection', id: c.id, what: 'end removed' }); }
       }
     }
     return { errors, cascaded };
@@ -219,16 +245,22 @@ export function applyOp(doc, op, files = {}) {
       if (have) errors.push(`connection id "${op.id}" already exists`);
       checkConnSet(doc, set, errors, true);
       if (errors.length) return { errors, cascaded };
-      const c = { id: op.id, ends: [...set.ends], text: set.text || '', label: set.label || '', state: set.state || 'draft' };
+      const c = { id: op.id, ends: [...set.ends], text: set.text || '', label: set.label || '', state: set.state || 'draft', quotes: clone(set.quotes || {}) };
       const bad = liveConnToDraft(doc, c); if (bad) return { errors: [bad], cascaded };
+      const qc = quoteCheck(doc, c); if (qc.errors.length) return { errors: qc.errors, cascaded };
       doc.connections.push(c);
+      return { errors, cascaded, warnings: qc.warnings };
     } else if (op.op === 'update') {
       if (!have) return { errors: [`unknown connection id "${op.id}"`], cascaded };
       checkConnSet(doc, set, errors, false);
       if (errors.length) return { errors, cascaded };
       const c = { ...clone(have), ...clone(set) };
       const bad = liveConnToDraft(doc, c); if (bad) return { errors: [bad], cascaded };
+      // only check quotes this op touches (new quotes, or quotes whose end list changed)
+      const qc = ('quotes' in set || 'ends' in set) ? quoteCheck(doc, c) : { errors: [], warnings: [] };
+      if (qc.errors.length) return { errors: qc.errors, cascaded };
       Object.assign(have, clone(set));
+      return { errors, cascaded, warnings: qc.warnings };
     } else {
       if (!have) return { errors: [`unknown connection id "${op.id}" (already deleted?)`], cascaded };
       doc.connections = doc.connections.filter((c) => c !== have);
@@ -273,6 +305,7 @@ export function applyOps(doc, ops, files = {}) {
   const d = clone(doc);
   d._knownFiles = doc._knownFiles || [];
   const results = ops.map((op) => applyOp(d, op, files));
+  for (const r of results) r.warnings = r.warnings || [];
   return { doc: d, results, errorCount: results.reduce((n, r) => n + r.errors.length, 0) };
 }
 
@@ -347,11 +380,11 @@ export function diff(a, b, cascaded = []) {
     else { const fs = fieldDiff(o, p, pf); if (fs.length) out.push({ sign: '~', kind: 'piece', id: p.id, label: label(p), fields: fs }); }
   }
   for (const p of a.pieces) if (!piece(b, p.id)) out.push({ sign: '-', kind: 'piece', id: p.id, label: label(p), fields: [] });
-  const cf = ['ends', 'text', 'label', 'state'];
+  const cf = ['ends', 'text', 'label', 'state', 'quotes'];
   const clabel = (d, c) => c.ends.map((e) => label(piece(d, e)) || e).join(' ⇄ ');
   for (const c of b.connections) {
     const o = conn(a, c.id);
-    if (!o) out.push({ sign: '+', kind: 'connection', id: c.id, label: clabel(b, c), fields: fieldDiff({}, c, cf) });
+    if (!o) out.push({ sign: '+', kind: 'connection', id: c.id, label: clabel(b, c), fields: fieldDiff({}, c, cf).filter((x) => !eq(x.new, {})) });
     else { const fs = fieldDiff(o, c, cf); if (fs.length) out.push({ sign: '~', kind: 'connection', id: c.id, label: clabel(b, c), fields: fs, cascaded: cas.has(`connection:${c.id}`) }); }
   }
   for (const c of a.connections) if (!conn(b, c.id)) out.push({ sign: '-', kind: 'connection', id: c.id, label: clabel(a, c), fields: [], cascaded: cas.has(`connection:${c.id}`) });
@@ -390,7 +423,8 @@ export function serialize(doc) {
     if (live && p.locked && p.cipher) o.cipher = p.cipher;
     return o;
   });
-  const connections = doc.connections.filter((c) => c.state === 'live').map((c) => ({ id: c.id, ends: [...c.ends], text: c.text, label: c.label, state: 'live' }));
+  const withQuotes = (o, c) => { if (c.quotes && Object.keys(c.quotes).length) o.quotes = { ...c.quotes }; return o; }; // only when set, so old files stay byte-identical
+  const connections = doc.connections.filter((c) => c.state === 'live').map((c) => withQuotes({ id: c.id, ends: [...c.ends], text: c.text, label: c.label, state: 'live' }, c));
   const assignPiece = {};
   for (const p of pub) if (p.art.length) assignPiece[p.id] = [...p.art];
   const art = { library: doc.art.library.map((x) => ({ id: x.id, name: x.name, kind: x.kind, src: x.src })),
@@ -400,7 +434,7 @@ export function serialize(doc) {
   for (const p of pub) if (p.state === 'live' && !p.locked && p.bodyText.trim()) md[p.id] = p.bodyText.endsWith('\n') ? p.bodyText : p.bodyText + '\n';
   const draftPieces = doc.pieces.filter((p) => p.state === 'draft' || (p.state === 'seed' && p.bodyText.trim()))
     .map((p) => ({ id: p.id, title: p.title, desc: p.desc, group: p.group, type: p.type, state: p.state, art: [...p.art], img: p.img, locked: !!p.locked, body: false, bodyText: p.bodyText }));
-  const draftConns = doc.connections.filter((c) => c.state === 'draft').map((c) => ({ id: c.id, ends: [...c.ends], text: c.text, label: c.label, state: 'draft' }));
+  const draftConns = doc.connections.filter((c) => c.state === 'draft').map((c) => withQuotes({ id: c.id, ends: [...c.ends], text: c.text, label: c.label, state: 'draft' }, c));
   return {
     text: {
       [PATHS.pieces]: fmt(pieces),
@@ -447,6 +481,10 @@ export function privacyCheck(files, doc, extraText = []) {
     for (const c of JSON.parse(files[PATHS.connections] || '[]')) {
       if (c.state !== 'live') errs.push(`draft connection in connections.json: ${c.id}`);
       for (const e of c.ends) if (!pubIds.has(e)) errs.push(`live connection ${c.id} points at a piece that is not public`);
+      for (const [pid, q] of Object.entries(c.quotes || {})) {
+        const md = files[PATHS.md(pid)];
+        if (typeof md !== 'string' || !md.includes(q)) errs.push(`live connection ${c.id}: the passage anchored in "${pid}" is not in its public body (it would publish unpublished text, or the body changed)`);
+      }
     }
   } catch (e) { errs.push('connections.json is not valid JSON'); }
   for (const p of Object.keys(files)) {

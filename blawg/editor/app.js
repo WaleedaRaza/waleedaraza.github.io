@@ -29,6 +29,8 @@ function invalidate() { workCache = null; }
 function notice(msg, err = false) {
   const n = $('#notice');
   if (!msg) { n.hidden = true; return; }
+  if (!err && S.warn) { msg += '\nWarning: ' + S.warn; }
+  S.warn = '';
   n.textContent = msg; n.className = err ? 'err' : ''; n.hidden = false;
 }
 function modal(html, buttons) {
@@ -231,6 +233,7 @@ async function addOps(ops, files = {}) {
   const trial = M.applyOps(S.base, [...S.ops, ...ops], { ...S.files, ...files });
   const bad = trial.results.slice(S.ops.length).flatMap((r) => r.errors);
   if (bad.length) { notice('Not changed: ' + [...new Set(bad)].join('; '), true); return false; }
+  S.warn = [...new Set(trial.results.slice(S.ops.length).flatMap((r) => r.warnings))].join('; ');
   S.ops.push(...ops); Object.assign(S.files, files);
   await persist();
   return true;
@@ -379,9 +382,10 @@ function viewConnections() {
 function connForm(doc) {
   const el = $('#c-edit');
   const isNew = S.connSel === '__new';
-  const c = isNew ? { id: '', ends: [], text: '', label: '', state: 'draft' } : M.conn(doc, S.connSel);
+  const c = isNew ? { id: '', ends: [], text: '', label: '', state: 'draft', quotes: {} } : M.conn(doc, S.connSel);
   if (!c) { el.innerHTML = '<p class="dim">Pick a connection, or make a new one.</p>'; return; }
   let ends = [...c.ends];
+  let quotes = { ...(c.quotes || {}) };
   el.innerHTML = `
   <form id="c-form" autocomplete="off">
     <h2>${isNew ? 'new connection' : h(c.id)}</h2>
@@ -389,6 +393,8 @@ function connForm(doc) {
     <div class="chips" id="c-ends"></div>
     <label>add a piece<input id="c-search" placeholder="search pieces"></label>
     <div class="picker" id="c-pick"></div>
+    <h3 style="margin-top:14px">passages <span class="dim">(optional: select text in a body, then anchor it; or just link the pieces)</span></h3>
+    <div class="passages" id="c-passages"></div>
     <label style="margin-top:12px">his text <span class="dim">(empty is fine for a draft)</span><textarea id="c-text" rows="5">${h(c.text)}</textarea></label>
     <div class="grid2">
       <label>label <span class="dim">(optional)</span><input id="c-label" value="${h(c.label)}"></label>
@@ -398,7 +404,38 @@ function connForm(doc) {
   </form>`;
   const drawEnds = () => {
     $('#c-ends').innerHTML = ends.map((e) => `<span class="chip">${h(M.piece(doc, e)?.title || e)}<button type="button" data-id="${h(e)}" aria-label="remove">×</button></span>`).join('') || '<span class="dim">none yet</span>';
-    for (const b of $$('#c-ends button')) b.onclick = () => { ends = ends.filter((x) => x !== b.dataset.id); drawEnds(); drawPick(); };
+    for (const b of $$('#c-ends button')) b.onclick = () => { ends = ends.filter((x) => x !== b.dataset.id); dropQuote(b.dataset.id); drawEnds(); drawPick(); };
+    drawPassages();
+  };
+  const dropQuote = (id) => { quotes = Object.fromEntries(Object.entries(quotes).filter(([k]) => k !== id)); };
+  // each end's body as plain source text, so a selection is the exact Markdown text the quote must match
+  const drawPassages = () => {
+    const box = $('#c-passages');
+    if (!ends.length) { box.innerHTML = '<p class="dim">Add ends first.</p>'; return; }
+    box.innerHTML = ends.map((id, i) => {
+      const p = M.piece(doc, id), body = p?.locked ? '' : (p?.bodyText || ''), q = quotes[id];
+      const cls = i === 0 ? 'hl-first' : 'hl-other';
+      let shown = h(body);
+      const at = q ? body.indexOf(q) : -1;
+      if (at >= 0) shown = h(body.slice(0, at)) + `<mark class="${cls}">${h(q)}</mark>` + h(body.slice(at + q.length));
+      const chk = q ? M.quoteCheck(doc, { id: c.id || 'new', ends, quotes: { [id]: q } }) : { errors: [], warnings: [] };
+      return `<div class="passage" data-id="${h(id)}">
+        <div class="ptitle ${i === 0 ? 'acc' : 'acc2'}">${h(p?.title || id)} ${p ? st(p.state) : ''}</div>
+        <div class="qbody" data-id="${h(id)}">${body.trim() ? shown : `<span class="dim">${p?.locked ? 'locked essay: no passage to pick' : 'no body yet'}</span>`}</div>
+        <div class="qnow">${q ? `anchored: <mark class="${cls}">${h(q.length > 160 ? q.slice(0, 160) + '\u2026' : q)}</mark>` : '<span class="dim">no passage anchored</span>'}</div>
+        ${[...chk.errors.map((m) => `<div class="err">${h(m)}</div>`), ...chk.warnings.map((m) => `<div class="dim">warning: ${h(m)}</div>`)].join('')}
+        <div class="row"><button type="button" class="alt q-anchor" data-id="${h(id)}" ${body.trim() ? '' : 'disabled'}>anchor this passage</button><button type="button" class="ghost q-clear" data-id="${h(id)}" ${q ? '' : 'disabled'}>clear</button></div>
+      </div>`;
+    }).join('');
+    for (const b of $$('#c-passages .q-anchor')) b.onclick = () => {
+      const sel = window.getSelection();
+      const bodyEl = $(`#c-passages .qbody[data-id="${CSS.escape(b.dataset.id)}"]`);
+      if (!sel || sel.isCollapsed || !bodyEl.contains(sel.anchorNode) || !bodyEl.contains(sel.focusNode)) return notice('Select some text inside that piece\'s body first.', true);
+      const text = sel.toString().trim();
+      if (!text) return notice('Select some text first.', true);
+      quotes[b.dataset.id] = text; sel.removeAllRanges(); notice(''); drawPassages();
+    };
+    for (const b of $$('#c-passages .q-clear')) b.onclick = () => { dropQuote(b.dataset.id); drawPassages(); };
   };
   const drawPick = () => {
     const q = M.norm($('#c-search').value);
@@ -410,14 +447,16 @@ function connForm(doc) {
   $('#c-search').oninput = drawPick;
   $('#c-form').onsubmit = async (e) => {
     e.preventDefault();
-    const set = { ends: [...ends], text: $('#c-text').value, label: $('#c-label').value, state: $('#c-state').value };
+    const set = { ends: [...ends], text: $('#c-text').value, label: $('#c-label').value, state: $('#c-state').value, quotes: Object.fromEntries(Object.entries(quotes).filter(([k]) => ends.includes(k))) };
+    if (isNew && !Object.keys(set.quotes).length) set.quotes = undefined;
+    if (set.quotes === undefined) Reflect.deleteProperty(set, 'quotes');
     if (isNew) {
       const id = M.nextConnId(doc);
       if (await addOps([{ op: 'create', kind: 'connection', id, set }])) { S.connSel = id; notice(`Created ${id} (unsaved).`); viewConnections(); }
       return;
     }
     const changed = {};
-    for (const [k, v] of Object.entries(set)) if (!M.eq(c[k], v)) changed[k] = v;
+    for (const [k, v] of Object.entries(set)) if (!M.eq(k === 'quotes' ? (c.quotes || {}) : c[k], v)) changed[k] = v;
     if (!Object.keys(changed).length) return notice('No changes to keep.');
     if (await addOps([{ op: 'update', kind: 'connection', id: c.id, set: changed }])) { notice(`Kept changes to ${c.id} (unsaved).`); viewConnections(); }
   };
@@ -577,7 +616,7 @@ function viewImport() {
     const cascaded = trial.results.flatMap((r) => r.cascaded);
     const nerr = top.length + trial.errorCount;
     S.importing = nerr ? null : { cs, ops, files };
-    const opLine = (op, r, i) => `<div class="op" data-ok="${r.errors.length ? 0 : 1}"><span class="${r.errors.length ? 'err' : 'ok'}">${r.errors.length ? '✗' : '✓'}</span> ${i + 1}. ${h(op?.op)} ${h(op?.kind)} ${h(op?.id ?? op?.key ?? '')}${r.errors.map((x) => `<span class="f err">${h(x)}</span>`).join('')}</div>`;
+    const opLine = (op, r, i) => `<div class="op" data-ok="${r.errors.length ? 0 : 1}"><span class="${r.errors.length ? 'err' : 'ok'}">${r.errors.length ? '✗' : '✓'}</span> ${i + 1}. ${h(op?.op)} ${h(op?.kind)} ${h(op?.id ?? op?.key ?? '')}${r.errors.map((x) => `<span class="f err">${h(x)}</span>`).join('')}${(r.warnings || []).map((x) => `<span class="f warn">warning: ${h(x)}</span>`).join('')}</div>`;
     out.innerHTML = `
       ${top.length ? `<div class="errbox" id="i-errors">${top.map(h).join('\n')}</div>` : ''}
       ${trial.errorCount ? `<div class="errbox" id="i-errors-ops">${trial.errorCount} problem(s) found. Fix the file and check again; nothing was applied.</div>` : ''}

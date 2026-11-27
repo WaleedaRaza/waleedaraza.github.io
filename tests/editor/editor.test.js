@@ -577,6 +577,82 @@ test('main needs the setting AND typing main', async (browser) => {
   await ctx.close();
 });
 
+test('connection passages: anchor via selection, highlight, clear, publish with quotes', async (browser) => {
+  const repo = new MockRepo({ token: TOKEN, fixtureDir: FIX });
+  const { ctx, page } = await open(browser, repo);
+  await firstRun(page);
+  await tab(page, 'connections');
+  await page.click('#c-list .item[data-id="lk-001"]');
+  // both ends side by side; B has no body, so it can't be anchored
+  assert.match(await page.textContent('#c-passages .passage[data-id="test-piece-b"] .qbody'), /no body yet/);
+  assert.ok(await page.isDisabled('#c-passages .q-anchor[data-id="test-piece-b"]'));
+  const select = (id, text) => page.evaluate(([id, text]) => {
+    const box = document.querySelector(`#c-passages .qbody[data-id="${id}"]`);
+    const w = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      const at = n.data.indexOf(text);
+      if (at >= 0) { const r = document.createRange(); r.setStart(n, at); r.setEnd(n, at + text.length); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return true; }
+    }
+    return false;
+  }, [id, text]);
+  // anchor without a selection is refused
+  await page.click('#c-passages .q-anchor[data-id="test-piece-a"]');
+  await page.waitForFunction(() => /Select some text/.test(document.querySelector('#notice').textContent));
+  assert.ok(await select('test-piece-a', 'body text for **test piece A**'));
+  await page.click('#c-passages .q-anchor[data-id="test-piece-a"]');
+  assert.strictEqual(await page.textContent('#c-passages .qbody[data-id="test-piece-a"] mark.hl-first'), 'body text for **test piece A**');
+  // clear, then anchor a shorter passage
+  await page.click('#c-passages .q-clear[data-id="test-piece-a"]');
+  assert.strictEqual(await page.$('#c-passages .qbody mark'), null);
+  assert.ok(await select('test-piece-a', 'Fake body text'));
+  await page.click('#c-passages .q-anchor[data-id="test-piece-a"]');
+  await page.click('#c-save');
+  await page.waitForFunction(() => /Kept changes to lk-001/.test(document.querySelector('#notice').textContent));
+  const c = (await page.evaluate(() => window.__blawgEditor.work())).connections.find((x) => x.id === 'lk-001');
+  assert.deepStrictEqual(c.quotes, { 'test-piece-a': 'Fake body text' });
+  // highlight colours: first end orange, others teal
+  const col = await page.evaluate(() => getComputedStyle(document.querySelector('#c-passages mark.hl-first')).backgroundColor);
+  assert.strictEqual(col, 'rgb(255, 138, 61)');
+  await tab(page, 'publish');
+  assert.ok(await page.isVisible('#pub-privacy-ok'));
+  await page.click('#pub-go');
+  await page.waitForSelector('#pub-ok', { timeout: 20000 });
+  const conns = JSON.parse(repo.readText('blawg-review', 'blawg/data/connections.json'));
+  assert.deepStrictEqual(conns[0].quotes, { 'test-piece-a': 'Fake body text' });
+  const fs = require('fs'), os = require('os'), { execFileSync } = require('child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'blawg-q-'));
+  for (const [p, sha] of Object.entries(repo.flat(repo.head('blawg-review')))) { fs.mkdirSync(path.join(dir, path.dirname(p)), { recursive: true }); fs.writeFileSync(path.join(dir, p), repo.blobs.get(sha)); }
+  execFileSync('python3', [path.join(__dirname, '..', '..', 'tools', 'blawg', 'check_public.py'), '--root', dir], { env: { ...process.env, BLAWG_PRIVATE_DIR: path.join(dir, 'none') }, stdio: 'pipe' });
+  fs.rmSync(dir, { recursive: true, force: true });
+  await ctx.close();
+});
+
+test('quotes in changesets: invalid quote flagged; valid one with a warning; unpublished passage blocked at publish', async (browser) => {
+  const repo = new MockRepo({ token: TOKEN, fixtureDir: FIX });
+  const { ctx, page } = await open(browser, repo);
+  await firstRun(page);
+  await pasteImport(page, { changeset: 1, ops: [{ op: 'update', kind: 'connection', id: 'lk-001', set: { quotes: { 'test-piece-a': 'words that are not in the body' } } }] });
+  await page.waitForSelector('#i-ops');
+  assert.match(await page.textContent('#i-ops'), /quote for "test-piece-a" is not found verbatim in its live body/);
+  assert.ok(await page.isDisabled('#i-accept'));
+  await pasteImport(page, { changeset: 1, ops: [{ op: 'update', kind: 'connection', id: 'lk-001', set: { quotes: { 'test-piece-z': 'x' } } }] });
+  await page.waitForSelector('#i-ops');
+  assert.match(await page.textContent('#i-ops'), /not an end of lk-001/);
+  // valid: a quote in A's live body, and one on seed C (no body yet: warn, don't block)
+  await pasteImport(page, { changeset: 1, author: 'claude', ops: [
+    { op: 'create', kind: 'connection', id: 'lk-002', set: { ends: ['test-piece-a', 'test-piece-c'], text: '', label: '', state: 'live', quotes: { 'test-piece-a': 'Fake body text', 'test-piece-c': 'a passage C does not have yet' } } }] });
+  await page.waitForSelector('#i-diff');
+  assert.match(await page.textContent('#i-ops'), /warning: quote for "test-piece-c" can't be checked yet/);
+  assert.match(await page.textContent('#i-diff'), /quotes:.*Fake body text/);
+  assert.strictEqual(await page.isDisabled('#i-accept'), false);
+  await page.click('#i-accept');
+  await page.waitForSelector('#pub-diff');
+  // a live connection would publish a passage that is not in a public body: blocked
+  assert.match(await page.textContent('#pub-privacy'), /lk-002: the passage anchored in "test-piece-c" is not in its public body/);
+  assert.ok(await page.isDisabled('#pub-go'));
+  await ctx.close();
+});
+
 test('real data smoke: loads the worktree blawg/data unchanged, round-trips byte-identical, edit passes the repo check', async (browser) => {
   const fs = require('fs'), os = require('os'), { execFileSync } = require('child_process');
   const ROOT = path.join(__dirname, '..', '..');

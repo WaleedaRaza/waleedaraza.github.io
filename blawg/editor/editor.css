@@ -90,6 +90,15 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .cas { color: var(--acc); font-size: 12px; }
 .ops .op { padding: 3px 0; border-bottom: 1px solid var(--faint); overflow-wrap: anywhere; }
 .conflict { border: 1px solid var(--acc); padding: 8px 12px; margin: 8px 0; }
+mark { color: var(--bg); padding: 0 1px; }
+mark.hl-first { background: var(--acc); }
+mark.hl-other { background: var(--acc2); }
+.passages { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.passage { border: 1px solid var(--faint); padding: 8px; min-width: 0; }
+.ptitle { font-weight: 600; margin-bottom: 6px; }
+.qbody { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow-y: auto; border: 1px solid var(--faint); padding: 8px; margin-bottom: 6px; font-size: 13px; user-select: text; }
+.qnow { font-size: 13px; margin-bottom: 6px; overflow-wrap: anywhere; }
+.f.warn { color: var(--fg); }
 pre.out { white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(--faint); padding: 8px; max-height: 260px; overflow: auto; }
 
 #modal { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 20; }

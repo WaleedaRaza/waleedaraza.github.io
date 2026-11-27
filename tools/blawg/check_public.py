@@ -138,6 +138,16 @@ def check_repo(root, titles):
         if len(ends) < 2: errs.append(f'connections.json: {c.get("id")} has fewer than 2 ends')
         for e in ends:
             if e not in byid: errs.append(f'connections.json: {c.get("id")} points at {e!r}, which is not a public piece')
+        quotes = c.get('quotes') or {}
+        if not isinstance(quotes, dict): errs.append(f'connections.json: {c.get("id")} quotes must be an object'); quotes = {}
+        for pid, q in quotes.items():
+            md = blawg / 'pieces' / f'{pid}.md'
+            if pid not in ends: errs.append(f'connections.json: {c.get("id")} has a quote for {pid!r}, which is not an end')
+            elif not isinstance(q, str) or not q.strip(): errs.append(f'connections.json: {c.get("id")} quote for {pid!r} is empty')
+            elif not (byid.get(pid, {}).get('state') == 'live' and md.is_file()):
+                errs.append(f'connections.json: {c.get("id")} anchors a passage in {pid!r}, which has no public body (it would publish unpublished text)')
+            elif q not in md.read_text(encoding='utf-8'):
+                errs.append(f'connections.json: {c.get("id")} quote for {pid!r} is not found verbatim in its live body')
     if art is not None:
         for a in (art.get('library') or []):
             src = str(a.get('src'))
@@ -172,8 +182,9 @@ def parse_front_matter(text):
     return meta, m.group(2)
 
 
-def check_changeset(path, root, titles):
+def check_changeset(path, root, titles, warns=None):
     errs = []
+    warns = [] if warns is None else warns
     text = pathlib.Path(path).read_text(encoding='utf-8')
     data = root / 'blawg' / 'data'
     pieces = {p['id']: dict(p) for p in (load_json(data / 'pieces.json', errs, []) or []) if isinstance(p, dict) and 'id' in p}
@@ -181,6 +192,8 @@ def check_changeset(path, root, titles):
     groups = {g.get('id') for g in (load_json(data / 'groups.json', errs, []) or [])}
     art = load_json(data / 'art.json', errs, None) or {}
     arts = {a.get('id') for a in art.get('library') or []}
+    bodies = {pid: (root / 'blawg' / 'pieces' / f'{pid}.md').read_text(encoding='utf-8') for pid, p in pieces.items()
+              if p.get('body') and (root / 'blawg' / 'pieces' / f'{pid}.md').is_file()}
     if titles:
         for i in held_hits(text, titles): errs.append(f'held title #{i} appears in this changeset')
     try:
@@ -247,11 +260,12 @@ def check_changeset(path, root, titles):
                             if len(c['ends']) < 2: conns.pop(cid)
                 else:
                     pieces.setdefault(oid, {'id': oid}).update({k: v for k, v in sett.items() if k != 'body'})
+                    if 'body' in sett: bodies[oid] = str(sett['body'] or '')
         elif kind == 'connection':
             if op['op'] == 'create' and oid in conns: e.append(f'connection id {oid!r} already exists')
             if op['op'] in ('update', 'delete') and oid not in conns: e.append(f'unknown connection id {oid!r}')
             for k in sett:
-                if k not in ('ends', 'text', 'label', 'state'): e.append(f'unknown connection field {k!r}')
+                if k not in ('ends', 'text', 'label', 'state', 'quotes'): e.append(f'unknown connection field {k!r}')
             if op['op'] == 'create' and 'ends' not in sett: e.append('a connection needs ends')
             if 'ends' in sett:
                 ends = sett['ends'] if isinstance(sett['ends'], list) else []
@@ -259,6 +273,17 @@ def check_changeset(path, root, titles):
                 for x in ends:
                     if x not in pieces: e.append(f'connection to unknown or deleted piece {x!r}')
             if 'state' in sett and sett['state'] not in CONN_STATES: e.append(f'bad connection state {sett["state"]!r}')
+            if 'quotes' in sett or 'ends' in sett:
+                quotes = sett.get('quotes', conns.get(oid, {}).get('quotes') or {})
+                ends_now = sett.get('ends', conns.get(oid, {}).get('ends') or [])
+                if not isinstance(quotes, dict): e.append('quotes must be an object {pieceId: "exact passage"}'); quotes = {}
+                for pid, q in quotes.items():
+                    body = bodies.get(pid, '')
+                    if pid not in ends_now: e.append(f'quote for {pid!r}, which is not an end')
+                    elif not isinstance(q, str) or not q.strip(): e.append(f'quote for {pid!r} must be non-empty text')
+                    elif pieces.get(pid, {}).get('state') == 'live' and body.strip():
+                        if q not in body: e.append(f'quote for {pid!r} is not found verbatim in its live body')
+                    else: warns.append(f'op {i}: quote for {pid!r} cannot be checked against a live body (draft or no body yet)')
             if inside_repo and sett.get('state', conns.get(oid, {}).get('state', 'draft')) == 'draft' and op['op'] != 'delete':
                 e.append('draft connection in a changeset committed to the public repo')
             if not e:
@@ -285,8 +310,12 @@ def run(root, changesets, quiet=False):
     if sources: out(f'held-title check: {len(titles)} held titles from {", ".join(sources)}')
     else: out('held-title check SKIPPED: no private source (set BLAWG_PRIVATE_DIR or add the content-private/ symlink); other checks still run')
     errs = check_repo(root, titles)
+    warns = []
     for cs in changesets:
-        errs += [f'{cs}: {e}' for e in check_changeset(cs, root, titles)]
+        w = []
+        errs += [f'{cs}: {e}' for e in check_changeset(cs, root, titles, w)]
+        warns += [f'{cs}: {x}' for x in w]
+    for x in warns: out('WARN ' + x)
     for e in errs: out('FAIL ' + e)
     out('blawg public check: ' + ('OK' if not errs else f'{len(errs)} problem(s)'))
     return errs
@@ -356,6 +385,19 @@ def selftest():
                           ('changeset: bad type', r'bad type'), ('changeset: bad state', r'bad state'), ('changeset: connection to deleted piece', r"deleted piece 'fake-seed'"),
                           ('changeset: bad filename', r'bad image filename')]:
             expect(name, errs, pat)
+        r = fresh(); c = r / 'blawg' / 'data' / 'connections.json'; d = json.loads(c.read_text()); d[0]['quotes'] = {'fake-live': 'Fake body.'}; c.write_text(json.dumps(d))
+        e3 = run(r, [], True)
+        print(('ok   ' if not e3 else 'FAIL ') + 'live connection quoting its live body passes' + ('' if not e3 else f' ({e3})')); ok = ok and not e3
+        d[0]['quotes'] = {'fake-live': 'Not in the body.'}; c.write_text(json.dumps(d))
+        expect('quote not found verbatim in live body', run(r, [], True), r'not found verbatim')
+        d[0]['quotes'] = {'fake-seed': 'unpublished words'}; c.write_text(json.dumps(d))
+        expect('live connection quoting a piece with no public body', run(r, [], True), r'has no public body')
+        qcs = tmp / 'quotes.json'
+        qcs.write_text(json.dumps({'changeset': 1, 'ops': [{'op': 'update', 'kind': 'connection', 'id': 'lk-001', 'set': {'quotes': {'fake-live': 'nope, not there'}}}]}))
+        expect('changeset: quote not in live body', check_changeset(qcs, r, []), r'not found verbatim')
+        qcs.write_text(json.dumps({'changeset': 1, 'ops': [{'op': 'update', 'kind': 'connection', 'id': 'lk-001', 'set': {'quotes': {'fake-live': 'Fake body', 'fake-seed': 'anything'}}}]}))
+        w = []; e4 = check_changeset(qcs, r, [], w)
+        print(('ok   ' if not e4 and any('cannot be checked' in x for x in w) else 'FAIL ') + 'changeset: valid quote passes, seed quote only warns'); ok = ok and not e4 and bool(w)
         good = tmp / 'good.md'
         good.write_text('---\ntitle: Fake new live piece\ngroup: alpha\ntype: Note\nstate: live\n---\nFake body.\n')
         e2 = check_changeset(good, r, held_titles(r)[0])
