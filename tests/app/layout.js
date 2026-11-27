@@ -16,11 +16,13 @@ function ok(c, m) { if (!c) fails.push(m); }
       const on = await pg.$eval('.lays .lb.on', e => e.dataset.lay); ok(on === m, `${w} ${m}: active ${on}`);
       // every tile inside the universe, none overlapping the stage
       const geo = await pg.evaluate(() => { const t = [...document.querySelectorAll('#world .t, #world .gh')].map(e => { const m = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(e.getAttribute('transform')); return [+m[1], +m[2]]; });
-        const up = document.querySelector('#unic polygon').getAttribute('points').split(' ').map(p => p.split(',').map(Number)); const sk = +(/scale\(([\d.]+)\)/.exec(document.querySelector('#world > g[transform^="scale"]').getAttribute('transform')) || [0, 1])[1]; return { t, up, sk }; });
+        const up = document.querySelector('#unic polygon').getAttribute('points').split(' ').map(p => p.split(',').map(Number)); const fc = [...document.querySelectorAll('#world .fc')].map(e => { const m = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(e.parentNode.getAttribute('transform')); return [+m[1], +m[2]]; }); return { t, up, fc }; });
       const xs = geo.up.map(p => p[0]), ys = geo.up.map(p => p[1]); const ux = (Math.min(...xs) + Math.max(...xs)) / 2, uy = (Math.min(...ys) + Math.max(...ys)) / 2, rho = (Math.max(...ys) - Math.min(...ys)) / 2;
       const outside = geo.t.filter(([x, y]) => { const ax = Math.abs(x - ux), ay = Math.abs(y - uy); return ax > rho * Math.sqrt(3) / 2 || ay + ax / Math.sqrt(3) > rho; }).length;
       ok(outside === 0, `${w} ${m}: ${outside} tiles outside universe`);
-      const k = geo.sk, inStage = geo.t.filter(([x, y]) => Math.abs(x) < (9 * 152.42 + 76) * k + 70 && y > (-12 * 132 - 88) * k - 70 && y < (11 * 132 + 88) * k + 70).length; ok(inStage === 0, `${w} ${m}: ${inStage} tiles on stage`);
+      const inStage = geo.t.filter(([x, y]) => geo.fc.some(([a, b]) => Math.hypot(a - x, b - y) < 160)).length;   /* no tile on or touching a stage cell */
+      const sizes = await pg.evaluate(() => [...new Set([...document.querySelectorAll('#world .fc, #world .t .hx, #world .cell')].map(e => { const b = e.getBBox(); return Math.round(b.height / 10); }))]);
+      ok(sizes.every(v => Math.abs(v - sizes[0]) <= 2), `${w} ${m}: hexagons of different sizes ${sizes}`); ok(inStage === 0, `${w} ${m}: ${inStage} tiles on stage`);
       if (out && (w === 1440 || w === 390)) await pg.screenshot({ path: `${out}/${m}-${w}.png` });
     }
     // whole board, then try to zoom further out and pan away

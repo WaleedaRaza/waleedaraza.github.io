@@ -13,13 +13,15 @@
     for (var d = 0; d < 6; d++) for (var i = 0; i < k; i++) { out.push([q, r]); q += DIRS[d][0]; r += DIRS[d][1]; } return out; }
   function akey(t) { return String(t || '').toLowerCase().replace(/^[^a-z0-9]+/, ''); }
   /* the centre stage's cells (same numbers as the board script) */
-  var ST = 12, SC = 11, SXM = 9 * S3 * L + 1, STAGE = {}, STAGEC = [];
-  for (var r0 = -ST; r0 <= SC; r0++) for (var q0 = -40; q0 <= 40; q0++) if (Math.abs(px(q0, r0)[0]) <= SXM) { STAGE[q0 + ',' + r0] = 1; STAGEC.push([q0, r0]); }
-  var SW0 = 2 * (SXM + S3 * L / 2), SY0 = -ST * 1.5 * L - L, SY1 = SC * 1.5 * L + L, SH0 = SY1 - SY0, SCY0 = (SY0 + SY1) / 2, SK = 1, STAGE0 = STAGE;
-  /* the stage can be drawn larger than the board's cells (scale SK); these are the board cells it covers */
-  function stageSet(K) { if (K === 1) { STAGE = STAGE0; return; } STAGE = {}; var R = Math.ceil(K) + 1, lim = (K + 1) * L * .9;
-    STAGEC.forEach(function (c) { var p = px(c[0], c[1]), x = p[0] * K, y = p[1] * K, tr = Math.round(y / (1.5 * L)), tq = Math.round(x / (S3 * L) - tr / 2);
-      for (var dq = -R; dq <= R; dq++) for (var dr = -R; dr <= R; dr++) { var q = tq + dq, r = tr + dr, pp = px(q, r); if (Math.hypot(pp[0] - x, pp[1] - y) < lim) STAGE[q + ',' + r] = 1; } }); }
+  /* the stage grows by adding cells, never by making them bigger: K=1 is 14 reader rows, a button row, 9 TV rows, 19 cells wide */
+  function dims(K) { var nT = Math.round(14 * K), nV = Math.round(9 * K), hw = Math.round(9 * K); return { K: K, ST: nT - 2, SC: 2 + nV, HW: hw, SXM: hw * S3 * L + 1 }; }
+  window.BlawgStageDims = dims;
+  var STAGE = {}, STAGEC = [], D0;
+  function stageSet(K) { D0 = dims(K); STAGE = {}; STAGEC = [];
+    for (var r0 = -D0.ST; r0 <= D0.SC; r0++) for (var q0 = -80; q0 <= 80; q0++) if (Math.abs(px(q0, r0)[0]) <= D0.SXM) { STAGE[q0 + ',' + r0] = 1; STAGEC.push([q0, r0]); } }
+  stageSet(1); var ST = D0.ST, SC = D0.SC, SXM = D0.SXM;
+  var SW0 = 2 * (SXM + S3 * L / 2), SY0 = -ST * 1.5 * L - L, SY1 = SC * 1.5 * L + L, SH0 = SY1 - SY0, SCY0 = (SY0 + SY1) / 2, SK = 1;
+  function stageCY() { return ((-D0.ST + D0.SC) / 2) * 1.5 * L; }
   var MODES = ['left', 'top', 'right', 'bottom', 'L', 'circle'];
   function get(name) { return fetch('data/' + name, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(name + ' ' + r.status); return r.json(); }); }
 
@@ -69,12 +71,12 @@
           if (n < half - 1) { armX = Math.max(armX, p[0] + S3 * L / 2); armY0 = Math.min(armY0, p[1] - L); } if (n >= half) { rowX = Math.max(rowX, p[0] + S3 * L / 2); rowY = Math.min(rowY, p[1] - L); } }); });
         var gap = S3 * L * 1.5, rw = rowX - armX - gap, rh = rowY - armY0 - gap;
         SK = Math.max(.6, Math.min(2.4, Math.min(rw / SW0, rh / SH0)));
-        for (var tries = 0; tries < 40; tries++) { stageSet(SK); var cx = (armX + gap / 2 + rowX) / 2, cy = (armY0 + rowY - gap / 2) / 2; tt = at2(0 - cx, SK * SCY0 - cy); if (!clash(tt[0], tt[1])) break; SK *= .97; }
+        for (var tries = 0; tries < 40; tries++) { stageSet(SK); var cx = (armX + gap / 2 + rowX) / 2, cy = (armY0 + rowY - gap / 2) / 2; tt = at2(0 - cx, stageCY() - cy); if (!clash(tt[0], tt[1])) break; SK *= .97; }
       } else {
         var side = mode === 'left' || mode === 'right', sgn = mode === 'left' || mode === 'top' ? -1 : 1;
         SK = Math.max(1, Math.min(2.4, side ? (bx[3] - bx[1]) / SH0 : (bx[2] - bx[0]) / SW0)); stageSet(SK);
         var bcx = (bx[0] + bx[2]) / 2, bcy = (bx[1] + bx[3]) / 2;
-        for (var t = 60 * L * 1.5; t > 0; t -= L * .75) { var tx = side ? sgn * t : 0, ty = side ? SK * SCY0 : SK * SCY0 + sgn * t, cand = at2(tx - bcx, ty - bcy); if (clash(cand[0], cand[1])) break; tt = cand; }
+        for (var t = 60 * L * 1.5; t > 0; t -= L * .75) { var tx = side ? sgn * t : 0, ty = side ? stageCY() : stageCY() + sgn * t, cand = at2(tx - bcx, ty - bcy); if (clash(cand[0], cand[1])) break; tt = cand; }
       }
       centres = centres.map(function (c) { return [c[0] + tt[0], c[1] + tt[1]]; });
     }
@@ -90,7 +92,7 @@
       out_g.push({ id: g.id, name: g.name, order: g.order, n: mine.length, q: c[0], r: c[1], rk: rk, cells: [c].concat(cells), empty: order.slice(mine.length), accent: g.accent, art: g.art || null });
     });
     /* the universe: the smallest pointy-top hexagon around every cell (corners included), centred on the board's contents */
-    var pts = []; used.forEach(function (c) { pts.push([px(c[0], c[1]), L]); }); STAGEC.forEach(function (c) { var p = px(c[0], c[1]); pts.push([[p[0] * SK, p[1] * SK], L * SK]); });
+    var pts = []; used.forEach(function (c) { pts.push([px(c[0], c[1]), L]); }); STAGEC.forEach(function (c) { pts.push([px(c[0], c[1]), L]); });
     var cb = [1e9, 1e9, -1e9, -1e9]; pts.forEach(function (o) { var p = o[0], R = o[1]; cb[0] = Math.min(cb[0], p[0] - S3 * R / 2); cb[1] = Math.min(cb[1], p[1] - R); cb[2] = Math.max(cb[2], p[0] + S3 * R / 2); cb[3] = Math.max(cb[3], p[1] + R); });
     var ux = (cb[0] + cb[2]) / 2, uy = (cb[1] + cb[3]) / 2, rho = 0;
     pts.forEach(function (o) { var p = o[0], R = o[1]; for (var v = 0; v < 6; v++) { var an = v * Math.PI / 3 - Math.PI / 6, x = Math.abs(p[0] + R * Math.cos(an) - ux), y = Math.abs(p[1] + R * Math.sin(an) - uy);
