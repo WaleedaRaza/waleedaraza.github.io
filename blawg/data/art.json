@@ -1,0 +1,648 @@
+{
+ "library": [
+  {
+   "id": "Tree.redwood",
+   "name": "THE REDWOOD",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#Tree.redwood"
+  },
+  {
+   "id": "LabV2.gargantua",
+   "name": "GARGANTUA",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabV2.gargantua"
+  },
+  {
+   "id": "LabV2.dragons",
+   "name": "WARMPOP",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabV2.dragons"
+  },
+  {
+   "id": "LabBatch.train",
+   "name": "THE TRAIN",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.train"
+  },
+  {
+   "id": "LabBatch.corridor",
+   "name": "THE CORRIDOR",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.corridor"
+  },
+  {
+   "id": "LabBatch.gpu",
+   "name": "GPU",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.gpu"
+  },
+  {
+   "id": "LabHeaders.sisyphus",
+   "name": "SISYPHUS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.sisyphus"
+  },
+  {
+   "id": "LabBatch.paleDot",
+   "name": "PALE BLUE DOT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.paleDot"
+  },
+  {
+   "id": "LabBackgrounds.orangeRoom",
+   "name": "THE ORANGE ROOM",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBackgrounds.orangeRoom"
+  },
+  {
+   "id": "LabBatch.currents",
+   "name": "THE CURRENT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.currents"
+  },
+  {
+   "id": "LabObjects.nighthawk",
+   "name": "F-117",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.nighthawk"
+  },
+  {
+   "id": "LabBatch.dunes",
+   "name": "ARRAKIS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.dunes"
+  },
+  {
+   "id": "LabV2.underwater",
+   "name": "UNDER THE SURFACE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabV2.underwater"
+  },
+  {
+   "id": "LabBackgrounds.neonGlass",
+   "name": "THROUGH GLASS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBackgrounds.neonGlass"
+  },
+  {
+   "id": "LabBatch.aurora",
+   "name": "AURORA",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.aurora"
+  },
+  {
+   "id": "LabHeaders.forever",
+   "name": "FOREVER",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.forever"
+  },
+  {
+   "id": "LabHeaders.rivers",
+   "name": "RIVERS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.rivers"
+  },
+  {
+   "id": "LabHeaders.simulation",
+   "name": "FRAMES",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.simulation"
+  },
+  {
+   "id": "LabBatch.warp",
+   "name": "WARP",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.warp"
+  },
+  {
+   "id": "LabBatch.eclipse",
+   "name": "ECLIPSE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.eclipse"
+  },
+  {
+   "id": "LabV2.helmet",
+   "name": "HELMET",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabV2.helmet"
+  },
+  {
+   "id": "LabBatch.roots",
+   "name": "GENEALOGY",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.roots"
+  },
+  {
+   "id": "LabBatch.ship",
+   "name": "SHIP AT SEA",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.ship"
+  },
+  {
+   "id": "LabBatch.name",
+   "name": "WALEED",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.name"
+  },
+  {
+   "id": "LabBatch.watch",
+   "name": "WATCH",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.watch"
+  },
+  {
+   "id": "LabBatch.circuit",
+   "name": "CIRCUIT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.circuit"
+  },
+  {
+   "id": "LabHeaders.agents",
+   "name": "AGENTS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.agents"
+  },
+  {
+   "id": "LabHeaders.bridge",
+   "name": "THE BRIDGE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.bridge"
+  },
+  {
+   "id": "LabHeaders.market",
+   "name": "THE MARKET",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.market"
+  },
+  {
+   "id": "LabHeaders.sequencer",
+   "name": "SEQUENCER",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.sequencer"
+  },
+  {
+   "id": "LabBatch.equalizer",
+   "name": "EQUALIZER",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.equalizer"
+  },
+  {
+   "id": "LabBatch.scope",
+   "name": "OSCILLOSCOPE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.scope"
+  },
+  {
+   "id": "LabBatch.rainbows",
+   "name": "IN RAINBOWS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.rainbows"
+  },
+  {
+   "id": "LabBatch.pyramid",
+   "name": "PYRAMID",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.pyramid"
+  },
+  {
+   "id": "LabBatch.smoke",
+   "name": "SMOKE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.smoke"
+  },
+  {
+   "id": "LabBatch.heart",
+   "name": "HEART",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.heart"
+  },
+  {
+   "id": "LabObjects.heart808",
+   "name": "808s",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.heart808"
+  },
+  {
+   "id": "LabObjects.vinyl",
+   "name": "VINYL",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.vinyl"
+  },
+  {
+   "id": "LabHeaders.warb",
+   "name": "WARB",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.warb"
+  },
+  {
+   "id": "LabObjects.pokerChip",
+   "name": "THE CHIP",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.pokerChip"
+  },
+  {
+   "id": "LabObjects.enso",
+   "name": "ENSO",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.enso"
+  },
+  {
+   "id": "LabBatch.yinyang",
+   "name": "YIN YANG",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.yinyang"
+  },
+  {
+   "id": "LabScenes.yinYang",
+   "name": "YIN YANG, BREATHING",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabScenes.yinYang"
+  },
+  {
+   "id": "LabScenes.paths",
+   "name": "PATHS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabScenes.paths"
+  },
+  {
+   "id": "LabBatch.life",
+   "name": "LIFE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.life"
+  },
+  {
+   "id": "LabBatch.lorenz",
+   "name": "LORENZ",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.lorenz"
+  },
+  {
+   "id": "LabBatch.julia",
+   "name": "JULIA SET",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.julia"
+  },
+  {
+   "id": "LabBatch.dna",
+   "name": "DNA",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.dna"
+  },
+  {
+   "id": "LabBatch.bokeh",
+   "name": "OUT OF FOCUS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.bokeh"
+  },
+  {
+   "id": "LabBackgrounds.ridgeline",
+   "name": "RED WEATHER",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBackgrounds.ridgeline"
+  },
+  {
+   "id": "LabBackgrounds.dunes",
+   "name": "DUNES",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBackgrounds.dunes"
+  },
+  {
+   "id": "LabBatch.galaxy",
+   "name": "GALAXY",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.galaxy"
+  },
+  {
+   "id": "LabBatch.clouds",
+   "name": "ABOVE THE CLOUDS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.clouds"
+  },
+  {
+   "id": "LabBatch.tunnel",
+   "name": "TUNNEL",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.tunnel"
+  },
+  {
+   "id": "LabBatch.rings",
+   "name": "RINGS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.rings"
+  },
+  {
+   "id": "LabBatch.lava",
+   "name": "LAVA",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.lava"
+  },
+  {
+   "id": "LabBatch.donut",
+   "name": "DONUT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBatch.donut"
+  },
+  {
+   "id": "LabHeaders.current",
+   "name": "AGAINST THE CURRENT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.current"
+  },
+  {
+   "id": "LabHeaders.cutscene",
+   "name": "THE CUTSCENE",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.cutscene"
+  },
+  {
+   "id": "LabHeaders.helmet",
+   "name": "HELMET, FIRST CUT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabHeaders.helmet"
+  },
+  {
+   "id": "LabObjects.lightning",
+   "name": "LIGHTNING",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.lightning"
+  },
+  {
+   "id": "LabObjects.paperBoat",
+   "name": "PAPER BOAT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.paperBoat"
+  },
+  {
+   "id": "LabObjects.elevenSum",
+   "name": "1 + 1 = 11",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.elevenSum"
+  },
+  {
+   "id": "LabScenes.luckyBlock",
+   "name": "LUCKY BLOCK",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabScenes.luckyBlock"
+  },
+  {
+   "id": "LabV2.ball",
+   "name": "SEVEN STARS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabV2.ball"
+  },
+  {
+   "id": "LabObjects.dragonBall",
+   "name": "SEVEN STARS, FIRST CUT",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabObjects.dragonBall"
+  },
+  {
+   "id": "LabBackgrounds.underwater",
+   "name": "UNDERWATER",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabBackgrounds.underwater"
+  },
+  {
+   "id": "LabScenes.dragons",
+   "name": "DRAGONS",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#LabScenes.dragons"
+  },
+  {
+   "id": "Tree.oak",
+   "name": "THE OAK",
+   "kind": "ascii",
+   "src": "assets/ascii/catalog.js#Tree.oak"
+  }
+ ],
+ "assign": {
+  "piece": {
+   "warb-a-case-study": [
+    "LabHeaders.warb"
+   ],
+   "pokeraio-a-case-study": [
+    "LabObjects.pokerChip"
+   ],
+   "music-and-software-similarities": [
+    "LabHeaders.sequencer"
+   ],
+   "making-better-music-using-calculus": [
+    "LabBatch.equalizer"
+   ],
+   "techno-music-exploration": [
+    "LabHeaders.sequencer"
+   ],
+   "pc-building": [
+    "LabBatch.gpu"
+   ],
+   "computer-components-market-lore-and-pricing": [
+    "LabBatch.gpu"
+   ],
+   "autonomous-drones": [
+    "LabObjects.nighthawk"
+   ],
+   "lens-limited-perception-knowledge-vs-intelligence": [
+    "LabBatch.bokeh"
+   ],
+   "agents-agents-agents-llm-integration-within-society": [
+    "LabHeaders.agents"
+   ],
+   "data-data-data-what-does-being-data-driven-even-mean": [
+    "LabBatch.circuit"
+   ],
+   "do-not-seek-outside-that-which-can-only-be-found-within": [
+    "LabObjects.enso"
+   ],
+   "8-billion-100-billion-your-place-in-the-world-and-the-shared": [
+    "LabBatch.paleDot"
+   ],
+   "the-ye-saga-start-to-end": [
+    "LabBatch.pyramid"
+   ],
+   "why-does-kanye-always-come-back": [
+    "LabObjects.heart808"
+   ],
+   "places-you-dont-see-darwinism": [
+    "LabBatch.life"
+   ],
+   "why-do-human-beings-like-music": [
+    "LabBatch.rings"
+   ],
+   "sports-betting-prediction-markets-and-why-theyre-everywhere": [
+    "LabHeaders.market"
+   ],
+   "stock-stories-elections-and-the-market": [
+    "LabHeaders.market"
+   ],
+   "capitalist-realism-a-case-study": [
+    "LabBackgrounds.ridgeline"
+   ],
+   "consistency-be-formidable-and-undefeatable-turn-your-losses": [
+    "LabObjects.lightning"
+   ],
+   "poker-philosophy": [
+    "LabHeaders.rivers"
+   ],
+   "poker-strategy-and-tips": [
+    "LabObjects.pokerChip"
+   ],
+   "how-do-i-get-good-at-math": [
+    "LabBatch.julia"
+   ],
+   "math-coding-machine-learning-or-agentic-product-development": [
+    "LabBatch.lorenz"
+   ],
+   "learning-paths-and-recommendations": [
+    "LabScenes.paths"
+   ],
+   "everything-you-need-to-know-about-using-and-renting-gpus": [
+    "LabBatch.gpu"
+   ],
+   "derivative-and-integration-rules-tier-list": [
+    "LabBatch.lorenz"
+   ],
+   "jung-a-deep-dive": [
+    "LabScenes.yinYang"
+   ],
+   "camus-a-case-study": [
+    "LabHeaders.sisyphus"
+   ],
+   "the-creative-act-rick-rubin": [
+    "LabObjects.vinyl"
+   ],
+   "the-stranger-reaction-recommendation": [
+    "LabHeaders.sisyphus"
+   ],
+   "on-the-genealogy-of-morals-exploration-and-reflection": [
+    "LabBatch.roots"
+   ],
+   "behavioral-questions-through-a-jungian-lens": [
+    "LabScenes.yinYang"
+   ],
+   "dune-two-ways-of-showing-the-same-world": [
+    "LabBatch.dunes"
+   ],
+   "star-wars-which-five-films-am-i-defending": [
+    "LabBatch.warp"
+   ],
+   "severance": [
+    "LabBatch.corridor"
+   ],
+   "interstellar": [
+    "LabV2.gargantua"
+   ],
+   "the-matrix": [
+    "LabHeaders.simulation"
+   ],
+   "her": [
+    "LabBackgrounds.neonGlass"
+   ],
+   "spirited-away": [
+    "LabBatch.train"
+   ],
+   "fire-blood-reading-notes": [
+    "LabScenes.dragons"
+   ],
+   "colin-benders-and-hoppa-few-sounds-deep-variation": [
+    "LabBatch.scope"
+   ],
+   "kanye-albums-tier-list": [
+    "LabBatch.heart"
+   ],
+   "the-color-orange": [
+    "LabBackgrounds.orangeRoom"
+   ],
+   "do-you-have-free-will": [
+    "LabBatch.currents"
+   ],
+   "are-we-in-a-simulation": [
+    "LabHeaders.simulation"
+   ],
+   "we-will-live-forever-we-will-not-feel-forever": [
+    "LabHeaders.forever"
+   ],
+   "2027-calendar": [
+    "LabBatch.watch"
+   ],
+   "23-lessons-before-23-a-possible-time-capsule": [
+    "LabBatch.watch"
+   ],
+   "my-way-here-and-forward": [
+    "LabScenes.paths"
+   ]
+  },
+  "type": {},
+  "group": {}
+ },
+ "gallery": [
+  "Tree.redwood",
+  "LabV2.gargantua",
+  "LabV2.dragons",
+  "LabBatch.train",
+  "LabBatch.corridor",
+  "LabBatch.gpu",
+  "LabHeaders.sisyphus",
+  "LabBatch.paleDot",
+  "LabBackgrounds.orangeRoom",
+  "LabBatch.currents",
+  "LabObjects.nighthawk",
+  "LabBatch.dunes",
+  "LabV2.underwater",
+  "LabBackgrounds.neonGlass",
+  "LabBatch.aurora",
+  "LabHeaders.forever",
+  "LabHeaders.rivers",
+  "LabHeaders.simulation",
+  "LabBatch.warp",
+  "LabBatch.eclipse",
+  "LabV2.helmet",
+  "LabBatch.roots",
+  "LabBatch.ship",
+  "LabBatch.name",
+  "LabBatch.watch",
+  "LabBatch.circuit",
+  "LabHeaders.agents",
+  "LabHeaders.bridge",
+  "LabHeaders.market",
+  "LabHeaders.sequencer",
+  "LabBatch.equalizer",
+  "LabBatch.scope",
+  "LabBatch.rainbows",
+  "LabBatch.pyramid",
+  "LabBatch.smoke",
+  "LabBatch.heart",
+  "LabObjects.heart808",
+  "LabObjects.vinyl",
+  "LabHeaders.warb",
+  "LabObjects.pokerChip",
+  "LabObjects.enso",
+  "LabBatch.yinyang",
+  "LabScenes.yinYang",
+  "LabScenes.paths",
+  "LabBatch.life",
+  "LabBatch.lorenz",
+  "LabBatch.julia",
+  "LabBatch.dna",
+  "LabBatch.bokeh",
+  "LabBackgrounds.ridgeline",
+  "LabBackgrounds.dunes",
+  "LabBatch.galaxy",
+  "LabBatch.clouds",
+  "LabBatch.tunnel",
+  "LabBatch.rings",
+  "LabBatch.lava",
+  "LabBatch.donut",
+  "LabHeaders.current",
+  "LabHeaders.cutscene",
+  "LabHeaders.helmet",
+  "LabObjects.lightning",
+  "LabObjects.paperBoat",
+  "LabObjects.elevenSum",
+  "LabScenes.luckyBlock",
+  "LabV2.ball",
+  "LabObjects.dragonBall",
+  "LabBackgrounds.underwater",
+  "LabScenes.dragons",
+  "Tree.oak"
+ ]
+}

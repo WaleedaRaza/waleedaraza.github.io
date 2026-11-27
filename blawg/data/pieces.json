@@ -1,0 +1,2144 @@
+[
+ {
+  "id": "things-ive-learned-about-the-philosophy-of-building-apps",
+  "title": "Things I've Learned About the Philosophy of Building Apps",
+  "desc": "What building apps has taught me.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "warb-a-case-study",
+  "title": "Warb — A Case Study",
+  "desc": "An app I built and use for everything, told as a case study.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.warb"
+  ],
+  "img": "blawg/img/warb.jpg",
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "libxndr-a-case-study",
+  "title": "Libxndr — A Case Study",
+  "desc": "An app I built, told as a case study.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": "blawg/img/libxndr.jpg",
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "pokeraio-a-case-study",
+  "title": "PokerAIO — A Case Study",
+  "desc": "An app I built, told as a case study.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.pokerChip"
+  ],
+  "img": "blawg/img/pokeraio.jpg",
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "music-and-software-similarities",
+  "title": "Music and Software: Similarities",
+  "desc": "How making software and making music compare.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.sequencer"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "making-better-music-using-calculus",
+  "title": "Making better Music Using Calculus",
+  "desc": "An experiment: making sounds with math and code.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.equalizer"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "techno-music-exploration",
+  "title": "Techno Music Exploration",
+  "desc": "My own way into making techno.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.sequencer"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "my-two-splits-of-software",
+  "title": "My Two Splits of Software",
+  "desc": "The two kinds of software I split my attention between.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "current-and-future-project-experiments",
+  "title": "Current and Future Project Experiments",
+  "desc": "A running list of what I'm building and trying.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "everyone-says-they-have-a-passion-for-building-systems-that",
+  "title": "Everyone Says They Have a Passion for \"Building Systems That Scale\" — What Does That Actually Look Like?",
+  "desc": "What that phrase looks like when you actually do it.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-id-make-if-you-gave-me-a-billion-dollars-or-unlimited-g",
+  "title": "What I'd Make If You Gave Me a Billion dollars or unlimited GPU's/compute/tokens",
+  "desc": "What I'd build with no limit on money or compute.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "difficult-problems-and-raw-technical-experiences-incoming",
+  "title": "Difficult Problems and Raw Technical Experiences — Incoming",
+  "desc": "A running log of hard technical problems.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "favorite-tools-recommendations",
+  "title": "Favorite Tools — Recommendations",
+  "desc": "A list I keep adding to.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "vibe-coding-tools-tier-list",
+  "title": "Vibe-Coding Tools Tier List",
+  "desc": "A tier list.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "ai-models-tier-list",
+  "title": "AI Models Tier List",
+  "desc": "A tier list.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "pc-building",
+  "title": "PC Building",
+  "desc": "How I got into building PCs.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.gpu"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "computer-components-market-lore-and-pricing",
+  "title": "Computer Components: Market Lore and Pricing",
+  "desc": "The market history behind PC parts.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.gpu"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "everything-about-3d-printers",
+  "title": "Everything about 3d printers",
+  "desc": "What I know about 3D printers.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "autonomous-drones",
+  "title": "Autonomous Drones",
+  "desc": "What I know and want to build with drones.",
+  "group": "make",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.nighthawk"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "first-principles-thinkings-markets-startups-geneology-of-the",
+  "title": "First principles thinkings - markets, startups, geneology of the world and products around us",
+  "desc": "The method I use on markets, startups and products.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "think-about-the-tool-until-you-think-through-it",
+  "title": "Think About the Tool Until You Think Through It",
+  "desc": "A principle about tools and mastery.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "lens-limited-perception-knowledge-vs-intelligence",
+  "title": "Lens limited Perception- knowledge vs intelligence",
+  "desc": "Knowledge versus intelligence, and what limits what you can see.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.bokeh"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "win-by-being-open-minded",
+  "title": "Win by being open minded",
+  "desc": "A short note on staying open-minded.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "swiss-army-knife-polymaths",
+  "title": "Swiss Army Knife Polymaths",
+  "desc": "How my skills feed each other.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "explaining-ideologies-and-concepts",
+  "title": "Explaining Ideologies and Concepts",
+  "desc": "How I explain an idea to someone who doesn't have it yet.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "information-age-and-knowledgemaxing-to-legacy-max",
+  "title": "Information Age and Knowledgemaxing to legacy max",
+  "desc": "Understanding the time we live in and making good use of it.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "whats-cool-about-being-alive-in-2026",
+  "title": "What's Cool About Being Alive in 2026?",
+  "desc": "What we have now that people take for granted.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-golden-age-of-data-and-information-the-gold-rush-too",
+  "title": "The golden age of data and information, the gold rush too",
+  "desc": "The golden age of data, and the gold rush around it.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-did-ai-do-to-coding-are-swes-cooked-or-are-they-in-thei",
+  "title": "What Did AI Do to Coding? Are SWEs Cooked? or are they in their golden age? How to Be a Good Vibe Coder",
+  "desc": "What AI changed about coding, and whether engineers are cooked.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "agents-agents-agents-llm-integration-within-society",
+  "title": "Agents, Agents, Agents: LLM Integration Within Society",
+  "desc": "Where LLM agents fit into society.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.agents"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "data-data-data-what-does-being-data-driven-even-mean",
+  "title": "DATA DATA DATA — What Does Being Data-Driven Even Mean?",
+  "desc": "What being data-driven actually means.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.circuit"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-are-the-implications-of-a-data-driven-world",
+  "title": "What Are the Implications of a Data-Driven World?",
+  "desc": "What a data-driven world changes.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "why-should-you-be-willing-to-give-your-data-to-anything",
+  "title": "Why Should You Be Willing to Give Your Data to Anything?",
+  "desc": "When handing over your data is worth it.",
+  "group": "world",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "earnest-or-cope-philosophical-suicide-as-a-general-pattern",
+  "title": "Earnest or cope / philosophical suicide as a general pattern",
+  "desc": "My anthropology of the world: philosophical suicide as a pattern.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "do-not-seek-outside-that-which-can-only-be-found-within",
+  "title": "Do Not Seek Outside That Which Can Only Be Found Within",
+  "desc": "A principle about looking inward.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.enso"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-4d-self",
+  "title": "The 4D Self",
+  "desc": "A concept of mine about time and the self.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "choose-your-slavery",
+  "title": "Choose your slavery",
+  "desc": "A principle about what you serve.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "true-work-is-play",
+  "title": "True Work Is Play",
+  "desc": "A principle about work.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-you-seek-seeks-you-unconitentious-work-and-unknown-alli",
+  "title": "What you seek seeks you, unconitentious work and unknown allies",
+  "desc": "A principle.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "folklore-stories-that-bound-what-we-imagine-possible",
+  "title": "Folklore — Stories That Bound What We Imagine Possible",
+  "desc": "A term of mine: the stories that limit what we imagine possible.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "mirages-his-own-term-subconscious-mirages",
+  "title": "Mirages (his own term: subconscious mirages)",
+  "desc": "A term of mine, defined.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "principles-that-protect-you-principles-that-imprison-you",
+  "title": "Principles That Protect You, Principles That Imprison You",
+  "desc": "When a principle protects you and when it traps you.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "authenticity-as-a-commodity",
+  "title": "Authenticity as a Commodity",
+  "desc": "What happens when authenticity gets sold.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "difficult-things-to-accept-that-will-help-you",
+  "title": "Difficult things to accept that will help you",
+  "desc": "Hard things that help once you accept them.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "8-billion-100-billion-your-place-in-the-world-and-the-shared",
+  "title": "8 Billion / 100 Billion: Your Place in the World and the Shared Subconscious",
+  "desc": "Your place among everyone alive and everyone who has lived.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.paleDot"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "symbols-the-subconscious-will-representation",
+  "title": "Symbols, the subconscious, will & representation",
+  "desc": "How symbols mean different things to each of us.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "different-types-of-talented-people",
+  "title": "Different Types of Talented People",
+  "desc": "The kinds of talent I've seen.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-polymath-hypothesis-people-who-can-be-talented-at-anythi",
+  "title": "The Polymath Hypothesis: People Who Can Be Talented at Anything",
+  "desc": "A hypothesis about people who can be good at anything.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "finding-your-direction-intrinsically-rather-than-extrinsical",
+  "title": "Finding your direction, intrinsically rather than extrinsically, lessons on manic drive",
+  "desc": "Finding direction from inside, not outside.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "iq-and-eq-what-do-both-get-you",
+  "title": "IQ and EQ: What Do Both Get You?",
+  "desc": "What each one gets you.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "lessons-from-animals",
+  "title": "Lessons from animals",
+  "desc": "What animals have taught me.",
+  "group": "phil",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-tiktok-and-instagram-know-about-you-the-monolith-algori",
+  "title": "What TikTok and Instagram know about you (the Monolith algorithm)",
+  "desc": "A case study of the algorithm behind the feed and what it does to you.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-ye-saga-start-to-end",
+  "title": "The Ye Saga, Start to End",
+  "desc": "A case study of Kanye, start to end.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.pyramid"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "why-does-kanye-always-come-back",
+  "title": "Why Does Kanye Always Come Back?",
+  "desc": "A question with an answer.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.heart808"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-paypal-mafia-explorations-into-the-lore-and-geneology-of",
+  "title": "The paypal mafia - explorations into the lore and geneology of innovation",
+  "desc": "Where a generation of companies came from.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "places-you-dont-see-darwinism",
+  "title": "Places You Don't See Darwinism",
+  "desc": "Where Darwinism hides in everyday life.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.life"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "pavel-durov-a-deep-dive",
+  "title": "Pavel Durov — A Deep Dive",
+  "desc": "A case study of a founder.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "contrasting-innovations-from-weaponry-and-gaming",
+  "title": "Contrasting innovations from Weaponry and Gaming",
+  "desc": "Innovation from weapons and from games, compared.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "why-do-human-beings-like-music",
+  "title": "Why do human beings like music?",
+  "desc": "A question I've followed through.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.rings"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "impactful-phenomena-case-study-ideas",
+  "title": "Impactful Phenomena — Case Study Ideas",
+  "desc": "A list of case studies I want to do.",
+  "group": "holes",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "meaningful-vs-meaningless-startups-tools-and-companies-worth",
+  "title": "Meaningful vs. Meaningless Startups, Tools and Companies Worth Existing",
+  "desc": "How I tell a company worth existing from one that isn't.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-is-true-innovation",
+  "title": "What Is True Innovation?",
+  "desc": "What I count as innovation and what I don't.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "timeline-of-booms-and-the-needs-they-create-dot-com-vs-ai-ne",
+  "title": "Timeline of booms and the needs they create (dot-com vs AI, neoclouds, the AI bubble)",
+  "desc": "A timeline of booms and the needs each one created.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "market-literacy-the-valley-founders-he-respects-and-does-not",
+  "title": "Market literacy (the Valley, founders he respects and does not, small tools read closely)",
+  "desc": "How I read the Valley and the people in it.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "why-do-some-companies-die-with-their-founder",
+  "title": "Why do some companies die with their founder?",
+  "desc": "A question, with cases.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-psychology-of-the-shark-tank-sharks",
+  "title": "The Psychology of the Shark Tank Sharks",
+  "desc": "How the sharks think.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "sports-betting-prediction-markets-and-why-theyre-everywhere",
+  "title": "Sports Betting, Prediction Markets, and Why They're Everywhere",
+  "desc": "Why betting and prediction markets are everywhere.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.market"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "stock-stories-elections-and-the-market",
+  "title": "Stock Stories: Elections and the Market",
+  "desc": "Elections and the market.",
+  "group": "mkt",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.market"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "capitalist-realism-a-case-study",
+  "title": "Capitalist Realism — A Case Study",
+  "desc": "My stance on capitalism, through one book.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBackgrounds.ridgeline"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "an-exploration-of-the-phenomenon-of-religion",
+  "title": "An Exploration of the Phenomenon of Religion",
+  "desc": "An exploration of religion as a phenomenon.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "darwinistic-capitalist-suffering-and-the-quarter-life-crisis",
+  "title": "Darwinistic Capitalist Suffering and the Quarter-Life Crisis",
+  "desc": "My account of where the quarter-life crisis comes from.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "who-are-the-most-righteous-ceos-in-tech",
+  "title": "Who are the most righteous CEO's in tech",
+  "desc": "Which tech CEOs I think are righteous.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "tech-ceos-tier-list",
+  "title": "Tech CEOs Tier List",
+  "desc": "A tier list.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "social-construct-tier-list",
+  "title": "Social Construct Tier List",
+  "desc": "A tier list.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "event-reactions-and-speculative-theories",
+  "title": "Event Reactions and Speculative Theories",
+  "desc": "A running list of reactions to events.",
+  "group": "stand",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "competence-is-the-father-of-formidability",
+  "title": "Competence Is the Father of Formidability",
+  "desc": "A principle about competence and being formidable.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "leadership-jensen-jobs-ye-described-the-way-he-is-the-conduc",
+  "title": "Leadership (Jensen, Jobs, Ye described the way he is; the conductor among smarter people)",
+  "desc": "What I think leadership is, through leaders I study.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "consistency-be-formidable-and-undefeatable-turn-your-losses",
+  "title": "Consistency - Be formidable, and undefeatable - turn your losses into wins",
+  "desc": "A principle about turning losses into wins.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.lightning"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "if-youre-evil-youre-at-least-competent-a-reaction",
+  "title": "\"If You're Evil, You're at Least Competent\" — A Reaction",
+  "desc": "A reaction to a line about evil and competence.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "poker-philosophy",
+  "title": "Poker Philosophy",
+  "desc": "What poker has taught me.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.rivers"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "poker-strategy-and-tips",
+  "title": "Poker Strategy and Tips",
+  "desc": "Strategy and tips.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.pokerChip"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "ambient-and-decisive-moments",
+  "title": "Ambient and Decisive Moments",
+  "desc": "A concept of mine: two kinds of moments and how to be ready for each.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "lessons-from-wrestling-the-philosophy-of-combat-sports",
+  "title": "Lessons from Wrestling — The Philosophy of Combat Sports",
+  "desc": "What combat sports taught me.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "jon-jones",
+  "title": "Jon Jones",
+  "desc": "A case study of a fighter.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "jos-mourinho-a-case-study",
+  "title": "José Mourinho — A Case Study",
+  "desc": "A case study of a coach.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "athletics",
+  "title": "Athletics",
+  "desc": "What I take from athletes.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "fc27-how-to-become-a-division-one-player",
+  "title": "FC27: How to Become a Division One Player",
+  "desc": "A how-to.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "relationships-becoming-investments",
+  "title": "Relationships Becoming Investments",
+  "desc": "When relationships turn into investments.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "when-a-power-framework-makes-friendship-look-like-a-court",
+  "title": "When a Power Framework Makes Friendship Look Like a Court",
+  "desc": "What happens when you read your friends through a power book.",
+  "group": "play",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-do-i-find-my-passion-or-talent",
+  "title": "How Do I Find My Passion or Talent?",
+  "desc": "What I tell people who say they have neither.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-to-land-a-software-job-the-art-of-the-competing-offer",
+  "title": "How to Land a software job, The art of the Competing offer",
+  "desc": "What I tell people who ask.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-project-should-i-make",
+  "title": "What Project Should I Make?",
+  "desc": "What I tell people who ask what to build.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-do-i-get-good-at-coding",
+  "title": "How do I get good at coding",
+  "desc": "What I tell people who ask.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-do-i-get-good-at-math",
+  "title": "How do i get good at math",
+  "desc": "What I tell people who ask.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.julia"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-do-i-get-good-at-machine-learning",
+  "title": "How do I get good at machine learning",
+  "desc": "What I tell people who ask.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "math-coding-machine-learning-or-agentic-product-development",
+  "title": "Math → Coding → Machine Learning or Agentic Product Development",
+  "desc": "A path through the three, for people starting out.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.lorenz"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-is-the-quarter-life-crisis-and-how-do-you-get-out-of-it",
+  "title": "What is the quarter life crisis and how do you get out of it",
+  "desc": "What it is and how you get out of it.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "questions-i-am-commonly-asked-by-students",
+  "title": "Questions I Am Commonly Asked by Students",
+  "desc": "A list.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "learning-paths-and-recommendations",
+  "title": "Learning Paths and Recommendations",
+  "desc": "A list I keep adding to.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabScenes.paths"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "when-to-buy-a-pc-what-to-put-in-it-and-what-its-for",
+  "title": "When to Buy a PC, What to Put in It, and What It's For",
+  "desc": "A how-to.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "everything-you-need-to-know-about-using-and-renting-gpus",
+  "title": "Everything You Need to Know About Using and Renting GPUs",
+  "desc": "A how-to.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.gpu"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "how-do-you-make-a-cat-like-you",
+  "title": "How Do You Make a Cat Like You?",
+  "desc": "A how-to.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "derivative-and-integration-rules-tier-list",
+  "title": "Derivative and Integration Rules Tier List",
+  "desc": "A tier list.",
+  "group": "ans",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.lorenz"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "miyamoto-musashi-when-you-know-the-way-broadly-you-supplemen",
+  "title": "Miyamoto Musashi - when you know the way broadly, you supplement it in all things",
+  "desc": "A case study of Musashi and the principle I took from him.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "jung-a-deep-dive",
+  "title": "Jung — A Deep Dive",
+  "desc": "A deep dive on Jung and what I took from him.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabScenes.yinYang"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "camus-a-case-study",
+  "title": "Camus — A Case Study",
+  "desc": "A case study of Camus and what I took from him.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.sisyphus"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-creative-act-rick-rubin",
+  "title": "The Creative Act — Rick Rubin",
+  "desc": "What I took from Rubin's book.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabObjects.vinyl"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-world-as-will-and-representation-scheopenhauerian-truths",
+  "title": "The world as will and representation -scheopenhauerian truths",
+  "desc": "What I took from Schopenhauer.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "steve-jobs-on-just-doing",
+  "title": "Steve Jobs on Just Doing",
+  "desc": "What I took from Jobs about doing.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-stranger-reaction-recommendation",
+  "title": "The Stranger — Reaction / Recommendation",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.sisyphus"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "on-the-genealogy-of-morals-exploration-and-reflection",
+  "title": "On the Genealogy of Morals — Exploration and Reflection",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.roots"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "meditations-reaction-recommendation",
+  "title": "Meditations — Reaction / Recommendation",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-prince-reaction-recommendation",
+  "title": "The Prince — Reaction / Recommendation",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-48-laws-of-power-reaction-recommendation",
+  "title": "The 48 Laws of Power — Reaction / Recommendation",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-art-of-seduction-reaction-recommendation",
+  "title": "The Art of Seduction — Reaction / Recommendation",
+  "desc": "What I took from reading it.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-is-intelligence-blaise-ag-era-y-arcas",
+  "title": "What Is Intelligence? — Blaise Agüera y Arcas",
+  "desc": "What I took from the book.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "which-philosophical-schools-help-with-which-questions",
+  "title": "Which Philosophical Schools Help With Which Questions?",
+  "desc": "Which school to go to for which question.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "behavioral-questions-through-a-jungian-lens",
+  "title": "Behavioral Questions Through a Jungian Lens",
+  "desc": "Questions to ask yourself, through Jung.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabScenes.yinYang"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "discipline-awareness-and-dr-k-a-reaction",
+  "title": "Discipline, Awareness, and Dr. K — A Reaction",
+  "desc": "What I took from Dr. K on discipline.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "knowledge-you-havent-integrated-yet-an-occaro-wisdom-reactio",
+  "title": "Knowledge You Haven't Integrated Yet — An Occaro Wisdom Reaction",
+  "desc": "What I took from a video essay on integrating knowledge.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "lessons-from-mentors",
+  "title": "Lessons from Mentors",
+  "desc": "What my mentors taught me.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "lessons-from-mentoring",
+  "title": "Lessons from Mentoring",
+  "desc": "What teaching others taught me.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "reading-lists-and-recommendations",
+  "title": "Reading Lists and Recommendations",
+  "desc": "A list I keep adding to.",
+  "group": "from",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "attack-on-titan-reactions-and-critiques",
+  "title": "Attack on Titan — Reactions and Critiques",
+  "desc": "A show I like: reactions and critiques.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "dune-and-attack-on-titan-atreides-and-yeager",
+  "title": "Dune and Attack on titan. Atreides and Yeager",
+  "desc": "Two characters compared.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "dune-two-ways-of-showing-the-same-world",
+  "title": "Dune: Two Ways of Showing the Same World",
+  "desc": "Two ways of showing one world.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.dunes"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "jedi-vs-sith-who-was-really-right-the-tragedy-of-anakin-skyw",
+  "title": "Jedi vs sith, who was really right? the tragedy of anakin skywalker",
+  "desc": "Who was right, and Anakin's fall.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "star-wars-which-five-films-am-i-defending",
+  "title": "Star Wars: Which Five Films Am I Defending?",
+  "desc": "The five films I defend.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.warp"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "justice-league-kids-television-that-takes-its-audience-serio",
+  "title": "Justice League: Kids' Television That Takes Its Audience Seriously",
+  "desc": "A kids' show that takes its audience seriously.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "childrens-shows-id-actually-want-my-kids-to-watch",
+  "title": "Children's Shows I'd Actually Want My Kids to Watch",
+  "desc": "A list.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "severance",
+  "title": "Severance",
+  "desc": "A show I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.corridor"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "death-note",
+  "title": "Death Note",
+  "desc": "A show I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "hunter-hunter",
+  "title": "Hunter × Hunter",
+  "desc": "A show I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "fullmetal-alchemist-brotherhood",
+  "title": "Fullmetal Alchemist: Brotherhood",
+  "desc": "A show I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "parasite",
+  "title": "Parasite",
+  "desc": "A film I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "interstellar",
+  "title": "Interstellar",
+  "desc": "A film I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabV2.gargantua"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-matrix",
+  "title": "The Matrix",
+  "desc": "A film I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.simulation"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "her",
+  "title": "Her",
+  "desc": "A film.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBackgrounds.neonGlass"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "spirited-away",
+  "title": "Spirited Away",
+  "desc": "A film.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.train"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "no-country-for-old-men",
+  "title": "No Country for Old Men",
+  "desc": "A film.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "fire-blood-reading-notes",
+  "title": "Fire & Blood — Reading Notes",
+  "desc": "Reading notes.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabScenes.dragons"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "media-critiques-and-reactions-incoming",
+  "title": "Media Critiques and Reactions — Incoming",
+  "desc": "A running list.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "recommendations-incoming",
+  "title": "Recommendations — Incoming",
+  "desc": "A running list.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "music-without-words",
+  "title": "Music without words",
+  "desc": "A short note on songs with no lyrics.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "colin-benders-and-hoppa-few-sounds-deep-variation",
+  "title": "Colin Benders and Hoppa: Few Sounds, Deep Variation",
+  "desc": "Two artists I like, and why.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.scope"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "kanye-albums-tier-list",
+  "title": "Kanye Albums Tier List",
+  "desc": "A tier list.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.heart"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "fashion-sense",
+  "title": "Fashion Sense",
+  "desc": "How I think about dressing.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "archive-fashion-grails-and-things-i-like",
+  "title": "Archive Fashion, Grails, and Things I Like",
+  "desc": "A list of pieces and things I like.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "the-color-orange",
+  "title": "The color orange",
+  "desc": "A short note on a color.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBackgrounds.orangeRoom"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "if-you-want-to-buy-me-something-get-me-this-bc-i-will",
+  "title": "If you want to buy me something get me this bc i will",
+  "desc": "What to get me.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "animals-tier-list",
+  "title": "Animals tier list",
+  "desc": "A tier list.",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "which-animals-i-would-be-and-why",
+  "title": "Which animals I would be and why",
+  "desc": "",
+  "group": "like",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "do-you-have-free-will",
+  "title": "Do You Have Free Will?",
+  "desc": "A thought experiment I keep turning over.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.currents"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "are-we-in-a-simulation",
+  "title": "Are We in a Simulation?",
+  "desc": "A thought experiment.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.simulation"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "we-will-live-forever-we-will-not-feel-forever",
+  "title": "We Will Live Forever. We Will Not Feel Forever.",
+  "desc": "A thought experiment about permanence.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabHeaders.forever"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "are-human-beings-a-special-animal",
+  "title": "Are Human beings a \"special\" animal",
+  "desc": "A question.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "knowing-a-pattern-without-changing-it",
+  "title": "Knowing a Pattern Without Changing It",
+  "desc": "Seeing a pattern and still repeating it.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-recedes-when-you-become-absorbed",
+  "title": "What Recedes When You Become Absorbed?",
+  "desc": "A question about what disappears when you're absorbed in something.",
+  "group": "think",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "future-roadmap-an-evolving-timeline",
+  "title": "Future Roadmap — An Evolving Timeline",
+  "desc": "Where I'm going, updated as it changes.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "2027-calendar",
+  "title": "2027 Calendar",
+  "desc": "What I'm doing next year, with dates.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.watch"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "wtf-do-you-do-at-work-why-do-you-work-on-things-outside-if-y",
+  "title": "WTF Do You Do at Work? Why do you work on things outside if you have a job?",
+  "desc": "What I do, and why I build outside of it.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "corporate-extrapolation-enthusiastic-cynicism",
+  "title": "Corporate Extrapolation: Enthusiastic Cynicism",
+  "desc": "What working inside a corporation has taught me.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "my-approach-to-money",
+  "title": "My Approach to Money",
+  "desc": "How I treat money.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "cs-club-lore",
+  "title": "CS Club Lore",
+  "desc": "The story of the club I started.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "pivotal-learning-experiences-a-timeline",
+  "title": "Pivotal Learning Experiences — A Timeline",
+  "desc": "A timeline of what taught me the most.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "what-happens-if-i-die-tomorrow-what-will-i-do-if-i-can-live",
+  "title": "What happens If I die tomorrow? What will I do if I can live for 60-90 more years",
+  "desc": "What I'd leave, and what I'd do with sixty more years.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "23-lessons-before-23-a-possible-time-capsule",
+  "title": "23 Lessons Before 23 — A Possible Time Capsule",
+  "desc": "A list, as a time capsule.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabBatch.watch"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "my-way-here-and-forward",
+  "title": "My Way: Here and Forward",
+  "desc": "What brought me here and where I'm going. Written last.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [
+   "LabScenes.paths"
+  ],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "nqb8-patronage",
+  "title": "NQB8 Patronage",
+  "desc": "What I offer and why I want in. Written last.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ },
+ {
+  "id": "a-tree-falls-in-the-forest",
+  "title": "A Tree Falls in the Forest",
+  "desc": "Why this blog exists. This is the text on top of the directory.",
+  "group": "me",
+  "type": null,
+  "state": "seed",
+  "art": [],
+  "img": null,
+  "locked": false,
+  "body": false
+ }
+]

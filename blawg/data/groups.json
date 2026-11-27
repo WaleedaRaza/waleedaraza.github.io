@@ -1,0 +1,86 @@
+[
+ {
+  "id": "make",
+  "name": "What I make and how",
+  "order": 1,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "think",
+  "name": "Ponderings, thought experiments, and how I think",
+  "order": 2,
+  "accent": "teal",
+  "art": null
+ },
+ {
+  "id": "world",
+  "name": "What's going on in the world and what to do about it",
+  "order": 3,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "phil",
+  "name": "Philosophy and psychology I hold true",
+  "order": 4,
+  "accent": "teal",
+  "art": null
+ },
+ {
+  "id": "holes",
+  "name": "Rabbit holes with a point",
+  "order": 5,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "mkt",
+  "name": "Markets",
+  "order": 6,
+  "accent": "teal",
+  "art": null
+ },
+ {
+  "id": "stand",
+  "name": "Where I stand",
+  "order": 7,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "play",
+  "name": "How I play",
+  "order": 8,
+  "accent": "teal",
+  "art": null
+ },
+ {
+  "id": "ans",
+  "name": "Answers to what people ask me",
+  "order": 9,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "from",
+  "name": "Who I learned it from",
+  "order": 10,
+  "accent": "teal",
+  "art": null
+ },
+ {
+  "id": "like",
+  "name": "What I like",
+  "order": 11,
+  "accent": "orange",
+  "art": null
+ },
+ {
+  "id": "me",
+  "name": "About me and my path",
+  "order": 12,
+  "accent": "teal",
+  "art": null
+ }
+]
