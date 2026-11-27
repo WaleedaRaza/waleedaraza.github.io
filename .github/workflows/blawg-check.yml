@@ -1,0 +1,24 @@
+name: blawg privacy check
+on:
+  pull_request:
+    paths:
+      - 'blawg/**'
+      - 'tools/blawg/**'
+      - '.github/workflows/blawg-check.yml'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: selftest
+        run: python3 tools/blawg/check_public.py --selftest
+      - name: check repo and any changesets in the PR
+        # no private dir in CI: the held-title check is skipped (it says so); every other rule runs
+        run: |
+          shopt -s nullglob
+          python3 tools/blawg/check_public.py blawg/changesets/*.json blawg/changesets/*.md

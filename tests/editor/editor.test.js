@@ -444,6 +444,13 @@ test('publish: one commit on blawg-review, only blawg/ paths, drafts never in pl
   assert.ok(drafts.pieces.find((x) => x.title === DRAFT_TITLE && x.bodyText === DRAFT_BODY));
   assert.ok(drafts.pieces.find((x) => x.id === 'test-piece-c' && /stays encrypted/.test(x.bodyText)));
   assert.strictEqual(drafts.connections.length, 1);
+  // the committed tree passes the repo check script too
+  const os = require('os'), fs = require('fs'), { execFileSync } = require('child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'blawg-pub-'));
+  for (const [p, sha] of Object.entries(flat)) { fs.mkdirSync(path.join(dir, path.dirname(p)), { recursive: true }); fs.writeFileSync(path.join(dir, p), repo.blobs.get(sha)); }
+  const env = { ...process.env, BLAWG_PRIVATE_DIR: path.join(dir, 'none') };
+  execFileSync('python3', [path.join(__dirname, '..', '..', 'tools', 'blawg', 'check_public.py'), '--root', dir], { env, stdio: 'pipe' });
+  fs.rmSync(dir, { recursive: true, force: true });
   // pending is cleared; a reload shows drafts again (from drafts.enc)
   assert.strictEqual(await page.evaluate(() => localStorage.getItem('blawg.editor.pending')), null);
   await page.reload(); await signIn(page); await page.waitForSelector('#top:not([hidden])');
