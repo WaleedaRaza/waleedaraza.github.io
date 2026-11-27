@@ -16,7 +16,6 @@ When a post is ready, move it into `blog/posts.js`.
 
 | Placeholder | Basis |
 |---|---|
-| The Jensen/NVIDIA Affair: The Stock and Who Benefits | Normalized |
 | How to Land in Big Tech and Negotiate Offers | Normalized |
 | What Project Should I Make? | Your wording |
 | How Do I Find My Passion or Talent? | Normalized |
@@ -64,7 +63,6 @@ When a post is ready, move it into `blog/posts.js`.
 | How to Be a Good Vibe Coder | Normalized |
 | Swiss Army Knife | Your wording |
 | The Polymath Hypothesis: People Who Can Be Talented at Anything | Normalized |
-| Is Mental Illness a Real Thing? | Your wording; question, not a position |
 | Competence Is the Father of Formidability | Spelling normalized |
 | My Approach to Money | Your wording |
 | IQ and EQ: What Do Both Get You? | Normalized |
