@@ -26,11 +26,12 @@ TYPES = ['Principle', 'Question', 'Stance', 'Case study', 'Reaction', 'Log', 'No
 STATES = ['seed', 'draft', 'live']
 CONN_STATES = ['draft', 'live']
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
+ART_ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]*$')
 IMG = re.compile(r'^blawg/img/[a-z0-9]+(?:-[a-z0-9]+)*\.(jpg|png)$')
 ART_IMG = re.compile(r'^blawg/art/[a-z0-9]+(?:-[a-z0-9]+)*\.(jpg|png)$')
-ASCII = re.compile(r'^assets/ascii/[a-z0-9]+(?:-[a-z0-9]+)*\.js$')
+ASCII = re.compile(r'^assets/ascii/[a-z0-9]+(?:-[a-z0-9]+)*\.js(?:#[A-Za-z0-9._-]+)?$')  # optional #Export.key into a catalog file
 MD = re.compile(r'^blawg/pieces/([a-z0-9]+(?:-[a-z0-9]+)*)\.md$')
-SEG = re.compile(r'^[a-z0-9][a-z0-9._-]*$')
+SEG = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]*$')  # no spaces or odd characters anywhere under blawg/; img/art/pieces are stricter (lowercase)
 TEXT_EXT = {'.json', '.md', '.js', '.html', '.htm', '.css', '.txt', '.enc', '.svg', '.yml', '.yaml', '.xml', ''}
 MAX_IMG = 400 * 1024
 
@@ -142,7 +143,7 @@ def check_repo(root, titles):
             src = str(a.get('src'))
             if a.get('kind') == 'ascii' and not ASCII.match(src): errs.append(f'art.json: bad ascii src {src!r}')
             if a.get('kind') == 'img' and not ART_IMG.match(src): errs.append(f'art.json: bad art filename {src!r}')
-            if (ASCII.match(src) or ART_IMG.match(src)) and not (root / src).is_file(): errs.append(f'art.json: {src} does not exist')
+            if (ASCII.match(src) or ART_IMG.match(src)) and not (root / src.split('#')[0]).is_file(): errs.append(f'art.json: {src} does not exist')
         for pid in ((art.get('assign') or {}).get('piece') or {}):
             if pid not in byid: errs.append(f'art.json: assign.piece names {pid!r}, which is not a public piece')
     de = data / 'drafts.enc'
@@ -220,7 +221,7 @@ def check_changeset(path, root, titles):
             if op.get('target') == 'group' and op.get('key') not in groups: e.append(f'unknown group {op.get("key")!r}')
         elif op.get('op') not in ('create', 'update', 'delete'): e.append(f'bad op {op.get("op")!r}')
         elif kind not in ('piece', 'connection', 'art'): e.append(f'bad kind {kind!r}')
-        elif not isinstance(oid, str) or not SLUG.match(oid): e.append(f'bad id {oid!r}')
+        elif not isinstance(oid, str) or not (ART_ID if kind == 'art' else SLUG).match(oid): e.append(f'bad id {oid!r}')
         elif kind == 'piece':
             if op['op'] == 'create' and oid in pieces: e.append(f'id {oid!r} already exists')
             if op['op'] in ('update', 'delete') and oid not in pieces: e.append(f'unknown piece id {oid!r}')

@@ -577,6 +577,38 @@ test('main needs the setting AND typing main', async (browser) => {
   await ctx.close();
 });
 
+test('real data smoke: loads the worktree blawg/data unchanged, round-trips byte-identical, edit passes the repo check', async (browser) => {
+  const fs = require('fs'), os = require('os'), { execFileSync } = require('child_process');
+  const ROOT = path.join(__dirname, '..', '..');
+  if (!fs.existsSync(path.join(ROOT, 'blawg', 'data', 'pieces.json'))) { console.log('      (no blawg/data in this checkout: skipped)'); return; }
+  const repo = new MockRepo({ token: TOKEN, fixtureDir: [[path.join(ROOT, 'blawg'), 'blawg'], [path.join(ROOT, 'assets', 'ascii'), 'assets/ascii']] });
+  const { ctx, page } = await open(browser, repo);
+  await firstRun(page);
+  const disk = {};
+  for (const f of ['pieces', 'connections', 'art', 'groups']) disk[`blawg/data/${f}.json`] = fs.readFileSync(path.join(ROOT, 'blawg', 'data', `${f}.json`), 'utf8');
+  const out = await page.evaluate(() => window.__blawgEditor.model.serialize(window.__blawgEditor.work()).text);
+  for (const [p, t] of Object.entries(disk)) assert.ok(out[p] === t, `${p} does not round-trip byte-identical`);
+  assert.strictEqual(await page.evaluate(() => window.__blawgEditor.work().pieces.length), JSON.parse(disk['blawg/data/pieces.json']).length);
+  await tab(page, 'publish');
+  assert.match(await page.textContent('#main'), /No unsaved changes/);
+  // one small edit to a real seed's desc, publish to the mock, then the repo check passes on the result
+  const id = JSON.parse(disk['blawg/data/pieces.json'])[0].id;
+  await selectPiece(page, id);
+  await page.fill('#f-desc', (await page.inputValue('#f-desc')) + ' (fake test edit)');
+  await page.click('#f-save');
+  await tab(page, 'publish');
+  await page.click('#pub-go');
+  await page.waitForSelector('#pub-ok', { timeout: 30000 });
+  const head = repo.head('blawg-review');
+  const changed = repo.changedPaths(head).sort();
+  assert.deepStrictEqual(changed, ['blawg/data/drafts.enc', 'blawg/data/pieces.json']);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'blawg-real-'));
+  for (const [p, sha] of Object.entries(repo.flat(head))) { fs.mkdirSync(path.join(dir, path.dirname(p)), { recursive: true }); fs.writeFileSync(path.join(dir, p), repo.blobs.get(sha)); }
+  execFileSync('python3', [path.join(ROOT, 'tools', 'blawg', 'check_public.py'), '--root', dir], { env: { ...process.env, BLAWG_PRIVATE_DIR: path.join(dir, 'none') }, stdio: 'pipe' });
+  fs.rmSync(dir, { recursive: true, force: true });
+  await ctx.close();
+});
+
 test('GitHub unreachable: loads the files this site serves, read-only (empty when absent)', async (browser) => {
   const { ctx, page } = await open(browser, null);
   await firstRun(page);

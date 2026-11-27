@@ -434,7 +434,7 @@ function viewArt() {
   const doc = work();
   const used = (id) => doc.pieces.filter((p) => p.art.includes(id)).length;
   const inLib = new Set(doc.art.library.map((a) => a.src));
-  const asciiFiles = (S.snap?.files || []).filter((f) => M.ASCII_RE.test(f) && !inLib.has(f));
+  const asciiFiles = (S.snap?.files || []).filter((f) => /^assets\/ascii\/[a-z0-9-]+\.js$/.test(f) && !inLib.has(f));
   const artFiles = (S.snap?.files || []).filter((f) => M.ART_IMG_RE.test(f) && !inLib.has(f));
   $('#main').innerHTML = `
   <div class="split">

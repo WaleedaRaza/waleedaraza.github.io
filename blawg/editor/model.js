@@ -10,7 +10,8 @@ export const AUTHORS = ['waleed', 'claude', 'warb'];
 export const ID_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const IMG_RE = /^blawg\/img\/[a-z0-9]+(?:-[a-z0-9]+)*\.(jpg|png)$/;
 export const ART_IMG_RE = /^blawg\/art\/[a-z0-9]+(?:-[a-z0-9]+)*\.(jpg|png)$/;
-export const ASCII_RE = /^assets\/ascii\/[a-z0-9]+(?:-[a-z0-9]+)*\.js$/;
+export const ASCII_RE = /^assets\/ascii\/[a-z0-9]+(?:-[a-z0-9]+)*\.js(?:#[A-Za-z0-9._-]+)?$/;
+export const ART_ID_RE = /^[A-Za-z0-9][A-Za-z0-9._-]*$/; // art ids follow the ascii catalog (e.g. "Tree.oak")
 export const MAX_IMG_BYTES = 400 * 1024;
 
 export const PATHS = {
@@ -177,7 +178,7 @@ export function applyOp(doc, op, files = {}) {
   }
   if (!['create', 'update', 'delete'].includes(op.op)) return { errors: [`bad op "${op.op}" (create, update, delete or assign)`], cascaded };
   if (!['piece', 'connection', 'art'].includes(kind)) return { errors: [`bad kind "${kind}" (piece, connection or art)`], cascaded };
-  if (typeof op.id !== 'string' || !ID_RE.test(op.id)) errors.push(`bad id "${op.id}" (lowercase slug a-z 0-9 -)`);
+  if (typeof op.id !== 'string' || !(kind === 'art' ? ART_ID_RE : ID_RE).test(op.id)) errors.push(kind === 'art' ? `bad art id "${op.id}"` : `bad id "${op.id}" (lowercase slug a-z 0-9 -)`);
   if (op.op !== 'delete' && (typeof op.set !== 'object' || op.set === null || Array.isArray(op.set))) errors.push('missing "set" object');
   if (errors.length) return { errors, cascaded };
 
@@ -243,7 +244,7 @@ export function applyOp(doc, op, files = {}) {
     const k = set.kind ?? have?.kind;
     if (!['ascii', 'img'].includes(k)) errors.push(`bad art kind "${k}" (ascii or img)`);
     const src = set.src ?? have?.src;
-    if (k === 'ascii' && !ASCII_RE.test(String(src))) errors.push(`bad ascii src "${src}" (assets/ascii/<plain-name>.js)`);
+    if (k === 'ascii' && !ASCII_RE.test(String(src))) errors.push(`bad ascii src "${src}" (assets/ascii/<plain-name>.js, optional #Export.key)`);
     if (k === 'img' && !ART_IMG_RE.test(String(src))) errors.push(`bad art filename "${src}" (blawg/art/<plain-name>.jpg|png)`);
     if (k === 'img' && 'src' in set && !files[src] && !(doc._knownFiles || []).includes(src)) errors.push(`art file "${src}" is not in the repo or this changeset`);
     if (errors.length) return { errors, cascaded };
@@ -377,7 +378,8 @@ export function summarize(entries, fileCount = 0) {
 }
 
 // ---------- public / private split ----------
-function arrLines(arr) { return arr.length ? '[\n' + arr.map((o) => '  ' + JSON.stringify(o)).join(',\n') + '\n]\n' : '[]\n'; }
+// Same layout as the reader's data files (python json.dumps(indent=1, ensure_ascii=False) + newline), so diffs stay small.
+const fmt = (x) => JSON.stringify(x, null, 1) + '\n';
 
 export function serialize(doc) {
   const pub = doc.pieces.filter(isPublicPiece);
@@ -401,10 +403,10 @@ export function serialize(doc) {
   const draftConns = doc.connections.filter((c) => c.state === 'draft').map((c) => ({ id: c.id, ends: [...c.ends], text: c.text, label: c.label, state: 'draft' }));
   return {
     text: {
-      [PATHS.pieces]: arrLines(pieces),
-      [PATHS.connections]: arrLines(connections),
-      [PATHS.art]: JSON.stringify(art, null, 2) + '\n',
-      [PATHS.groups]: arrLines(groups),
+      [PATHS.pieces]: fmt(pieces),
+      [PATHS.connections]: fmt(connections),
+      [PATHS.art]: fmt(art),
+      [PATHS.groups]: fmt(groups),
     },
     md,
     drafts: { pieces: draftPieces, connections: draftConns },

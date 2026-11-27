@@ -18,7 +18,8 @@ class MockRepo {
         if (fs.statSync(p).isDirectory()) walk(p, r); else files[r] = fs.readFileSync(p);
       }
     };
-    if (fixtureDir) walk(fixtureDir);
+    // fixtureDir: a directory, or a list of [directory, path prefix] pairs
+    if (Array.isArray(fixtureDir)) for (const [d, pre] of fixtureDir) walk(d, pre); else if (fixtureDir) walk(fixtureDir);
     const c = this.commitFiles(files, [], 'fixture');
     this.refs.set('main', c);
   }
