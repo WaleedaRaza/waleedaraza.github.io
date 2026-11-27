@@ -1,4 +1,4 @@
-/* Layout checks: 6 window sizes x 5 layouts, real mouse clicks. Every tile inside the hexagonal universe and off the stage,
+/* Layout checks: 6 window sizes x 6 layouts, real mouse clicks. Every tile inside the hexagonal universe and off the stage,
    no zooming out past the whole board, no panning out of it, the choice remembered. node tests/app/layout.js <url> [shotdir] */
 const { chromium } = require('playwright');
 const URL = process.argv[2], out = process.argv[3] || ''; const fails = [];
@@ -9,18 +9,18 @@ function ok(c, m) { if (!c) fails.push(m); }
     const pg = await b.newPage({ viewport: { width: w, height: h } }); const errs = []; pg.on('pageerror', e => errs.push(e.message));
     await pg.goto(URL); await pg.waitForTimeout(1200);
     const def = await pg.$eval('.lays .lb.on', e => e.dataset.lay); ok(def === (w <= 820 ? 'top' : 'left'), `${w}: default ${def}`);
-    for (const m of ['left', 'top', 'right', 'bottom', 'circle']) {
+    for (const m of ['left', 'top', 'right', 'bottom', 'L', 'circle']) {
       const btn = await pg.$(`.lays .lb[data-lay="${m}"]`); await btn.scrollIntoViewIfNeeded(); const bb = await btn.boundingBox();
       ok(bb && bb.x >= 0 && bb.x + bb.width <= w + 1, `${w} ${m}: button off screen ${JSON.stringify(bb)}`);
       await pg.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2); await pg.waitForTimeout(700);
       const on = await pg.$eval('.lays .lb.on', e => e.dataset.lay); ok(on === m, `${w} ${m}: active ${on}`);
       // every tile inside the universe, none overlapping the stage
       const geo = await pg.evaluate(() => { const t = [...document.querySelectorAll('#world .t, #world .gh')].map(e => { const m = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(e.getAttribute('transform')); return [+m[1], +m[2]]; });
-        const up = document.querySelector('#unic polygon').getAttribute('points').split(' ').map(p => p.split(',').map(Number)); return { t, up }; });
+        const up = document.querySelector('#unic polygon').getAttribute('points').split(' ').map(p => p.split(',').map(Number)); const sk = +(/scale\(([\d.]+)\)/.exec(document.querySelector('#world > g[transform^="scale"]').getAttribute('transform')) || [0, 1])[1]; return { t, up, sk }; });
       const xs = geo.up.map(p => p[0]), ys = geo.up.map(p => p[1]); const ux = (Math.min(...xs) + Math.max(...xs)) / 2, uy = (Math.min(...ys) + Math.max(...ys)) / 2, rho = (Math.max(...ys) - Math.min(...ys)) / 2;
       const outside = geo.t.filter(([x, y]) => { const ax = Math.abs(x - ux), ay = Math.abs(y - uy); return ax > rho * Math.sqrt(3) / 2 || ay + ax / Math.sqrt(3) > rho; }).length;
       ok(outside === 0, `${w} ${m}: ${outside} tiles outside universe`);
-      const inStage = geo.t.filter(([x, y]) => Math.abs(x) < 9 * 152.42 + 80 && y > -12 * 132 - 88 && y < 11 * 132 + 88).length; ok(inStage === 0, `${w} ${m}: ${inStage} tiles on stage`);
+      const k = geo.sk, inStage = geo.t.filter(([x, y]) => Math.abs(x) < (9 * 152.42 + 76) * k + 70 && y > (-12 * 132 - 88) * k - 70 && y < (11 * 132 + 88) * k + 70).length; ok(inStage === 0, `${w} ${m}: ${inStage} tiles on stage`);
       if (out && (w === 1440 || w === 390)) await pg.screenshot({ path: `${out}/${m}-${w}.png` });
     }
     // whole board, then try to zoom further out and pan away

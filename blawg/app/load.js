@@ -1,6 +1,7 @@
 /* Blawg loader: reads blawg/data/*.json, lays the board out, then starts the board.
-   Layout modes: 'left' (default), 'top', 'right', 'bottom' put the 12 group hexagons in one block, tiled edge to edge
-   like a honeycomb, beside the centre stage; 'circle' is the older ring around the stage.
+   Layout modes: 'left' (default) and 'right' put the 12 group hexagons in two long columns beside the centre stage;
+   'top' and 'bottom' in two long rows; 'L' in a column down the left and a row along the bottom; 'circle' is the
+   older ring. Groups join edge to edge. In the block layouts the stage is drawn larger so it matches the block.
    Every group is a full hexagon (37 cells; all the same size so they tile); the group's own tile sits at its centre and
    pieces fill it A to Z, ring by ring, clockwise from the top. The whole board sits inside one pointy-top hexagon. */
 (function () {
@@ -14,7 +15,12 @@
   /* the centre stage's cells (same numbers as the board script) */
   var ST = 12, SC = 11, SXM = 9 * S3 * L + 1, STAGE = {}, STAGEC = [];
   for (var r0 = -ST; r0 <= SC; r0++) for (var q0 = -40; q0 <= 40; q0++) if (Math.abs(px(q0, r0)[0]) <= SXM) { STAGE[q0 + ',' + r0] = 1; STAGEC.push([q0, r0]); }
-  var MODES = ['left', 'top', 'right', 'bottom', 'circle'];
+  var SW0 = 2 * (SXM + S3 * L / 2), SY0 = -ST * 1.5 * L - L, SY1 = SC * 1.5 * L + L, SH0 = SY1 - SY0, SCY0 = (SY0 + SY1) / 2, SK = 1, STAGE0 = STAGE;
+  /* the stage can be drawn larger than the board's cells (scale SK); these are the board cells it covers */
+  function stageSet(K) { if (K === 1) { STAGE = STAGE0; return; } STAGE = {}; var R = Math.ceil(K) + 1, lim = (K + 1) * L * .9;
+    STAGEC.forEach(function (c) { var p = px(c[0], c[1]), x = p[0] * K, y = p[1] * K, tr = Math.round(y / (1.5 * L)), tq = Math.round(x / (S3 * L) - tr / 2);
+      for (var dq = -R; dq <= R; dq++) for (var dr = -R; dr <= R; dr++) { var q = tq + dq, r = tr + dr, pp = px(q, r); if (Math.hypot(pp[0] - x, pp[1] - y) < lim) STAGE[q + ',' + r] = 1; } }); }
+  var MODES = ['left', 'top', 'right', 'bottom', 'L', 'circle'];
   function get(name) { return fetch('data/' + name, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(name + ' ' + r.status); return r.json(); }); }
 
   function layout(groups, pieces, conns, art, mode) {
@@ -26,6 +32,7 @@
     var counts = groups.map(function (g) { return shown.filter(function (p) { return p.group === g.id; }).length; });
     function rkFor(n) { var rk = 2; while (1 + 3 * rk * (rk + 1) < n + 1) rk++; return rk; }
     var centres = [], rks = [];
+    SK = 1; stageSet(1);
     if (mode === 'circle') {
       /* the ring: 12 points around the stage, starting at the top, clockwise */
       var slots = []; for (var d = 0; d < 6; d++) { var a = DIRS[d], b = DIRS[(d + 1) % 6]; slots.push([RING * a[0], RING * a[1]]); slots.push([RING / 2 * (a[0] + b[0]), RING / 2 * (a[1] + b[1])]); }
@@ -33,22 +40,42 @@
       slots.sort(function (x, y) { return ang(x) - ang(y); });
       groups.forEach(function (g, k) { centres.push(slots[k % slots.length]); rks.push(rkFor(counts[k])); });
     } else {
-      /* one block: hexagons of radius k tile the plane on the lattice A=(2k+1,-k), B=(k,k+1).
-         Columns step by C=B-A (straight down); odd columns sit half a step lower, so neighbours share whole edges. */
+      /* one block of hexagons of radius k, joined edge to edge.
+         A straight column steps (-k,2k+1),(-(k+1),2k+1) in turn; the second column sits at (k+1,k) from the first.
+         A straight row steps (2k+1,-k),(k+1,k) in turn; the second row sits at (-(k+1),2k+1) from the first. */
       var k = 3; counts.forEach(function (n) { k = Math.max(k, rkFor(n)); });
-      var A2 = [2 * k + 1, -k], B2 = [k, k + 1], C2 = [B2[0] - A2[0], B2[1] - A2[1]], H2 = [A2[0] + B2[0], A2[1] + B2[1]];
-      var cols = 4, rows = Math.ceil(groups.length / cols);
-      groups.forEach(function (g, n) { var j = Math.floor(n / cols), i = n % cols, h2 = Math.floor(i / 2), o = i % 2;
-        centres.push([h2 * H2[0] + o * B2[0] + j * C2[0], h2 * H2[1] + o * B2[1] + j * C2[1]]); rks.push(k); });
+      var V1 = [-k, 2 * k + 1], V2 = [-(k + 1), 2 * k + 1], VO = [k + 1, k], H1 = [2 * k + 1, -k], H2 = [k + 1, k], HO = [-(k + 1), 2 * k + 1];
+      function chain(st, n, s1, s2) { var o = [st]; for (var j = 1; j < n; j++) { var sx = (j - 1) % 2 ? s2 : s1, l = o[o.length - 1]; o.push([l[0] + sx[0], l[1] + sx[1]]); } return o; }
+      function shift(arr, v) { return arr.map(function (c) { return [c[0] + v[0], c[1] + v[1]]; }); }
+      var N = groups.length, half = Math.ceil(N / 2);
+      if (mode === 'left' || mode === 'right') { var c0 = chain([0, 0], half, V1, V2); centres = c0.concat(shift(c0, VO)).slice(0, N); }
+      else if (mode === 'top' || mode === 'bottom') { var r0 = chain([0, 0], half, H1, H2); centres = r0.concat(shift(r0, HO)).slice(0, N); }
+      else { /* L: a column down the left, then a row along the bottom from its corner */
+        var arm = chain([0, 0], half, V1, V2), corner = arm[arm.length - 1], best = null;
+        [[H1, H2], [H2, H1]].forEach(function (o2) { var row = chain(corner, N - half + 1, o2[0], o2[1]).slice(1), okk = row.every(function (c) { return arm.every(function (a2) { return dist(c[0] - a2[0], c[1] - a2[1]) >= 2 * k + 1; }); });
+          var lowest = Math.min.apply(null, row.map(function (c) { return c[1]; }));
+          if (okk && (!best || lowest > best.lowest)) best = { row: row, lowest: lowest }; });
+        centres = arm.concat(best.row); }
+      groups.forEach(function () { rks.push(k); });
       var all = []; centres.forEach(function (c) { for (var d1 = 0; d1 <= k; d1++) all = all.concat(ring(c, d1)); });
-      /* slide the block toward the stage from far away; stop one free cell short of touching it */
+      var bx = [1e9, 1e9, -1e9, -1e9]; all.forEach(function (c) { var p = px(c[0], c[1]); bx[0] = Math.min(bx[0], p[0] - S3 * L / 2); bx[1] = Math.min(bx[1], p[1] - L); bx[2] = Math.max(bx[2], p[0] + S3 * L / 2); bx[3] = Math.max(bx[3], p[1] + L); });
       function clash(tq, tr) { for (var m = 0; m < all.length; m++) { var q1 = all[m][0] + tq, r1 = all[m][1] + tr; if (STAGE[q1 + ',' + r1]) return true;
         for (var e = 0; e < 6; e++) if (STAGE[(q1 + DIRS[e][0]) + ',' + (r1 + DIRS[e][1])]) return true; } return false; }
-      var bx = [1e9, 1e9, -1e9, -1e9]; all.forEach(function (c) { var p = px(c[0], c[1]); bx[0] = Math.min(bx[0], p[0]); bx[1] = Math.min(bx[1], p[1]); bx[2] = Math.max(bx[2], p[0]); bx[3] = Math.max(bx[3], p[1]); });
-      var bcx = (bx[0] + bx[2]) / 2, bcy = (bx[1] + bx[3]) / 2, scy = ((-ST + SC) / 2) * 1.5 * L;
-      function at2(x, y) { var tr = Math.round((y - bcy) / (1.5 * L)); return [Math.round((x - bcx) / (S3 * L) - tr / 2), tr]; }
-      var side = mode === 'left' || mode === 'right', sgn = mode === 'left' || mode === 'top' ? -1 : 1, t = 40 * L * 1.5, tt = null;
-      for (; t > 0; t -= L * .75) { var tx = side ? sgn * t : 0, ty = side ? scy : scy + sgn * t, cand = at2(tx, ty); if (clash(cand[0], cand[1])) break; tt = cand; }
+      function at2(x, y) { var tr = Math.round(y / (1.5 * L)); return [Math.round(x / (S3 * L) - tr / 2), tr]; }
+      var tt = null;
+      if (mode === 'L') {
+        /* the stage fills the corner the L wraps: right of the column, above the row */
+        var armX = -1e9, armY0 = 1e9, rowX = -1e9, rowY = 1e9; centres.forEach(function (c, n) { for (var d3 = 0; d3 <= k; d3++) ring(c, d3).forEach(function (cc) { var p = px(cc[0], cc[1]);
+          if (n < half - 1) { armX = Math.max(armX, p[0] + S3 * L / 2); armY0 = Math.min(armY0, p[1] - L); } if (n >= half) { rowX = Math.max(rowX, p[0] + S3 * L / 2); rowY = Math.min(rowY, p[1] - L); } }); });
+        var gap = S3 * L * 1.5, rw = rowX - armX - gap, rh = rowY - armY0 - gap;
+        SK = Math.max(.6, Math.min(2.4, Math.min(rw / SW0, rh / SH0)));
+        for (var tries = 0; tries < 40; tries++) { stageSet(SK); var cx = (armX + gap / 2 + rowX) / 2, cy = (armY0 + rowY - gap / 2) / 2; tt = at2(0 - cx, SK * SCY0 - cy); if (!clash(tt[0], tt[1])) break; SK *= .97; }
+      } else {
+        var side = mode === 'left' || mode === 'right', sgn = mode === 'left' || mode === 'top' ? -1 : 1;
+        SK = Math.max(1, Math.min(2.4, side ? (bx[3] - bx[1]) / SH0 : (bx[2] - bx[0]) / SW0)); stageSet(SK);
+        var bcx = (bx[0] + bx[2]) / 2, bcy = (bx[1] + bx[3]) / 2;
+        for (var t = 60 * L * 1.5; t > 0; t -= L * .75) { var tx = side ? sgn * t : 0, ty = side ? SK * SCY0 : SK * SCY0 + sgn * t, cand = at2(tx - bcx, ty - bcy); if (clash(cand[0], cand[1])) break; tt = cand; }
+      }
       centres = centres.map(function (c) { return [c[0] + tt[0], c[1] + tt[1]]; });
     }
     var out_g = [], out_p = [], maxd = 0, at = {}, used = [];
@@ -63,11 +90,13 @@
       out_g.push({ id: g.id, name: g.name, order: g.order, n: mine.length, q: c[0], r: c[1], rk: rk, cells: [c].concat(cells), empty: order.slice(mine.length), accent: g.accent, art: g.art || null });
     });
     /* the universe: the smallest pointy-top hexagon around every cell (corners included), centred on the board's contents */
-    var cb = [1e9, 1e9, -1e9, -1e9]; used.concat(STAGEC).forEach(function (c) { var p = px(c[0], c[1]); cb[0] = Math.min(cb[0], p[0] - S3 * L / 2); cb[1] = Math.min(cb[1], p[1] - L); cb[2] = Math.max(cb[2], p[0] + S3 * L / 2); cb[3] = Math.max(cb[3], p[1] + L); });
+    var pts = []; used.forEach(function (c) { pts.push([px(c[0], c[1]), L]); }); STAGEC.forEach(function (c) { var p = px(c[0], c[1]); pts.push([[p[0] * SK, p[1] * SK], L * SK]); });
+    var cb = [1e9, 1e9, -1e9, -1e9]; pts.forEach(function (o) { var p = o[0], R = o[1]; cb[0] = Math.min(cb[0], p[0] - S3 * R / 2); cb[1] = Math.min(cb[1], p[1] - R); cb[2] = Math.max(cb[2], p[0] + S3 * R / 2); cb[3] = Math.max(cb[3], p[1] + R); });
     var ux = (cb[0] + cb[2]) / 2, uy = (cb[1] + cb[3]) / 2, rho = 0;
-    used.concat(STAGEC).forEach(function (c) { var p = px(c[0], c[1]); for (var v = 0; v < 6; v++) { var an = v * Math.PI / 3 - Math.PI / 6, x = Math.abs(p[0] + L * Math.cos(an) - ux), y = Math.abs(p[1] + L * Math.sin(an) - uy);
+    pts.forEach(function (o) { var p = o[0], R = o[1]; for (var v = 0; v < 6; v++) { var an = v * Math.PI / 3 - Math.PI / 6, x = Math.abs(p[0] + R * Math.cos(an) - ux), y = Math.abs(p[1] + R * Math.sin(an) - uy);
       rho = Math.max(rho, x * 2 / S3, y + x / S3); } });
-    rho += L * 1.2;
+    rho += L * 7;   /* a wide margin of open grid all round */
+    var cover = Object.keys(STAGE);
     var A = art || { assign: { piece: {}, type: {}, group: {} }, gallery: [] }, as = A.assign || {};
     function artFor(p) { var x = (as.piece || {})[p.id] || p.art; if (x && x.length) return x[0]; if (p.type && (as.type || {})[p.type]) return as.type[p.type]; if ((as.group || {})[p.group]) return as.group[p.group]; return null; }
     var IX = {};
@@ -77,7 +106,7 @@
     (conns || []).forEach(function (c) { if (c.state !== 'live' || !c.ends || c.ends.length < 2) return; var e = c.ends.filter(function (x) { return IX[x] !== undefined; });
       /* the board draws a connection between pairs; a 3-way link becomes a fan from its first end */
       for (var j = 1; j < e.length; j++) out_b.push({ id: c.id + (e.length > 2 ? '.' + j : ''), a: IX[e[0]], b: IX[e[j]], text: c.text || '', label: c.label || '', q: c.quotes || null, sample: false, named: true }); });
-    return { L: L, mode: mode, maxd: maxd, uni: { x: ux, y: uy, rho: rho }, content: cb, groups: out_g, pieces: out_p, bridges: out_b, types: ['Principle', 'Question', 'Stance', 'Case study', 'Reaction', 'Log', 'Note', 'Door'], kinds: [], gallery: A.gallery || [] };
+    return { L: L, mode: mode, stageK: SK, stageCover: cover, maxd: maxd, uni: { x: ux, y: uy, rho: rho }, content: cb, groups: out_g, pieces: out_p, bridges: out_b, types: ['Principle', 'Question', 'Stance', 'Case study', 'Reaction', 'Log', 'Note', 'Door'], kinds: [], gallery: A.gallery || [] };
   }
   window.BlawgLayout = layout; window.BlawgModes = MODES;
   Promise.all([get('groups.json'), get('pieces.json'), get('connections.json'), get('art.json').catch(function () { return null; })]).then(function (r) {

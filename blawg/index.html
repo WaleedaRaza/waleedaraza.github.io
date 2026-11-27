@@ -725,8 +725,8 @@ window.BLAWG_START = function (DATA) {
   function hdist(q, r) { return Math.max(Math.abs(q), Math.abs(r), Math.abs(q + r)); }
   function hexPts(R, cx, cy) { var a = []; for (var i = 0; i < 6; i++) a.push(((cx || 0) + R * Math.cos(i * Math.PI / 3 - Math.PI / 6)).toFixed(1) + ',' + ((cy || 0) + R * Math.sin(i * Math.PI / 3 - Math.PI / 6)).toFixed(1)); return a.join(' '); }
   /* positions come from the layout (load.js); a layout switch re-runs it and moves everything in place */
-  var LAYOUT = DATA.mode || 'left', UNI, CB, UB;
-  function setPos(D) { LAYOUT = D.mode || LAYOUT; UNI = D.uni; CB = D.content; var hw = UNI.rho * S3 / 2; UB = [UNI.x - hw, UNI.y - UNI.rho, UNI.x + hw, UNI.y + UNI.rho];
+  var LAYOUT = DATA.mode || 'left', UNI, CB, UB, SK = 1, STCOVER = {};
+  function setPos(D) { LAYOUT = D.mode || LAYOUT; UNI = D.uni; SK = D.stageK || 1; STCOVER = {}; (D.stageCover || []).forEach(function (k) { STCOVER[k] = 1; }); CB = D.content; var hw = UNI.rho * S3 / 2; UB = [UNI.x - hw, UNI.y - UNI.rho, UNI.x + hw, UNI.y + UNI.rho];
     P.forEach(function (p, i) { var o = D.pieces[i]; p.q = o.q; p.r = o.r; var c = px(p.q, p.r); p.x = c[0]; p.y = c[1]; });
     G.forEach(function (g, k) { var o = D.groups[k]; g.q = o.q; g.r = o.r; g.cells = o.cells; g.empty = o.empty; g.rk = o.rk; var c = px(g.q, g.r); g.x = c[0]; g.y = c[1]; g.mx = g.x; g.my = g.y; }); }
   setPos(DATA);
@@ -837,13 +837,15 @@ window.BLAWG_START = function (DATA) {
     G.forEach(function (g) { g.cells.concat(g.empty).forEach(function (c) { used[c[0] + ',' + c[1]] = 1; }); });
     var r0 = Math.floor((UNI.y - UNI.rho) / (1.5 * L)) - 1, r1 = Math.ceil((UNI.y + UNI.rho) / (1.5 * L)) + 1;
     for (var r = r0; r <= r1; r++) { var y = r * 1.5 * L, q0 = Math.floor((UNI.x - hw) / S3L - r / 2) - 1, q1 = Math.ceil((UNI.x + hw) / S3L - r / 2) + 1;
-      for (var q = q0; q <= q1; q++) { var c = px(q, r), ax = Math.abs(c[0] - UNI.x), ay = Math.abs(y - UNI.y); if (ax > hw + S3L || ay + ax / S3 > UNI.rho + L * 1.2) continue; if (used[q + ',' + r] || FCK[q + ',' + r]) continue; d.push('M' + hexPts(L, c[0], c[1]).split(' ').join('L') + 'Z'); } }
+      for (var q = q0; q <= q1; q++) { var c = px(q, r), ax = Math.abs(c[0] - UNI.x), ay = Math.abs(y - UNI.y); if (ax > hw + S3L || ay + ax / S3 > UNI.rho + L * 1.2) continue; if (used[q + ',' + r] || STCOVER[q + ',' + r]) continue; d.push('M' + hexPts(L, c[0], c[1]).split(' ').join('L') + 'Z'); } }
     gC.appendChild(s('path', { class: 'bgc', d: d.join(''), 'clip-path': 'url(#unic)' }));
     G.forEach(function (g) { g.out.setAttribute('d', edgePath(g.cells.concat(g.empty), function (c) { return c[0] + ',' + c[1]; }, function (c) { return px(c[0], c[1]); }, L)); gC.appendChild(g.out);
       g.empty.forEach(function (c) { var o = px(c[0], c[1]); gC.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); }); });
     gC.appendChild(s('polygon', { class: 'uni', points: up.join(' ') }));
     P.forEach(function (p) { p.el.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')'); });
-    G.forEach(function (g) { g.el.setAttribute('transform', 'translate(' + g.x.toFixed(1) + ' ' + g.y.toFixed(1) + ')'); }); }
+    G.forEach(function (g) { g.el.setAttribute('transform', 'translate(' + g.x.toFixed(1) + ' ' + g.y.toFixed(1) + ')'); });
+    /* the stage is drawn at scale SK (larger cells, text and TV together); its line cut-outs follow it */
+    gSt.setAttribute('transform', 'scale(' + SK + ')'); $('stcut-p').setAttribute('transform', 'scale(' + SK + ')'); $('stin-p').setAttribute('transform', 'scale(' + SK + ')'); stageGeo(); }
   buildCells();
 
   /* ═════ round 8 ═════ */
@@ -863,7 +865,7 @@ window.BLAWG_START = function (DATA) {
     if (d === stageCut.last) return; stageCut.last = d; $('stcut-p').setAttribute('d', 'M-100000 -100000H100000V100000H-100000Z' + d); $('stin-p').setAttribute('d', d || 'M0 0'); }
   /* a line that would cross the stage swings around it instead, the short way round, hugging the stage's edge;
      a line that would not cross it is a gentle curve bending away from the centre */
-  var SCY = (STB[1] + STB[3]) / 2, SHX = SXM + S3L / 2 + 90, SHY = (STB[3] - STB[1]) / 2 + 90;
+  var SCY, SHX, SHY; function stageGeo() { SCY = SK * (STB[1] + STB[3]) / 2; SHX = SK * (SXM + S3L / 2) + 90; SHY = SK * (STB[3] - STB[1]) / 2 + 90; } stageGeo();
   function edgeR(th) { var c = Math.abs(Math.cos(th)) / SHX, sn = Math.abs(Math.sin(th)) / SHY; return 1 / Math.pow(Math.pow(c, 4) + Math.pow(sn, 4), .25); }   /* a rounded box, so the swing is a smooth curve */
   function crosses(ax, ay, bx, by) { /* segment vs the padded stage box (Liang-Barsky) */
     var t0 = 0, t1 = 1, dx = bx - ax, dy = by - ay, p = [-dx, dx, -dy, dy], q = [ax + SHX, SHX - ax, ay + SHY, SHY - ay];
@@ -920,18 +922,18 @@ window.BLAWG_START = function (DATA) {
   function apply() {
     clampCam(); var r = board.getBoundingClientRect(), tx = r.width / 2 + cam.x, ty = r.height / 2 + cam.y;
     world.setAttribute('transform', 'translate(' + tx + ' ' + ty + ') scale(' + cam.z + ')');
-    $('ov').style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + cam.z + ')'; world2.setAttribute('transform', 'translate(' + tx + ' ' + ty + ') scale(' + cam.z + ')');
+    $('ov').style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + cam.z * SK + ')'; world2.setAttribute('transform', 'translate(' + tx + ' ' + ty + ') scale(' + cam.z + ')');
     var far = cam.z < .3; svg.classList.toggle('far', far); world.style.setProperty('--sk', Math.max(5, 1.4 / cam.z).toFixed(1));
     var hz = homeZ(); if (hz > 0) { var fs = Math.round(60 * Math.min(PHONE ? 1.7 : 3, Math.max(1, .36 / hz))) + 'px'; if ($('textbox').style.fontSize !== fs) { $('textbox').style.fontSize = fs; fitHead(); } }
     if (cam.z !== LZ) { LZ = cam.z; world.querySelectorAll('.lndot').forEach(function (d) { d.setAttribute('r', (d.getAttribute('data-r') / cam.z).toFixed(2)); }); }
     G.forEach(function (g) { g.far.setAttribute('transform', 'scale(' + (far ? (r.width < 520 ? .58 : .8) / cam.z : 1) + ')'); });
     if (SEL && SEL.k === 'piece' && board.querySelector('.edgehint') && onScreen(P[SEL.id])) board.querySelectorAll('.edgehint').forEach(function (x) { x.remove(); });
   }
-  function homeZ() { var r = board.getBoundingClientRect(); if (!r.width || !r.height) return 0; return Math.min(r.width / (STB[2] - STB[0] + 32), r.height / (STB[3] - STB[1] + 32), 1); }
+  function homeZ() { var r = board.getBoundingClientRect(); if (!r.width || !r.height) return 0; return Math.min(r.width / (SK * (STB[2] - STB[0]) + 32), r.height / (SK * (STB[3] - STB[1]) + 32), 1) * SK; }   /* in the stage's own units */
   function fit(b, pad, maxz) { var r = board.getBoundingClientRect(), w = b[2] - b[0] + pad * 2, hh = b[3] - b[1] + pad * 2, z = Math.min(r.width / w, r.height / hh, maxz || 1.6); return { z: z, x: -(b[0] + b[2]) / 2 * z, y: -(b[1] + b[3]) / 2 * z }; }
   var anim = null;
   function fly(to) { cancelAnimationFrame(anim); if (matchMedia('(prefers-reduced-motion: reduce)').matches) { cam = to; apply(); return; } var from = { x: cam.x, y: cam.y, z: cam.z }, t0 = performance.now(); (function step(t) { var k = Math.min(1, (t - t0) / 420), e = 1 - Math.pow(1 - k, 3); cam = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, z: from.z + (to.z - from.z) * e }; apply(); if (k < 1) anim = requestAnimationFrame(step); })(t0); }
-  function home() { fly(fit(STB, 16, 1)); }
+  function home() { fly(fit(STB.map(function (v) { return v * SK; }), 16, 1)); }
   function zmin() { var r = board.getBoundingClientRect(); return r.width ? fit(UB, 20, 1).z : .05; }   /* never further out than the whole universe */
   function whole() { fly(fit(UB, 20, 1)); }
   function startCam() { return fit(CB, 24, 1); }
@@ -966,7 +968,7 @@ window.BLAWG_START = function (DATA) {
     if (!CAT || !CAT.get(key)) return;
     var W0 = TVR.x1 - TVR.x0, H0 = TVR.y1 - TVR.y0, old = live;
     /* draw the art at about the size it shows on screen, then scale the layer up: far fewer pixels to paint each frame */
-    var q = Math.min(1, Math.max(.4, (cam.z || 1) * (window.devicePixelRatio || 1) * 1.2)), lay = h('div', { class: 'artl' }); lay.style.width = Math.floor(W0 * q) + 'px'; lay.style.transformOrigin = '0 0'; lay.style.transform = 'scale(' + (1 / q).toFixed(4) + ')'; $('artin').appendChild(lay);
+    var q = Math.min(1, Math.max(.4, (cam.z || 1) * SK * (window.devicePixelRatio || 1) * 1.2)), lay = h('div', { class: 'artl' }); lay.style.width = Math.floor(W0 * q) + 'px'; lay.style.transformOrigin = '0 0'; lay.style.transform = 'scale(' + (1 / q).toFixed(4) + ')'; $('artin').appendChild(lay);
     var me = live = { key: key, tree: /^Tree\./.test(key), lay: lay };
     CAT.mount(key, '../assets/ascii/').then(function (m) {
       if (live !== me) { lay.remove(); return; } me.el = m.el; lay.appendChild(m.el); me.sc = m.start();
@@ -1160,12 +1162,13 @@ window.BLAWG_START = function (DATA) {
     [['−', 'Zoom out', zOut], ['+', 'Zoom in', zIn], ['⤢', 'Whole board', whole], ['⬡', 'Centre stage', home]].forEach(function (x) { var b = h('button', { class: 'ib', title: x[1], 'aria-label': x[1], text: x[0] }); b.onclick = x[2]; r.appendChild(b); });
     r.appendChild(layRow()); return r; }
   /* layout switch: where the block of groups sits next to the stage */
-  var LAYS = [['left', 'Groups on the left'], ['top', 'Groups on top'], ['right', 'Groups on the right'], ['bottom', 'Groups below'], ['circle', 'Groups in a circle around the stage']];
+  var LAYS = [['left', 'Groups on the left'], ['top', 'Groups on top'], ['right', 'Groups on the right'], ['bottom', 'Groups below'], ['L', 'Groups in an L around the stage'], ['circle', 'Groups in a circle around the stage']];
   function layIcon(m) { var sv = document.createElementNS(NS, 'svg'); sv.setAttribute('viewBox', '0 0 24 24');
     function hx(cx, cy, R) { sv.appendChild(s('polygon', { class: 'lh', points: hexPts(R, cx, cy) })); }
     if (m === 'circle') { sv.appendChild(s('rect', { class: 'ls', x: 9, y: 9, width: 6, height: 6 })); for (var i = 0; i < 6; i++) { var a = i * Math.PI / 3 - Math.PI / 2; hx(12 + 8.6 * Math.cos(a), 12 + 8.6 * Math.sin(a), 2.6); } return sv; }
-    var st = { left: [13, 5, 9, 14], right: [2, 5, 9, 14], top: [6, 13, 12, 9], bottom: [6, 2, 12, 9] }[m], hc = { left: [6, 12], right: [18, 12], top: [12, 6], bottom: [12, 18] }[m];
-    sv.appendChild(s('rect', { class: 'ls', x: st[0], y: st[1], width: st[2], height: st[3] })); hx(hc[0], hc[1], 4.6); return sv; }
+    if (m === 'L') { sv.appendChild(s('rect', { class: 'ls', x: 10, y: 3, width: 11, height: 12 })); [[5, 5], [5, 11.5], [5, 18], [11.5, 20], [18, 20]].forEach(function (c) { hx(c[0], c[1], 2.9); }); return sv; }
+    var st = { left: [12, 3, 10, 18], right: [2, 3, 10, 18], top: [3, 12, 18, 10], bottom: [3, 2, 18, 10] }[m], hc = { left: [[4.5, 7], [8.5, 9.5], [4.5, 13], [8.5, 15.5]], right: [[15.5, 7], [19.5, 9.5], [15.5, 13], [19.5, 15.5]], top: [[6, 4.5], [10, 7.5], [14, 4.5], [18, 7.5]], bottom: [[6, 16.5], [10, 19.5], [14, 16.5], [18, 19.5]] }[m];
+    sv.appendChild(s('rect', { class: 'ls', x: st[0], y: st[1], width: st[2], height: st[3] })); hc.forEach(function (c) { hx(c[0], c[1], 2.4); }); return sv; }
   function layRow() { var w = h('span', { class: 'lays', role: 'group', 'aria-label': 'Layout' });
     LAYS.forEach(function (x) { var b = h('button', { class: 'lb' + (LAYOUT === x[0] ? ' on' : ''), title: 'Layout: ' + x[1], 'aria-label': 'Layout: ' + x[1], 'aria-pressed': LAYOUT === x[0] ? 'true' : 'false', 'data-lay': x[0] }); b.appendChild(layIcon(x[0])); b.onclick = function () { var hid = [].some.call(w.children, function (c) { return !c.offsetParent; });   /* narrow dock: only the current one shows, and it steps to the next */
       setLayout(hid && LAYOUT === x[0] ? LAYS[(LAYS.map(function (y) { return y[0]; }).indexOf(x[0]) + 1) % LAYS.length][0] : x[0]); }; if (LAYOUT === x[0]) b.title += ' (on)'; w.appendChild(b); });
