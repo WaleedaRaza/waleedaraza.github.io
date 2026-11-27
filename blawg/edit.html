@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Blawg editor</title>
+<link rel="stylesheet" href="editor/editor.css">
+</head>
+<body>
+<header id="top" hidden>
+  <div class="brand">blawg <span class="acc">/ edit</span></div>
+  <nav id="tabs">
+    <button data-view="pieces">pieces</button>
+    <button data-view="connections">connections</button>
+    <button data-view="art">art</button>
+    <button data-view="import">import</button>
+    <button data-view="publish">publish <span id="pending-count" class="badge">0</span></button>
+    <button data-view="settings">settings</button>
+  </nav>
+  <div class="who"><span id="branch-note"></span>
+    <button id="sign-out" class="ghost">sign out</button>
+  </div>
+</header>
+<div id="notice" role="status" hidden></div>
+<main id="main"></main>
+<div id="modal" hidden><div class="box"><div id="modal-body"></div><div id="modal-buttons" class="row"></div></div></div>
+<script type="module" src="editor/app.js"></script>
+</body>
+</html>
