@@ -1,0 +1,4 @@
+[
+  {"id":"alpha","name":"Test group alpha","order":1,"accent":"orange","art":null},
+  {"id":"beta","name":"Test group beta","order":2,"accent":"teal","art":null}
+]

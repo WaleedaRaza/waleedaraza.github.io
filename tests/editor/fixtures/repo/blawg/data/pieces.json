@@ -1,0 +1,5 @@
+[
+  {"id":"test-piece-a","title":"Test piece A","desc":"Fake live piece A for tests.","group":"alpha","type":"Note","state":"live","art":[],"img":null,"locked":false,"body":true},
+  {"id":"test-piece-b","title":"Test piece B","desc":"Fake live piece B for tests.","group":"beta","type":"Principle","state":"live","art":[],"img":null,"locked":false,"body":false},
+  {"id":"test-piece-c","title":"Test piece C","desc":"Fake seed piece C.","group":"alpha","type":null,"state":"seed","art":[],"img":null,"locked":false,"body":false}
+]
