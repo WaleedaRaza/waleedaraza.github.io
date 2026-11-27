@@ -630,7 +630,7 @@ function commitMessage(entries, nfiles) { return `blawg editor: publish (${M.sum
 
 function viewPublish() {
   const doc = work();
-  const entries = M.diff(S.base, doc);
+  const entries = M.diff(S.base, doc, workCache.results.flatMap((r) => r.cascaded));
   const nfiles = Object.keys(S.files).length;
   const target = S.secret.target;
   const isMain = target === 'main';

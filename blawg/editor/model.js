@@ -429,7 +429,7 @@ export function privacyCheck(files, doc, extraText = []) {
   const errs = [];
   for (const p of Object.keys(files)) {
     if (!pathAllowed(p)) errs.push(`refusing path outside blawg/: ${p}`);
-    else if (!plainName(p)) errs.push(`filename is not plain: ${p}`);
+    if (!p.startsWith('blawg/') || !plainName(p)) errs.push(`filename is not plain: ${p}`);
     if (/\.webp$/i.test(p)) errs.push(`.webp is not allowed: ${p}`);
     const f = files[p];
     if (f && typeof f === 'object' && f.bytes > MAX_IMG_BYTES) errs.push(`image over 400KB: ${p}`);
