@@ -63,7 +63,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .gh { cursor: pointer; }
 .gh .hx { fill: var(--gf); stroke: var(--gs); stroke-width: 2.5; }
 .t.hov .hx { stroke: #fff; stroke-width: 7; fill: #3a3a4c; }
-.hovmark { pointer-events: none; animation: hovp 1s ease-in-out infinite alternate; }
+.hovmark { pointer-events: none; } .hovmark.on { animation: hovp 1s ease-in-out infinite alternate; }   /* only pulses while it shows something */
 @keyframes hovp { from { opacity: 1; } to { opacity: .45; } }
 .t.hov { filter: drop-shadow(0 0 18px rgba(255,255,255,.35)); }
 .gh text { font-family: var(--display); font-weight: 600; fill: var(--ink); text-anchor: middle; pointer-events: none; }
@@ -371,7 +371,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 
 /* art: one layer per artwork, crossfaded; the box itself never blinks */
 #artbox { opacity: 1; background: #000; transform-origin: 50% 50%; transition: transform .55s cubic-bezier(.2,.7,.2,1); will-change: transform; }
-.artl { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .42s; }
+.artl { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .42s; will-change: transform; }   /* the art keeps its own drawing size; zooming scales the picture instead of redrawing every letter */
 .artl.on { opacity: 1; }
 .artl pre, .artl canvas { margin: 0; display: block; }
 .gtv { transition: transform .55s cubic-bezier(.2,.7,.2,1); }
@@ -443,12 +443,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 #dockpop { transform: none; width: min(380px, calc(100% - 16px)); }
 #dockpop .pane { padding: 4px 6px 10px; }
 
-/* phone: the same board on top, a library table under it, and the page scrolls */
-body.phone { overflow-x: hidden; overflow-y: auto; display: block; height: auto; }
-#main.phone { display: block; }
-#main.phone #boardwrap { height: 70vh; height: 70svh; border-bottom: 1px solid var(--line2); }
-#main.phone #side { width: auto !important; height: auto; border: 0; display: block; }
-#main.phone #sbody { display: block; overflow: visible; }
+/* phone: the board fills the screen; the library slides out from the right, from a floating button in the corner */
+#main.phone #boardwrap { flex: 1; height: auto; }
+#main.phone #side { position: fixed; top: 0; right: 0; bottom: 0; width: min(88vw, 400px) !important; height: auto; z-index: 30; border-left: 1px solid var(--line2); display: block; overflow-y: auto; -webkit-overflow-scrolling: touch; transform: translateX(104%); visibility: hidden; transition: transform .26s cubic-bezier(.3,.7,.2,1), visibility 0s .26s; }
+#main.phone.libon #side { transform: none; visibility: visible; transition: transform .26s cubic-bezier(.3,.7,.2,1); box-shadow: -18px 0 40px rgba(0,0,0,.6); }
+#main.phone #sbody { display: block; overflow: visible; padding-bottom: 90px; }
+#libbtn, #libscrim { display: none; }
+#main.phone #libbtn { display: inline-flex; position: fixed; right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 31; align-items: center; gap: 8px; height: 46px; padding: 0 18px; border: 1px solid var(--orange); background: rgba(10,6,4,.94); color: var(--orange); font: 600 13px/1 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 6px 24px rgba(0,0,0,.7); }
+#main.phone #libbtn span { font-size: 17px; }
+#main.phone.libon #libscrim { display: block; position: fixed; inset: 0; z-index: 29; background: rgba(0,0,0,.5); }
+#hint { flex: 1 1 260px; min-width: 0; color: var(--ink3); font: 11.5px/1.45 'JetBrains Mono', monospace; transition: opacity .6s, visibility .6s; }
+#hint b { color: var(--ink); font-weight: 600; }
+#hint.fade { opacity: 0; visibility: hidden; }
+body.phone #hint { flex-basis: 100%; font-size: 11px; }
+.ripple { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; border: 2px solid var(--orange); z-index: 6; pointer-events: none; animation: ripple .6s ease-out forwards; }
+@keyframes ripple { from { transform: scale(.4); opacity: 1; } to { transform: scale(4); opacity: 0; } }
 #main.phone #grip, #main.phone #dock, #main.phone #dockpop, #main.phone #float { display: none !important; }
 .lib { padding: 0 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
 .libh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 14px 16px 10px; }
@@ -685,9 +694,10 @@ g.slk { pointer-events: none; }
 <div id="bar">
   <span class="name">BLAWG</span>
   <input id="q" type="search" placeholder="find a piece" aria-label="Find a piece">
+  <div id="hint" class="ui" hidden><b>Double-click</b> a group to zoom in · <b>click</b> a tile to read · <b>scroll</b> or <b>pinch</b> to zoom · <b>drag</b> to move</div>
 </div>
 <div id="main" class="open">
-  <div id="boardwrap">
+  <div id="boardwrap"><button id="libbtn" class="ui" type="button" aria-expanded="false" aria-controls="side"><span>☰</span> Library</button><div id="libscrim"></div>
     <div id="board" aria-label="The board"><svg id="svg" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="hexclip"><polygon id="hexclip-p"></polygon></clipPath></defs><g id="world"></g></svg><div id="ov"><div id="artbox"><div id="artin"></div></div><div id="textbox"></div></div><svg id="svgtop" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="stcut" clipPathUnits="userSpaceOnUse"><path id="stcut-p" clip-rule="evenodd" d="M-100000 -100000H100000V100000H-100000Z"></path></clipPath><clipPath id="stin" clipPathUnits="userSpaceOnUse"><path id="stin-p" d="M0 0"></path></clipPath></defs><g id="world2"><g id="ghost" clip-path="url(#stin)"></g></g></svg></div>
     <div id="tip" hidden></div>
     <div id="dock" class="ui"></div><div id="dockpop" class="ui"></div><div id="float" class="ui"></div><div id="keypop" class="ui"></div>
@@ -938,7 +948,7 @@ window.BLAWG_START = function (DATA) {
   function homeZ() { var r = board.getBoundingClientRect(); if (!r.width || !r.height) return 0; return Math.min(r.width / (STB[2] - STB[0] + 32), r.height / (STB[3] - STB[1] + 32), 1); }
   function fit(b, pad, maxz) { var r = board.getBoundingClientRect(), w = b[2] - b[0] + pad * 2, hh = b[3] - b[1] + pad * 2, z = Math.min(r.width / w, r.height / hh, maxz || 1.6); return { z: z, x: -(b[0] + b[2]) / 2 * z, y: -(b[1] + b[3]) / 2 * z }; }
   var anim = null;
-  function fly(to) { cancelAnimationFrame(anim); if (matchMedia('(prefers-reduced-motion: reduce)').matches) { cam = to; apply(); return; } var from = { x: cam.x, y: cam.y, z: cam.z }, t0 = performance.now(); (function step(t) { var k = Math.min(1, (t - t0) / 420), e = 1 - Math.pow(1 - k, 3); cam = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, z: from.z + (to.z - from.z) * e }; apply(); if (k < 1) anim = requestAnimationFrame(step); })(t0); }
+  function fly(to, ms) { cancelAnimationFrame(anim); ms = ms || 420; if (matchMedia('(prefers-reduced-motion: reduce)').matches) { cam = to; apply(); return; } var from = { x: cam.x, y: cam.y, z: cam.z }, t0 = performance.now(); (function step(t) { var k = Math.min(1, (t - t0) / ms), e = ms > 600 ? (k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2) : 1 - Math.pow(1 - k, 3); cam = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, z: from.z + (to.z - from.z) * e }; apply(); if (k < 1) anim = requestAnimationFrame(step); })(t0); }
   function home() { fly(fit(STB, 16, 1)); }
   function zmin() { var r = board.getBoundingClientRect(); return r.width ? fit(UB, 20, 1).z : .05; }   /* never further out than the whole universe */
   function whole() { fly(fit(UB, 20, 1)); }
@@ -955,7 +965,18 @@ window.BLAWG_START = function (DATA) {
     if (ids.length === 1) { cam.x += e.clientX - prev[0]; cam.y += e.clientY - prev[1]; moved += Math.abs(e.clientX - prev[0]) + Math.abs(e.clientY - prev[1]); apply(); }
     else if (ids.length === 2) { var a = pts[ids[0]], b = pts[ids[1]], d = Math.hypot(a[0] - b[0], a[1] - b[1]), r = board.getBoundingClientRect(); if (pinch) zoomAt(d / pinch, (a[0] + b[0]) / 2 - r.left, (a[1] + b[1]) / 2 - r.top); pinch = d; moved = 99; }
   });
-  function up(e) { delete pts[e.pointerId]; pinch = 0; if (!Object.keys(pts).length) board.classList.remove('drag'); }
+  function up(e) { var was = !!pts[e.pointerId]; delete pts[e.pointerId]; pinch = 0; if (!Object.keys(pts).length) board.classList.remove('drag'); if (was && moved <= 6) tapped(e); }
+  /* double-click (or double-tap): on a group, zoom to that group; anywhere else on the board, zoom in there */
+  var LASTTAP = null;
+  function tapped(e) { var now = performance.now(), t = LASTTAP; LASTTAP = { t: now, x: e.clientX, y: e.clientY };
+    if (!t || now - t.t > 340 || Math.hypot(e.clientX - t.x, e.clientY - t.y) > 30) return; LASTTAP = null;
+    if (!document.contains(e.target) || e.target.closest('#textbox, button, .fc.btn, .fc.slk, .fc.chip')) return;
+    var r = board.getBoundingClientRect(), wx = (e.clientX - r.left - r.width / 2 - cam.x) / cam.z, wy = (e.clientY - r.top - r.height / 2 - cam.y) / cam.z;
+    var fr = wy / (1.5 * L), fq = wx / S3L - fr / 2, g = null; G.forEach(function (gg) { if (hdist(Math.round(fq - gg.q), Math.round(fr - gg.r)) <= gg.rk && (!g || hdist(fq - g.q, fr - g.r) > hdist(fq - gg.q, fr - gg.r))) g = gg; });
+    if (g) { zoomGroup(g); var te = e.target.closest('.t'); if (te) { var i = P.findIndex(function (p) { return p.el === te; }); if (i >= 0) select({ k: 'piece', id: i }); } else select({ k: 'group', id: g.id }); return; }
+    var nz = Math.min(2.6, cam.z * 2); fly({ z: nz, x: -wx * nz + (e.clientX - r.left - r.width / 2), y: -wy * nz + (e.clientY - r.top - r.height / 2) }); }
+  function groupBox(g) { var b = [1e9, 1e9, -1e9, -1e9]; g.cells.forEach(function (c) { var o = px(c[0], c[1]); b[0] = Math.min(b[0], o[0] - S3L / 2); b[1] = Math.min(b[1], o[1] - L); b[2] = Math.max(b[2], o[0] + S3L / 2); b[3] = Math.max(b[3], o[1] + L); }); return b; }
+  function zoomGroup(g, ms) { fly(fit(groupBox(g), 24, 2.6), ms || 700); }
   window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
   svg.addEventListener('click', function (e) { if (moved > 6) { e.stopPropagation(); return; } }, true);
   /* a click on anything that is not a piece, a group, a line or a stage button clears the selection */
@@ -977,7 +998,7 @@ window.BLAWG_START = function (DATA) {
     var q = Math.min(1, Math.max(.4 * 1980 / W0, (cam.z || 1) * (window.devicePixelRatio || 1) * 1.2))   /* a bigger TV is drawn at the same pixel width as before */, lay = h('div', { class: 'artl' }); lay.style.width = Math.floor(W0 * q) + 'px'; lay.style.transformOrigin = '0 0'; lay.style.transform = 'scale(' + (1 / q).toFixed(4) + ')'; $('artin').appendChild(lay);
     var me = live = { key: key, tree: /^Tree\./.test(key), lay: lay };
     CAT.mount(key, '../assets/ascii/').then(function (m) {
-      if (live !== me) { lay.remove(); return; } me.el = m.el; lay.appendChild(m.el); me.sc = m.start();
+      if (live !== me) { lay.remove(); return; } me.el = m.el; lay.appendChild(m.el); me.sc = m.start(); lay.__me = me;
       var tries = 0, last = -1, shrunk = false;
       (function check() {
         if (live !== me) { lay.remove(); return; } var hh = m.el.offsetHeight;
@@ -985,7 +1006,8 @@ window.BLAWG_START = function (DATA) {
         if (!shrunk) { shrunk = true; var k = Math.min(1, H0 * q / hh); if (k < .995) { lay.style.width = Math.floor(W0 * q * k) + 'px'; window.dispatchEvent(new Event('resize')); last = -1; tries = 0; return setTimeout(check, 60); } }
         lay.style.left = Math.round((W0 - lay.offsetWidth / q) / 2) + 'px'; lay.style.top = Math.round((H0 - m.el.offsetHeight / q) / 2) + 'px';
         requestAnimationFrame(function () { if (live !== me) return; lay.classList.add('on');
-          if (old && old.lay) { var ol = old.lay, os = old; ol.classList.remove('on'); setTimeout(function () { if (os.sc && !os.tree) { try { if (!os.paused) os.sc.toggle(); } catch (e) {} } ol.remove(); }, 420); } });
+          /* every other layer fades out and goes, even ones left behind by quick clicks */
+          [].forEach.call($('artin').querySelectorAll('.artl'), function (ol) { if (ol === lay) return; var os = ol.__me; ol.classList.remove('on'); setTimeout(function () { if (os && os.sc && !os.tree) { try { if (!os.paused) os.sc.toggle(); } catch (e) {} } ol.remove(); }, 420); }); });
       })();
     }).catch(function () { lay.remove(); });
   }
@@ -1123,7 +1145,7 @@ window.BLAWG_START = function (DATA) {
   /* selection */
   var SEL = { k: 'dir' }, VIA = -1;
   var gHov = null;
-  function hov(i, on) { P[i].el.classList.toggle('hov', on); if (!gHov) { gHov = s('g', { class: 'hovmark' }); world.appendChild(gHov); } gHov.textContent = ''; if (!on) return;
+  function hov(i, on) { P[i].el.classList.toggle('hov', on); if (!gHov) { gHov = s('g', { class: 'hovmark' }); world.appendChild(gHov); } gHov.textContent = ''; gHov.classList.toggle('on', !!on); if (!on) return;
     var p = P[i], z = cam.z || 1, r = Math.max(L * 1.25, 34 / z), w = Math.max(6, 2.5 / z);
     gHov.appendChild(s('polygon', { points: hexPts(r), transform: 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')', fill: 'none', stroke: '#fff', 'stroke-width': w.toFixed(1) })); }
   function pick(i, e) {
@@ -1136,7 +1158,7 @@ window.BLAWG_START = function (DATA) {
   function swapVia() { if (VIA < 0 || SEL.k !== 'piece') return; select({ k: 'piece', id: other(VIA, SEL.id) }, VIA); }
   function litSet() { if (SEL.k === 'piece') return bridgesOf(SEL.id); if (SEL.k === 'bridge') return [SEL.id]; if (SEL.k === 'multi') { var o = []; SEL.ids.forEach(function (i) { bridgesOf(i).forEach(function (j) { if (o.indexOf(j) < 0) o.push(j); }); }); return o; } return []; }
   function select(sel, via) {
-    SEL = sel; VIA = sel.k === 'piece' && via >= 0 ? via : -1; gHi.textContent = ''; gGhL.textContent = ''; gN.textContent = ''; gX.textContent = ''; if (gHov) gHov.textContent = '';
+    SEL = sel; VIA = sel.k === 'piece' && via >= 0 ? via : -1; gHi.textContent = ''; gGhL.textContent = ''; gN.textContent = ''; gX.textContent = ''; if (gHov) { gHov.textContent = ''; gHov.classList.remove('on'); }
     P.forEach(function (p) { p.el.classList.remove('sel', 'msel', 'ingroup', 'end', 'hov'); }); G.forEach(function (g) { g.el.classList.remove('on'); g.out.classList.remove('on'); });
     var lit = litSet(), mine = SEL.k === 'piece' ? [SEL.id] : SEL.k === 'multi' ? SEL.ids : [];
     svg.classList.toggle('focus', sel.k !== 'dir'); svg.classList.toggle('solo', lit.length > 0 || sel.k === 'piece');
@@ -1280,21 +1302,26 @@ window.BLAWG_START = function (DATA) {
     G.forEach(function (g) { var ids = inGroup(g.id).filter(hit); if (Q && !ids.length) return; var sec = h('section'); sec.appendChild(h('h3', null, [h('small', { text: pad2(g.order) }), h('span', { text: g.name }), h('i', { text: String(ids.length) })]));
       var tb = h('div', { class: 'tbl', role: 'list' }); ids.forEach(function (i) { var p = P[i], on = SEL.k === 'piece' && SEL.id === i, end = !on && litSet().some(function (j) { return B[j].a === i || B[j].b === i; }), n = bridgesOf(i).length;
         var tr = h('button', { class: 'tr' + (on ? ' sel' : '') + (end ? ' end' : ''), role: 'listitem', 'aria-expanded': on ? 'true' : 'false' }, [h('span', { class: 'ti', text: p.title }), h('span', { class: 'ty', text: p.type || '' }), h('span', { class: 'lk', text: n ? '⇄' + n : '' })]);
-        tr.onclick = function () { pick(i, {}); }; tb.appendChild(tr);
+        tr.onclick = function () { pick(i, {}); libOpen(false); }; tb.appendChild(tr);
         if (on) { var dt = h('div', { class: 'tdet' }); if (p.desc) dt.appendChild(h('p', { text: p.desc })); var bs = bridgesOf(i);
           if (bs.length) dt.appendChild(h('div', { class: 'cxh', text: '⇄ ' + bs.length + ' connection' + (bs.length > 1 ? 's' : '') + ' · see the hexes in the reader' }));
-          var up = h('button', { class: 'up', text: 'Read it on the board ↑' }); up.onclick = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); }; dt.appendChild(up); tb.appendChild(dt); } });
+          var up = h('button', { class: 'up', text: 'Read it on the board' }); up.onclick = function () { libOpen(false); }; dt.appendChild(up); tb.appendChild(dt); } });
       sec.appendChild(tb); pn.appendChild(sec); });
     S.appendChild(pn); }
 
+  /* phone: the library slides out from the right, opened by the floating button in the corner */
+  function libOpen(on) { $('main').classList.toggle('libon', on); $('libbtn').setAttribute('aria-expanded', on ? 'true' : 'false'); $('libbtn').innerHTML = on ? '<span>✕</span> Close' : '<span>☰</span> Library'; }
+  $('libbtn').addEventListener('click', function (e) { e.stopPropagation(); libOpen(!$('main').classList.contains('libon')); });
+  $('libbtn').addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+  $('libscrim').addEventListener('click', function () { libOpen(false); });
   function renderNav() { PHONE = mqP.matches; var M = $('main'), S = $('sbody'), keep = S.querySelector('.pane'), st = keep ? keep.scrollTop : 0;
-    M.className = PHONE ? 'phone' : COLL ? 'collapsed' : 'open'; document.body.classList.toggle('phone', PHONE);
+    M.className = PHONE ? 'phone' + (M.classList.contains('libon') ? ' libon' : '') : COLL ? 'collapsed' : 'open'; document.body.classList.toggle('phone', PHONE);
     S.textContent = ''; ['dock', 'dockpop', 'float', 'keypop'].forEach(function (id) { $(id).textContent = ''; $(id).classList.remove('on'); });
     if (PHONE) navLib(S); else if (COLL) navDock(); else navSide(S);
     var nk = S.querySelector('.pane'); if (nk && st && !nk.querySelector('.row.sel')) nk.scrollTop = st;
     requestAnimationFrame(apply); }
   var LASTPHONE = mqP.matches; mqP.addListener(function () { if (mqP.matches === LASTPHONE) return; LASTPHONE = mqP.matches; renderNav(); requestAnimationFrame(function () { cam = startCam(); apply(); }); });
-  $('q').addEventListener('input', function () { Q = this.value.trim().toLowerCase(); P.forEach(function (p, i) { p.el.classList.toggle('hitq', !!Q && hit(i)); }); renderNav(); });
+  $('q').addEventListener('input', function () { Q = this.value.trim().toLowerCase(); if (PHONE && Q) libOpen(true); P.forEach(function (p, i) { p.el.classList.toggle('hitq', !!Q && hit(i)); }); renderNav(); });
   document.addEventListener('keydown', function (e) { if (document.activeElement === $('q')) { if (e.key === 'Escape') { $('q').value = ''; $('q').dispatchEvent(new Event('input')); } return; }
     if (e.key === 'Escape' && SEL.k !== 'dir') select({ k: 'dir' }); if ((e.key === 'x' || e.key === 'X') && VIA >= 0) swapVia();
     if (SEL.k === 'dir' && e.key === 'ArrowLeft') gal(-1); if (SEL.k === 'dir' && e.key === 'ArrowRight') gal(1); });
@@ -1310,6 +1337,18 @@ window.BLAWG_START = function (DATA) {
   layoutText(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutText);
   refreshLines(); renderNav();
   cam = startCam(); apply();
+  /* every load: a short demo. Two pulses on group 1 (a double-click), the camera glides into it, then back out; a hint stays up.
+     Any touch, click, scroll or key stops it at once and leaves the camera where it is. Skipped when the link opens something. */
+  (function intro() { var hint = $('hint'); if (!hint) return;    /* the hint sits in the top bar, never over the board, so it costs no frames */ var deep = /[#&](p|c|g|m)=/.test(location.hash), rm = matchMedia('(prefers-reduced-motion: reduce)').matches, T = [], done = false, g = G[0];
+    function stop() { if (done) return; done = true; T.forEach(clearTimeout); cancelAnimationFrame(anim); board.querySelectorAll('.ripple').forEach(function (x) { x.remove(); }); setTimeout(function () { hint.classList.add('fade'); }, 2600); }
+    ['pointerdown', 'wheel', 'keydown'].forEach(function (ev) { window.addEventListener(ev, stop, { once: true, capture: true }); });
+    if (matchMedia('(pointer: coarse)').matches) hint.innerHTML = '<b>Double-tap</b> a group to zoom in · <b>tap</b> a tile to read · <b>pinch</b> to zoom · <b>drag</b> to move'; hint.hidden = false; if (deep || rm || !g) { done = true; setTimeout(function () { hint.classList.add('fade'); }, 6000); return; }
+    var home0 = startCam();
+    function ripple(d) { T.push(setTimeout(function () { if (done) return; var r = board.getBoundingClientRect(), x = g.x * cam.z + cam.x + r.width / 2, y = g.y * cam.z + cam.y + r.height / 2, el = h('div', { class: 'ripple' }); el.style.left = x + 'px'; el.style.top = y + 'px'; board.appendChild(el); setTimeout(function () { el.remove(); }, 700); }, d)); }
+    ripple(700); ripple(950);
+    T.push(setTimeout(function () { if (!done) { g.out.classList.add('on'); zoomGroup(g, 1300); } }, 1250));
+    T.push(setTimeout(function () { if (!done) { g.out.classList.remove('on'); fly(home0, 1300); } }, 3400));
+    T.push(setTimeout(function () { if (!done) { done = true; setTimeout(function () { hint.classList.add('fade'); }, 5000); } }, 4800)); })();
   (function () { var m = readHash(); if (m.p !== undefined && P[+m.p]) select({ k: 'piece', id: +m.p, links: m.l === '1' && bridgesOf(+m.p).length > 0 }, m.via !== undefined ? +m.via : -1); else if (m.c !== undefined && B[+m.c] && act(B[+m.c])) select({ k: 'bridge', id: +m.c }); else if (m.g && GI[m.g]) select({ k: 'group', id: m.g }); else if (m.m) select({ k: 'multi', ids: m.m.split(',').map(Number) }); else select({ k: 'dir' }); })();
 };
 </script>

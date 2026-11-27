@@ -69,9 +69,14 @@ let fails = 0; const ok = (c, m) => { if (!c) { fails++; console.log('  FAIL ' +
       ok(!(await p.evaluate(() => document.querySelector('#dockpop').classList.contains('on'))), 'dock closes on leave');
       await p.evaluate(() => document.querySelector('#dock .hs')?.click()); await p.waitForTimeout(500);
     } else {
-      await p.evaluate(() => window.scrollTo(0, 99999)); await p.waitForTimeout(400); await shot('lib');
-      ok(await p.evaluate(() => /Library/.test(document.body.innerText)), 'phone library under the board');
-      await p.evaluate(() => window.scrollTo(0, 0));
+      const lb = await (await p.$('#libbtn')).boundingBox(); ok(lb && lb.x + lb.width <= W && lb.y + lb.height <= H, 'phone library button in the corner, on screen');
+      await p.mouse.click(lb.x + lb.width / 2, lb.y + lb.height / 2); await p.waitForTimeout(450); await shot('lib');
+      const sb = await (await p.$('#side')).boundingBox(); ok(sb && sb.x >= 0 && sb.x < W - 100, 'library slides out');
+      const row = (await p.$$('#side .tr'))[2]; const rb = await row.boundingBox(); await p.mouse.click(rb.x + 40, rb.y + rb.height / 2); await p.waitForTimeout(500);
+      ok(await p.evaluate(() => !document.getElementById('main').classList.contains('libon')), 'picking a row closes the library');
+      ok(await p.evaluate(() => /#p=/.test(location.hash)), 'picking a row opens the piece');
+      ok(await p.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2), 'phone page does not scroll');
+      await p.waitForTimeout(2500);   /* let the stage sweep and art crossfade from that pick finish before measuring idle */
     }
     // idle: frame gaps and long tasks over 3 s
     const perf = await p.evaluate(() => new Promise(res => { const lt = []; try { new PerformanceObserver(l => l.getEntries().forEach(e => lt.push(Math.round(e.duration)))).observe({ type: 'longtask' }); } catch (e) {}
