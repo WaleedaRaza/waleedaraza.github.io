@@ -222,7 +222,7 @@ async function restorePending() {
     if (S.ops.length || Object.keys(S.files).length) {
       // keep the base these ops were made on; Publish rebases if the remote moved
       S.base = p.base; S.base._knownFiles = p.baseFiles || S.snap.files;
-      S.snap = { ...S.snap, shas: p.baseShas || {}, files: p.baseFiles || S.snap.files };
+      S.snap = { ...S.snap, shas: p.baseShas || {}, files: p.baseFiles || S.snap.files, branch: p.branch || S.snap.branch };
     }
   } catch (e) { notice('Unsaved changes on this device could not be opened and were left as they are.', true); }
 }

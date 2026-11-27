@@ -526,6 +526,28 @@ test('remote changed since load: re-applies on top, asks only about fields both 
   await ctx.close();
 });
 
+test('unsaved changes from an earlier session rebase onto a remote that moved meanwhile', async (browser) => {
+  const repo = new MockRepo({ token: TOKEN, fixtureDir: FIX });
+  const { ctx, page } = await open(browser, repo);
+  await firstRun(page);
+  await selectPiece(page, 'test-piece-b');
+  await page.fill('#f-desc', 'Mine: desc B');
+  await page.click('#f-save');
+  await page.waitForFunction(() => window.__blawgEditor.pendingOps() === 1);
+  await page.reload();
+  const pieces = JSON.parse(repo.readText('main', 'blawg/data/pieces.json'));
+  pieces[0].title = 'Test piece A renamed elsewhere';
+  repo.pushOutside('main', { 'blawg/data/pieces.json': JSON.stringify(pieces) });
+  await signIn(page); await page.waitForSelector('#top:not([hidden])');
+  await tab(page, 'publish');
+  await page.click('#pub-go');
+  await page.waitForSelector('#pub-ok', { timeout: 20000 });
+  const by = Object.fromEntries(JSON.parse(repo.readText('blawg-review', 'blawg/data/pieces.json')).map((p) => [p.id, p]));
+  assert.strictEqual(by['test-piece-a'].title, 'Test piece A renamed elsewhere');
+  assert.strictEqual(by['test-piece-b'].desc, 'Mine: desc B');
+  await ctx.close();
+});
+
 test('main needs the setting AND typing main', async (browser) => {
   const repo = new MockRepo({ token: TOKEN, fixtureDir: FIX });
   const { ctx, page } = await open(browser, repo);

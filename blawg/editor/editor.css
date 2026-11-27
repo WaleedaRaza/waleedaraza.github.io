@@ -15,7 +15,9 @@ button, input, select, textarea { font: inherit; color: var(--fg); background: v
 input, select, textarea { width: 100%; padding: 8px 10px; }
 textarea { resize: vertical; min-height: 5em; }
 input:focus, select:focus, textarea:focus, button:focus-visible { outline: 1px solid var(--acc2); outline-offset: 0; border-color: var(--acc2); }
-input[type=checkbox] { width: auto; accent-color: var(--acc); }
+input[type=checkbox], input[type=radio] { width: auto; accent-color: var(--acc); }
+input[type=file] { padding: 6px; color: var(--dim); }
+input[type=file]::file-selector-button { font: inherit; background: var(--bg); color: var(--acc2); border: 1px solid var(--acc2); padding: 4px 10px; margin-right: 10px; cursor: pointer; }
 button { padding: 8px 14px; cursor: pointer; border-color: var(--acc); color: var(--acc); }
 button:hover { background: var(--acc); color: var(--bg); }
 button.primary { background: var(--acc); color: var(--bg); font-weight: 600; }
@@ -95,6 +97,7 @@ pre.out { white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(
 #modal-buttons { margin-top: 16px; justify-content: flex-end; }
 
 @media (max-width: 860px) {
+  #top { position: static; }
   .split { grid-template-columns: minmax(0, 1fr); }
   .list { max-height: 36vh; }
   .bodybox { grid-template-columns: minmax(0, 1fr); }
@@ -104,6 +107,8 @@ pre.out { white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(
 @media (max-width: 480px) {
   #top { padding: 8px 16px; }
   .who { width: 100%; justify-content: space-between; }
+  #tabs button { padding: 4px 6px; }
+  #branch-note { overflow-wrap: anywhere; }
   .grid2 { grid-template-columns: minmax(0, 1fr); }
   main { padding: 12px 16px; }
 }
