@@ -288,6 +288,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 #dock .hexes button.has polygon { fill: #2a1a12; }
 #dock .hexes button.lnk polygon { stroke: var(--teal); }
 #dock .ctlrow { flex-wrap: nowrap; } #dock .ctlrow .lt { margin-left: 0; }
+@media (max-width: 1180px) { #dock .lays .lb:not(.on) { display: none; } #dock .lays .lb.on::after { content: '›'; font-size: 11px; color: var(--orange); margin-left: -2px; } #dock .lays .lb.on { width: 36px; grid-auto-flow: column; } }
 #dockpop, #float, #keypop { position: absolute; z-index: 6; background: rgba(7,7,12,.97); border: 1px solid var(--line2); display: none; flex-direction: column; }
 #dockpop.on, #float.on, #keypop.on { display: flex; }
 #dockpop { left: 50%; transform: translateX(-50%); bottom: calc(78px + env(safe-area-inset-bottom, 0px)); width: min(420px, calc(100% - 24px)); max-height: 52%; }
@@ -497,6 +498,16 @@ body.phone { overflow-x: hidden; overflow-y: auto; display: block; height: auto;
 .ctlrow .hs { margin-left: auto; }
 .hs b { font-size: 15px; font-weight: 400; }
 .hs:hover { background: var(--orange); color: #000; }
+.uni { fill: none; stroke: rgba(236,236,242,.16); stroke-width: 2; vector-effect: non-scaling-stroke; pointer-events: none; }
+.lays { display: inline-flex; gap: 2px; padding-left: 6px; margin-left: 2px; border-left: 1px solid var(--line2); }
+.lays .lb { width: 28px; height: 28px; border: 1px solid var(--line2); background: var(--void); display: grid; place-items: center; padding: 0; cursor: pointer; }
+.lays .lb svg { width: 18px; height: 18px; }
+.lays .lb .ls { fill: none; stroke: var(--ink3); stroke-width: 1.4; }
+.lays .lb .lh { fill: var(--ink3); stroke: none; }
+.lays .lb:hover { border-color: var(--orange); } .lays .lb:hover .ls { stroke: var(--ink); } .lays .lb:hover .lh { fill: var(--ink); }
+.bar1 .ctlrow .lays { order: 5; flex-basis: 100%; border-left: none; padding-left: 0; margin: 4px 0 0; align-items: center; }
+.bar1 .ctlrow .lays::before { content: "Layout"; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); margin-right: 8px; }
+.lays .lb.on { border-color: var(--orange); background: rgba(255,107,53,.12); } .lays .lb.on .lh { fill: var(--orange); } .lays .lb.on .ls { stroke: var(--orange); }
 /* ── round 11 ── */
 /* black board like the blog: cells are near-black, the grain shows through */
 body, #board, #boardwrap { background: #000; }
@@ -645,7 +656,7 @@ g.slk { pointer-events: none; }
 #side { background: #050508; border-left-color: rgba(236,236,242,.1); }
 .cv.gh { opacity: .07; } .cv.gh.lit { opacity: .2; }
 #svg.solo .cv.gh:not(.lit) { opacity: .03; }
-.bar1 .ctlrow { flex-wrap: nowrap; gap: 5px; }
+.bar1 .ctlrow { flex-wrap: wrap; gap: 5px; } .bar1 .ctlrow .hs { order: 2; } .bar1 .ctlrow .ib { order: 1; }
 .ctlrow .ib { width: 34px; height: 32px; border: 1px solid rgba(236,236,242,.45); color: #fff; font-size: 16px; background: #0b0b11; flex: none; }
 .ctlrow .ib:hover { border-color: var(--orange); color: var(--orange); }
 .ctlrow .hs { height: 32px; flex: none; margin-left: auto; white-space: nowrap; }
@@ -713,10 +724,12 @@ window.BLAWG_START = function (DATA) {
   function px(q, r) { return [L * S3 * (q + r / 2), L * 1.5 * r]; }
   function hdist(q, r) { return Math.max(Math.abs(q), Math.abs(r), Math.abs(q + r)); }
   function hexPts(R, cx, cy) { var a = []; for (var i = 0; i < 6; i++) a.push(((cx || 0) + R * Math.cos(i * Math.PI / 3 - Math.PI / 6)).toFixed(1) + ',' + ((cy || 0) + R * Math.sin(i * Math.PI / 3 - Math.PI / 6)).toFixed(1)); return a.join(' '); }
-  P.forEach(function (p) { var c = px(p.q, p.r); p.x = c[0]; p.y = c[1]; });
-  G.forEach(function (g) { var c = px(g.q, g.r); g.x = c[0]; g.y = c[1]; });
-  G.forEach(function (g) { g.mx = g.x; g.my = g.y; });
-  var EXT = (DATA.maxd + 1.5) * S3 * L;
+  /* positions come from the layout (load.js); a layout switch re-runs it and moves everything in place */
+  var LAYOUT = DATA.mode || 'left', UNI, CB, UB;
+  function setPos(D) { LAYOUT = D.mode || LAYOUT; UNI = D.uni; CB = D.content; var hw = UNI.rho * S3 / 2; UB = [UNI.x - hw, UNI.y - UNI.rho, UNI.x + hw, UNI.y + UNI.rho];
+    P.forEach(function (p, i) { var o = D.pieces[i]; p.q = o.q; p.r = o.r; var c = px(p.q, p.r); p.x = c[0]; p.y = c[1]; });
+    G.forEach(function (g, k) { var o = D.groups[k]; g.q = o.q; g.r = o.r; g.cells = o.cells; g.empty = o.empty; g.rk = o.rk; var c = px(g.q, g.r); g.x = c[0]; g.y = c[1]; g.mx = g.x; g.my = g.y; }); }
+  setPos(DATA);
 
   /* text that fills a flat-top hexagon row by row, never cut short */
   var mc = document.createElement('canvas').getContext('2d');
@@ -751,8 +764,7 @@ window.BLAWG_START = function (DATA) {
   $('hexclip-p').setAttribute('points', hexPts(T - 1));
   var ND = [[1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1], [1, -1]];
   function edgePath(cells, key, pos, R) { var set = {}, d = ''; cells.forEach(function (c) { set[key(c)] = 1; }); cells.forEach(function (c) { var o = pos(c); for (var i = 0; i < 6; i++) { if (set[key([c[0] + ND[i][0], c[1] + ND[i][1]])]) continue; var a1 = i * Math.PI / 3 - Math.PI / 6, a2 = a1 + Math.PI / 3; d += 'M' + (o[0] + R * Math.cos(a1)).toFixed(1) + ' ' + (o[1] + R * Math.sin(a1)).toFixed(1) + 'L' + (o[0] + R * Math.cos(a2)).toFixed(1) + ' ' + (o[1] + R * Math.sin(a2)).toFixed(1); } }); return d; }
-  G.forEach(function (g) { g.acc = g.order % 2 ? 'var(--orange)' : 'var(--teal)'; g.out = s('path', { class: 'fam', style: '--acc:' + g.acc, d: edgePath(g.cells.concat(g.empty), function (c) { return c[0] + ',' + c[1]; }, function (c) { return px(c[0], c[1]); }, L) }); gC.appendChild(g.out);
-    g.empty.forEach(function (c) { var o = px(c[0], c[1]); gC.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); }); });
+  G.forEach(function (g) { g.acc = g.order % 2 ? 'var(--orange)' : 'var(--teal)'; g.out = s('path', { class: 'fam', style: '--acc:' + g.acc }); });
 
   P.forEach(function (p, i) {
     var el = s('g', { class: 't ' + p.state + (p.img ? ' pic' : ''), transform: 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')', tabindex: 0, role: 'button', 'aria-label': p.title });
@@ -817,10 +829,22 @@ window.BLAWG_START = function (DATA) {
   function setStageLab(txt, plain) { stageLab.textContent = ''; var words = txt.split(' '), rows = [], cur = ''; words.forEach(function (w) { if ((cur + ' ' + w).trim().length > 24 && cur) { rows.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); }); rows.push(cur);
     rows.forEach(function (rw, j) { var t = s('text', { x: 0, y: (j - (rows.length - 1) / 2) * (plain ? 40 : 30) + 10, 'font-size': plain ? 34 : 25, class: plain ? 'pl' : '' }); t.textContent = rw; stageLab.appendChild(t); }); }
   gSt.appendChild(gF); gSt.appendChild(gO); gSt.appendChild(gW); gSt.appendChild(stageLab);
-  /* every unused cell on the board is a quiet tile with a black outline; lines run in the black gaps */
-  (function () { var D = DATA.maxd + 14, used = {}, d = []; G.forEach(function (g) { g.cells.concat(g.empty).forEach(function (c) { used[c[0] + ',' + c[1]] = 1; }); });
-    for (var q = -D - 6; q <= D + 6; q++) for (var r = -D; r <= D; r++) { var c = px(q, r); if (Math.abs(c[0]) > D * S3L || used[q + ',' + r] || FCK[q + ',' + r]) continue; d.push('M' + hexPts(L, c[0], c[1]).split(' ').join('L') + 'Z'); }
-    gC.insertBefore(s('path', { class: 'bgc', d: d.join('') }), gC.firstChild); })();
+  /* the universe: one pointy-top hexagon. Inside it every unused cell is a quiet tile with a black outline (lines run in the gaps);
+     the grid is cut cleanly at the hexagon's edge, and outside it is plain black */
+  var uclip = s('clipPath', { id: 'unic', clipPathUnits: 'userSpaceOnUse' }), uclipP = s('polygon'); uclip.appendChild(uclipP); $('hexclip-p').parentNode.parentNode.appendChild(uclip);
+  function buildCells() { gC.textContent = ''; var used = {}, d = [], hw = UNI.rho * S3 / 2, up = hexPts(UNI.rho, UNI.x, UNI.y).split(' ');
+    uclipP.setAttribute('points', up.join(' '));
+    G.forEach(function (g) { g.cells.concat(g.empty).forEach(function (c) { used[c[0] + ',' + c[1]] = 1; }); });
+    var r0 = Math.floor((UNI.y - UNI.rho) / (1.5 * L)) - 1, r1 = Math.ceil((UNI.y + UNI.rho) / (1.5 * L)) + 1;
+    for (var r = r0; r <= r1; r++) { var y = r * 1.5 * L, q0 = Math.floor((UNI.x - hw) / S3L - r / 2) - 1, q1 = Math.ceil((UNI.x + hw) / S3L - r / 2) + 1;
+      for (var q = q0; q <= q1; q++) { var c = px(q, r), ax = Math.abs(c[0] - UNI.x), ay = Math.abs(y - UNI.y); if (ax > hw + S3L || ay + ax / S3 > UNI.rho + L * 1.2) continue; if (used[q + ',' + r] || FCK[q + ',' + r]) continue; d.push('M' + hexPts(L, c[0], c[1]).split(' ').join('L') + 'Z'); } }
+    gC.appendChild(s('path', { class: 'bgc', d: d.join(''), 'clip-path': 'url(#unic)' }));
+    G.forEach(function (g) { g.out.setAttribute('d', edgePath(g.cells.concat(g.empty), function (c) { return c[0] + ',' + c[1]; }, function (c) { return px(c[0], c[1]); }, L)); gC.appendChild(g.out);
+      g.empty.forEach(function (c) { var o = px(c[0], c[1]); gC.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); }); });
+    gC.appendChild(s('polygon', { class: 'uni', points: up.join(' ') }));
+    P.forEach(function (p) { p.el.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')'); });
+    G.forEach(function (g) { g.el.setAttribute('transform', 'translate(' + g.x.toFixed(1) + ' ' + g.y.toFixed(1) + ')'); }); }
+  buildCells();
 
   /* ═════ round 8 ═════ */
   var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
@@ -875,7 +899,9 @@ window.BLAWG_START = function (DATA) {
     b.cel.addEventListener('pointerleave', function () { lineHot(j, false); tipHide(); });
     gD.appendChild(b.cel); b.gh = s('path', { class: 'cv gh' + (b.sample ? ' smp' : ''), d: g.d }); gGh.insertBefore(b.gh, gGhL);
   });
-  B.forEach(function (b) { if (!b.sample) gD.appendChild(b.cel); });   /* his real links sit on top of the samples */
+  B.forEach(function (b) { if (!b.sample) gD.appendChild(b.cel); });
+  function relines() { B.forEach(function (b) { var g = geo(P[b.a], P[b.b]); b.g = g; var ps = b.cel.querySelectorAll('path'), cs = b.cel.querySelectorAll('circle');
+    ps.forEach(function (x) { x.setAttribute('d', g.d); }); cs[0].setAttribute('cx', g.p0[0]); cs[0].setAttribute('cy', g.p0[1]); cs[1].setAttribute('cx', g.p1[0]); cs[1].setAttribute('cy', g.p1[1]); b.gh.setAttribute('d', g.d); }); }   /* his real links sit on top of the samples */
   function bridgesOf(i) { var out = []; B.forEach(function (b, j) { if (act(b) && (b.a === i || b.b === i)) out.push(j); }); return out; }
   function other(j, i) { return B[j].a === i ? B[j].b : B[j].a; }
   function refreshLines() { P.forEach(function (p) { p.el.classList.remove('linked'); }); B.forEach(function (b) { var on = act(b); b.cel.style.display = on ? '' : 'none'; if (on) { P[b.a].el.classList.add('linked'); P[b.b].el.classList.add('linked'); } }); svg.classList.toggle('nolines', !SHOWL); }
@@ -890,8 +916,9 @@ window.BLAWG_START = function (DATA) {
 
   /* camera: moves only when you move it */
   var cam = { x: 0, y: 0, z: 1 }, LZ = 0;
+  function clampCam() { if (!cam.z) return; var cx = -cam.x / cam.z, cy = -cam.y / cam.z, nx = Math.max(UB[0], Math.min(UB[2], cx)), ny = Math.max(UB[1], Math.min(UB[3], cy)); cam.x = -nx * cam.z; cam.y = -ny * cam.z; }
   function apply() {
-    var r = board.getBoundingClientRect(), tx = r.width / 2 + cam.x, ty = r.height / 2 + cam.y;
+    clampCam(); var r = board.getBoundingClientRect(), tx = r.width / 2 + cam.x, ty = r.height / 2 + cam.y;
     world.setAttribute('transform', 'translate(' + tx + ' ' + ty + ') scale(' + cam.z + ')');
     $('ov').style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + cam.z + ')'; world2.setAttribute('transform', 'translate(' + tx + ' ' + ty + ') scale(' + cam.z + ')');
     var far = cam.z < .3; svg.classList.toggle('far', far); world.style.setProperty('--sk', Math.max(5, 1.4 / cam.z).toFixed(1));
@@ -905,8 +932,9 @@ window.BLAWG_START = function (DATA) {
   var anim = null;
   function fly(to) { cancelAnimationFrame(anim); if (matchMedia('(prefers-reduced-motion: reduce)').matches) { cam = to; apply(); return; } var from = { x: cam.x, y: cam.y, z: cam.z }, t0 = performance.now(); (function step(t) { var k = Math.min(1, (t - t0) / 420), e = 1 - Math.pow(1 - k, 3); cam = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, z: from.z + (to.z - from.z) * e }; apply(); if (k < 1) anim = requestAnimationFrame(step); })(t0); }
   function home() { fly(fit(STB, 16, 1)); }
-  function zmin() { var r = board.getBoundingClientRect(); return r.width ? Math.min(r.width / (2 * EXT + 40), r.height / (2 * EXT + 40)) * .9 : .05; }
-  function whole() { fly(fit([-EXT, -EXT, EXT, EXT], 20, 1)); }
+  function zmin() { var r = board.getBoundingClientRect(); return r.width ? fit(UB, 20, 1).z : .05; }   /* never further out than the whole universe */
+  function whole() { fly(fit(UB, 20, 1)); }
+  function startCam() { return fit(CB, 24, 1); }
   function panTo(x, y) { fly({ z: cam.z, x: -x * cam.z, y: -y * cam.z }); }   /* same zoom, only slides */
   function zoomAt(f, pxx, pyy) { var r = board.getBoundingClientRect(), ox = pxx - r.width / 2, oy = pyy - r.height / 2, nz = Math.max(zmin(), Math.min(2.6, cam.z * f)), k = nz / cam.z; cam.x = ox - (ox - cam.x) * k; cam.y = oy - (oy - cam.y) * k; cam.z = nz; apply(); }
   function zIn() { var r = board.getBoundingClientRect(); zoomAt(1.35, r.width / 2, r.height / 2); }
@@ -1130,7 +1158,20 @@ window.BLAWG_START = function (DATA) {
   function hexSvg(w, hh) { var sv = document.createElementNS(NS, 'svg'); sv.setAttribute('viewBox', '-20 -22 40 44'); sv.appendChild(s('polygon', { points: hexPts(19) })); return sv; }
   function ctlRow() { var r = h('div', { class: 'ctlrow' });
     [['−', 'Zoom out', zOut], ['+', 'Zoom in', zIn], ['⤢', 'Whole board', whole], ['⬡', 'Centre stage', home]].forEach(function (x) { var b = h('button', { class: 'ib', title: x[1], 'aria-label': x[1], text: x[0] }); b.onclick = x[2]; r.appendChild(b); });
-    return r; }
+    r.appendChild(layRow()); return r; }
+  /* layout switch: where the block of groups sits next to the stage */
+  var LAYS = [['left', 'Groups on the left'], ['top', 'Groups on top'], ['right', 'Groups on the right'], ['bottom', 'Groups below'], ['circle', 'Groups in a circle around the stage']];
+  function layIcon(m) { var sv = document.createElementNS(NS, 'svg'); sv.setAttribute('viewBox', '0 0 24 24');
+    function hx(cx, cy, R) { sv.appendChild(s('polygon', { class: 'lh', points: hexPts(R, cx, cy) })); }
+    if (m === 'circle') { sv.appendChild(s('rect', { class: 'ls', x: 9, y: 9, width: 6, height: 6 })); for (var i = 0; i < 6; i++) { var a = i * Math.PI / 3 - Math.PI / 2; hx(12 + 8.6 * Math.cos(a), 12 + 8.6 * Math.sin(a), 2.6); } return sv; }
+    var st = { left: [13, 5, 9, 14], right: [2, 5, 9, 14], top: [6, 13, 12, 9], bottom: [6, 2, 12, 9] }[m], hc = { left: [6, 12], right: [18, 12], top: [12, 6], bottom: [12, 18] }[m];
+    sv.appendChild(s('rect', { class: 'ls', x: st[0], y: st[1], width: st[2], height: st[3] })); hx(hc[0], hc[1], 4.6); return sv; }
+  function layRow() { var w = h('span', { class: 'lays', role: 'group', 'aria-label': 'Layout' });
+    LAYS.forEach(function (x) { var b = h('button', { class: 'lb' + (LAYOUT === x[0] ? ' on' : ''), title: 'Layout: ' + x[1], 'aria-label': 'Layout: ' + x[1], 'aria-pressed': LAYOUT === x[0] ? 'true' : 'false', 'data-lay': x[0] }); b.appendChild(layIcon(x[0])); b.onclick = function () { var hid = [].some.call(w.children, function (c) { return !c.offsetParent; });   /* narrow dock: only the current one shows, and it steps to the next */
+      setLayout(hid && LAYOUT === x[0] ? LAYS[(LAYS.map(function (y) { return y[0]; }).indexOf(x[0]) + 1) % LAYS.length][0] : x[0]); }; if (LAYOUT === x[0]) b.title += ' (on)'; w.appendChild(b); });
+    return w; }
+  function setLayout(m) { if (m === LAYOUT || !window.BlawgLayout || !window.BlawgRaw) return; var R = window.BlawgRaw; store.set('blawg-layout', m);
+    setPos(window.BlawgLayout(R[0], R[1], R[2], R[3], m)); buildCells(); relines(); select(SEL, VIA); renderNav(); fly(startCam()); }
   function keyBlock() { var k = h('div', { class: 'keyb' });
     function hx(fill, stroke) { var sv = document.createElementNS(NS, 'svg'); sv.setAttribute('viewBox', '-8 -8 16 16'); sv.appendChild(s('polygon', { points: hexPts(7), fill: fill, stroke: stroke, 'stroke-width': 1.6 })); return sv; }
     k.appendChild(h('span', null, [hx('#2e1a10', '#ff6b35'), 'selected'])); k.appendChild(h('span', null, [hx('#1a1a26', '#00d4aa'), 'connected to it'])); k.appendChild(h('span', null, [h('i'), 'your link'])); if (B.some(function (b) { return b.sample; })) { var dsh = h('i'); dsh.style.cssText = 'background:none;border-top:1px dashed #c9cbd8;height:0'; k.appendChild(h('span', null, [dsh, 'made-up sample (mock only)'])); }
@@ -1241,7 +1282,7 @@ window.BLAWG_START = function (DATA) {
     if (PHONE) navLib(S); else if (COLL) navDock(); else navSide(S);
     var nk = S.querySelector('.pane'); if (nk && st && !nk.querySelector('.row.sel')) nk.scrollTop = st;
     requestAnimationFrame(apply); }
-  var LASTPHONE = mqP.matches; mqP.addListener(function () { if (mqP.matches === LASTPHONE) return; LASTPHONE = mqP.matches; renderNav(); requestAnimationFrame(function () { cam = fit([-EXT, -EXT, EXT, EXT], 20, 1); apply(); }); });
+  var LASTPHONE = mqP.matches; mqP.addListener(function () { if (mqP.matches === LASTPHONE) return; LASTPHONE = mqP.matches; renderNav(); requestAnimationFrame(function () { cam = startCam(); apply(); }); });
   $('q').addEventListener('input', function () { Q = this.value.trim().toLowerCase(); P.forEach(function (p, i) { p.el.classList.toggle('hitq', !!Q && hit(i)); }); renderNav(); });
   document.addEventListener('keydown', function (e) { if (document.activeElement === $('q')) { if (e.key === 'Escape') { $('q').value = ''; $('q').dispatchEvent(new Event('input')); } return; }
     if (e.key === 'Escape' && SEL.k !== 'dir') select({ k: 'dir' }); if ((e.key === 'x' || e.key === 'X') && VIA >= 0) swapVia();
@@ -1257,7 +1298,7 @@ window.BLAWG_START = function (DATA) {
   window.addEventListener('resize', apply);
   layoutText(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutText);
   refreshLines(); renderNav();
-  cam = fit([-EXT, -EXT, EXT, EXT], 20, 1); apply();
+  cam = startCam(); apply();
   (function () { var m = readHash(); if (m.p !== undefined && P[+m.p]) select({ k: 'piece', id: +m.p, links: m.l === '1' && bridgesOf(+m.p).length > 0 }, m.via !== undefined ? +m.via : -1); else if (m.c !== undefined && B[+m.c] && act(B[+m.c])) select({ k: 'bridge', id: +m.c }); else if (m.g && GI[m.g]) select({ k: 'group', id: m.g }); else if (m.m) select({ k: 'multi', ids: m.m.split(',').map(Number) }); else select({ k: 'dir' }); })();
 };
 </script>
