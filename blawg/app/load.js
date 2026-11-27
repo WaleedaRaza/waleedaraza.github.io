@@ -23,7 +23,8 @@
   var SW0 = 2 * (SXM + S3 * L / 2), SY0 = -ST * 1.5 * L - L, SY1 = SC * 1.5 * L + L, SH0 = SY1 - SY0, SCY0 = (SY0 + SY1) / 2, SK = 1;
   function stageCY() { return ((-D0.ST + D0.SC) / 2) * 1.5 * L; }
   var MODES = ['left', 'top', 'right', 'bottom', 'L', 'circle'];
-  function get(name) { return fetch('data/' + name, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(name + ' ' + r.status); return r.json(); }); }
+  var BASE = window.BLAWG_BASE || '';   /* the old board lives one folder down */
+  function get(name) { return fetch(BASE + 'data/' + name, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(name + ' ' + r.status); return r.json(); }); }
 
   function layout(groups, pieces, conns, art, mode) {
     groups = groups.slice().sort(function (a, b) { return a.order - b.order; });
@@ -103,7 +104,7 @@
     function artFor(p) { var x = (as.piece || {})[p.id] || p.art; if (x && x.length) return x[0]; if (p.type && (as.type || {})[p.type]) return as.type[p.type]; if ((as.group || {})[p.group]) return as.group[p.group]; return null; }
     var IX = {};
     shown.forEach(function (p, i) { IX[p.id] = i; var o = { i: i, id: p.id, title: p.title, desc: p.desc || '', group: p.group, type: p.type || null, state: p.state, q: at[p.id][0], r: at[p.id][1], body: !!p.body, locked: !!p.locked };
-      var k2 = artFor(p); if (k2) o.art = k2; if (p.img) o.img = '../' + p.img; out_p.push(o); });
+      var k2 = artFor(p); if (k2) o.art = k2; if (p.img) o.img = BASE + '../' + p.img; out_p.push(o); });
     var out_b = [];
     (conns || []).forEach(function (c) { if (c.state !== 'live' || !c.ends || c.ends.length < 2) return; var e = c.ends.filter(function (x) { return IX[x] !== undefined; });
       /* the board draws a connection between pairs; a 3-way link becomes a fan from its first end */
@@ -115,6 +116,6 @@
     var mode = null; try { mode = localStorage.getItem('blawg-layout'); } catch (e) {}
     if (MODES.indexOf(mode) < 0) mode = window.matchMedia && matchMedia('(max-width: 820px)').matches ? 'top' : 'left';
     window.BlawgRaw = r; var D = layout(r[0], r[1], r[2], r[3], mode), boot = document.getElementById('boot'); if (boot) boot.remove();
-    window.BLAWG_START(D);
+    window.BLAWG_START(D, r);
   }).catch(function (e) { var boot = document.getElementById('boot'); if (boot) boot.textContent = 'The board could not load. Refresh to try again.'; if (window.console) console.error(e); });
 })();
