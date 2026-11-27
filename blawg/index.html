@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Blawg</title>
 <meta name="description" content="Waleed Raza's blawg: essays on a hex board.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 /* Layout: one screen, one dark look (the portfolio's). A honeycomb board with a big hexagonal stage at its centre, and a resizable reading sidebar. */
 :root {
@@ -588,7 +588,6 @@ body, #board, #boardwrap { background: #000; }
 /* one "See links" tile: five hexes merged, bright teal, breathing */
 .fc.slk { fill: #0b5244; stroke: #0b5244; stroke-width: 10; transform: scale(1); cursor: pointer; animation: slkp 1.8s ease-in-out infinite; }
 .fc.slk.on { fill: #3a1606; stroke: #3a1606; animation: none; }
-.slk { pointer-events: none; }
 .slko { fill: none; stroke: var(--teal); stroke-width: 5; stroke-linecap: round; animation: slko 1.8s ease-in-out infinite; }
 .slk.on .slko { stroke: var(--orange); animation: none; }
 .slt { font-family: var(--mono); font-weight: 600; fill: #eafffa; text-anchor: middle; letter-spacing: .14em; }
@@ -613,6 +612,60 @@ body, #board, #boardwrap { background: #000; }
 .cvg .lndot.amb { opacity: .3; }
 .cvg.real .lndot.amb { fill: #fff; opacity: .7; }
 #svg.solo .cv.gh:not(.lit) { opacity: .08; }
+/* v12.1: the link page is a scrollable list of rows: this piece | the words between | the other piece */
+g.slk { pointer-events: none; }
+.cell, .bgc, .fc.off { fill: #060609; stroke: rgba(236,236,242,.04); }
+.bgc { fill: #050507; }
+#textbox .linkl { display: flex; flex-direction: column; gap: .5em; margin-top: .4em; }
+#textbox .lrow { display: block; width: 100%; text-align: left; padding: .45em .5em .5em; border: 3px solid var(--line2); background: rgba(255,255,255,.015); }
+#textbox .lrow > .no { display: block; font-family: var(--mono); font-size: .36em; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); margin-bottom: .35em; }
+#textbox .lrow > em { display: block; text-align: right; font-style: normal; font-family: var(--mono); font-size: .38em; letter-spacing: .12em; color: var(--teal); margin-top: .45em; }
+#textbox .tri { display: grid; grid-template-columns: 1fr 1.05fr 1fr; gap: .45em; align-items: stretch; }
+#textbox .ls { padding: .35em .45em; border: 3px solid var(--orange); min-width: 0; }
+#textbox .ls.b { border-color: var(--teal); }
+#textbox .ls small { display: block; font-family: var(--mono); font-size: .32em; letter-spacing: .14em; color: var(--orange); margin-bottom: .3em; }
+#textbox .ls.b small { color: var(--teal); }
+#textbox .ls b { display: block; font-family: var(--display); font-weight: 600; font-size: .58em; line-height: 1.15; }
+#textbox .ls span { display: block; font-family: var(--read); font-size: .44em; color: var(--ink2); margin-top: .25em; line-height: 1.3; }
+#textbox .ls blockquote { margin: .3em 0 0; font-family: var(--read); font-size: .44em; line-height: 1.35; }
+#textbox .ls mark { background: rgba(255,107,53,.28); color: var(--ink); }
+#textbox .ls.b mark { background: rgba(0,212,170,.22); }
+#textbox .lm { display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 0 .2em; }
+#textbox .lm .sym { color: var(--orange); font-size: .7em; }
+#textbox .lm p { font-family: var(--read); font-size: .46em; line-height: 1.35; margin: .2em 0; max-width: none; }
+#textbox .lm p.slot { font-family: var(--mono); font-size: .32em; border-width: 2px; padding: .5em .6em; }
+#textbox .lrow:hover, #textbox .lrow.hl { border-color: var(--orange); background: rgba(255,107,53,.06); }
+#textbox .lrow:hover > em { color: var(--orange); }
+#textbox .linkl button.lrow { display: block; border: 3px solid var(--line2); padding: .45em .5em .5em; margin: 0; }
+#textbox .linkl button.lrow:hover, #textbox .linkl button.lrow.hl { border-color: var(--orange); }
+#textbox .pc .pq { margin: .3em 0 0; font-family: var(--read); font-size: .55em; line-height: 1.35; } #textbox .pc mark { background: rgba(255,107,53,.28); color: var(--ink); }
+/* v12.2: the portfolio's fonts; quieter chrome; the sidebar is a library of rows, one open at a time */
+:root { --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace; --display: 'Outfit', system-ui, sans-serif; }
+#bar { background: #000; border-bottom-color: rgba(236,236,242,.08); }
+#side { background: #050508; border-left-color: rgba(236,236,242,.1); }
+.cv.gh { opacity: .07; } .cv.gh.lit { opacity: .2; }
+#svg.solo .cv.gh:not(.lit) { opacity: .03; }
+.bar1 .ctlrow { flex-wrap: nowrap; gap: 5px; }
+.ctlrow .ib { width: 34px; height: 32px; border: 1px solid rgba(236,236,242,.45); color: #fff; font-size: 16px; background: #0b0b11; flex: none; }
+.ctlrow .ib:hover { border-color: var(--orange); color: var(--orange); }
+.ctlrow .hs { height: 32px; flex: none; margin-left: auto; white-space: nowrap; }
+.lab.gl { display: flex; flex-direction: column; gap: 3px; padding: 14px 16px 10px; text-transform: none; letter-spacing: 0; }
+.lab.gl b { font-family: var(--display); font-weight: 600; font-size: 19px; color: var(--ink); letter-spacing: .01em; }
+.lab.gl span { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
+.gtiles { grid-template-columns: 1fr; gap: 0; padding: 0 0 16px; border-top: 1px solid rgba(236,236,242,.1); }
+.gt { flex-direction: row; align-items: center; gap: 12px; min-height: 0; padding: 12px 14px 12px 13px; border: 0; border-left: 3px solid var(--acc); border-bottom: 1px solid rgba(236,236,242,.1); background: transparent; }
+.gt small { flex: none; width: 20px; font-size: 11px; color: var(--acc); }
+.gt small i { display: none; }
+.gt b { flex: 1; min-width: 0; font-size: 15px; font-weight: 500; line-height: 1.25; }
+.gt .dd { flex: none; margin: 0; padding: 0; border: 0; font-size: 10.5px; color: var(--ink3); }
+.gt .dd .car { color: var(--ink3); }
+.gt:hover { background: rgba(236,236,242,.035); } .gt:hover b { color: var(--ink); } .gt:hover .dd { background: none; color: var(--ink2); }
+.gt.open { background: rgba(255,107,53,.07); border-color: var(--acc); border-bottom-color: rgba(236,236,242,.1); } .gt.open b { color: var(--orange); }
+.gt.has, .gt.lnk { box-shadow: none; }
+.gt.has b { color: var(--orange); }
+.gt.lnk::after { content: "linked"; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+.gdrop { border: 0; border-left: 3px solid var(--orange); border-bottom: 1px solid rgba(236,236,242,.1); background: #08080d; padding: 4px 0 8px; }
+.gdh { display: none; }
 </style>
 <style>body{margin:0}[hidden]{display:none!important}#boot{position:fixed;inset:0;display:grid;place-items:center;color:#62627a;font:12px var(--mono);letter-spacing:.2em;text-transform:uppercase;z-index:40}#textbox .body p{max-width:29.2em}#textbox .body h2,#textbox .body h3{font-family:var(--display);margin:.8em 0 .3em}#textbox .body blockquote{margin:0 0 .6em;padding-left:.8em;border-left:4px solid var(--orange);color:var(--ink2)}#textbox .body img{max-width:100%}#textbox .body a{color:var(--orange)}#textbox .body ul,#textbox .body ol{font-family:var(--read);max-width:29.2em}#textbox .mid p.his{font-family:var(--read);font-size:.75em;color:var(--ink)}</style>
 </head><body>
@@ -964,12 +1017,17 @@ window.BLAWG_START = function (DATA) {
   /* what the reading block holds, per selection */
   function fillText(X) {
     if (SEL.k === 'piece' && SEL.links) {
-      var lp2 = SEL.id, bl = bridgesOf(lp2); carveSpacer(X); boxHead(X, 'Links · ' + bl.length + ' from this piece', P[lp2].title);
-      X.appendChild(h('p', { class: 'lead', text: 'Pick a link to see it between its two pieces.' }));
-      var ll = h('div', { class: 'linkl' }); bl.forEach(function (j, n) { var o = other(j, lp2), q = P[o], br = B[j];
-        var b = h('button', { 'data-b': j }, [h('span', { class: 'no', text: pad2(n + 1) }), h('span', { class: 'bd' }, [h('b', { text: q.title }), h('small', { text: GI[q.group].name + (br.sample ? ' · sample link Claude made up, not yours' : '') }), h('i', { text: br.sample ? 'Made-up sample. No words yet.' : br.text ? short(br.text, 110) : 'Words for this link are coming.' })]), h('em', { text: 'See it ›' })]);
-        b.addEventListener('click', function () { select({ k: 'bridge', id: j, from: lp2 }); }); b.addEventListener('pointerenter', function () { lineHot(j, true); hov(o, true); }); b.addEventListener('pointerleave', function () { lineHot(j, false); hov(o, false); });
-        ll.appendChild(b); }); X.appendChild(ll);
+      /* the link page: every link of this piece as a row you can scroll: this piece, the words between, the other piece */
+      var lp2 = SEL.id, bl = bridgesOf(lp2), me = P[lp2]; carveSpacer(X); boxHead(X, 'Links · ' + bl.length + ' from this piece', me.title);
+      X.appendChild(h('p', { class: 'lead', text: bl.length > 1 ? 'Everything this piece links to. Open one to read it between its two pieces.' : 'Open it to read it between its two pieces.' }));
+      function side(i, lab, quote, cls) { var q = P[i], c = h('div', { class: 'ls ' + cls }, [h('small', { text: lab + ' · ' + GI[q.group].name }), h('b', { text: q.title })]);
+        if (quote) c.appendChild(h('blockquote', null, [h('mark', { text: quote })])); else c.appendChild(h('span', { text: q.desc || '' }));
+        return c; }
+      var ll = h('div', { class: 'linkl' }); bl.forEach(function (j, n) { var o = other(j, lp2), br = B[j];
+        var mid = h('div', { class: 'lm' }, [h('div', { class: 'sym', text: '⇄' })].concat(br.sample ? [h('p', { class: 'slot', text: 'A made-up sample link, not yours. No words.' })] : br.text ? br.text.split(/\n{2,}/).map(function (t) { return h('p', { class: 'his', text: t }); }) : [h('p', { class: 'slot', text: 'Your words for this link go here.' })]));
+        var row = h('button', { class: 'lrow', 'data-b': j }, [h('span', { class: 'no', text: pad2(n + 1) + (br.sample ? ' · made up' : '') }), h('div', { class: 'tri' }, [side(lp2, 'THIS PIECE', br.q && br.q[P[lp2].id], 'a'), mid, side(o, 'LINKS TO', br.q && br.q[P[o].id], 'b')]), h('em', { text: 'Open this link ›' })]);
+        row.addEventListener('click', function () { select({ k: 'bridge', id: j, from: lp2 }); }); row.addEventListener('pointerenter', function () { lineHot(j, true); hov(o, true); }); row.addEventListener('pointerleave', function () { lineHot(j, false); hov(o, false); });
+        ll.appendChild(row); }); X.appendChild(ll);
     } else if (SEL.k === 'piece') {
       var p = P[SEL.id], g = GI[p.group];
       carveSpacer(X); boxHead(X, g.name, p.title); if (p.desc) X.appendChild(h('p', { class: 'lead', text: p.desc }));
@@ -981,7 +1039,7 @@ window.BLAWG_START = function (DATA) {
       var br = B[SEL.id], first = SEL.from === br.b ? br.b : br.a, second = first === br.a ? br.b : br.a, A = P[first], Bp = P[second];
       carveSpacer(X); X.appendChild(h('div', { class: 'k', text: br.sample ? 'Connection · a sample Claude made up, not yours' : 'Connection' }));
       var pv = h('div', { class: 'pairv' });
-      function card(i, lab) { var q = P[i], c = h('button', { class: 'pc' }, [h('small', { text: lab + ' · ' + GI[q.group].name }), h('b', { text: q.title }), q.desc ? h('span', { text: q.desc }) : null, h('em', { text: 'Read this ›' })]); c.addEventListener('click', function () { select({ k: 'piece', id: i }, SEL.id); }); hovBtn(c, i); return c; }
+      function card(i, lab) { var q = P[i], c = h('button', { class: 'pc' }, [h('small', { text: lab + ' · ' + GI[q.group].name }), h('b', { text: q.title }), br.q && br.q[q.id] ? h('blockquote', { class: 'pq' }, [h('mark', { text: br.q[q.id] })]) : q.desc ? h('span', { text: q.desc }) : null, h('em', { text: 'Read this ›' })]); c.addEventListener('click', function () { select({ k: 'piece', id: i }, SEL.id); }); hovBtn(c, i); return c; }
       pv.appendChild(card(first, 'FROM')); var midc = h('div', { class: 'mid' }, [h('div', { class: 'sym', text: '⇄' })].concat(br.text ? br.text.split(/\n{2,}/).map(function (t) { return h('p', { class: 'his', text: t }); }) : [h('p', { class: 'slot', text: BRSLOT })])); pv.appendChild(midc); pv.appendChild(card(second, 'TO')); X.appendChild(pv);
       var acts = h('div', { class: 'via' }), bkl = h('button', { class: 'bkl', text: '‹ All links from “' + short(A.title, 40) + '”' }); bkl.onclick = function () { select({ k: 'piece', id: first, links: true }); }; acts.appendChild(bkl);
       var cp = h('button', { text: 'Copy a link to this connection' }), fl = h('button', { text: '⇄ Flip sides' }); cp.onclick = copyLink; fl.onclick = function () { select({ k: 'bridge', id: SEL.id, from: second }); }; acts.appendChild(fl); acts.appendChild(cp); X.appendChild(acts);
@@ -1127,10 +1185,10 @@ window.BLAWG_START = function (DATA) {
   function accBody(gid) { var body = h('div', { class: 'gdrop' }), g = GI[gid]; body.appendChild(h('div', { class: 'gdh', text: pad2(g.order) + ' · ' + g.name })); groupRows(gid, body); return body; }
   /* groups as tiles, two to a row. A tile drops its list open right under its row and pushes the rows below down; one open at a time. */
   function tiles(pn) { var sg = selGroup(), lg = linkedGroups(); if (sg !== LASTSG) { LASTSG = sg; if (sg) OPEN1 = sg; }
-    var grid = h('div', { class: 'gtiles' }), list = G, cols = 2;
+    var grid = h('div', { class: 'gtiles' }), list = G, cols = 1;
     function rowEnd(btn) { var all = [].slice.call(grid.querySelectorAll('.gt')), k = all.indexOf(btn), e = Math.min(all.length - 1, k - k % cols + cols - 1); return all[e]; }
     list.forEach(function (g) { var ids = inGroup(g.id).filter(hit); if (Q && !ids.length) return;
-      var b = h('button', { class: 'gt' + (OPEN1 === g.id && !Q ? ' open' : '') + (sg === g.id ? ' has' : '') + (lg[g.id] && sg !== g.id ? ' lnk' : ''), 'aria-expanded': OPEN1 === g.id && !Q ? 'true' : 'false', 'data-g': g.id }, [h('small', null, [pad2(g.order), h('i', { text: Q ? ids.length + ' found' : g.n + ' pieces' })]), h('b', { text: g.name }), h('span', { class: 'dd' }, [h('i', { class: 'car', text: '▾' }), h('em', { class: 'sh', text: 'Show ' + (Q ? ids.length : g.n) }), h('em', { class: 'hd', text: 'Hide list' })])]);
+      var b = h('button', { style: '--acc:' + g.acc, class: 'gt' + (OPEN1 === g.id && !Q ? ' open' : '') + (sg === g.id ? ' has' : '') + (lg[g.id] && sg !== g.id ? ' lnk' : ''), 'aria-expanded': OPEN1 === g.id && !Q ? 'true' : 'false', 'data-g': g.id }, [h('small', null, [pad2(g.order), h('i', { text: Q ? ids.length + ' found' : g.n + ' pieces' })]), h('b', { text: g.name }), h('span', { class: 'dd' }, [h('i', { class: 'car', text: '▾' }), h('em', { class: 'sh', text: 'Show ' + (Q ? ids.length : g.n) }), h('em', { class: 'hd', text: 'Hide list' })])]);
       b.onclick = function () { var was = grid.querySelector('.gt.open'), wb = grid.querySelector('.gdrop');
         if (was) { was.classList.remove('open'); was.setAttribute('aria-expanded', 'false'); } if (wb) shrink(wb);
         if (was === b) { OPEN1 = null; return; } OPEN1 = g.id; b.classList.add('open'); b.setAttribute('aria-expanded', 'true'); var nb = accBody(g.id), re = rowEnd(b); grid.insertBefore(nb, re.nextSibling); grow(nb);
@@ -1141,7 +1199,7 @@ window.BLAWG_START = function (DATA) {
     if (Q) { var fl = h('div', { class: 'gdrop' }); fl.appendChild(h('div', { class: 'gdh', text: 'Found · “' + Q + '”' })); var n = 0; P.forEach(function (p, i) { if (hit(i)) { fl.appendChild(pieceRow(i)); n++; } }); if (!n) fl.appendChild(h('div', { class: 'empty', text: 'Nothing matches.' })); pn.appendChild(fl); } }
   function hideBtn(toColl) { var b = h('button', { class: 'hs', title: toColl ? 'Hide the sidebar; a dock takes its place' : 'Show the sidebar again' }, toColl ? [h('span', { text: 'Hide sidebar' }), h('b', { text: '⇥' })] : [h('b', { text: '⇤' }), h('span', { text: 'Sidebar' })]); b.onclick = function () { COLL = toColl; store.set('blawg-side', COLL ? '0' : '1'); DOPEN = null; renderNav(); }; return b; }
   function navSide(S) { var cr = ctlRow(); cr.appendChild(hideBtn(true)); S.appendChild(h('div', { class: 'bar1' }, [cr]));
-    var pn = h('div', { class: 'pane accp' }); pn.appendChild(h('div', { class: 'lab gl', text: 'Groups · ' + G.length })); tiles(pn); S.appendChild(pn); S.appendChild(h('div', { class: 'foot fk' }, [keyBlock()])); scrollSel(pn); }
+    var pn = h('div', { class: 'pane accp' }); pn.appendChild(h('div', { class: 'lab gl' }, [h('b', { text: 'Library' }), h('span', { text: P.length + ' pieces · ' + G.length + ' groups · open one to browse' })])); tiles(pn); S.appendChild(pn); S.appendChild(h('div', { class: 'foot fk' }, [keyBlock()])); scrollSel(pn); }
 
   function navDock() { var D = $('dock'), sg = selGroup(), lg = linkedGroups(); D.textContent = '';
     var cr = ctlRow(); D.appendChild(cr); D.appendChild(h('span', { class: 'sep' })); var hx = h('div', { class: 'hexes' });
@@ -1190,8 +1248,8 @@ window.BLAWG_START = function (DATA) {
     if (SEL.k === 'dir' && e.key === 'ArrowLeft') gal(-1); if (SEL.k === 'dir' && e.key === 'ArrowRight') gal(1); });
 
   /* sidebar: drag its edge to resize */
-  (function () { var grip = $('grip'), on = false; var w0 = +store.get('blawg-sw'); if (w0 >= 280) document.documentElement.style.setProperty('--sw', w0 + 'px'); else document.documentElement.style.setProperty('--sw', '340px');
-    function set(w) { w = Math.max(280, Math.min(window.innerWidth * .6, w)); document.documentElement.style.setProperty('--sw', w + 'px'); store.set('blawg-sw', Math.round(w)); apply(); }
+  (function () { var grip = $('grip'), on = false; var w0 = +store.get('blawg-sw'); if (w0 >= 310) document.documentElement.style.setProperty('--sw', w0 + 'px'); else document.documentElement.style.setProperty('--sw', '340px');
+    function set(w) { w = Math.max(310, Math.min(window.innerWidth * .6, w)); document.documentElement.style.setProperty('--sw', w + 'px'); store.set('blawg-sw', Math.round(w)); apply(); }
     grip.addEventListener('pointerdown', function (e) { on = true; grip.classList.add('on'); grip.setPointerCapture(e.pointerId); e.preventDefault(); });
     grip.addEventListener('pointermove', function (e) { if (on) set(window.innerWidth - e.clientX); });
     grip.addEventListener('pointerup', function () { on = false; grip.classList.remove('on'); }); })();

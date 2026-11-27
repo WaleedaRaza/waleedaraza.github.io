@@ -39,7 +39,7 @@
     var out_b = [];
     (conns || []).forEach(function (c) { if (c.state !== 'live' || !c.ends || c.ends.length < 2) return; var e = c.ends.filter(function (x) { return IX[x] !== undefined; });
       /* the board draws a connection between pairs; a 3-way link becomes a fan from its first end */
-      for (var j = 1; j < e.length; j++) out_b.push({ id: c.id + (e.length > 2 ? '.' + j : ''), a: IX[e[0]], b: IX[e[j]], text: c.text || '', label: c.label || '', sample: false, named: true }); });
+      for (var j = 1; j < e.length; j++) out_b.push({ id: c.id + (e.length > 2 ? '.' + j : ''), a: IX[e[0]], b: IX[e[j]], text: c.text || '', label: c.label || '', q: c.quotes || null, sample: false, named: true }); });
     return { L: L, maxd: maxd, groups: out_g, pieces: out_p, bridges: out_b, types: ['Principle', 'Question', 'Stance', 'Case study', 'Reaction', 'Log', 'Note', 'Door'], kinds: [], gallery: A.gallery || [] };
   }
   window.BlawgLayout = layout;
