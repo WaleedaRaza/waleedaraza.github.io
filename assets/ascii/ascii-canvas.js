@@ -63,7 +63,7 @@
     g.draw = function () {
       var x, y, i, j, k, n, L, r, gr, b, m;
       lctx.clearRect(0, 0, layer.width, layer.height);
-      lctx.font = Math.floor(ch * 0.9) + 'px "IBM Plex Mono", Consolas, Menlo, "DejaVu Sans Mono", monospace';
+      lctx.font = Math.floor(ch * 0.9) + 'px "Ascii Art Mono", "IBM Plex Mono", Consolas, Menlo, "DejaVu Sans Mono", monospace';
       lctx.textAlign = 'center'; lctx.textBaseline = 'middle';
       var sw = cw / 2, sh = ch / 4, rl = ramp.length - 1;
       for (y = 0; y < rows; y++) {

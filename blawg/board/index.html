@@ -5,6 +5,10 @@
 <meta name="description" content="Waleed Raza's blawg: essays on a hex board.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
+/* the art's own font, served from this site. Google's JetBrains Mono leaves out the block and box characters the art is drawn with, so phones were filling them in from a system font with different widths */
+@font-face { font-family: "Ascii Art Mono"; src: url("../../assets/ascii/fonts/art-mono.woff2") format("woff2"); font-display: block; unicode-range: U+20-7E, U+A0-FF, U+14C, U+3B8, U+2014, U+2022, U+2026, U+2192, U+2248, U+2500-25A1, U+25AA-25AB, U+25B2-25CC, U+25CE-25CF, U+25D4-25D5, U+25E6-25EB, U+25EF, U+25F6; }
+@font-face { font-family: "Ascii Art Mono"; src: url("../../assets/ascii/fonts/art-mono-extra.woff2") format("woff2"); font-display: block; unicode-range: U+2153, U+25A2-25A9, U+25AC-25B1, U+25CD, U+25D0-25D3, U+25D6-25E5, U+25EC-25EE, U+25F0-25F5, U+25F7-25FF, U+2660, U+2663, U+2665-2666; }
+
 /* Layout: one screen, one dark look (the portfolio's). A honeycomb board with a big hexagonal stage at its centre, and a resizable reading sidebar. */
 :root {
   color-scheme: dark;
