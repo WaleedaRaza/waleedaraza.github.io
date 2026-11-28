@@ -82,6 +82,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tv .arr { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 64px; display: grid; place-items: center; font-size: 26px; color: var(--ink2); background: rgba(0,0,0,.55); border: 1px solid var(--line2); z-index: 2; }
 .tv .arr:hover { color: var(--orange); border-color: var(--orange); }
 .tv .arr.l { left: 8px; } .tv .arr.r { right: 8px; }
+@media (max-width: 600px) { .tv .arr { width: 32px; height: 46px; font-size: 20px; background: rgba(0,0,0,.35); border-color: rgba(44,44,61,.6); } .tv .arr.l { left: 4px; } .tv .arr.r { right: 4px; } }
 .tvcap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 10px 2px 0; font: 12px var(--mono); color: var(--ink3); }
 .tvcap b { color: var(--ink); font-weight: 500; font-family: var(--sans); font-size: 15px; }
 .tvcap a { color: var(--orange); }
@@ -289,12 +290,14 @@ window.BLAWG_START = function (D, RAW) {
     var box = h('div', { class: 'tv' }), scr = h('div', { class: 'screen' }), cap = h('div', { class: 'tvcap' }), at = startAt || 0; box.appendChild(scr);
     function show() { stopArt(); scr.textContent = ''; var key = keys[at];
       if (!key || !CAT || !CAT.get(key)) { scr.appendChild(h('div', { class: 'none', text: 'NO ART YET' })); return; }
-      var me = LIVE = { key: key }, lay = h('div', { class: 'art' }), DW = 800; lay.style.width = DW + 'px'; scr.appendChild(lay);
+      fitW = scr.clientWidth; var me = LIVE = { key: key }, lay = h('div', { class: 'art' }), DW = 800; lay.style.width = DW + 'px'; scr.appendChild(lay);
       CAT.mount(key, '../assets/ascii/').then(function (m) { if (LIVE !== me) return; lay.appendChild(m.el); me.sc = m.start();
         /* draw the art at a fixed width so it looks the same everywhere, shrink it until it fits the screen's height, then scale it to the screen */
         var tries = 0, last = -1, shrunk = false; (function fit() { if (LIVE !== me) return; var W = scr.clientWidth, H = scr.clientHeight, hh = m.el.offsetHeight;
           if ((hh < 4 || Math.abs(hh - last) > 1) && tries++ < 25) { last = hh; return setTimeout(fit, 70); }
           var dw = lay.offsetWidth, k = W / DW;
+          /* the screen takes the art's own shape (between 21:9 and 16:10), so nothing is letterboxed or cut */
+          if (!shrunk) { var Hn = Math.max(W * .43, Math.min(W * .625, hh * k)); scr.style.aspectRatio = 'auto'; scr.style.height = Math.round(Hn) + 'px'; H = Math.round(Hn); }
           if (!shrunk) { shrunk = true; if (hh * k > H * 1.005) { lay.style.width = Math.floor(dw * H / (hh * k)) + 'px'; window.dispatchEvent(new Event('resize')); last = -1; tries = 0; return setTimeout(fit, 70); } }
           dw = lay.offsetWidth; lay.style.transform = 'translate(' + Math.round((W - dw * k) / 2) + 'px,' + Math.round((H - hh * k) / 2) + 'px) scale(' + k.toFixed(4) + ')'; lay.classList.add('on'); })(); }).catch(function () {});
       if (withCaption) { cap.textContent = ''; var e = CAT.get(key), used = ARTUSE[key] || []; cap.appendChild(h('b', { text: e.title }));
@@ -306,7 +309,9 @@ window.BLAWG_START = function (D, RAW) {
       box.addEventListener('pointerup', function (e) { if (x0 == null) return; var dx = e.clientX - x0, dy = e.clientY - y0; x0 = null; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4) { at = (at + (dx < 0 ? 1 : -1) + keys.length) % keys.length; show(); } });
       box.addEventListener('pointercancel', function () { x0 = null; });
       box.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') l.onclick(); if (e.key === 'ArrowRight') r.onclick(); }); box.tabIndex = 0; }
-    var wrap = h('div', null, [box, withCaption ? cap : null]); setTimeout(show, 0); return wrap; }
+    /* refit when the screen changes width (rotating a phone); the art's own resize events don't change it */
+    var fitW = 0, rt; window.addEventListener('resize', function () { if (!document.body.contains(box)) return; clearTimeout(rt); rt = setTimeout(function () { if (document.body.contains(box) && Math.abs(scr.clientWidth - fitW) > 4) show(); }, 250); });
+    var wrap = h('div', null, [box, withCaption ? cap : null]); setTimeout(function () { fitW = scr.clientWidth; show(); }, 0); return wrap; }
 
   /* ── the map: all 12 groups as a still picture; your trail and the open piece lit ── */
   var ND = [[1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1], [1, -1]], L = 88, T = L - 9;
