@@ -223,9 +223,19 @@
     return nx < 0 ? '▐' : '▌';
   }
 
+  /* Optional open sky above the scene (opts.sky world units) so the standing
+     trunk fits inside the frame; 0 keeps the original framing. */
+  var SKY = 0;
+  function setSky(sky) {
+    var d = (sky || 0) - SKY; if (!d) return; SKY = sky || 0;
+    WY += d; GROUND += d; STOP += d; PIV0.y += d; REST.y += d; MOON.y += d;
+    ROOTS.forEach(function (r) { r.forEach(function (p) { p.y += d; }); });
+  }
+
   /* ── Scene ──────────────────────────────────────────────────────────── */
   function mount(el, opts) {
     opts = opts || {};
+    setSky(opts.sky);
     var cols = pickCols(el);
     var field = AF.create(el, { cols: cols, rows: 48, palette: PALETTE, typing: ['#ff6b35', '#00d4aa'] });
     var A = field.charAspect || 1.83;

@@ -210,7 +210,7 @@ html.lock, html.lock body { overflow: hidden; }
 #maptip em { font: 11px var(--mono); font-style: normal; color: var(--ink3); }
 .map .tg { cursor: pointer; }
 .map .tg:hover .tile { fill: #3b3b4d; }
-.map .tile.pick { stroke: #fff; stroke-width: 12; }
+.map .tg .tile.pick { fill: var(--orange); stroke: #fff; stroke-width: 10; }
 .map .gtile { cursor: pointer; }
 .mapbox { position: relative; border: 1px solid var(--line2); background: #030306; overflow: hidden; }
 .mapbox::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0l13 7.5v15L13 30 0 22.5v-15zM13 30l13 7.5v15M13 30L0 37.5v15' fill='none' stroke='%23ececf2' stroke-opacity='.05' stroke-width='.6'/%3E%3C/svg%3E"); background-size: 26px 45px; }
@@ -228,6 +228,23 @@ html.lock, html.lock body { overflow: hidden; }
 .map .fam.on { stroke: var(--orange) !important; stroke-width: 14; opacity: 1; }
 .map .lnk { fill: none; stroke: rgba(236,236,242,.45); stroke-width: 6; stroke-linecap: round; }
 .map .lnk.on { stroke: var(--orange); stroke-width: 10; }
+.map .pulse { fill: var(--orange); stroke: none; pointer-events: none; animation: hexpulse 1.8s ease-in-out infinite; }
+@keyframes hexpulse { 0%, 100% { opacity: .12; } 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .map .pulse { animation: none; opacity: .35; } }
+.map.ov { cursor: pointer; }
+.map.ov .gzone:hover { fill: rgba(255,107,53,.07); }
+.map .gzone { fill: transparent; stroke: none; }
+.map .tt { font: 500 23.5px/1 var(--sans); fill: #ececf2; text-anchor: middle; pointer-events: none; }
+.map .tile.cur ~ .tt, .map .tile.pick ~ .tt { fill: #000; font-weight: 600; }
+.map .gname { font: 600 23px var(--sans); fill: var(--orange); text-anchor: middle; pointer-events: none; }
+.gbar { display: flex; align-items: center; gap: 8px; max-width: 1500px; margin: 0 auto 10px; }
+.gbar button { height: 38px; padding: 0 12px; border: 1px solid var(--line2); color: var(--ink2); font: 12px var(--mono); flex: none; }
+.gbar button:hover { border-color: var(--orange); color: var(--orange); }
+.gbar .back { border-color: var(--orange); color: var(--orange); }
+.gbar b { font: 600 17px/1.2 var(--sans); min-width: 0; flex: 1; }
+.gbar b i { font: 12px var(--mono); font-style: normal; color: var(--orange); margin-right: 6px; }
+#mapov .mapbox.one svg { max-height: none; }
+@media (min-width: 760px) { #mapov .mapbox.one { max-width: 760px; } #mapov .mapbox.one svg { max-height: calc(100vh - 330px); } }
 .map .glab { font: 600 64px var(--sans); fill: #fff; text-anchor: middle; paint-order: stroke; stroke: #000; stroke-width: 14px; stroke-linejoin: round; pointer-events: none; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 11.5px var(--mono); color: var(--ink3); }
 .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 6px; vertical-align: -1px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
@@ -386,7 +403,7 @@ window.BLAWG_START = function (D, RAW) {
     M.groups.forEach(function (g) { var acc = g.order % 2 ? 'var(--orange)' : 'var(--teal)';
       if (g.id === gsel) g.cells.forEach(function (c) { var o = px(c[0], c[1]); svg.appendChild(s('polygon', { class: 'gsel', points: hexPts(L, o[0], o[1]) })); });
       g.empty.forEach(function (c) { var o = px(c[0], c[1]); svg.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); });
-      var o = px(g.q, g.r); svg.appendChild(s('polygon', { class: 'gtile', 'data-g': g.id, points: hexPts(T, o[0], o[1]), style: 'stroke:' + acc }));
+      var o = px(g.q, g.r); svg.appendChild(s('polygon', { class: 'gtile', 'data-g': g.id, points: hexPts(T, o[0], o[1]), style: 'stroke:' + acc })); svg.appendChild(s('polygon', { class: 'pulse', points: hexPts(T * .78, o[0], o[1]) }));
       svg.appendChild(s('path', { class: 'fam' + (g.id === gsel ? ' on' : ''), d: edgePath(g.cells), style: 'stroke:' + acc })); });
     M.pieces.forEach(function (p) { var i = PI[p.id]; if (i == null) return; var o = pos[p.id], cls = 'tile' + (i === cur ? ' cur' : lit[i] ? ' ln' : READ[p.id] ? ' rd' : '');
       var a = s('g', { class: 'tg', 'data-i': String(i) }); a.appendChild(s('polygon', { class: cls, points: hexPts(T, o[0], o[1]) })); svg.appendChild(a); });
@@ -395,50 +412,74 @@ window.BLAWG_START = function (D, RAW) {
       a.appendChild(s('title', {})).textContent = P[b.a].title + '  ⇄  ' + P[b.b].title; a.appendChild(s('path', { class: 'lnk' + (on ? ' on' : ''), d: 'M' + A[0].toFixed(0) + ' ' + A[1].toFixed(0) + 'Q' + cx.toFixed(0) + ' ' + cy.toFixed(0) + ' ' + Z[0].toFixed(0) + ' ' + Z[1].toFixed(0) })); svg.appendChild(a); });
     M.groups.forEach(function (g) { var o = px(g.q, g.r), words = g.name.split(' '), rows = [], c = ''; words.forEach(function (w) { if ((c + ' ' + w).trim().length > 16 && c) { rows.push(c); c = w; } else c = (c + ' ' + w).trim(); }); rows.push(c);
       rows.forEach(function (rw, n) { var t = s('text', { class: 'glab', x: o[0].toFixed(0), y: (o[1] + 22 + (n - (rows.length - 1) / 2) * 70).toFixed(0) }); t.textContent = rw; svg.appendChild(t); }); });
+    /* one big invisible hexagon over each group: a click anywhere in it opens the group */
+    M.groups.forEach(function (g) { var o = px(g.q, g.r); svg.appendChild(s('polygon', { class: 'gzone', 'data-g': g.id, points: hexPts(L * S3 * 3.55, o[0], o[1]).split(' ').map(function (pt) { return pt; }).join(' '), transform: 'rotate(30 ' + o[0].toFixed(1) + ' ' + o[1].toFixed(1) + ')' })); });
+    svg.classList.add('ov');
     var lg = h('div', { class: 'legend' }, [h('span', null, [h('i', { style: 'background:#55556a' }), 'you have read it']), h('span', null, [h('i', { style: 'background:#000;outline:2px solid var(--ink3);outline-offset:-2px' }), "a group's centre: tap to list its pieces"]), h('span', null, [h('i', { style: 'background:rgba(236,236,242,.6);height:2px;clip-path:none;width:16px' }), 'a link between two pieces'])]);
     if (cur != null) { lg.insertBefore(h('span', null, [h('i', { style: 'background:#0d3a31' }), 'linked to this piece']), lg.firstChild); lg.insertBefore(h('span', null, [h('i', { style: 'background:var(--orange)' }), 'this piece']), lg.firstChild); }
     return h('div', null, [h('div', { class: 'mapbox' }, [svg]), lg]); }
-  /* the map opens over the page. Hover (or a first tap) previews; a click puts the piece or group in the strip under the map */
+  /* the map opens over the page: all twelve groups with pulsing centres; a click opens one group with
+     every title written in its hexes; a click on a piece shows it right under the map */
   var MAPON = false, MPICK = null, MGROUP = null;
-  function curPiece() { return ROUTE.p != null ? ROUTE.p : (HOME && HOME.sel != null ? HOME.sel : null); }
-  function openMap() { var cur = curPiece(), gsel = cur != null ? P[cur].group : (HOME ? TAB : null);
-    $('mapnote').textContent = window.matchMedia('(hover: hover)').matches ? 'hover a hex to preview it · click to pick it' : 'tap a hex to preview it · tap a group’s centre to list it';
-    var body = $('mapbody'); body.textContent = ''; body.appendChild(map(cur, gsel)); $('mapov').hidden = false; document.documentElement.classList.add('lock'); MAPON = true; LASTW = window.innerWidth < 760;
-    MPICK = null; MGROUP = gsel; if (cur != null) mapPick(cur, false); else dockGroup(gsel);
-    $('mapclose').focus({ preventScroll: true });
-    var lit = body.querySelector('.tile.cur') || body.querySelector('.fam.on'); body.scrollTop = 0; if (lit && body.scrollHeight > body.clientHeight + 40) { var r = lit.getBoundingClientRect(), br = body.getBoundingClientRect(); body.scrollTop = Math.max(0, r.top + r.height / 2 - br.top - body.clientHeight / 2); } }
+  var HOVER = window.matchMedia ? window.matchMedia('(hover: hover)').matches : false;
+  function curPiece() { return ROUTE.p != null ? ROUTE.p : (HOME && HOME.sel != null && !HOME.auto ? HOME.sel : null); }
+  function openMap(at) { var cur = typeof at === 'number' ? at : curPiece(); $('mapov').hidden = false; document.documentElement.classList.add('lock'); MAPON = true; LASTW = window.innerWidth < 760;
+    if (cur != null) openGroup(P[cur].group, cur); else overview();
+    $('mapclose').focus({ preventScroll: true }); }
   function closeMap() { if (!MAPON) return; MAPON = false; $('mapov').hidden = true; $('mapbody').textContent = ''; $('mapdock').textContent = ''; $('maptip').hidden = true; document.documentElement.classList.remove('lock'); }
   function readHere(i) { return '#g=' + encodeURIComponent(P[i].group) + '&s=' + encodeURIComponent(P[i].id); }
-  function mapPick(i, scrollTo) { MPICK = i; MGROUP = P[i].group; var body = $('mapbody');
+  function overview() { MGROUP = null; MPICK = null; var body = $('mapbody'); body.textContent = ''; body.appendChild(map(null, null)); body.scrollTop = 0;
+    $('mapnote').textContent = HOVER ? 'click a group to open it' : 'tap a group to open it';
+    var d = $('mapdock'); d.textContent = ''; d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'hint', text: 'Each glowing centre is one of the twelve groups. Open one to see every title in it.' })])); }
+  /* one group, big, with the titles in its hexes */
+  function wrapTitle(t, n, rows) { var w = t.replace(/[—–]/g, '-').split(/\s+/), out = [], c = ''; w.forEach(function (x) { if ((c + ' ' + x).trim().length > n && c) { out.push(c); c = x; } else c = (c + ' ' + x).trim(); }); out.push(c);
+    if (out.length > rows) { out = out.slice(0, rows); out[rows - 1] = out[rows - 1].slice(0, n - 1).replace(/[\s,:;-]+$/, '') + '…'; } return out.map(function (r) { return r.length > n + 2 ? r.slice(0, n) + '…' : r; }); }
+  function groupSvg(gid, cur) { var M = mapLayout(true), g = M.groups.filter(function (x) { return x.id === gid; })[0], acc = GI[gid].order % 2 ? 'var(--orange)' : 'var(--teal)';
+    /* frame the pieces, not the empty ring around them, so the titles come out as large as possible */
+    var bb = [1e9, 1e9, -1e9, -1e9], used = [[g.q, g.r]]; M.pieces.forEach(function (p) { if (p.group === gid) used.push([p.q, p.r]); });
+    used.forEach(function (c) { var o = px(c[0], c[1]); bb[0] = Math.min(bb[0], o[0] - L); bb[1] = Math.min(bb[1], o[1] - L); bb[2] = Math.max(bb[2], o[0] + L); bb[3] = Math.max(bb[3], o[1] + L); });
+    var pad = 24, svg = s('svg', { class: 'map', viewBox: (bb[0] - pad) + ' ' + (bb[1] - pad) + ' ' + (bb[2] - bb[0] + 2 * pad) + ' ' + (bb[3] - bb[1] + 2 * pad), role: 'img', 'aria-label': GI[gid].name });
+    var lit = {}; if (cur != null) linksOf(cur).forEach(function (j) { lit[other(j, cur)] = 1; });
+    g.empty.forEach(function (c) { var o = px(c[0], c[1]); svg.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); });
+    var o = px(g.q, g.r); svg.appendChild(s('polygon', { class: 'gtile', points: hexPts(T, o[0], o[1]), style: 'stroke:' + acc }));
+    wrapTitle(GI[gid].name, 10, 4).forEach(function (rw, n, all) { var t = s('text', { class: 'gname', x: o[0].toFixed(0), y: (o[1] + 8 + (n - (all.length - 1) / 2) * 27).toFixed(0) }); t.textContent = rw; svg.appendChild(t); });
+    M.pieces.forEach(function (p) { var i = PI[p.id]; if (i == null || p.group !== gid) return; var q = px(p.q, p.r), cls = 'tile' + (i === cur ? ' cur' : lit[i] ? ' ln' : READ[p.id] ? ' rd' : '');
+      var a = s('g', { class: 'tg', 'data-i': String(i) }); a.appendChild(s('polygon', { class: cls, points: hexPts(T, q[0], q[1]) }));
+      var lines = wrapTitle(P[i].title, 9, 4); lines.forEach(function (rw, n) { var t = s('text', { class: 'tt', x: q[0].toFixed(0), y: (q[1] + 8 + (n - (lines.length - 1) / 2) * 28).toFixed(0) }); t.textContent = rw; a.appendChild(t); });
+      svg.appendChild(a); });
+    svg.appendChild(s('path', { class: 'fam', d: edgePath(g.cells), style: 'stroke:' + acc }));
+    return svg; }
+  function openGroup(gid, pick) { if (!GI[gid]) return overview(); MGROUP = gid; MPICK = null; var body = $('mapbody'); body.textContent = ''; $('maptip').hidden = true;
+    var gi = G.indexOf(GI[gid]), back = h('button', { class: 'back', type: 'button', text: '← All groups' }), pv = h('button', { type: 'button', 'aria-label': 'Previous group', text: '‹' }), nx = h('button', { type: 'button', 'aria-label': 'Next group', text: '›' });
+    back.onclick = overview; pv.onclick = function () { openGroup(G[(gi - 1 + G.length) % G.length].id); }; nx.onclick = function () { openGroup(G[(gi + 1) % G.length].id); };
+    body.appendChild(h('div', { class: 'gbar' }, [back, h('b', null, [h('i', { text: pad2(GI[gid].order) }), GI[gid].name]), pv, nx]));
+    body.appendChild(h('div', { class: 'mapbox one' }, [groupSvg(gid, pick != null ? pick : curPiece())])); body.scrollTop = 0;
+    $('mapnote').textContent = HOVER ? 'click a piece to see it below' : 'tap a piece to see it below';
+    if (pick != null) mapPick(pick); else { var d = $('mapdock'); d.textContent = ''; d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'hint', text: inGroup(gid).length + ' pieces. ' + (HOVER ? 'Click' : 'Tap') + ' one to see it here.' })])); } }
+  function mapPick(i) { MPICK = i; var body = $('mapbody');
     body.querySelectorAll('.tile.pick').forEach(function (t) { t.classList.remove('pick'); });
-    var tg = body.querySelector('.tg[data-i="' + i + '"]'); if (tg) { tg.firstChild.classList.add('pick'); tg.parentNode.appendChild(tg); if (scrollTo && tg.scrollIntoView) { var r = tg.getBoundingClientRect(), br = body.getBoundingClientRect(); if (r.top < br.top || r.bottom > br.bottom) body.scrollTop += r.top - br.top - body.clientHeight / 2; } }
-    var p = P[i], g = GI[p.group], ids = inGroup(p.group), at = ids.indexOf(i), d = $('mapdock'); d.textContent = '';
+    var tg = body.querySelector('.tg[data-i="' + i + '"]'); if (tg) { tg.firstChild.classList.add('pick'); tg.parentNode.appendChild(tg); }
+    var p = P[i], ids = inGroup(p.group), at = ids.indexOf(i), d = $('mapdock'); d.textContent = '';
     var prev = h('button', { type: 'button', class: 'nv', 'aria-label': 'Previous piece in this group', text: '‹' }), next = h('button', { type: 'button', class: 'nv', 'aria-label': 'Next piece in this group', text: '›' });
-    prev.onclick = function () { mapPick(ids[(at - 1 + ids.length) % ids.length], true); }; next.onclick = function () { mapPick(ids[(at + 1) % ids.length], true); };
-    var lb = h('button', { type: 'button', class: 'pill', text: pad2(g.order) + ' · ' + g.name + ' · ' + (at + 1) + ' of ' + ids.length, style: 'padding:3px 8px;font:11px var(--mono)' }); lb.onclick = function () { dockGroup(g.id, i); };
-    var ls = linksOf(i), chips = h('div', { class: 'chips', style: 'display:flex;flex-wrap:wrap;gap:6px' }); ls.forEach(function (j) { var o = other(j, i), c = h('button', { type: 'button', class: 'chip', text: '⇄ ' + P[o].title }); c.onclick = function () { mapPick(o, true); }; chips.appendChild(c); });
-    d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'lbl' }, [lb, h('span', { class: 'sp' }), prev, next]), h('h3', { text: p.title }), p.desc ? h('p', { text: p.desc }) : null, ls.length ? chips : null,
+    prev.onclick = function () { mapPick(ids[(at - 1 + ids.length) % ids.length]); }; next.onclick = function () { mapPick(ids[(at + 1) % ids.length]); };
+    var ls = linksOf(i), chips = h('div', { class: 'chips', style: 'display:flex;flex-wrap:wrap;gap:6px' }); ls.forEach(function (j) { var o = other(j, i), c = h('button', { type: 'button', class: 'chip', text: '⇄ ' + P[o].title }); c.onclick = function () { if (P[o].group !== MGROUP) openGroup(P[o].group, o); else mapPick(o); }; chips.appendChild(c); });
+    d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'lbl' }, [h('span', { text: (at + 1) + ' of ' + ids.length }), h('span', { class: 'sp' }), prev, next]), h('h3', { text: p.title }), p.desc ? h('p', { text: p.desc }) : null, ls.length ? chips : null,
       h('div', { class: 'acts', style: 'display:flex;flex-wrap:wrap;gap:8px' }, [h('a', { class: 'go', href: readHere(i), text: 'Read it here' }), h('a', { class: 'go2', href: pref(i), text: '⤢ Full essay' })])])); }
-  function dockGroup(gid, pick) { var d = $('mapdock'); d.textContent = ''; MGROUP = gid;
-    if (!gid || !GI[gid]) { d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'hint', text: 'Tap a hex to preview a piece, or a group’s centre to list its pieces here.' })])); return; }
-    var g = GI[gid], ids = inGroup(gid), pills = h('div', { class: 'pills' });
-    ids.forEach(function (i) { var b = h('button', { type: 'button', class: 'pill' + (i === pick ? ' on' : ''), text: P[i].title }); b.onclick = function () { mapPick(i, true); }; pills.appendChild(b); });
-    d.appendChild(h('div', { class: 'dk' }, [h('div', { class: 'lbl' }, [h('span', { text: pad2(g.order) + ' · ' + g.name + ' · ' + ids.length + ' pieces' }), h('span', { class: 'sp' }), h('a', { class: 'go2', href: '#g=' + encodeURIComponent(gid), text: 'Open this tab', style: 'height:30px' })]), pills])); }
-  $('mapbtn').onclick = openMap; $('mapclose').onclick = closeMap;
+  $('mapbtn').onclick = function () { openMap(); }; $('mapclose').onclick = closeMap;
   $('mapbody').addEventListener('click', function (e) {
-    var tg = e.target.closest('.tg'); if (tg) { var i = +tg.getAttribute('data-i'); if (MPICK === i && !window.matchMedia('(hover: hover)').matches) { location.hash = readHere(i); return; } mapPick(i, false); $('maptip').hidden = true; return; }
-    var gt = e.target.closest('.gtile'); if (gt) { var gid = gt.getAttribute('data-g'); dockGroup(gid); return; }
+    var tg = e.target.closest('.tg'); if (tg) { mapPick(+tg.getAttribute('data-i')); $('maptip').hidden = true; return; }
+    var z = e.target.closest('[data-g]'); if (z && MGROUP == null) { openGroup(z.getAttribute('data-g')); return; }
     if (e.target.closest('a')) closeMap(); });
   $('mapdock').addEventListener('click', function (e) { if (e.target.closest('a')) closeMap(); });
-  /* hover card (mouse only) */
-  $('mapbody').addEventListener('pointermove', function (e) { if (e.pointerType !== 'mouse') return; var tip = $('maptip'), tg = e.target.closest('.tg'), gt = !tg && e.target.closest('.gtile');
-    if (!tg && !gt) { tip.hidden = true; return; } tip.textContent = '';
-    if (tg) { var p = P[+tg.getAttribute('data-i')], n = linksOf(+tg.getAttribute('data-i')).length; tip.appendChild(h('b', { text: p.title })); if (p.desc) tip.appendChild(h('span', { text: p.desc })); tip.appendChild(h('em', { text: pad2(GI[p.group].order) + ' · ' + GI[p.group].name + (n ? ' · ⇄ ' + n : '') + ' · click to pick' })); }
-    else { var g = GI[gt.getAttribute('data-g')]; tip.appendChild(h('b', { text: g.name })); tip.appendChild(h('em', { text: inGroup(g.id).length + ' pieces · click to list them below' })); }
+  /* hover card (mouse only): the full title, since a hex only fits a few words */
+  $('mapbody').addEventListener('pointermove', function (e) { if (e.pointerType !== 'mouse') return; var tip = $('maptip'), tg = e.target.closest('.tg'), z = !tg && MGROUP == null && e.target.closest('[data-g]');
+    if (!tg && !z) { tip.hidden = true; return; } tip.textContent = '';
+    if (tg) { var k = +tg.getAttribute('data-i'), p = P[k], n = linksOf(k).length; tip.appendChild(h('b', { text: p.title })); if (p.desc) tip.appendChild(h('span', { text: p.desc })); tip.appendChild(h('em', { text: (n ? '⇄ ' + n + ' · ' : '') + 'click to see it below' })); }
+    else { var g = GI[z.getAttribute('data-g')]; tip.appendChild(h('b', { text: g.name })); tip.appendChild(h('em', { text: inGroup(g.id).length + ' pieces · click to open' })); }
     tip.hidden = false; var x = e.clientX + 16, y = e.clientY + 16; if (x + 270 > window.innerWidth) x = e.clientX - 276; if (y + tip.offsetHeight + 8 > window.innerHeight) y = e.clientY - tip.offsetHeight - 12; tip.style.left = x + 'px'; tip.style.top = y + 'px'; });
   $('mapbody').addEventListener('pointerleave', function () { $('maptip').hidden = true; });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMap(); });
-  var LASTW = window.innerWidth < 760; window.addEventListener('resize', function () { var n = window.innerWidth < 760; if (n !== LASTW) { LASTW = n; if (MAPON) openMap(); if (HOME && HOME.sel != null) select(HOME.sel, false); } });
+  document.addEventListener('keydown', function (e) { if (!MAPON) return; if (e.key === 'Escape') { if (MGROUP != null) overview(); else closeMap(); } });
+  var LASTW = window.innerWidth < 760; window.addEventListener('resize', function () { var n = window.innerWidth < 760; if (n !== LASTW) { LASTW = n; if (MAPON) { if (MGROUP != null) openGroup(MGROUP, MPICK); else overview(); } if (HOME && HOME.sel != null) select(HOME.sel, false); } });
 
   /* a small picture of the map for the sidebar button: group outlines only, the open tab's group lit */
   function mini() { var M = mapLayout(true), bb = [1e9, 1e9, -1e9, -1e9]; M.groups.forEach(function (g) { g.cells.forEach(function (c) { var o = px(c[0], c[1]); bb[0] = Math.min(bb[0], o[0] - L); bb[1] = Math.min(bb[1], o[1] - L); bb[2] = Math.max(bb[2], o[0] + L); bb[3] = Math.max(bb[3], o[1] + L); }); });
@@ -474,7 +515,7 @@ window.BLAWG_START = function (D, RAW) {
     HOME.sel = null; select(wideHome() && ids.length ? ids[0] : null, false, true);
     if (scroll) { var r = HOME.head.getBoundingClientRect(); if (r.top < 60 || r.top > window.innerHeight * .6) HOME.head.scrollIntoView({ block: 'start' }); } }
   /* show piece i in the reading pane (wide) or open it under its own row (narrow) */
-  function select(i, scroll, quiet) { if (!HOME) return; var pane = HOME.pane; HOME.sel = i; HOME.inline = !wideHome();
+  function select(i, scroll, quiet) { if (!HOME) return; var pane = HOME.pane; HOME.sel = i; HOME.auto = !!quiet; HOME.inline = !wideHome();
     for (var k in HOME.rows) { var on = +k === i; HOME.rows[k].classList.toggle('on', on); HOME.rows[k].setAttribute('aria-expanded', on ? 'true' : 'false'); }
     pane.textContent = ''; if (pane.parentNode) pane.parentNode.removeChild(pane);
     if (!quiet) { try { history.replaceState(null, '', '#g=' + encodeURIComponent(TAB) + (i != null ? '&s=' + encodeURIComponent(P[i].id) : '')); } catch (e) {} }
@@ -490,7 +531,7 @@ window.BLAWG_START = function (D, RAW) {
     if (p.body && BMD) { pb.appendChild(h('p', { class: 'slot', text: 'Loading…' }));
       fetch('pieces/' + encodeURIComponent(p.id) + '.md', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (md) { if (HOME && HOME.sel === i) pb.innerHTML = BMD.render(md); }).catch(function () { pb.textContent = ''; pb.appendChild(h('p', { class: 'slot', text: 'This piece could not load. Try again in a moment.' })); }); }
     else { pb.style.maxHeight = 'none'; pb.style.webkitMaskImage = pb.style.maskImage = 'none'; pb.appendChild(h('p', { class: 'slot', text: 'Not written yet. Your words for this piece go here.' })); }
-    var mb = h('button', { class: 'go2', type: 'button', text: '⬡ On the map' }); mb.onclick = openMap;
+    var mb = h('button', { class: 'go2', type: 'button', text: '⬡ On the map' }); mb.onclick = function () { openMap(i); };
     pane.appendChild(h('div', { class: 'acts' }, [h('a', { class: 'go', href: pref(i), text: '⤢ Open the full essay' }), mb]));
     if (HOME.inline) { var row = HOME.rows[i]; row.parentNode.insertBefore(pane, row.nextSibling); } else HOME.gview.appendChild(pane);
     if (!quiet) { markRead(i); HOME.rows[i].classList.add('rd'); }
@@ -514,7 +555,7 @@ window.BLAWG_START = function (D, RAW) {
     root.appendChild(side); root.appendChild(main); V.appendChild(root);
     HOME = { root: root, tabs: list, head: head, list: plist, gview: gview, pane: pane, mini: mm, rows: {}, sel: null };
     var g0 = GI[gid] ? gid : TAB; setTab(g0, false); var si = PI[sid];
-    if (si != null && P[si].group === g0) { select(si, false, true); var el = HOME.inline ? HOME.rows[si] : head; el.scrollIntoView({ block: 'start' }); }
+    if (si != null && P[si].group === g0) { select(si, false, true); HOME.auto = false; var el = HOME.inline ? HOME.rows[si] : head; el.scrollIntoView({ block: 'start' }); }
     else if (GI[gid]) head.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0); }
   function essay(V, i) {
     var p = P[i], g = GI[p.group], ids = inGroup(p.group), at = ids.indexOf(i), w = h('article', { class: 'wrap essay', style: '--acc:' + g.acc });
