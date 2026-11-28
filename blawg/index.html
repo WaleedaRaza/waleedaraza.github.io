@@ -4,7 +4,7 @@
 <meta name="description" content="Waleed Raza's blawg: essays in twelve groups, and a map of how they connect.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
-/* A plain scrolling blog in the board's look. The map is a still picture at the bottom of each page. */
+/* A plain blog in the board's look: TV, two rows of six tabs, cards. The map sits behind one button and opens over the page. */
 :root {
   color-scheme: dark;
   --bg: #000; --card: #0b0b12; --line: #1c1c28; --line2: #2c2c3d;
@@ -87,24 +87,75 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tvcap a { color: var(--orange); }
 .tvcap .n { margin-left: auto; }
 
-/* directory */
-.dir { display: grid; grid-template-columns: 1fr; gap: 10px 46px; padding: 30px 0 10px; }
-@media (min-width: 980px) { .dir { grid-template-columns: 1fr 1fr; } }
-.grp { border-top: 2px solid var(--acc); padding-top: 12px; scroll-margin-top: 70px; }
-.grp h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 6px; font: 600 21px/1.25 var(--sans); }
-.grp h2 small { font: 500 11px var(--mono); color: var(--acc); letter-spacing: .1em; }
-.grp h2 em { margin-left: auto; font: 11px var(--mono); font-style: normal; color: var(--ink3); }
-.row { display: block; padding: 9px 0; border-bottom: 1px solid var(--line); }
-.row .t { font-weight: 500; font-size: 16px; line-height: 1.3; }
-.row .d { display: block; margin-top: 2px; color: var(--ink3); font: 15px/1.4 var(--serif); }
-.row .mk { font: 11px var(--mono); color: var(--teal); margin-left: 6px; }
-.row .ad { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); margin-left: 7px; vertical-align: middle; }
-.row:hover .t { color: var(--orange); }
+/* home: a sidebar with the map button, and a main column with the TV, the tabs and the cards */
+.hgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 34px; padding-top: 22px; padding-bottom: 60px; }
+@media (min-width: 900px) { .hgrid { grid-template-columns: 236px minmax(0, 1fr); } }
+.side { display: none; }
+@media (min-width: 900px) { .side { display: grid; gap: 14px; align-content: start; position: sticky; top: 80px; } }
+.side .bigmap { display: grid; gap: 8px; width: 100%; padding: 12px; border: 1px solid var(--orange); background: linear-gradient(180deg, rgba(255,107,53,.09), rgba(255,107,53,0) 70%); text-align: left; transition: background .15s; }
+.side .bigmap:hover { background: rgba(255,107,53,.14); }
+.side .bigmap svg { width: 100%; height: auto; max-height: 46vh; display: block; }
+.side .bigmap b { display: flex; justify-content: space-between; color: var(--orange); font: 600 15px var(--sans); }
+.side .bigmap small { color: var(--ink3); font-size: 13px; line-height: 1.35; }
+.side .find { height: 38px; padding: 0 11px; border: 1px solid var(--line2); color: var(--ink3); font: 13px var(--mono); text-align: left; }
+.side .find:hover { border-color: var(--ink3); color: var(--ink2); }
+.side .trail { font: 11.5px var(--mono); color: var(--ink3); }
+.mini .mg0 { fill: none; stroke-width: 9; opacity: .55; }
+.mini .mc { fill: rgba(255,107,53,.28); stroke: none; }
+.mini .mon { opacity: 1; stroke: var(--orange) !important; stroke-width: 14; }
+.mini text { font: 600 150px var(--mono); fill: var(--ink3); text-anchor: middle; dominant-baseline: central; }
+.mini text.on { fill: var(--orange); }
+.hmain { min-width: 0; display: grid; gap: 16px; align-content: start; }
+.hmain h1 { font: 700 clamp(32px, 5vw, 52px)/1 var(--sans); letter-spacing: -.02em; margin: 2px 0 0; }
+.tv.short .screen { aspect-ratio: 16 / 7; }
+@media (min-width: 900px) { .tv.short .screen { aspect-ratio: 16 / 6; } }
+@media (max-width: 600px) { .tv.short .screen { aspect-ratio: 16 / 9; } }
+/* tabs: two rows of six, the same two halves as the map */
+.tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
+.tab { display: grid; gap: 3px; align-content: start; min-height: 60px; padding: 8px 9px 9px; border: 1px solid var(--line2); background: var(--card); text-align: left; transition: border-color .12s, background .12s; }
+.tab i { font: 500 11px var(--mono); font-style: normal; color: var(--acc); }
+.tab span { font-size: 13px; line-height: 1.22; color: var(--ink2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tab:hover { border-color: var(--ink3); }
+.tab:hover span { color: var(--ink); }
+.tab.on { border-color: var(--orange); background: rgba(255,107,53,.1); box-shadow: inset 0 -2px 0 var(--orange); }
+.tab.on i { color: var(--orange); }
+.tab.on span { color: var(--ink); }
+.tab:focus-visible, .card:focus-visible, .side .bigmap:focus-visible, #mapbtn:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+@media (max-width: 760px) { .tabs { gap: 5px; } .tab { min-height: 0; padding: 9px 0; text-align: center; justify-items: center; } .tab i { font-size: 13px; } .tab span { display: none; } }
+.ghead { display: flex; align-items: baseline; gap: 12px; margin-top: 8px; scroll-margin-top: 70px; }
+.ghead h2 { margin: 0; font: 600 24px/1.2 var(--sans); text-wrap: balance; }
+.ghead em { margin-left: auto; font: 12px var(--mono); font-style: normal; color: var(--ink3); white-space: nowrap; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.card { display: flex; flex-direction: column; gap: 4px; padding: 13px 14px; border: 1px solid var(--line2); background: var(--card); transition: border-color .12s, background .12s; }
+.card b { font: 500 16.5px/1.28 var(--sans); }
+.card p { margin: 0; color: var(--ink3); font: 15.5px/1.38 var(--serif); }
+.card .m { display: flex; gap: 10px; margin-top: auto; padding-top: 4px; font: 11px var(--mono); color: var(--ink3); }
+.card .m .ln { color: var(--teal); }
+.card .m .ar { color: var(--orange); }
+.card:hover { border-color: var(--orange); background: #10101a; }
+.card:hover b { color: var(--orange); }
+.card.rd b::after { content: " ✓"; color: var(--ink3); font-size: 13px; }
 
-/* the map */
-.mapsec { padding-top: 40px; padding-bottom: 70px; }
-.mapsec h2 { font: 600 24px var(--sans); margin: 0 0 6px; }
-.mapbox { position: relative; margin-top: 14px; border: 1px solid var(--line2); background: #030306; overflow: hidden; }
+/* the map button in the top bar, and the map over the page */
+#mapbtn { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 13px; border: 1px solid var(--orange); background: rgba(255,107,53,.1); color: var(--orange); font: 600 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+#mapbtn b { font-size: 16px; font-weight: 400; }
+#mapbtn:hover { background: var(--orange); color: #000; }
+#bar .home { margin-left: 0; }
+#bar .sp { margin-left: auto; }
+@media (max-width: 520px) { #bar .home { display: none; } #menubtn .tx { display: none; } }
+#mapov { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: #000; }
+#mapov .mh { display: flex; align-items: center; gap: 12px; padding: 10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); border-bottom: 1px solid var(--line2); }
+#mapov .mh b { font: 600 13px var(--mono); letter-spacing: .2em; color: var(--orange); }
+#mapov .mh span { font: 12px var(--mono); color: var(--ink3); }
+@media (max-width: 600px) { #mapov .mh { flex-wrap: wrap; } #mapov .mh span { order: 3; flex-basis: 100%; font-size: 11px; } }
+#mapov .mh button { margin-left: auto; height: 38px; padding: 0 14px; border: 1px solid var(--line2); font: 12px var(--mono); letter-spacing: .08em; }
+#mapov .mh button:hover { border-color: var(--orange); color: var(--orange); }
+#mapov .mb { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 14px max(16px, env(safe-area-inset-right)) 24px max(16px, env(safe-area-inset-left)); }
+#mapov .mapbox { max-width: 1500px; margin: 0 auto; }
+@media (min-width: 760px) { #mapov .mapbox svg { max-height: calc(100vh - 150px); } }
+#mapov .legend { max-width: 1500px; margin: 10px auto 0; }
+html.lock, html.lock body { overflow: hidden; }
+.mapbox { position: relative; border: 1px solid var(--line2); background: #030306; overflow: hidden; }
 .mapbox::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0l13 7.5v15L13 30 0 22.5v-15zM13 30l13 7.5v15M13 30L0 37.5v15' fill='none' stroke='%23ececf2' stroke-opacity='.05' stroke-width='.6'/%3E%3C/svg%3E"); background-size: 26px 45px; }
 .mapbox svg { position: relative; display: block; width: 100%; height: auto; }
 .map .cell { fill: #060609; stroke: #000; stroke-width: 6; }
@@ -114,12 +165,17 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .map .tile.ln { fill: #0d3a31; }
 .map .tile.cur { fill: var(--orange); }
 .map .gtile { fill: #000; stroke-width: 6; }
+.map a:hover .gtile { fill: #1a1a24; }
+.map .gsel { fill: rgba(255,107,53,.1); stroke: none; pointer-events: none; }
 .map .fam { fill: none; stroke-width: 7; opacity: .75; }
+.map .fam.on { stroke: var(--orange) !important; stroke-width: 14; opacity: 1; }
 .map .lnk { fill: none; stroke: rgba(236,236,242,.45); stroke-width: 6; stroke-linecap: round; }
 .map .lnk.on { stroke: var(--orange); stroke-width: 10; }
 .map .glab { font: 600 64px var(--sans); fill: #fff; text-anchor: middle; paint-order: stroke; stroke: #000; stroke-width: 14px; stroke-linejoin: round; pointer-events: none; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font: 11.5px var(--mono); color: var(--ink3); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 11.5px var(--mono); color: var(--ink3); }
 .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 6px; vertical-align: -1px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+.seemap { margin-top: 34px; display: inline-flex; gap: 8px; align-items: center; height: 42px; padding: 0 16px; border: 1px solid var(--orange); color: var(--orange); font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.seemap:hover { background: var(--orange); color: #000; }
 
 /* essay */
 .crumbs { padding-top: 26px; font: 12px var(--mono); color: var(--ink3); letter-spacing: .06em; }
@@ -164,9 +220,11 @@ footer a:hover { color: var(--ink); }
 </style>
 </head><body>
 <header id="bar">
-  <button id="menubtn" type="button" aria-expanded="false" aria-controls="menu"><b>☰</b> Menu</button>
+  <button id="menubtn" type="button" aria-expanded="false" aria-controls="menu"><b>☰</b><span class="tx">Menu</span></button>
   <a class="name" href="#">BLAWG</a>
+  <span class="sp"></span>
   <a class="home" href="../">← portfolio</a>
+  <button id="mapbtn" type="button" aria-haspopup="dialog"><b>⬡</b>Map</button>
 </header>
 <nav id="menu" aria-label="All pieces">
   <div class="mh"><b>ALL PIECES</b><button type="button" id="mclose" aria-label="Close menu">✕</button></div>
@@ -174,6 +232,10 @@ footer a:hover { color: var(--ink); }
   <div id="mlist"></div>
 </nav>
 <div id="scrim"></div>
+<div id="mapov" role="dialog" aria-modal="true" aria-label="The map" hidden>
+  <div class="mh"><b>THE MAP</b><span id="mapnote"></span><button type="button" id="mapclose">✕ Close</button></div>
+  <div class="mb" id="mapbody"></div>
+</div>
 <main id="view"><div id="boot">Loading</div></main>
 <footer><a href="../">waleedaraza</a> · blawg</footer>
 
@@ -253,15 +315,16 @@ window.BLAWG_START = function (D, RAW) {
   function edgePath(cells) { var set = {}, d = ''; cells.forEach(function (c) { set[c[0] + ',' + c[1]] = 1; }); cells.forEach(function (c) { var o = px(c[0], c[1]); for (var i = 0; i < 6; i++) { if (set[(c[0] + ND[i][0]) + ',' + (c[1] + ND[i][1])]) continue; var a1 = i * Math.PI / 3 - Math.PI / 6, a2 = a1 + Math.PI / 3; d += 'M' + (o[0] + L * Math.cos(a1)).toFixed(1) + ' ' + (o[1] + L * Math.sin(a1)).toFixed(1) + 'L' + (o[0] + L * Math.cos(a2)).toFixed(1) + ' ' + (o[1] + L * Math.sin(a2)).toFixed(1); } }); return d; }
   var MAPS = {};
   function mapLayout(narrow) { var k = narrow ? 'left' : 'top'; if (!MAPS[k]) MAPS[k] = window.BlawgLayout(RAW[0], RAW[1], RAW[2], RAW[3], k); return MAPS[k]; }
-  function map(cur) {
+  function map(cur, gsel) {
     var narrow = window.innerWidth < 760, M = mapLayout(narrow), pos = {}; M.pieces.forEach(function (p) { pos[p.id] = px(p.q, p.r); });
     var bb = [1e9, 1e9, -1e9, -1e9]; M.groups.forEach(function (g) { g.cells.forEach(function (c) { var o = px(c[0], c[1]); bb[0] = Math.min(bb[0], o[0] - L); bb[1] = Math.min(bb[1], o[1] - L); bb[2] = Math.max(bb[2], o[0] + L); bb[3] = Math.max(bb[3], o[1] + L); }); });
     var pad = 40, svg = s('svg', { class: 'map', viewBox: (bb[0] - pad) + ' ' + (bb[1] - pad) + ' ' + (bb[2] - bb[0] + 2 * pad) + ' ' + (bb[3] - bb[1] + 2 * pad), role: 'img', 'aria-label': 'Map of all twelve groups and the links between pieces' });
     var lit = {}, curLinks = cur != null ? linksOf(cur) : []; curLinks.forEach(function (j) { lit[other(j, cur)] = 1; });
     M.groups.forEach(function (g) { var acc = g.order % 2 ? 'var(--orange)' : 'var(--teal)';
+      if (g.id === gsel) g.cells.forEach(function (c) { var o = px(c[0], c[1]); svg.appendChild(s('polygon', { class: 'gsel', points: hexPts(L, o[0], o[1]) })); });
       g.empty.forEach(function (c) { var o = px(c[0], c[1]); svg.appendChild(s('polygon', { class: 'cell', points: hexPts(T, o[0], o[1]) })); });
-      var o = px(g.q, g.r); svg.appendChild(s('polygon', { class: 'gtile', points: hexPts(T, o[0], o[1]), style: 'stroke:' + acc }));
-      svg.appendChild(s('path', { class: 'fam', d: edgePath(g.cells), style: 'stroke:' + acc })); });
+      var o = px(g.q, g.r), ga = s('a', { href: '#g=' + encodeURIComponent(g.id) }); ga.appendChild(s('title', {})).textContent = g.name; ga.appendChild(s('polygon', { class: 'gtile', points: hexPts(T, o[0], o[1]), style: 'stroke:' + acc })); svg.appendChild(ga);
+      svg.appendChild(s('path', { class: 'fam' + (g.id === gsel ? ' on' : ''), d: edgePath(g.cells), style: 'stroke:' + acc })); });
     M.pieces.forEach(function (p) { var i = PI[p.id]; if (i == null) return; var o = pos[p.id], cls = 'tile' + (i === cur ? ' cur' : lit[i] ? ' ln' : READ[p.id] ? ' rd' : '');
       var a = s('a', { href: pref(i) }); a.appendChild(s('title', {})).textContent = p.title; a.appendChild(s('polygon', { class: cls, points: hexPts(T, o[0], o[1]) })); svg.appendChild(a); });
     B.forEach(function (b, j) { var A = pos[P[b.a].id], Z = pos[P[b.b].id]; if (!A || !Z) return; var mx = (A[0] + Z[0]) / 2, my = (A[1] + Z[1]) / 2, dx = Z[0] - A[0], dy = Z[1] - A[1], len = Math.hypot(dx, dy) || 1, k = .18;
@@ -269,27 +332,70 @@ window.BLAWG_START = function (D, RAW) {
       a.appendChild(s('title', {})).textContent = P[b.a].title + '  ⇄  ' + P[b.b].title; a.appendChild(s('path', { class: 'lnk' + (on ? ' on' : ''), d: 'M' + A[0].toFixed(0) + ' ' + A[1].toFixed(0) + 'Q' + cx.toFixed(0) + ' ' + cy.toFixed(0) + ' ' + Z[0].toFixed(0) + ' ' + Z[1].toFixed(0) })); svg.appendChild(a); });
     M.groups.forEach(function (g) { var o = px(g.q, g.r), words = g.name.split(' '), rows = [], c = ''; words.forEach(function (w) { if ((c + ' ' + w).trim().length > 16 && c) { rows.push(c); c = w; } else c = (c + ' ' + w).trim(); }); rows.push(c);
       rows.forEach(function (rw, n) { var t = s('text', { class: 'glab', x: o[0].toFixed(0), y: (o[1] + 22 + (n - (rows.length - 1) / 2) * 70).toFixed(0) }); t.textContent = rw; svg.appendChild(t); }); });
-    var lg = h('div', { class: 'legend' }, [h('span', null, [h('i', { style: 'background:#55556a' }), 'you have read it']), h('span', null, [h('i', { style: 'background:rgba(236,236,242,.6);height:2px;clip-path:none;width:16px' }), 'a link between two pieces'])]);
+    var lg = h('div', { class: 'legend' }, [h('span', null, [h('i', { style: 'background:#55556a' }), 'you have read it']), h('span', null, [h('i', { style: 'background:#000;outline:2px solid var(--ink3);outline-offset:-2px' }), 'a group: tap its centre to see its pieces']), h('span', null, [h('i', { style: 'background:rgba(236,236,242,.6);height:2px;clip-path:none;width:16px' }), 'a link between two pieces'])]);
     if (cur != null) { lg.insertBefore(h('span', null, [h('i', { style: 'background:#0d3a31' }), 'linked to this piece']), lg.firstChild); lg.insertBefore(h('span', null, [h('i', { style: 'background:var(--orange)' }), 'this piece']), lg.firstChild); }
     return h('div', null, [h('div', { class: 'mapbox' }, [svg]), lg]); }
-  var LASTW = window.innerWidth < 760; window.addEventListener('resize', function () { var n = window.innerWidth < 760; if (n !== LASTW) { LASTW = n; render(); } });
+  /* the map opens over the page; links inside it close it */
+  var MAPON = false;
+  function openMap() { var cur = ROUTE.p != null ? ROUTE.p : null, gsel = cur != null ? P[cur].group : (HOME ? TAB : null);
+    $('mapnote').textContent = cur != null ? 'this piece is orange · tap any hex to open it' : gsel ? pad2(GI[gsel].order) + ' ' + GI[gsel].name + ' is lit · tap a group or a hex' : 'tap a group or a hex';
+    var body = $('mapbody'); body.textContent = ''; body.appendChild(map(cur, gsel)); $('mapov').hidden = false; document.documentElement.classList.add('lock'); MAPON = true; LASTW = window.innerWidth < 760; $('mapclose').focus({ preventScroll: true });
+    /* on a tall map (phone), start with the lit part in view */
+    var lit = body.querySelector('.tile.cur') || body.querySelector('.fam.on'); body.scrollTop = 0; if (lit && body.scrollHeight > body.clientHeight + 40) { var r = lit.getBoundingClientRect(), br = body.getBoundingClientRect(); body.scrollTop = Math.max(0, r.top + r.height / 2 - br.top - body.clientHeight / 2); } }
+  function closeMap() { if (!MAPON) return; MAPON = false; $('mapov').hidden = true; $('mapbody').textContent = ''; document.documentElement.classList.remove('lock'); }
+  $('mapbtn').onclick = openMap; $('mapclose').onclick = closeMap;
+  $('mapbody').addEventListener('click', function (e) { if (e.target.closest('a')) closeMap(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMap(); });
+  var LASTW = window.innerWidth < 760; window.addEventListener('resize', function () { var n = window.innerWidth < 760; if (n !== LASTW) { LASTW = n; if (MAPON) openMap(); } });
+
+  /* a small picture of the map for the sidebar button: group outlines only, the open tab's group lit */
+  function mini() { var M = mapLayout(true), bb = [1e9, 1e9, -1e9, -1e9]; M.groups.forEach(function (g) { g.cells.forEach(function (c) { var o = px(c[0], c[1]); bb[0] = Math.min(bb[0], o[0] - L); bb[1] = Math.min(bb[1], o[1] - L); bb[2] = Math.max(bb[2], o[0] + L); bb[3] = Math.max(bb[3], o[1] + L); }); });
+    var svg = s('svg', { class: 'mini', viewBox: (bb[0] - 20) + ' ' + (bb[1] - 20) + ' ' + (bb[2] - bb[0] + 40) + ' ' + (bb[3] - bb[1] + 40), 'aria-hidden': 'true' }), parts = {};
+    M.groups.forEach(function (g) { var fill = s('g', { class: 'mc' }); fill.style.display = 'none'; g.cells.forEach(function (c) { var o = px(c[0], c[1]); fill.appendChild(s('polygon', { points: hexPts(L + 1, o[0], o[1]) })); }); svg.appendChild(fill);
+      var e = s('path', { class: 'mg0', d: edgePath(g.cells), style: 'stroke:' + (g.order % 2 ? 'var(--orange)' : 'var(--teal)') }); svg.appendChild(e);
+      var o = px(g.q, g.r), t = s('text', { x: o[0].toFixed(0), y: o[1].toFixed(0) }); t.textContent = pad2(g.order); svg.appendChild(t); parts[g.id] = [fill, e, t]; });
+    svg.light = function (gid) { for (var k in parts) { var on = k === gid; parts[k][0].style.display = on ? '' : 'none'; parts[k][1].classList.toggle('mon', on); parts[k][2].classList.toggle('on', on); } };
+    return svg; }
 
   /* ── pages ── */
   var ROUTE = {};
   function parse() { var m = {}; (location.hash || '').replace(/^#/, '').split('&').forEach(function (kv) { var a = kv.split('='); if (a[0]) m[a[0]] = decodeURIComponent(a[1] || ''); }); return m; }
-  function render() { var m = parse(), V = $('view'); stopArt(); V.textContent = ''; ROUTE = {};
+  function render() { var m = parse(), V = $('view'); closeMap();
+    var isHome = !(m.p != null && PI[m.p] != null) && !(m.c != null && B.some(function (b) { return b.id === m.c; }));
+    if (isHome && HOME && V.contains(HOME.root)) { setTab(GI[m.g] ? m.g : TAB, !!GI[m.g]); return; }
+    stopArt(); V.textContent = ''; ROUTE = {}; HOME = null;
     if (m.p != null && PI[m.p] != null) { ROUTE.p = PI[m.p]; essay(V, ROUTE.p); }
-    else if (m.c != null && B.some(function (b) { return b.id === m.c; })) linkView(V, B.findIndex(function (b) { return b.id === m.c; }));
+    else if (!isHome) linkView(V, B.findIndex(function (b) { return b.id === m.c; }));
     else home(V, m.g);
     if ($('menu').classList.contains('on')) renderMenu(); }
-  function row(i) { var p = P[i], n = linksOf(i).length; return h('a', { class: 'row', href: pref(i) }, [h('span', { class: 't', text: p.title }), n ? h('span', { class: 'mk', text: '⇄' + n, title: n + ' link' + (n > 1 ? 's' : '') }) : null, p.art ? h('span', { class: 'ad', title: 'has art' }) : null, READ[p.id] ? h('span', { class: 'rd', title: 'you have read this' }) : null, p.desc ? h('span', { class: 'd', text: p.desc }) : null]); }
+  function card(i) { var p = P[i], n = linksOf(i).length;
+    return h('a', { class: 'card' + (READ[p.id] ? ' rd' : ''), href: pref(i) }, [h('b', { text: p.title }), p.desc ? h('p', { text: p.desc }) : null,
+      h('span', { class: 'm' }, [n ? h('span', { class: 'ln', text: '⇄ ' + n + ' link' + (n > 1 ? 's' : '') }) : null, p.art ? h('span', { class: 'ar', text: 'art' }) : null, READ[p.id] ? h('span', { text: 'read' }) : null])]); }
+  var HOME = null, TAB = (G[0] || {}).id;
+  function setTab(gid, scroll) { if (!HOME || !GI[gid]) return; TAB = gid; var g = GI[gid], ids = inGroup(gid);
+    HOME.tabs.forEach(function (t) { var on = t.gid === gid; t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1; });
+    HOME.head.textContent = ''; HOME.head.appendChild(h('h2', { text: g.name })); HOME.head.appendChild(h('em', { text: ids.length + ' piece' + (ids.length === 1 ? '' : 's') }));
+    HOME.cards.textContent = ''; ids.forEach(function (i) { HOME.cards.appendChild(card(i)); });
+    if (HOME.mini) HOME.mini.light(gid);
+    if (scroll) { var r = HOME.head.getBoundingClientRect(); if (r.top < 60 || r.top > window.innerHeight * .6) HOME.head.scrollIntoView({ block: 'start' }); } }
   function home(V, gid) {
-    var band = h('section', { class: 'band' }, [h('div', { class: 'wide' }, [h('div', { class: 'eyebrow', text: 'Waleed Raza · essays' }), h('h1', { text: 'Blawg' }), tv(GAL, 0, true)])]); V.appendChild(band);
-    var w = h('div', { class: 'wide' }); w.appendChild(h('p', { class: 'slot', text: 'Your intro paragraph goes here.' }));
-    var dir = h('div', { class: 'dir' }); G.forEach(function (g) { var sec = h('section', { class: 'grp', id: 'g-' + g.id, style: '--acc:' + g.acc }, [h('h2', null, [h('small', { text: pad2(g.order) }), h('span', { text: g.name }), h('em', { text: inGroup(g.id).length + ' pieces' })])]);
-      inGroup(g.id).forEach(function (i) { sec.appendChild(row(i)); }); dir.appendChild(sec); }); w.appendChild(dir);
-    var ms = h('section', { class: 'mapsec', id: 'map' }, [h('div', { class: 'eyebrow', text: 'The map' }), h('h2', { text: 'All twelve groups, and how the pieces link' }), h('p', { class: 'slot', text: 'Your one line inviting people to look at the map goes here.' }), map(null)]); w.appendChild(ms);
-    V.appendChild(w); if (gid && $('g-' + gid)) $('g-' + gid).scrollIntoView(); else window.scrollTo(0, 0); }
+    var root = h('div', { class: 'wide hgrid' }), side = h('aside', { class: 'side' }), main = h('div', { class: 'hmain' });
+    var mm = mini(), big = h('button', { class: 'bigmap', type: 'button', 'aria-haspopup': 'dialog' }, [mm, h('b', null, ['Open the map', h('span', { text: '⤢' })]), h('small', { text: 'All twelve groups, and how the pieces link.' })]);
+    big.onclick = openMap; side.appendChild(big);
+    var fb = h('button', { class: 'find', type: 'button', text: 'find a piece…' }); fb.onclick = function () { menuOn(true); setTimeout(function () { $('q').focus(); }, 60); }; side.appendChild(fb);
+    var nRead = Object.keys(READ).filter(function (id) { return PI[id] != null; }).length; side.appendChild(h('div', { class: 'trail', text: nRead ? 'You have read ' + nRead + ' of ' + P.length + '.' : P.length + ' pieces in twelve groups.' }));
+    main.appendChild(h('div', { class: 'eyebrow', text: 'Waleed Raza · essays' })); main.appendChild(h('h1', { text: 'Blawg' }));
+    var t = tv(GAL, 0, true); t.firstChild.classList.add('short'); main.appendChild(t);
+    main.appendChild(h('p', { class: 'slot', text: 'Your intro paragraph goes here.' }));
+    var tabs = h('div', { class: 'tabs', role: 'tablist', 'aria-label': 'The twelve groups' }), list = [];
+    G.forEach(function (g) { var b = h('button', { class: 'tab', type: 'button', role: 'tab', style: '--acc:' + g.acc, title: g.name }, [h('i', { text: pad2(g.order) }), h('span', { text: g.name })]); b.gid = g.id;
+      b.onclick = function () { setTab(g.id, false); try { history.replaceState(null, '', '#g=' + encodeURIComponent(g.id)); } catch (e) {} }; list.push(b); tabs.appendChild(b); });
+    tabs.addEventListener('keydown', function (e) { var k = list.indexOf(document.activeElement); if (k < 0) return; var n = e.key === 'ArrowRight' ? k + 1 : e.key === 'ArrowLeft' ? k - 1 : -9; if (n === -9) return; n = (n + list.length) % list.length; list[n].focus(); list[n].click(); e.preventDefault(); });
+    main.appendChild(tabs);
+    var head = h('div', { class: 'ghead' }), cards = h('div', { class: 'cards', role: 'tabpanel' }); main.appendChild(head); main.appendChild(cards);
+    root.appendChild(side); root.appendChild(main); V.appendChild(root);
+    HOME = { root: root, tabs: list, head: head, cards: cards, mini: mm };
+    setTab(GI[gid] ? gid : TAB, false); if (GI[gid]) head.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0); }
   function essay(V, i) {
     var p = P[i], g = GI[p.group], ids = inGroup(p.group), at = ids.indexOf(i), w = h('article', { class: 'wrap essay', style: '--acc:' + g.acc });
     markRead(i);
@@ -304,15 +410,16 @@ window.BLAWG_START = function (D, RAW) {
       fetch('pieces/' + encodeURIComponent(p.id) + '.md', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (md) { if (location.hash !== want) return; bd.innerHTML = BMD.render(md); }).catch(function () { bd.textContent = ''; bd.appendChild(h('p', { class: 'slot', text: 'This piece could not load. Try again in a moment.' })); }); }
     else bd.appendChild(h('p', { class: 'slot', text: 'Not written yet.' }));
     var pn = h('div', { class: 'pn' }); pn.appendChild(at > 0 ? h('a', { href: pref(ids[at - 1]) }, [h('small', { text: '← PREVIOUS' }), P[ids[at - 1]].title]) : h('span')); pn.appendChild(at < ids.length - 1 ? h('a', { class: 'nx', href: pref(ids[at + 1]) }, [h('small', { text: 'NEXT →' }), P[ids[at + 1]].title]) : h('span')); w.appendChild(pn);
+    var sm = h('button', { class: 'seemap', type: 'button' }, [h('b', { text: '⬡' }), 'See this piece on the map']); sm.onclick = openMap; w.appendChild(sm);
     V.appendChild(w);
-    V.appendChild(h('section', { class: 'wide mapsec' }, [h('div', { class: 'eyebrow', text: 'Where this sits' }), h('h2', { text: 'This piece on the map' }), map(i)]));
     window.scrollTo(0, 0); document.title = p.title + ' · Blawg'; }
   function linkView(V, j) {
     var b = B[j], A = P[b.a], Z = P[b.b], w = h('div', { class: 'wide' });
     w.appendChild(h('div', { class: 'crumbs' }, [h('a', { href: '#', text: 'Blawg' }), ' · link']));
     function card(p, i) { return h('div', { class: 'pc' }, [h('span', { class: 'eyebrow', text: GI[p.group].name }), h('b', { text: p.title }), p.desc ? h('p', { text: p.desc }) : null, b.q && b.q[p.id] ? h('p', null, [h('mark', { text: '“' + b.q[p.id] + '”' })]) : null, h('a', { class: 'go', href: pref(i), text: 'read it →' })]); }
     w.appendChild(h('div', { class: 'pair' }, [card(A, b.a), h('div', { class: 'pc words' }, [h('span', { class: 'eyebrow', text: 'the words between' }), b.text ? h('p', { text: b.text }) : h('p', { class: 'slot', text: 'His words on this link go here.' })]), card(Z, b.b)]));
-    V.appendChild(w); V.appendChild(h('section', { class: 'wide mapsec' }, [h('div', { class: 'eyebrow', text: 'Where this sits' }), map(b.a)])); window.scrollTo(0, 0); document.title = 'Link · Blawg'; }
+    ROUTE.p = b.a; var sm = h('button', { class: 'seemap', type: 'button' }, [h('b', { text: '⬡' }), 'See these on the map']); sm.onclick = openMap; w.appendChild(sm);
+    V.appendChild(w); window.scrollTo(0, 0); document.title = 'Link · Blawg'; }
   window.addEventListener('hashchange', function () { document.title = 'Blawg'; render(); });
   render();
 };
