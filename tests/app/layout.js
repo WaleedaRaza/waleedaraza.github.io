@@ -9,9 +9,8 @@ function ok(c, m) { if (!c) fails.push(m); }
     const pg = await b.newPage({ viewport: { width: w, height: h } }); const errs = []; pg.on('pageerror', e => errs.push(e.message));
     await pg.goto(URL); await pg.waitForTimeout(1200);
     const def = await pg.$eval('.lays .lb.on', e => e.dataset.lay); ok(def === (w <= 820 ? 'top' : 'left'), `${w}: default ${def}`);
-    const lib = async (on) => { const b2 = await pg.$('#libbtn'); if (!b2 || !(await b2.isVisible())) return; const isOn = await pg.evaluate(() => document.getElementById('main').classList.contains('libon')); if (isOn === on) return; const r = await b2.boundingBox(); await pg.mouse.click(r.x + r.width / 2, r.y + r.height / 2); await pg.waitForTimeout(400); };
     for (const m of ['left', 'top', 'right', 'bottom', 'L', 'circle']) {
-      await lib(true); const btn = await pg.$(`.lays .lb[data-lay="${m}"]`); await btn.scrollIntoViewIfNeeded(); const bb = await btn.boundingBox();
+      const btn = await pg.$(`.lays .lb[data-lay="${m}"]`); await btn.scrollIntoViewIfNeeded(); const bb = await btn.boundingBox();
       ok(bb && bb.x >= 0 && bb.x + bb.width <= w + 1, `${w} ${m}: button off screen ${JSON.stringify(bb)}`);
       await pg.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2); await pg.waitForTimeout(700);
       const on = await pg.$eval('.lays .lb.on', e => e.dataset.lay); ok(on === m, `${w} ${m}: active ${on}`);
@@ -24,12 +23,12 @@ function ok(c, m) { if (!c) fails.push(m); }
       const inStage = geo.t.filter(([x, y]) => geo.fc.some(([a, b]) => Math.hypot(a - x, b - y) < 160)).length;   /* no tile on or touching a stage cell */
       const sizes = await pg.evaluate(() => [...new Set([...document.querySelectorAll('#world .fc, #world .t .hx, #world .cell')].map(e => { const b = e.getBBox(); return Math.round(b.height / 10); }))]);
       ok(sizes.every(v => Math.abs(v - sizes[0]) <= 2), `${w} ${m}: hexagons of different sizes ${sizes}`); ok(inStage === 0, `${w} ${m}: ${inStage} tiles on stage`);
-      await lib(false); if (out && (w === 1440 || w === 390)) await pg.screenshot({ path: `${out}/${m}-${w}.png` });
+      if (out && (w === 1440 || w === 390)) await pg.screenshot({ path: `${out}/${m}-${w}.png` });
     }
     // whole board, then try to zoom further out and pan away
-    await lib(true); const wb = await pg.$('button[title="Whole board"]'); await wb.scrollIntoViewIfNeeded(); const wbb = await wb.boundingBox(); await pg.mouse.click(wbb.x + 10, wbb.y + 10); await pg.waitForTimeout(600);
+    const wb = await pg.$('button[title="Whole board"]'); await wb.scrollIntoViewIfNeeded(); const wbb = await wb.boundingBox(); await pg.mouse.click(wbb.x + 10, wbb.y + 10); await pg.waitForTimeout(600);
     const z0 = await pg.evaluate(() => document.getElementById('world').getAttribute('transform'));
-    await lib(false); await pg.evaluate(() => window.scrollTo(0, 0)); await pg.waitForTimeout(100); const bd = await (await pg.$("#board")).boundingBox();
+    await pg.evaluate(() => window.scrollTo(0, 0)); await pg.waitForTimeout(100); const bd = await (await pg.$("#board")).boundingBox();
     await pg.mouse.move(bd.x + 12, bd.y + 12); for (let i = 0; i < 5; i++) { await pg.mouse.wheel(0, 400); await pg.waitForTimeout(50); }
     const z1 = await pg.evaluate(() => document.getElementById('world').getAttribute('transform'));
     const sc = t => +/scale\(([\d.e-]+)\)/.exec(t)[1]; ok(sc(z1) >= sc(z0) - 1e-6, `${w}: zoomed past whole board ${sc(z0)} -> ${sc(z1)}`);
