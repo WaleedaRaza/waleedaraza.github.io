@@ -123,7 +123,7 @@
 
   Field.prototype._injectStyles = function () {
     var css = '.' + this.cls + '{white-space:pre;line-height:' + this.lineHeight + ';margin:0;' +
-      'font-family:"IBM Plex Mono","JetBrains Mono",Consolas,"Courier New",monospace;' +
+      'font-family:"Ascii Art Mono","IBM Plex Mono","JetBrains Mono",Consolas,Menlo,"Courier New",monospace;' +
       'font-variant-ligatures:none;letter-spacing:0;user-select:none;}\n';
     var keys = Object.keys(this.palette);
     for (var i = 0; i < keys.length; i++) {

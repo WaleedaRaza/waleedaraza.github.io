@@ -108,7 +108,7 @@
     if (mod === 'Tree') {
       var T = name === 'oak' ? global.FallenOak : global.FallenTree;
       return T && function (el) {
-        var s = T.mount(el, {});
+        var s = T.mount(el, name === 'oak' ? {} : { sky: 58 });   // room above the standing redwood
         return { toggle: function () { s.replay(); return false; }, replay: s.replay };
       };
     }
